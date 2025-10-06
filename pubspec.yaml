@@ -55,6 +55,8 @@ dependencies:
   share_plus: ^10.0.0
   image_picker: ^1.1.2
   file_picker: ^10.1.2
+  device_preview:
+  internet_connection_checker_plus: ^2.5.2
 
 
 
@@ -96,7 +98,7 @@ flutter:
 
   # example:
   fonts:
-    - family: Roboto
+    - family: General Sans
       fonts:
         - asset: assets/fonts/GeneralSans-Bold.otf
         - asset: assets/fonts/GeneralSans-Regular.otf

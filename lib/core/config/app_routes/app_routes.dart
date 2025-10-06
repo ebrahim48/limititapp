@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/core/presentations/screens/onboarding/language_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_screen.dart';
+
+import '../../presentations/screens/splash/splash_screen.dart';
 
 class AppRoutes {
   static const String splashScreen = "/splashScreen";
   static const String onBoardingScreen = "/onBoardingScreen";
+  static const String languageScreen = "/languageScreen";
 
   /// =============================> Auth ================================>
 
@@ -18,71 +23,43 @@ class AppRoutes {
   /// ============================> Home ================================>
 
   static const String homeScreen = "/homeScreen";
-  static const String startCreateStoryScreen = "/startCreateStoryScreen";
-  static const String nextCreateStoryScreen = "/nextCreateStoryScreen";
-  static const String bottomNavbarScreen = "/bottomNavbarScreen";
-  static const String everyStoryScreen = "/everyStoryScreen";
-  static const String uploadCreateStoryScreen = "/uploadCreateStoryScreen";
-  static const String recordStoryScreen = "/recordStoryScreen";
-  static const String videoCreateStoryScreen = "/videoCreateStoryScreen";
-  static const String storyScreen = "/storyScreen";
-  static const String createPostStoryScreen = "/createPostStoryScreen";
-  static const String storyAudioScreen = "/storyAudioScreen";
-  static const String storyAudioBookScreen = "/storyAudioBookScreen";
-  static const String storyImageScreen = "/storyImageScreen";
-  static const String storyImageDetailsScreen = "/storyImageDetailsScreen";
-  static const String storyVideoScreen = "/storyVideoScreen";
-  static const String storyVideoDetailsScreen = "/storyVideoDetailsScreen";
-  static const String libraryScreen = "/libraryScreen";
-  static const String bookmarkScreen = "/bookmarkScreen";
-  static const String downloadScreen = "/downloadScreen";
-  static const String profileScreen = "/profileScreen";
-  static const String personalScreen = "/personalScreen";
-  static const String personalScreenUpdate = "/personalScreenUpdate";
-  static const String systemSettingScreen = "/systemSettingScreen";
-  static const String feedbackScreen = "/feedbackScreen";
-  static const String permissionScreen = "/permissionScreen";
-  static const String aboutScreen = "/aboutScreen";
-  static const String questionHelpScreen = "/questionHelpScreen";
-  static const String recordVideoListPageScreen = "/recordVideoListPageScreen";
-  static const String recordVideoPlayerScreen = "/recordVideoPlayerScreen";
-  static const String audioRecordAddPostDetailsScreen = "/audioRecordAddPostDetailsScreen";
-  static const String videoRecordAddPostDetailsScreen = "/videoRecordAddPostDetailsScreen";
+
 
   static final GoRouter goRouter = GoRouter(
     initialLocation: splashScreen,
     routes: [
-      // GoRoute(
-      //   path: splashScreen,
-      //   name: splashScreen,
-      //   builder: (context, state) => const SplashScreen(),
-      //   redirect: (context, state) {
-      //     Future.delayed(const Duration(seconds: 3), () async {
-      //       var role = await PrefsHelper.getString(AppConstants.role);
-      //       var token = await PrefsHelper.getString(AppConstants.bearerToken);
-      //       if (token != "") {
-      //         /// ===============Role Check =============>>>
-      //         if (role == "user") {
-      //           AppRoutes.goRouter.replaceNamed(AppRoutes.bottomNavbarScreen);
-      //         }
-      //       } else {
-      //         AppRoutes.goRouter.replaceNamed(AppRoutes.onBoardingScreen);
-      //       }
-      //     });
-      //
-      //     return;
-      //   },
-      // ),
-      //
-      // ///<<<=============>>> ONBOARDING SCREEN <<<===============>>>
-      // GoRoute(
-      //   path: onBoardingScreen,
-      //   name: onBoardingScreen,
-      //   pageBuilder:
-      //       (context, state) =>
-      //           _customTransitionPage(OnboardingScreen(), state),
-      // ),
-      //
+      GoRoute(
+        path: splashScreen,
+        name: splashScreen,
+        builder: (context, state) => const SplashScreen(),
+        redirect: (context, state) {
+          Future.delayed(const Duration(seconds: 3), () async {
+              AppRoutes.goRouter.replaceNamed(AppRoutes.onBoardingScreen);
+            }
+          );
+
+          return;
+        },
+      ),
+
+      ///<<<=============>>> ONBOARDING SCREEN <<<===============>>>
+      GoRoute(
+        path: onBoardingScreen,
+        name: onBoardingScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(OnboardingScreen(), state),
+      ),
+
+      ///<<<=============>>> Language SCREEN <<<===============>>>
+      GoRoute(
+        path: languageScreen,
+        name: languageScreen,
+        pageBuilder:
+            (context, state) =>
+            _customTransitionPage(LanguageScreen(), state),
+      ),
+
       // /// =============================================================> Auth  =================================================>
       //
       // ///<<<=============>>> Sign Up SCREEN <<<===============>>>
