@@ -1,7 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/forget/forget_password_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/limit_privacy.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/reset/reset_password_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/reset/reset_successfully_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/signin/sign_in%20_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/signup/sign_up_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/verify/verify_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/language_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_start_screen.dart';
 
 import '../../presentations/screens/splash/splash_screen.dart';
 
@@ -9,6 +17,7 @@ class AppRoutes {
   static const String splashScreen = "/splashScreen";
   static const String onBoardingScreen = "/onBoardingScreen";
   static const String languageScreen = "/languageScreen";
+  static const String onBoardingStartScreen = "/onBoardingStartScreen";
 
   /// =============================> Auth ================================>
 
@@ -17,8 +26,10 @@ class AppRoutes {
   static const String forgetPasswordScreen = "/forgetPasswordScreen";
   static const String verifyScreen = "/verifyScreen";
   static const String resetPasswordScreen = "/resetPasswordScreen";
+  static const String resetSuccessFullyScreen = "/resetSuccessFullyScreen";
   static const String termsServicesScreen = "/termsServicesScreen";
   static const String privacyPolicyScreen = "/privacyPolicyScreen";
+  static const String limitPrivacyProtectionScreen = "/limitPrivacyProtectionScreen";
 
   /// ============================> Home ================================>
 
@@ -60,62 +71,91 @@ class AppRoutes {
             _customTransitionPage(LanguageScreen(), state),
       ),
 
-      // /// =============================================================> Auth  =================================================>
-      //
-      // ///<<<=============>>> Sign Up SCREEN <<<===============>>>
-      // GoRoute(
-      //   path: signUpScreen,
-      //   name: signUpScreen,
-      //   pageBuilder:
-      //       (context, state) => _customTransitionPage(SignUpScreen(), state),
-      // ),
-      //
-      // ///<<<=============>>> Log In <<<===============>>>
-      // GoRoute(
-      //   path: logInScreen,
-      //   name: logInScreen,
-      //   pageBuilder:
-      //       (context, state) => _customTransitionPage(LoginScreen(), state),
-      // ),
-      //
-      // ///<<<=============>>> Forget Password Screen  <<<===============>>>
-      // GoRoute(
-      //   path: forgetPasswordScreen,
-      //   name: forgetPasswordScreen,
-      //   builder: (context, state) {
-      //     String email = state.extra as String;
-      //     return ForgetPasswordScreen(email: email);
-      //   },
-      //   // pageBuilder: (context, state) =>
-      //   //     _customTransitionPage(ForgetPasswordScreen(), state),
-      // ),
-      //
-      // ///<<<=============>>> Verify Screen  <<<===============>>>
-      // GoRoute(
-      //   path: verifyScreen,
-      //   name: verifyScreen,
-      //   builder: (context, state) {
-      //     final extra = state.extra as Map<String, dynamic>;
-      //     final screenType = extra['screenType']?.toString() ?? '';
-      //     final email = extra['email']?.toString() ?? '';
-      //     final token = extra['token']?.toString() ?? '';
-      //     return VerifyScreen(
-      //       screenType: screenType,
-      //       email: email,
-      //       token: token,
-      //     );
-      //   },
-      // ),
-      //
-      // ///<<<=============>>> Reset Password Screen  <<<===============>>>
-      // GoRoute(
-      //   path: resetPasswordScreen,
-      //   name: resetPasswordScreen,
-      //   pageBuilder:
-      //       (context, state) =>
-      //           _customTransitionPage(ResetPasswordScreen(), state),
-      // ),
-      //
+
+      ///<<<=============>>> ONBOARDING Start SCREEN <<<===============>>>
+      GoRoute(
+        path: onBoardingStartScreen,
+        name: onBoardingStartScreen,
+        pageBuilder:
+            (context, state) =>
+            _customTransitionPage(OnboardingStartScreen(), state),
+      ),
+
+      /// =============================================================> Auth  =================================================>
+
+      ///<<<=============>>> Sign Up SCREEN <<<===============>>>
+      GoRoute(
+        path: signUpScreen,
+        name: signUpScreen,
+        pageBuilder:
+            (context, state) => _customTransitionPage(SignUpScreen(), state),
+      ),
+
+      ///<<<=============>>> Log In <<<===============>>>
+      GoRoute(
+        path: logInScreen,
+        name: logInScreen,
+        pageBuilder:
+            (context, state) => _customTransitionPage(LoginInScreen(), state),
+      ),
+
+      ///<<<=============>>> Forget Password Screen  <<<===============>>>
+      GoRoute(
+        path: forgetPasswordScreen,
+        name: forgetPasswordScreen,
+        // builder: (context, state) {
+        //   String email = state.extra as String;
+        //   return ForgetPasswordScreen(email: email);
+        // },
+        pageBuilder: (context, state) =>
+            _customTransitionPage(ForgetPasswordScreen(), state),
+      ),
+
+      ///<<<=============>>> Verify Screen  <<<===============>>>
+      GoRoute(
+        path: verifyScreen,
+        name: verifyScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(VerifyScreen(), state),
+        // builder: (context, state) {
+        //   final extra = state.extra as Map<String, dynamic>;
+        //   final screenType = extra['screenType']?.toString() ?? '';
+        //   final email = extra['email']?.toString() ?? '';
+        //   final token = extra['token']?.toString() ?? '';
+        //   return VerifyScreen(
+        //     screenType: screenType,
+        //     email: email,
+        //     token: token,
+        //   );
+        // },
+      ),
+
+      ///<<<=============>>> Reset Password Screen  <<<===============>>>
+      GoRoute(
+        path: resetPasswordScreen,
+        name: resetPasswordScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(ResetPasswordScreen(), state),
+      ),
+
+      ///<<<=============>>> Reset Successfully Password Screen  <<<===============>>>
+      GoRoute(
+        path: resetSuccessFullyScreen,
+        name: resetSuccessFullyScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(ResetSuccessFullyScreen(), state),
+      ),
+      ///<<<=============>>>LimitPrivacyProtectionScreen <<<===============>>>
+      GoRoute(
+        path: limitPrivacyProtectionScreen,
+        name: limitPrivacyProtectionScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(LimitPrivacyProtectionScreen(), state),
+      ),
+
       // ///<<<=============>>> Terms Services Screen  <<<===============>>>
       // GoRoute(
       //   path: termsServicesScreen,

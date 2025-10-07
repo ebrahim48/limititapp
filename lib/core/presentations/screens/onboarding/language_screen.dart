@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_strings.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'dart:ui';
-import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../constants/app_colors.dart';
 
 class LanguageScreen extends StatefulWidget {
@@ -17,6 +18,9 @@ class LanguageScreen extends StatefulWidget {
 class _LanguageScreenState extends State<LanguageScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  String selectedLanguage = 'Italian';
+
+  final List<String> languages = ['Italian', 'English'];
 
   @override
   void initState() {
@@ -38,6 +42,7 @@ class _LanguageScreenState extends State<LanguageScreen>
     return Scaffold(
       body: Stack(
         children: [
+
           Positioned(
             top: 18.h,
             left: 109.w,
@@ -58,50 +63,112 @@ class _LanguageScreenState extends State<LanguageScreen>
               ),
             ),
           ),
-          Container(
-            width: 158.w,
-            height: 219.h,
-            decoration: BoxDecoration(
-              color: AppColors.textColor803D20.withOpacity(0.3),
-              shape: BoxShape.circle,
-            ),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
+
+
+          Positioned(
+            bottom: 0,
+            left: 0,
+            child: Container(
+              width: 158.w,
+              height: 219.h,
+              decoration: BoxDecoration(
+                color: AppColors.textColor803D20.withOpacity(0.3),
+                shape: BoxShape.circle,
+              ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                  ),
                 ),
               ),
             ),
           ),
 
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: 170.h),
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 198.h),
 
-                /// ========================================> Select Field ====================================>
+
+                  CustomText(
+                    text: AppString.select,
+                    fontsize: 20.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textColor3D3D3D,
+                  ),
+
+                  SizedBox(height: 12.h),
+                  ...languages.map((language) => _buildLanguageOption(language)),
+
+                  SizedBox(height: 32.h),
 
 
-                SizedBox(height: 32.h),
-                Padding(
-                  padding:  EdgeInsets.symmetric(vertical: 20,horizontal: 20),
-                  child: CustomButton(
+                  CustomButton(
                     title: AppString.start,
                     onpress: () {
-
+                      context.pushNamed(AppRoutes.onBoardingStartScreen);
                     },
-
                   ),
-                )
-              ],
+
+                  SizedBox(height: 32.h),
+                ],
+              ),
             ),
-
           ),
-
-
         ],
+      ),
+    );
+  }
+
+  Widget _buildLanguageOption(String language) {
+    final isSelected = selectedLanguage == language;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedLanguage = language;
+        });
+      },
+      child: Container(
+        width: 328.w,
+        height: 54.h,
+        margin: EdgeInsets.only(bottom: 16.h),
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(100.r),
+          border: Border.all(
+            color: AppColors.borderColor,
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomText(
+              text: language,
+              fontsize: 14.sp,
+              fontWeight: FontWeight.w400,
+              color: AppColors.textColor5D5D5D,
+            ),
+            Container(
+              width: 20.w,
+              height: 20.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: isSelected ? Color(0xFF4C956C) : Colors.transparent,
+                border: Border.all(
+                  color: isSelected ? Color(0xFF4C956C) : Color(0xFF6D6D6D),
+                  width: 2,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
