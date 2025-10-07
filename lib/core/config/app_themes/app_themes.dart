@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../constants/app_colors.dart';
-
-
-
-
 
 
 class Themes {
@@ -32,14 +27,14 @@ class Themes {
     ///-----------------app bar theme------------------>
     appBarTheme: const  AppBarTheme(
         scrolledUnderElevation: 0,
-        color: AppColors.bgColor,
+        color: AppColors.backGroundColor,
         centerTitle: true,
         elevation: 0),
 
     inputDecorationTheme: InputDecorationTheme(fillColor: Colors.black87),
 
     iconTheme: IconThemeData(color: Colors.black),
-    scaffoldBackgroundColor: AppColors.bgColor,
+    scaffoldBackgroundColor: AppColors.backGroundColor,
   );
 
 
@@ -47,8 +42,8 @@ class Themes {
   final darkTheme = ThemeData.dark().copyWith(
 
     ///------------------------- button theme------------------------->
-    primaryColor: AppColors.primaryColorC79235,
-    scaffoldBackgroundColor: AppColors.bgColor,
+    primaryColor: AppColors.primaryColor,
+    scaffoldBackgroundColor: AppColors.backGroundColor,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(20),
@@ -81,19 +76,5 @@ class Themes {
         elevation: 0,
         shadowColor: Colors.white10),
 
-    // ///--------------------text filed themes----------------------->
-    // inputDecorationTheme: InputDecorationTheme(
-    //     contentPadding:
-    //     EdgeInsets.symmetric(vertical: 14.h, horizontal: 10.h),
-    //     filled: true,
-    //     fillColor: AppColors.fieldColor,
-    //     hintStyle: TextStyle(
-    //         fontSize: 16.h, fontWeight: FontWeight.w400, color: Colors.white),
-    //     focusedBorder: OutlineInputBorder(
-    //         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-    //         borderSide: BorderSide(color: AppColors.borderColor, width: 1)),
-    //     enabledBorder: OutlineInputBorder(
-    //         borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
-    //         borderSide: BorderSide(color: AppColors.borderColor, width: 1)))
   );
 }
