@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/forget/forget_password_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/limit_privacy.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/select_apps_manage.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/set_usage_limit_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/reset/reset_password_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/reset/reset_successfully_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/signin/sign_in%20_screen.dart';
@@ -30,6 +32,8 @@ class AppRoutes {
   static const String termsServicesScreen = "/termsServicesScreen";
   static const String privacyPolicyScreen = "/privacyPolicyScreen";
   static const String limitPrivacyProtectionScreen = "/limitPrivacyProtectionScreen";
+  static const String selectAppsManageScreen = "/selectAppsManageScreen";
+  static const String setUsageLimitScreen = "/setUsageLimitScreen";
 
   /// ============================> Home ================================>
 
@@ -155,6 +159,27 @@ class AppRoutes {
             (context, state) =>
                 _customTransitionPage(LimitPrivacyProtectionScreen(), state),
       ),
+      ///<<<=============>>>selectAppsManageScreen <<<===============>>>
+
+      GoRoute(
+        path: selectAppsManageScreen,
+        name: selectAppsManageScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(SelectAppsManageScreen(), state),
+      ),
+
+      ///<<<=============>>>setUsageLimitScreen <<<===============>>>
+
+      GoRoute(
+        path: setUsageLimitScreen,
+        name: setUsageLimitScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(SetUsageLimitScreen(), state),
+      ),
+
+
 
       // ///<<<=============>>> Terms Services Screen  <<<===============>>>
       // GoRoute(

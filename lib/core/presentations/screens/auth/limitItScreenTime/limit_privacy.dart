@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/app_strings.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
@@ -185,15 +187,13 @@ class _LimitPrivacyProtectionScreenState extends State<LimitPrivacyProtectionScr
                       ],
                     ),
 
-                    SizedBox(height: 63.h),
+                    SizedBox(height: 32.h),
 
                     // Get Started button
                     CustomButton(
                       title: AppString.getStarted,
                       onpress: () {
-
-
-
+                        context.pushNamed(AppRoutes.selectAppsManageScreen);
                       },
                     ),
 

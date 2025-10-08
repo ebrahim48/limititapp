@@ -39,5 +39,10 @@ class AppString{
   static const String we = 'We don\'t collect personal information';
   static const String gdpr = 'GDPR compliance is our priority';
   static const String trans = 'Transparent Permission requests';
+  static const String selectApp = "Select Apps to Manage";
+  static const String usageLimit = "Set Usage Limit";
+  static const String dailyScreen = "Total Daily Screen Time";
+  static const String all = "All";
+  static const String save = "Save & Continue";
 
 }

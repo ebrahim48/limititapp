@@ -1,46 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/core/presentations/widgets/custom_thumber.dart';
 
-class CustomSlider extends StatelessWidget {
-  const CustomSlider({
-    super.key,
-    required this.value,
-    required this.onChanged,
-    this.min = 0,
-    this.max = 5,
-    this.activeColor,
-    this.inactiveColor,
-    this.thumbColor,
-  });
 
-  final double value;
-  final double min;
-  final double max;
-  final ValueChanged<double>? onChanged;
-  final Color? activeColor;
-  final Color? inactiveColor;
-  final Color? thumbColor;
+class CustomSoundSlider extends StatefulWidget {
+  const CustomSoundSlider({super.key});
+
+  @override
+  State<CustomSoundSlider> createState() => _CustomSoundSliderState();
+}
+
+class _CustomSoundSliderState extends State<CustomSoundSlider> {
+  double soundVolume = 0.83;
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: SliderTheme.of(context).copyWith(
-        trackHeight: 8.h,
-        tickMarkShape: SliderTickMarkShape.noTickMark,
-        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12),
-        overlayShape: const RoundSliderOverlayShape(overlayRadius: 24),
-      ),
-      child: Slider(
-        value: value.clamp(min, max),
-        min: min,
-        max: max,
-        divisions: (max - min).toInt(),
-        activeColor: activeColor ?? Colors.white,
-        inactiveColor: inactiveColor ?? const Color(0xffB0B0FF),
-        thumbColor: thumbColor ?? Colors.white,
-        onChanged: onChanged,
-      ),
+    return Column(
+      children: [
+        /// Labels
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomText(text:
+            "Min",
+              fontsize: 13.sp,
+              fontWeight: FontWeight.w400,
+              color: AppColors.textColor3D3D3D,
+
+            ),
+            CustomText(text:
+            "${(soundVolume * 120).round()} min",
+              fontsize: 13.sp,
+              fontWeight: FontWeight.w400,
+              color: AppColors.textColor3D3D3D,
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+
+        /// Custom Slider
+        SliderTheme(
+          data: SliderTheme.of(context).copyWith(
+            trackHeight: 12,
+            trackShape: const RoundedRectSliderTrackShape(),
+            activeTrackColor: AppColors.primaryColor4C956C,
+            inactiveTrackColor: AppColors.textColor3D3D3D,
+            overlayShape: SliderComponentShape.noOverlay,
+            thumbShape:  CustomCircleThumb(),
+          ),
+          child: Slider(
+            value: soundVolume,
+            onChanged: (val) {
+              setState(() => soundVolume = val);
+            },
+          ),
+        ),
+      ],
     );
   }
 }
-

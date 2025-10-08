@@ -21,19 +21,55 @@ class $AssetsIconsGen {
   /// File path: assets/icons/email.svg
   SvgGenImage get email => const SvgGenImage('assets/icons/email.svg');
 
+  /// File path: assets/icons/facbook.svg
+  SvgGenImage get facbook => const SvgGenImage('assets/icons/facbook.svg');
+
+  /// File path: assets/icons/facebook.svg
+  SvgGenImage get facebook => const SvgGenImage('assets/icons/facebook.svg');
+
+  /// File path: assets/icons/instagram.svg
+  SvgGenImage get instagram => const SvgGenImage('assets/icons/instagram.svg');
+
   /// File path: assets/icons/nameProfile.svg
   SvgGenImage get nameProfile =>
       const SvgGenImage('assets/icons/nameProfile.svg');
 
+  /// File path: assets/icons/netflix.svg
+  SvgGenImage get netflix => const SvgGenImage('assets/icons/netflix.svg');
+
   /// File path: assets/icons/pass.svg
   SvgGenImage get pass => const SvgGenImage('assets/icons/pass.svg');
 
+  /// File path: assets/icons/snapshot.svg
+  SvgGenImage get snapshot => const SvgGenImage('assets/icons/snapshot.svg');
+
+  /// File path: assets/icons/twitter.svg
+  SvgGenImage get twitter => const SvgGenImage('assets/icons/twitter.svg');
+
+  /// File path: assets/icons/youtube.svg
+  SvgGenImage get youtube => const SvgGenImage('assets/icons/youtube.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [email, nameProfile, pass];
+  List<SvgGenImage> get values => [
+    email,
+    facbook,
+    facebook,
+    instagram,
+    nameProfile,
+    netflix,
+    pass,
+    snapshot,
+    twitter,
+    youtube,
+  ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
+
+  /// File path: assets/images/instagram.png
+  AssetGenImage get instagram =>
+      const AssetGenImage('assets/images/instagram.png');
 
   /// File path: assets/images/limit.png
   AssetGenImage get limit => const AssetGenImage('assets/images/limit.png');
@@ -64,6 +100,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    instagram,
     limit,
     onboarding,
     privacy,
