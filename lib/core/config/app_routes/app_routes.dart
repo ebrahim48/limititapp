@@ -1,14 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/core/presentations/screens/Home/home_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/forget/forget_password_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/limit_privacy.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/select_apps_manage.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/set_usage_limit_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/timer_settings_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/timer_success_message.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/reset/reset_password_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/reset/reset_successfully_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/signin/sign_in%20_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/signup/sign_up_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/verify/verify_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/bottomnavbar/bottom_navbar_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/limits/limit_screen_time.dart';
+import 'package:limit_it_app/core/presentations/screens/limits/limits_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/language_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_start_screen.dart';
@@ -34,10 +40,16 @@ class AppRoutes {
   static const String limitPrivacyProtectionScreen = "/limitPrivacyProtectionScreen";
   static const String selectAppsManageScreen = "/selectAppsManageScreen";
   static const String setUsageLimitScreen = "/setUsageLimitScreen";
+  static const String timerSettingsScreen = "/timerSettingsScreen";
+  static const String timerSuccessScreen = "/timerSuccessScreen";
 
   /// ============================> Home ================================>
 
   static const String homeScreen = "/homeScreen";
+  static const String bottomNavBarScreen = "/bottomNavBarScreen";
+  static const String limitsScreen = "/limitsScreen";
+  static const String limitScreenTime = "/limitScreenTime";
+
 
 
   static final GoRouter goRouter = GoRouter(
@@ -177,6 +189,62 @@ class AppRoutes {
         pageBuilder:
             (context, state) =>
                 _customTransitionPage(SetUsageLimitScreen(), state),
+      ),
+
+      ///<<<=============>>>Timer Settings Screen <<<===============>>>
+
+      GoRoute(
+        path: timerSettingsScreen,
+        name: timerSettingsScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(TimerSettingsScreen(), state),
+      ),
+
+      ///<<<=============>>>Timer Success Screen <<<===============>>>
+      GoRoute(
+        path: timerSuccessScreen,
+        name: timerSuccessScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(TimerSuccessScreen(), state),
+      ),
+      ///<<<=============>>> Home Screen <<<===============>>>
+
+      GoRoute(
+        path: homeScreen,
+        name: homeScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(HomeScreen(), state),
+      ),
+      ///<<<=============>>> Bottom  Screen <<<===============>>>
+      GoRoute(
+        path: bottomNavBarScreen,
+        name: bottomNavBarScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(BottomNavBarScreen(), state),
+      ),
+
+      ///<<<=============>>> Home Screen <<<===============>>>
+      GoRoute(
+        path: limitsScreen,
+        name: limitsScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(LimitsScreen(), state),
+      ),
+
+      ///<<<=============>>> Limit Screen Time  <<<===============>>>
+
+
+      GoRoute(
+        path: limitScreenTime,
+        name: limitScreenTime,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(LimitScreenTime(), state),
       ),
 
 
