@@ -18,6 +18,12 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Home.svg
+  SvgGenImage get home => const SvgGenImage('assets/icons/Home.svg');
+
+  /// File path: assets/icons/detoxmode.svg
+  SvgGenImage get detoxmode => const SvgGenImage('assets/icons/detoxmode.svg');
+
   /// File path: assets/icons/email.svg
   SvgGenImage get email => const SvgGenImage('assets/icons/email.svg');
 
@@ -30,6 +36,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/instagram.svg
   SvgGenImage get instagram => const SvgGenImage('assets/icons/instagram.svg');
 
+  /// File path: assets/icons/limit.svg
+  SvgGenImage get limit => const SvgGenImage('assets/icons/limit.svg');
+
   /// File path: assets/icons/nameProfile.svg
   SvgGenImage get nameProfile =>
       const SvgGenImage('assets/icons/nameProfile.svg');
@@ -37,11 +46,34 @@ class $AssetsIconsGen {
   /// File path: assets/icons/netflix.svg
   SvgGenImage get netflix => const SvgGenImage('assets/icons/netflix.svg');
 
+  /// File path: assets/icons/notifications.svg
+  SvgGenImage get notifications =>
+      const SvgGenImage('assets/icons/notifications.svg');
+
   /// File path: assets/icons/pass.svg
   SvgGenImage get pass => const SvgGenImage('assets/icons/pass.svg');
 
+  /// File path: assets/icons/pinlock.svg
+  SvgGenImage get pinlock => const SvgGenImage('assets/icons/pinlock.svg');
+
+  /// File path: assets/icons/reports.svg
+  SvgGenImage get reports => const SvgGenImage('assets/icons/reports.svg');
+
+  /// File path: assets/icons/schedules.svg
+  SvgGenImage get schedules => const SvgGenImage('assets/icons/schedules.svg');
+
+  /// File path: assets/icons/screentime.svg
+  SvgGenImage get screentime =>
+      const SvgGenImage('assets/icons/screentime.svg');
+
+  /// File path: assets/icons/settings.svg
+  SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
+
   /// File path: assets/icons/snapshot.svg
   SvgGenImage get snapshot => const SvgGenImage('assets/icons/snapshot.svg');
+
+  /// File path: assets/icons/tiktalk.svg
+  SvgGenImage get tiktalk => const SvgGenImage('assets/icons/tiktalk.svg');
 
   /// File path: assets/icons/twitter.svg
   SvgGenImage get twitter => const SvgGenImage('assets/icons/twitter.svg');
@@ -51,14 +83,24 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+    home,
+    detoxmode,
     email,
     facbook,
     facebook,
     instagram,
+    limit,
     nameProfile,
     netflix,
+    notifications,
     pass,
+    pinlock,
+    reports,
+    schedules,
+    screentime,
+    settings,
     snapshot,
+    tiktalk,
     twitter,
     youtube,
   ];
@@ -66,6 +108,9 @@ class $AssetsIconsGen {
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
+
+  /// File path: assets/images/banner.png
+  AssetGenImage get banner => const AssetGenImage('assets/images/banner.png');
 
   /// File path: assets/images/instagram.png
   AssetGenImage get instagram =>
@@ -100,6 +145,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    banner,
     instagram,
     limit,
     onboarding,

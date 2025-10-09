@@ -32,6 +32,7 @@ class AppString{
   static const String didnt = 'Didn’t get the code?';
   static const String backlog = 'Back to Log in';
   static const String takeControl = 'Take Control of yur digital habits';
+  static const String backHome = 'Back to Home';
   static const String getStarted = 'Get Started';
   static const String iAccept = 'I accept the privacy policy and terms of Service';
   static const String dataProtection = 'Privacy & Data Protection';
@@ -43,6 +44,11 @@ class AppString{
   static const String usageLimit = "Set Usage Limit";
   static const String dailyScreen = "Total Daily Screen Time";
   static const String all = "All";
-  static const String save = "Save & Continue";
+  static const String saveContinue = "Save & Continue";
+  static const String timerSettings = "Timer Settings";
+  static const String preOpening = "Pre - Opening Countdown\nDuration";
+  static const String save = "Save";
+  static const String motivational = 'Motivational Phrases';
+  static const String successLimit = 'All set !\nYou have Successfully Set App Limit';
 
 }
