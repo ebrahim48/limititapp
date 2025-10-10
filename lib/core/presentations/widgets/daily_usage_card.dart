@@ -16,7 +16,7 @@ class DailyUsageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 328.w,
+      width: 345.w,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.r),

@@ -145,9 +145,8 @@ class LoginInScreen extends StatelessWidget {
                     CustomButton(
                       title: AppString.login,
                       onpress: () {
-                        context.pushNamed(AppRoutes.limitPrivacyProtectionScreen);
-
-
+                        // context.pushNamed(AppRoutes.limitPrivacyProtectionScreen);
+                        context.pushNamed(AppRoutes.bottomNavBarScreen);
                       },
                     ),
                     SizedBox(height: 12.h),

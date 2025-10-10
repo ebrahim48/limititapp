@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/limit_data_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -36,7 +38,48 @@ class LimitsScreen extends StatelessWidget {
             Wrap(
               spacing: 18.w,
               runSpacing: 24.h,
-              children: limitOptions.map((option) => LimitCard(option: option)).toList(),
+              children: limitOptions.map((option) {
+                return LimitCard(
+                  option: option,
+                  onTap: () {
+                    if (option.isPro) {
+                      // Show Pro dialog
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Pro Feature"),
+                          content: const Text(
+                            "This feature is only available in the Pro version.",
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                context.pushNamed(AppRoutes.pinLockLimitsScreen);
+                              },
+                              child: const Text("OK"),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+
+                      switch (option.title) {
+                        case 'Screen time':
+                          context.pushNamed(AppRoutes.limitScreenTime);
+                          break;
+                        case 'Schedules':
+                          context.pushNamed(AppRoutes.schedulesLimitsScreen);
+                          break;
+                        case 'App usage':
+                          Navigator.pushNamed(context, '/appUsage');
+                          break;
+                        default:
+                          break;
+                      }
+                    }
+                  },
+                );
+              }).toList(),
             ),
             SizedBox(height: 270.h),
             const AnnouncementCard(),

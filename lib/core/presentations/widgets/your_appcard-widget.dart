@@ -12,7 +12,7 @@ class YourAppCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 328.w,
+      width: 345.w,
       height: 80.h,
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),

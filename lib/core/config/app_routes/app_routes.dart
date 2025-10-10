@@ -13,8 +13,13 @@ import 'package:limit_it_app/core/presentations/screens/auth/signin/sign_in%20_s
 import 'package:limit_it_app/core/presentations/screens/auth/signup/sign_up_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/verify/verify_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/bottomnavbar/bottom_navbar_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/limits/edit_timer_settings.dart';
+import 'package:limit_it_app/core/presentations/screens/limits/edit_usage_limit.dart';
 import 'package:limit_it_app/core/presentations/screens/limits/limit_screen_time.dart';
 import 'package:limit_it_app/core/presentations/screens/limits/limits_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/limits/pin_lock_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/limits/schedules_limits_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/limits/set_pin_number_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/language_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_start_screen.dart';
@@ -49,6 +54,11 @@ class AppRoutes {
   static const String bottomNavBarScreen = "/bottomNavBarScreen";
   static const String limitsScreen = "/limitsScreen";
   static const String limitScreenTime = "/limitScreenTime";
+  static const String editUsageLimitScreen = "/editUsageLimitScreen";
+  static const String editTimerSettingsScreen = "/editTimerSettingsScreen";
+  static const String schedulesLimitsScreen = "/schedulesLimitsScreen";
+  static const String pinLockLimitsScreen = "/pinLockLimitsScreen";
+  static const String setPinNumberScreen = "/setPinNumberScreen";
 
 
 
@@ -237,14 +247,59 @@ class AppRoutes {
       ),
 
       ///<<<=============>>> Limit Screen Time  <<<===============>>>
-
-
       GoRoute(
         path: limitScreenTime,
         name: limitScreenTime,
         pageBuilder:
             (context, state) =>
                 _customTransitionPage(LimitScreenTime(), state),
+      ),
+
+      ///<<<=============>>> EditTimer Settings Screen  <<<===============>>>
+      GoRoute(
+        path: editTimerSettingsScreen,
+        name: editTimerSettingsScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(EditTimerSettingsScreen(), state),
+      ),
+
+
+      GoRoute(
+        path: editUsageLimitScreen,
+        name: editUsageLimitScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(EditUsageLimitScreen(), state),
+      ),
+
+      ///<<<=============>>> Schedules Limits Screen  <<<===============>>>
+      GoRoute(
+        path: schedulesLimitsScreen,
+        name: schedulesLimitsScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(SchedulesLimitsScreen(), state),
+      ),
+      ///<<<=============>>> Pin Lock Limits Screen  <<<===============>>>
+
+
+      GoRoute(
+        path: pinLockLimitsScreen,
+        name: pinLockLimitsScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(PinLockLimitsScreen(), state),
+      ),
+
+      ///<<<=============>>> Set Pin Number Screen  <<<===============>>>
+
+      GoRoute(
+        path: setPinNumberScreen,
+        name: setPinNumberScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(SetPinNumberScreen(), state),
       ),
 
 

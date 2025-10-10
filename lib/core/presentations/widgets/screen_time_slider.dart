@@ -17,7 +17,7 @@ class _CustomScreenTimeSliderState extends State<CustomScreenTimeSlider> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 328.w,
+      width: 345.w,
       height: 100.h,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(

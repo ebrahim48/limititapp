@@ -63,7 +63,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildAnnouncementCard() {
     return Container(
-      width: 328.w,
+      width: 345.w,
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: Color(0xFFEDD69A),
