@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/screentime_helper.dart';
+import 'package:limit_it_app/core/constants/app_strings.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
-import 'package:limit_it_app/core/presentations/widgets/screen_time_card.dart';
+import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
+import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
 
-class LimitScreenTime extends StatelessWidget {
-  const LimitScreenTime({super.key});
+class SetPinNumberScreen extends StatefulWidget {
+  const SetPinNumberScreen({super.key});
+
+  @override
+  State<SetPinNumberScreen> createState() => _SetPinNumberScreenState();
+}
+
+class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
+
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -31,12 +35,11 @@ class LimitScreenTime extends StatelessWidget {
               onPressed: () => Navigator.pop(context),
             ),
             SizedBox(width: 12.w),
-            CustomText(text: 'Screen Time',
+            CustomText(
+              text: 'Set Pin Number',
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
-
-
             ),
           ],
         ),
@@ -47,18 +50,28 @@ class LimitScreenTime extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20.h),
-            ...ScreentimeHelper.screenTime.map((app) => ScreenTimeCard(app: app)).toList(),
-            SizedBox(height: 32.h),
-            CustomButton(
-                title: 'Add New ScreenTime',
-                onpress: () {
-                  context.pushNamed(AppRoutes.selectAppsManageScreen);
 
-                },),
+            CustomTextField(
+              hintextColor: AppColors.textColor5D5D5D,
+              controller: pinNumberController,
+              hintText: 'Enter the Pin Number',
+              isPassword: true,
+            ),
+            SizedBox(height: 24.h),
+
+            CustomButton(
+              title: 'Save Pin Number',
+              onpress: () {
+
+              },
+            ),
             SizedBox(height: 60.h),
           ],
         ),
       ),
     );
   }
+
+  TextEditingController pinNumberController = TextEditingController();
+
 }

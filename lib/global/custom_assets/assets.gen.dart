@@ -39,6 +39,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/limit.svg
   SvgGenImage get limit => const SvgGenImage('assets/icons/limit.svg');
 
+  /// File path: assets/icons/more_vert.svg
+  SvgGenImage get moreVert => const SvgGenImage('assets/icons/more_vert.svg');
+
   /// File path: assets/icons/nameProfile.svg
   SvgGenImage get nameProfile =>
       const SvgGenImage('assets/icons/nameProfile.svg');
@@ -90,6 +93,7 @@ class $AssetsIconsGen {
     facebook,
     instagram,
     limit,
+    moreVert,
     nameProfile,
     netflix,
     notifications,
