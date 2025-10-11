@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_profile.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -47,13 +49,17 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+
+                },
                 child: Assets.icons.notifications
                     .svg(width: 24.w, height: 24.h),
               ),
               SizedBox(width: 10.w),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  context.pushNamed(AppRoutes.settingsScreen);
+                },
                 child: Assets.icons.settings.svg(width: 24.w, height: 24.h),
               ),
             ],

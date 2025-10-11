@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:limit_it_app/core/presentations/screens/limits/limits_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/reports/reports_screen.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../home/home_screen.dart';
@@ -16,6 +17,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   final List<Widget> screens = [
      HomeScreen(),
      LimitsScreen(),
+     ReportsScreen(),
   ];
 
   int currentIndex = 0;

@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/models/daily_usage.dart';
-import 'package:limit_it_app/core/presentations/widgets/app_icon_widget.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/dash-line_painter.dart';
 import 'package:limit_it_app/core/presentations/widgets/time_range_widget.dart';
