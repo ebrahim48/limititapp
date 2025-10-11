@@ -27,6 +27,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/detoxmode.svg
   SvgGenImage get detoxmode => const SvgGenImage('assets/icons/detoxmode.svg');
 
+  /// File path: assets/icons/edit.svg
+  SvgGenImage get edit => const SvgGenImage('assets/icons/edit.svg');
+
   /// File path: assets/icons/email.svg
   SvgGenImage get email => const SvgGenImage('assets/icons/email.svg');
 
@@ -62,6 +65,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/pinlock.svg
   SvgGenImage get pinlock => const SvgGenImage('assets/icons/pinlock.svg');
 
+  /// File path: assets/icons/profileview.svg
+  SvgGenImage get profileview =>
+      const SvgGenImage('assets/icons/profileview.svg');
+
   /// File path: assets/icons/reports.svg
   SvgGenImage get reports => const SvgGenImage('assets/icons/reports.svg');
 
@@ -92,6 +99,7 @@ class $AssetsIconsGen {
     home,
     chevron,
     detoxmode,
+    edit,
     email,
     facbook,
     facebook,
@@ -103,6 +111,7 @@ class $AssetsIconsGen {
     notifications,
     pass,
     pinlock,
+    profileview,
     reports,
     schedules,
     screentime,
@@ -117,6 +126,9 @@ class $AssetsIconsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/aboutus.png
+  AssetGenImage get aboutus => const AssetGenImage('assets/images/aboutus.png');
+
   /// File path: assets/images/banner.png
   AssetGenImage get banner => const AssetGenImage('assets/images/banner.png');
 
@@ -130,6 +142,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/onboarding.png
   AssetGenImage get onboarding =>
       const AssetGenImage('assets/images/onboarding.png');
+
+  /// File path: assets/images/policy.png
+  AssetGenImage get policy => const AssetGenImage('assets/images/policy.png');
 
   /// File path: assets/images/privacy.png
   AssetGenImage get privacy => const AssetGenImage('assets/images/privacy.png');
@@ -151,18 +166,25 @@ class $AssetsImagesGen {
   /// File path: assets/images/success.png
   AssetGenImage get success => const AssetGenImage('assets/images/success.png');
 
+  /// File path: assets/images/viewProfile.png
+  AssetGenImage get viewProfile =>
+      const AssetGenImage('assets/images/viewProfile.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
+    aboutus,
     banner,
     instagram,
     limit,
     onboarding,
+    policy,
     privacy,
     progress,
     resets,
     screentime,
     splash,
     success,
+    viewProfile,
   ];
 }
 

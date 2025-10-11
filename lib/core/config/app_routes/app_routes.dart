@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/presentations/screens/Home/home_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/Home/profile/view_profile_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/Home/profile/view_update_profile_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/forget/forget_password_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/limit_privacy.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/select_apps_manage.dart';
@@ -21,14 +23,20 @@ import 'package:limit_it_app/core/presentations/screens/limits/limits_screen.dar
 import 'package:limit_it_app/core/presentations/screens/limits/pin_lock_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/limits/schedules_limits_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/limits/set_pin_number_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/notifications/notifications_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/language_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_start_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/reports/reports_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/about_us_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/change_password.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/motivation_phrases.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/privacy_policy_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/save_motivation_phrases.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/settings_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/subscription_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/terms_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/upgrade_premium.dart';
 
 import '../../presentations/screens/splash/splash_screen.dart';
 
@@ -71,6 +79,13 @@ class AppRoutes {
   static const String motivationPhrasesScreen = "/motivationPhrasesScreen";
   static const String saveMotivationPhrasesScreen = "/saveMotivationPhrasesScreen";
   static const String subscriptionScreen = "/subscriptionScreen";
+  static const String upgradePremiumScreen = "/upgradePremiumScreen";
+  static const String changePasswordScreen = "/changePasswordScreen";
+  static const String aboutUsScreen = "/aboutUsScreen";
+  static const String viewProfileScreen = "/viewProfileScreen";
+  static const String editProfileScreen = "/editProfileScreen";
+  static const String notificationsScreen = "/notificationsScreen";
+
 
 
 
@@ -374,35 +389,81 @@ class AppRoutes {
                 _customTransitionPage(SubscriptionScreen(), state),
       ),
 
+      ///<<<=============>>> Upgrade Premium Screen  <<<===============>>>
 
 
-      // ///<<<=============>>> Terms Services Screen  <<<===============>>>
-      // GoRoute(
-      //   path: termsServicesScreen,
-      //   name: termsServicesScreen,
-      //   pageBuilder:
-      //       (context, state) =>
-      //           _customTransitionPage(TermsServicesScreen(), state),
-      // ),
-      //
-      // ///<<<=============>>> Privacy Policy Screen  <<<===============>>>
-      // GoRoute(
-      //   path: privacyPolicyScreen,
-      //   name: privacyPolicyScreen,
-      //   pageBuilder:
-      //       (context, state) =>
-      //           _customTransitionPage(PrivacyPolicyScreen(), state),
-      // ),
-      //
-      // /// =============================================================> Home =================================================>
-      //
-      // ///<<<=============>>>  Home Screen  <<<===============>>>
-      // GoRoute(
-      //   path: homeScreen,
-      //   name: homeScreen,
-      //   pageBuilder:
-      //       (context, state) => _customTransitionPage(HomeScreen(), state),
-      // ),
+      GoRoute(
+        path: upgradePremiumScreen,
+        name: upgradePremiumScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(UpgradePremiumScreen(), state),
+      ),
+
+      ///<<<=============>>> Change Password Screen  <<<===============>>>
+
+      GoRoute(
+        path: changePasswordScreen,
+        name: changePasswordScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(ChangePasswordScreen(), state),
+      ),
+
+
+
+      ///<<<=============>>> Terms Services Screen  <<<===============>>>
+      GoRoute(
+        path: termsServicesScreen,
+        name: termsServicesScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(TermsServicesScreen(), state),
+      ),
+
+      ///<<<=============>>> Privacy Policy Screen  <<<===============>>>
+      GoRoute(
+        path: privacyPolicyScreen,
+        name: privacyPolicyScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(PrivacyPolicyScreen(), state),
+      ),
+
+      ///// ===========================================================> About Us  =================================================>
+
+      GoRoute(
+        path: aboutUsScreen,
+        name: aboutUsScreen,
+        pageBuilder:
+            (context, state) => _customTransitionPage(AboutUsScreen(), state),
+      ),
+
+      ///// ===========================================================> View Profile Screen  =================================================>
+
+      GoRoute(
+        path: viewProfileScreen,
+        name: viewProfileScreen,
+        pageBuilder:
+            (context, state) => _customTransitionPage(ViewProfileScreen(), state),
+      ),
+
+      ///// ===========================================================> Edit Profile Screen  =================================================>
+
+      GoRoute(
+        path: editProfileScreen,
+        name: editProfileScreen,
+        pageBuilder:
+            (context, state) => _customTransitionPage(EditProfileScreen(), state),
+      ),
+
+
+      GoRoute(
+        path: notificationsScreen,
+        name: notificationsScreen,
+        pageBuilder:
+            (context, state) => _customTransitionPage(NotificationsScreen(), state),
+      ),
 
 
 

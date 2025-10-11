@@ -26,9 +26,14 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Padding(
             padding: EdgeInsets.only(left: 15.w),
-            child: CustomProfileImage(
-              imagePath:
-              "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png",
+            child: GestureDetector(
+              onTap: () {
+                context.pushNamed(AppRoutes.viewProfileScreen);
+              },
+              child: CustomProfileImage(
+                imagePath:
+                "https://templates.joomla-monster.com/joomla30/jm-news-portal/components/com_djclassifieds/assets/images/default_profile.png",
+              ),
             ),
           ),
           SizedBox(width: 10.w),
@@ -50,7 +55,7 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               GestureDetector(
                 onTap: () {
-
+                  context.pushNamed(AppRoutes.notificationsScreen);
                 },
                 child: Assets.icons.notifications
                     .svg(width: 24.w, height: 24.h),
