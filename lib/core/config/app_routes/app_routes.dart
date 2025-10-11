@@ -13,6 +13,7 @@ import 'package:limit_it_app/core/presentations/screens/auth/signin/sign_in%20_s
 import 'package:limit_it_app/core/presentations/screens/auth/signup/sign_up_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/verify/verify_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/bottomnavbar/bottom_navbar_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/limits/detox_mode_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/limits/edit_timer_settings.dart';
 import 'package:limit_it_app/core/presentations/screens/limits/edit_usage_limit.dart';
 import 'package:limit_it_app/core/presentations/screens/limits/limit_screen_time.dart';
@@ -23,6 +24,11 @@ import 'package:limit_it_app/core/presentations/screens/limits/set_pin_number_sc
 import 'package:limit_it_app/core/presentations/screens/onboarding/language_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_start_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/reports/reports_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/motivation_phrases.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/save_motivation_phrases.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/settings_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/subscription_screen.dart';
 
 import '../../presentations/screens/splash/splash_screen.dart';
 
@@ -59,6 +65,12 @@ class AppRoutes {
   static const String schedulesLimitsScreen = "/schedulesLimitsScreen";
   static const String pinLockLimitsScreen = "/pinLockLimitsScreen";
   static const String setPinNumberScreen = "/setPinNumberScreen";
+  static const String detoxModeScreen = "/detoxModeScreen";
+  static const String reportsScreen = "/reportsScreen";
+  static const String settingsScreen = "/settingsScreen";
+  static const String motivationPhrasesScreen = "/motivationPhrasesScreen";
+  static const String saveMotivationPhrasesScreen = "/saveMotivationPhrasesScreen";
+  static const String subscriptionScreen = "/subscriptionScreen";
 
 
 
@@ -300,6 +312,66 @@ class AppRoutes {
         pageBuilder:
             (context, state) =>
                 _customTransitionPage(SetPinNumberScreen(), state),
+      ),
+
+      ///<<<=============>>> Detox Mode Screen  <<<===============>>>
+
+      GoRoute(
+        path: detoxModeScreen,
+        name: detoxModeScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(DetoxModeScreen(), state),
+      ),
+
+      ///<<<=============>>> Reports Screen  <<<===============>>>
+
+      GoRoute(
+        path: reportsScreen,
+        name: reportsScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(ReportsScreen(), state),
+      ),
+
+      ///<<<=============>>> Settings Screen  <<<===============>>>
+
+      GoRoute(
+        path: settingsScreen,
+        name: settingsScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(SettingsScreen(), state),
+      ),
+
+      ///<<<=============>>> Motivation Phrases Screen  <<<===============>>>
+
+      GoRoute(
+        path: motivationPhrasesScreen,
+        name: motivationPhrasesScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(MotivationPhrasesScreen(), state),
+      ),
+
+      ///<<<=============>>> Save Motivation Phrases Screen  <<<===============>>>
+
+      GoRoute(
+        path: saveMotivationPhrasesScreen,
+        name: saveMotivationPhrasesScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(SaveMotivationPhrasesScreen(), state),
+      ),
+
+      ///<<<=============>>> Subscription Screen  <<<===============>>>
+
+      GoRoute(
+        path: subscriptionScreen,
+        name: subscriptionScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(SubscriptionScreen(), state),
       ),
 
 

@@ -171,7 +171,7 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
 
   Widget _buildQuoteCard(MotivationalQuote quote) {
     return Container(
-      width: 328.w,
+      width: 345.w,
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(

@@ -35,15 +35,15 @@ class LimitsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20.h),
-            Wrap(
-              spacing: 18.w,
-              runSpacing: 24.h,
-              children: limitOptions.map((option) {
-                return LimitCard(
-                  option: option,
-                  onTap: () {
-                    if (option.isPro) {
-                      // Show Pro dialog
+          Wrap(
+            spacing: 18.w,
+            runSpacing: 24.h,
+            children: limitOptions.map((option) {
+              return LimitCard(
+                option: option,
+                onTap: () {
+                  if (option.isPro) {
+                    if (option.title == 'Pin Lock') {
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
@@ -61,27 +61,46 @@ class LimitsScreen extends StatelessWidget {
                           ],
                         ),
                       );
-                    } else {
-
-                      switch (option.title) {
-                        case 'Screen time':
-                          context.pushNamed(AppRoutes.limitScreenTime);
-                          break;
-                        case 'Schedules':
-                          context.pushNamed(AppRoutes.schedulesLimitsScreen);
-                          break;
-                        case 'App usage':
-                          Navigator.pushNamed(context, '/appUsage');
-                          break;
-                        default:
-                          break;
-                      }
+                    } else if (option.title == 'Detox Mode') {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Pro Feature"),
+                          content: const Text(
+                            "This feature is only available in the Pro version.",
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                context.pushNamed(AppRoutes.detoxModeScreen);
+                              },
+                              child: const Text("OK"),
+                            ),
+                          ],
+                        ),
+                      );
                     }
-                  },
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 270.h),
+                  } else {
+                    switch (option.title) {
+                      case 'Screen time':
+                        context.pushNamed(AppRoutes.limitScreenTime);
+                        break;
+                      case 'Schedules':
+                        context.pushNamed(AppRoutes.schedulesLimitsScreen);
+                        break;
+                      case 'App usage':
+                        Navigator.pushNamed(context, '/appUsage');
+                        break;
+                      default:
+                        break;
+                    }
+                  }
+                },
+              );
+            }).toList(),
+          ),
+
+          SizedBox(height: 270.h),
             const AnnouncementCard(),
             SizedBox(height: 60.h),
           ],

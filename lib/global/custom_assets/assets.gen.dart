@@ -21,6 +21,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Home.svg
   SvgGenImage get home => const SvgGenImage('assets/icons/Home.svg');
 
+  /// File path: assets/icons/chevron.svg
+  SvgGenImage get chevron => const SvgGenImage('assets/icons/chevron.svg');
+
   /// File path: assets/icons/detoxmode.svg
   SvgGenImage get detoxmode => const SvgGenImage('assets/icons/detoxmode.svg');
 
@@ -87,6 +90,7 @@ class $AssetsIconsGen {
   /// List of all assets
   List<SvgGenImage> get values => [
     home,
+    chevron,
     detoxmode,
     email,
     facbook,
