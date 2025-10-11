@@ -30,15 +30,21 @@ class SettingsScreen extends StatelessWidget {
         titleSpacing: 0,
         title: Row(
           children: [
-            SizedBox(width: 24.w),
+            IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(Icons.arrow_back, color: Colors.black, size: 24.r),
+              onPressed: () => Navigator.pop(context),
+            ),
+            SizedBox(width: 12.w),
             CustomText(
-              text: 'Settings',
+              text: "Settings",
+              color: AppColors.textColor3D3D3D,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
-              color: AppColors.textColor3D3D3D,
             ),
           ],
         ),
+
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -135,6 +141,7 @@ class SettingsScreen extends StatelessWidget {
             /// ==================================> Change Password =============================>
             GestureDetector(
               onTap: () {
+                context.pushNamed(AppRoutes.changePasswordScreen);
 
               },
               child: Container(
@@ -178,6 +185,8 @@ class SettingsScreen extends StatelessWidget {
             GestureDetector(
               onTap: () {
 
+                context.pushNamed(AppRoutes.privacyPolicyScreen);
+
               },
               child: Container(
                 width: 345.w,
@@ -219,7 +228,7 @@ class SettingsScreen extends StatelessWidget {
             /// ==================================> Terms & Conditions =============================>
             GestureDetector(
               onTap: () {
-
+                context.pushNamed(AppRoutes.termsServicesScreen);
               },
               child: Container(
                 width: 345.w,
@@ -261,7 +270,7 @@ class SettingsScreen extends StatelessWidget {
             /// ==================================> About Us  =============================>
             GestureDetector(
               onTap: () {
-
+                context.pushNamed(AppRoutes.aboutUsScreen);
               },
               child: Container(
                 width: 345.w,

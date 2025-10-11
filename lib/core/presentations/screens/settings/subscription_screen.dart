@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 
@@ -73,7 +75,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       SizedBox(height: 20.h),
 
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          context.pushNamed(AppRoutes.upgradePremiumScreen);
+                        },
                         child: Container(
                           width: 206.w,
                           height: 48.h,
