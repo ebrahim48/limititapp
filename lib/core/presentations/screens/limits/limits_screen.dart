@@ -7,7 +7,6 @@ import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/limit_data_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/limit_card.dart';
-import 'package:limit_it_app/core/presentations/widgets/announcement_card.dart';
 
 import '../../../constants/app_data_helper.dart';
 
@@ -21,13 +20,15 @@ class LimitsScreen extends StatefulWidget {
 class _LimitsScreenState extends State<LimitsScreen> {
   BannerAd? _bannerAd;
   bool _isBannerAdReady = false;
+  InterstitialAd? _interstitialAd;
+  bool _isInterstitialAdReady = false;
   final apps = AppDataHelper.dailyApps;
-  String _statusMessage = 'AdMob Demo - Tap buttons to show ads';
 
   @override
   void initState() {
     super.initState();
     _loadBannerAd();
+    _loadInterstitialAd();
   }
 
   // 1. Banner Ad
@@ -40,18 +41,71 @@ class _LimitsScreenState extends State<LimitsScreen> {
         onAdLoaded: (ad) {
           setState(() {
             _isBannerAdReady = true;
-            _statusMessage = 'Banner Ad loaded';
           });
         },
         onAdFailedToLoad: (ad, error) {
-          setState(() {
-            _statusMessage = 'Banner Ad failed: ${error.message}';
-          });
           ad.dispose();
         },
       ),
     );
     _bannerAd?.load();
+  }
+
+  // 2. Interstitial Ad
+  void _loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: 'ca-app-pub-3940256099942544/1033173712', // Test Interstitial ID
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          _interstitialAd = ad;
+          _isInterstitialAdReady = true;
+
+          // Set up full screen content callback
+          _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              ad.dispose();
+              _isInterstitialAdReady = false;
+              _loadInterstitialAd(); // Load a new ad for next time
+            },
+            onAdFailedToShowFullScreenContent: (ad, error) {
+              ad.dispose();
+              _isInterstitialAdReady = false;
+              _loadInterstitialAd(); // Load a new ad
+            },
+          );
+        },
+        onAdFailedToLoad: (error) {
+          _isInterstitialAdReady = false;
+        },
+      ),
+    );
+  }
+
+  void _showInterstitialAdAndNavigate() {
+    if (_isInterstitialAdReady && _interstitialAd != null) {
+      _interstitialAd!.show();
+      // Navigation will happen after ad is dismissed via callback
+      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+        onAdDismissedFullScreenContent: (ad) {
+          ad.dispose();
+          _isInterstitialAdReady = false;
+          _loadInterstitialAd(); // Load a new ad for next time
+          // Navigate after ad is dismissed
+          context.pushNamed(AppRoutes.limitScreenTime);
+        },
+        onAdFailedToShowFullScreenContent: (ad, error) {
+          ad.dispose();
+          _isInterstitialAdReady = false;
+          _loadInterstitialAd(); // Load a new ad
+          // Navigate anyway if ad fails to show
+          context.pushNamed(AppRoutes.limitScreenTime);
+        },
+      );
+    } else {
+      // If ad is not ready, navigate directly
+      context.pushNamed(AppRoutes.limitScreenTime);
+    }
   }
 
   @override
@@ -133,7 +187,7 @@ class _LimitsScreenState extends State<LimitsScreen> {
                         } else {
                           switch (option.title) {
                             case 'Screen time':
-                              context.pushNamed(AppRoutes.limitScreenTime);
+                              _showInterstitialAdAndNavigate();
                               break;
                             case 'Schedules':
                               context.pushNamed(
@@ -199,5 +253,12 @@ class _LimitsScreenState extends State<LimitsScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    _interstitialAd?.dispose();
+    super.dispose();
   }
 }
