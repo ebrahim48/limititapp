@@ -17,7 +17,15 @@ class YourAppCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Get display values based on which data is available
     final String name = appData?.name ?? app!.name;
-    final String usage = appData?.usageString ?? app!.usage;
+
+    // Build usage string with open count
+    String usage;
+    if (appData != null) {
+      usage = "${appData!.usageString} • ${appData!.openCount} Opens";
+    } else {
+      usage = app!.usage;
+    }
+
     final String percentage = appData?.percentageString ?? app!.percentage;
     final double progressValue = appData != null
         ? (appData!.percentage / 100).clamp(0.0, 1.0)

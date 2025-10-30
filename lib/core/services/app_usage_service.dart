@@ -67,6 +67,21 @@ class AppUsageService {
         endDate,
       );
 
+      // Get usage events to count app launches
+      List<EventUsageInfo> usageEvents = await UsageStats.queryEvents(
+        startDate,
+        endDate,
+      );
+
+      // Count app launches from events
+      Map<String, int> launchCounts = {};
+      for (var event in usageEvents) {
+        // Event type 1 = MOVE_TO_FOREGROUND (app opened)
+        if (event.eventType == '1' && event.packageName != null) {
+          launchCounts[event.packageName!] = (launchCounts[event.packageName!] ?? 0) + 1;
+        }
+      }
+
       // Filter out system apps and apps with no usage
       List<UsageInfo> filteredStats = usageStats.where((info) {
         int time = int.tryParse(info.totalTimeInForeground ?? '0') ?? 0;
@@ -110,6 +125,9 @@ class AppUsageService {
 
           int usageTimeMs = int.tryParse(usageInfo.totalTimeInForeground ?? '0') ?? 0;
 
+          // Get app launch count from events
+          int openCount = launchCounts[usageInfo.packageName] ?? 0;
+
           // Calculate percentage
           double percentage = totalUsageTime > 0
               ? (usageTimeMs / totalUsageTime) * 100
@@ -121,7 +139,7 @@ class AppUsageService {
             icon: appInfo?.icon,
             usageTimeMs: usageTimeMs,
             percentage: percentage,
-            openCount: 0, // Usage stats API doesn't provide this on all versions
+            openCount: openCount,
           ));
         } catch (e) {
           debugPrint('Error processing app ${usageInfo.packageName}: $e');
