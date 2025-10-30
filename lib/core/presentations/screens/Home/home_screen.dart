@@ -147,7 +147,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   totalScreenTimeMinutes: _totalScreenTimeMinutes,
                 ),
                 SizedBox(height: 24.h),
-                DailyUsageCard(dailyApps: AppDataHelper.dailyApps),
+                DailyUsageCard(
+                  dailyApps: _appUsageList.isNotEmpty
+                      ? AppDataHelper.convertToDailyUsageApps(_appUsageList)
+                      : AppDataHelper.dailyApps,
+                  appUsageData: _appUsageList.isNotEmpty ? _appUsageList : null,
+                  isLoading: _isLoading,
+                ),
                 SizedBox(height: 24.h),
                 // Banner Ad Section
                 if (_isBannerAdReady && _bannerAd != null)
