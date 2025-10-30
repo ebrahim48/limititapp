@@ -30,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _hasPermission = false;
   List<AppUsageData> _appUsageList = [];
   String? _errorMessage;
+  int _totalScreenTimeMinutes = 0;
 
   @override
   void initState() {
@@ -97,8 +98,16 @@ class _HomeScreenState extends State<HomeScreen> {
         // Get app usage data
         List<AppUsageData> usageData = await AppUsageService.getTodayAppUsage();
 
+        // Calculate total screen time in minutes
+        int totalTimeMs = 0;
+        for (var app in usageData) {
+          totalTimeMs += app.usageTimeMs;
+        }
+        int totalMinutes = (totalTimeMs / 1000 / 60).round();
+
         setState(() {
           _appUsageList = usageData;
+          _totalScreenTimeMinutes = totalMinutes;
           _isLoading = false;
           if (usageData.isEmpty) {
             _errorMessage = 'No app usage data available for today';
@@ -134,7 +143,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 20.h),
 
                 /// -====================================> slider ==========================
-                CustomScreenTimeSlider(),
+                CustomScreenTimeSlider(
+                  totalScreenTimeMinutes: _totalScreenTimeMinutes,
+                ),
                 SizedBox(height: 24.h),
                 DailyUsageCard(dailyApps: AppDataHelper.dailyApps),
                 SizedBox(height: 24.h),
