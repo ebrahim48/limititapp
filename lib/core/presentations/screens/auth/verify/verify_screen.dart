@@ -2,22 +2,29 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/verify/custom_pin_text_field.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
-import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
-import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
+
 
 class VerifyScreen extends StatelessWidget {
-  VerifyScreen({super.key});
+
+  final String screenType;
+  final String email;
+  final String token;
+  VerifyScreen({super.key,required this.screenType, required this.email,required this.token});
 
 
-  // Controllers
+  AuthController authController = Get.put(AuthController());
 
 
 
@@ -154,13 +161,24 @@ class VerifyScreen extends StatelessWidget {
                     SizedBox(height: 32.h),
 
 
-                    CustomButton(
-                      title: AppString.verify,
+                    Obx(() => CustomButton(
+                      loading: authController.verfyLoading.value,
+                      title: "Verify",
                       onpress: () {
-                        context.pushNamed(AppRoutes.resetPasswordScreen);
+                        if (otpTEController.text.isEmpty) {
+                          ToastMessageHelper.showToastMessage("Please enter OTP");
+                          return;
+                        }
 
+                        authController.verfyEmail(
+                          otpTEController.text.trim(),
+                          email.trim(),
+                          screenType: screenType,
+                          context: context,
+                        );
                       },
-                    ),
+                    )),
+
                     SizedBox(height: 12.h),
 
                     SizedBox(height: 40.h),

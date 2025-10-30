@@ -3,11 +3,11 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:limit_it_app/core/presentations/controller/theme_controller.dart';
 import 'package:toastification/toastification.dart';
 import 'core/config/app_routes/app_routes.dart';
 import 'core/config/app_themes/app_themes.dart';
 import 'core/helpers/dependancy_injaction.dart';
-import 'core/presentations/controller/theme_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
