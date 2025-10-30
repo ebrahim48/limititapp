@@ -204,7 +204,6 @@ class AuthController extends GetxController {
         } else if (message == "⛔ Wrong password! ⛔") {
           ToastMessageHelper.showToastMessage(message);
         } else {
-          // For successful login with other roles, still navigate to privacy protection
           await PrefsHelper.setBool(AppConstants.isLogged, true);
           context.go(AppRoutes.limitPrivacyProtectionScreen);
           ToastMessageHelper.showToastMessage(
@@ -231,10 +230,8 @@ class AuthController extends GetxController {
       String? token;
       
       if (responseData is String) {
-
         token = responseData;
       } else if (responseData is Map<String, dynamic>) {
-
         token = responseData["token"]?.toString() ?? responseData["oneTimeCode"]?.toString();
       }
       
@@ -257,14 +254,6 @@ class AuthController extends GetxController {
       ToastMessageHelper.showToastMessage(response.body["message"]);
     }
   }
-
-}
-
-
-
-
-
-
 
   ///===============Set Password================<>
 
@@ -379,8 +368,4 @@ class AuthController extends GetxController {
   //
   // }
 
-
-
-
-
-
+}

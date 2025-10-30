@@ -1,9 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/app_strings.dart';
@@ -15,6 +18,8 @@ import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 class ResetPasswordScreen extends StatelessWidget {
   ResetPasswordScreen({super.key});
 
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  AuthController authController = Get.find<AuthController>();
 
   final TextEditingController newPassWordCtrl = TextEditingController();
   final TextEditingController confirmNewPassWordCtrl = TextEditingController();
@@ -102,76 +107,85 @@ class ResetPasswordScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
 
-                    SizedBox(height: 32.h),
+                      SizedBox(height: 32.h),
 
-                    CustomTextField(
-                      hintextColor: AppColors.textColor5D5D5D,
-                      controller: newPassWordCtrl,
-                      prefixIcon: Assets.icons.pass.svg(),
-                      hintText: AppString.setNewPassword,
-                      isPassword: true,
-                    ),
-
-                    SizedBox(height: 16.h),
-
-                    CustomTextField(
-                      hintextColor: AppColors.textColor5D5D5D,
-                      controller: confirmNewPassWordCtrl,
-                      prefixIcon: Assets.icons.pass.svg(),
-                      hintText: AppString.conNewPassword,
-                      isPassword: true,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          isMatched.value = false;
-                          return 'Please enter your confirm password';
-                        } else if (newPassWordCtrl.text == value) {
-                          isMatched.value = true;
-                          return null;
-                        } else {
-                          isMatched.value = false;
-                          return 'Password Not Matching';
-                        }
-                      },
-                      onChanged: (value) {
-                        isMatched.value = newPassWordCtrl.text == value;
-                      },
-                    ),
-
-                    SizedBox(height: 8.h),
-
-                    // Password match indicator
-                    Obx(() => isMatched.value
-                        ? Align(
-                      alignment: Alignment.centerLeft,
-                      child: CustomText(
-                        text: AppString.passMatch,
-                        color: Colors.green,
-                        fontsize: 12.sp,
+                      CustomTextField(
+                        hintextColor: AppColors.textColor5D5D5D,
+                        controller: newPassWordCtrl,
+                        prefixIcon: Assets.icons.pass.svg(),
+                        hintText: AppString.setNewPassword,
+                        isPassword: true,
                       ),
-                    )
-                        : SizedBox.shrink()),
+
+                      SizedBox(height: 16.h),
+
+                      CustomTextField(
+                        hintextColor: AppColors.textColor5D5D5D,
+                        controller: confirmNewPassWordCtrl,
+                        prefixIcon: Assets.icons.pass.svg(),
+                        hintText: AppString.conNewPassword,
+                        isPassword: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            isMatched.value = false;
+                            return 'Please enter your confirm password';
+                          } else if (newPassWordCtrl.text == value) {
+                            isMatched.value = true;
+                            return null;
+                          } else {
+                            isMatched.value = false;
+                            return 'Password Not Matching';
+                          }
+                        },
+                        onChanged: (value) {
+                          isMatched.value = newPassWordCtrl.text == value;
+                        },
+                      ),
+
+                      SizedBox(height: 8.h),
+
+                      // Password match indicator
+                      Obx(() => isMatched.value
+                          ? Align(
+                        alignment: Alignment.centerLeft,
+                        child: CustomText(
+                          text: AppString.passMatch,
+                          color: Colors.green,
+                          fontsize: 12.sp,
+                        ),
+                      )
+                          : SizedBox.shrink()),
 
 
 
 
 
-                    SizedBox(height: 32.h),
+                      SizedBox(height: 32.h),
 
+                      Obx(()=>
+                          CustomButton(
+                              loading: authController.setPasswordLoading.value,
+                              title: "Confirm",
+                              onpress: (){
+                                if(formKey.currentState?.validate()??true){
+                                  authController.setPassword(
+                                      newPassWordCtrl.text,
+                                      confirmNewPassWordCtrl.text,
+                                      context: context);
 
-                    CustomButton(
-                      title: AppString.resetPassWord,
-                      onpress: () {
-                        context.pushNamed(AppRoutes.resetSuccessFullyScreen);
-                      },
-                    ),
-                    SizedBox(height: 12.h),
+                                }
+                              }),),
+                      SizedBox(height: 12.h),
 
-                    SizedBox(height: 40.h),
-                  ],
+                      SizedBox(height: 40.h),
+                    ],
+                  ),
                 ),
               ),
             ),
