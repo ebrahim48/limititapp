@@ -96,14 +96,6 @@ class AppRoutes {
         path: splashScreen,
         name: splashScreen,
         builder: (context, state) => const SplashScreen(),
-        redirect: (context, state) {
-          Future.delayed(const Duration(seconds: 3), () async {
-              AppRoutes.goRouter.replaceNamed(AppRoutes.onBoardingScreen);
-            }
-          );
-
-          return;
-        },
       ),
 
       ///<<<=============>>> ONBOARDING SCREEN <<<===============>>>
