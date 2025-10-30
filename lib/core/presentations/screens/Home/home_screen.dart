@@ -138,6 +138,50 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 24.h),
                 DailyUsageCard(dailyApps: AppDataHelper.dailyApps),
                 SizedBox(height: 24.h),
+                // Banner Ad Section
+                if (_isBannerAdReady && _bannerAd != null)
+                  Center(
+                    child: Container(
+                      width: _bannerAd!.size.width.toDouble(),
+                      height: _bannerAd!.size.height.toDouble(),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.r),
+                        child: AdWidget(ad: _bannerAd!),
+                      ),
+                    ),
+                  )
+                else if (!_isBannerAdReady)
+                  // Show placeholder while ad is loading
+                  Center(
+                    child: Container(
+                      width: 320.w,
+                      height: 50.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Center(
+                        child: CustomText(
+                          text: 'Loading Ad...',
+                          fontsize: 12.sp,
+                          color: Colors.grey[600]!,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                SizedBox(height: 24.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -172,16 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 12.h),
                 _buildYourAppsSection(),
-                SizedBox(height: 24.h),
-                if (_isBannerAdReady && _bannerAd != null)
-                  Container(
-                    color: Colors.grey[200],
-                    child: SizedBox(
-                      width: _bannerAd!.size.width.toDouble(),
-                      height: _bannerAd!.size.height.toDouble(),
-                      child: AdWidget(ad: _bannerAd!),
-                    ),
-                  ),
+
                 SizedBox(height: 80.h),
               ],
             ),
@@ -211,13 +246,14 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_appUsageList.isNotEmpty) {
       // Remove duplicates by package name - keep the first occurrence
       final seen = <String>{};
-      final uniqueApps = _appUsageList.where((appData) {
-        if (seen.contains(appData.packageName)) {
-          return false;
-        }
-        seen.add(appData.packageName);
-        return true;
-      }).toList();
+      final uniqueApps =
+          _appUsageList.where((appData) {
+            if (seen.contains(appData.packageName)) {
+              return false;
+            }
+            seen.add(appData.packageName);
+            return true;
+          }).toList();
 
       return Column(
         children:
@@ -238,10 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
           AppDataHelper.yourApps.asMap().entries.map((entry) {
             final index = entry.key;
             final app = entry.value;
-            return YourAppCard(
-              app: app,
-              key: ValueKey('dummy_app_$index'),
-            );
+            return YourAppCard(app: app, key: ValueKey('dummy_app_$index'));
           }).toList(),
     );
   }
