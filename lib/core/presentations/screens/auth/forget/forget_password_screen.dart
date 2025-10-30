@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/app_strings.dart';
@@ -10,14 +12,30 @@ import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
-class ForgetPasswordScreen extends StatelessWidget {
-  ForgetPasswordScreen({super.key});
+class ForgetPasswordScreen extends StatefulWidget {
+  ForgetPasswordScreen({super.key,required this.email});
 
+  final String email;
 
+  @override
+  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+}
+
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   // Controllers
   final TextEditingController emailCtrl = TextEditingController();
+  final GlobalKey<FormState> _logKey = GlobalKey<FormState>();
 
+  AuthController authController = Get.put(AuthController());
 
+  @override
+  void initState() {
+    print("====================${widget.email}");
+    setState(() {
+      emailCtrl.text = widget.email;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,41 +114,52 @@ class ForgetPasswordScreen extends StatelessWidget {
             child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                child: Form(
+                  key: _logKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
 
 
 
 
-                    SizedBox(height: 32.h),
+                      SizedBox(height: 32.h),
 
-                    CustomTextField(
-                      hintextColor: AppColors.textColor5D5D5D,
-                      controller: emailCtrl,
-                      hintText: AppString.email,
-                      prefixIcon: Assets.icons.email.svg(),
-                      isEmail: true,
-                    ),
-
-
+                      CustomTextField(
+                        hintextColor: AppColors.textColor5D5D5D,
+                        controller: emailCtrl,
+                        hintText: AppString.email,
+                        prefixIcon: Assets.icons.email.svg(),
+                        isEmail: true,
+                      ),
 
 
 
 
-                    SizedBox(height: 32.h),
 
 
-                    CustomButton(
-                      title: AppString.getOtp,
-                      onpress: () {
-                        context.pushNamed(AppRoutes.verifyScreen);
-                      },
-                    ),
-                    SizedBox(height: 12.h),
+                      SizedBox(height: 32.h),
 
-                    SizedBox(height: 40.h),
-                  ],
+
+                      Obx(()=>
+                         CustomButton(
+                           loading: authController.forgotLoading.value,
+                          title: AppString.getOtp,
+                          onpress: () {
+                            if(_logKey.currentState?.validate()??true){
+                              authController.handleForgot(
+                                  emailCtrl.text,
+                                  "forgot",
+                                  context: context);
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 12.h),
+
+                      SizedBox(height: 40.h),
+                    ],
+                  ),
                 ),
               ),
             ),

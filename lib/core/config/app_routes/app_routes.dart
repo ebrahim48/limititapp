@@ -37,8 +37,8 @@ import 'package:limit_it_app/core/presentations/screens/settings/settings_screen
 import 'package:limit_it_app/core/presentations/screens/settings/subscription_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/terms_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/upgrade_premium.dart';
+import 'package:limit_it_app/core/presentations/screens/splash/splash_screen.dart';
 
-import '../../presentations/screens/splash/splash_screen.dart';
 
 class AppRoutes {
   static const String splashScreen = "/splashScreen";
@@ -156,31 +156,29 @@ class AppRoutes {
       GoRoute(
         path: forgetPasswordScreen,
         name: forgetPasswordScreen,
-        // builder: (context, state) {
-        //   String email = state.extra as String;
-        //   return ForgetPasswordScreen(email: email);
-        // },
-        pageBuilder: (context, state) =>
-            _customTransitionPage(ForgetPasswordScreen(), state),
+        builder: (context, state) {
+          String email = state.extra as String;
+          return ForgetPasswordScreen(email: email);
+        },
+
       ),
 
       ///<<<=============>>> Verify Screen  <<<===============>>>
       GoRoute(
         path: verifyScreen,
         name: verifyScreen,
-        pageBuilder: (context, state) =>
-            _customTransitionPage(VerifyScreen(), state),
-        // builder: (context, state) {
-        //   final extra = state.extra as Map<String, dynamic>;
-        //   final screenType = extra['screenType']?.toString() ?? '';
-        //   final email = extra['email']?.toString() ?? '';
-        //   final token = extra['token']?.toString() ?? '';
-        //   return VerifyScreen(
-        //     screenType: screenType,
-        //     email: email,
-        //     token: token,
-        //   );
-        // },
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final screenType = extra['screenType']?.toString() ?? '';
+          final email = extra['email']?.toString() ?? '';
+          final token = extra['token']?.toString() ?? '';
+          return VerifyScreen(
+            screenType: screenType,
+            email: email,
+            token: token,
+          );
+        },
+
       ),
 
       ///<<<=============>>> Reset Password Screen  <<<===============>>>
