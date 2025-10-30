@@ -3,9 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:limit_it_app/core/models/app_model_pin.dart';
 import 'package:limit_it_app/core/presentations/widgets/check_box.dart';
-import '../../../core/presentations/widgets/custom_text.dart';
+import 'custom_text.dart';
 import '../../../core/constants/app_colors.dart';
-
 
 class AppCardItem extends StatelessWidget {
   final AppModel app;
@@ -30,7 +29,8 @@ class AppCardItem extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 12.h),
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFEDD69A) : AppColors.backGroundColor,
+          color:
+              isSelected ? const Color(0xFFEDD69A) : AppColors.backGroundColor,
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: const Color(0xFFD1D1D1), width: 1),
         ),
