@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="accessibility_service_description">LimitIt monitors app usage to enforce screen time limits. This service tracks which apps you open and blocks them when you exceed your set limits.</string>
+</resources>

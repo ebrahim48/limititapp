@@ -213,9 +213,16 @@ class AppRoutes {
       GoRoute(
         path: setUsageLimitScreen,
         name: setUsageLimitScreen,
-        pageBuilder:
-            (context, state) =>
-                _customTransitionPage(SetUsageLimitScreen(), state),
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return _customTransitionPage(
+            SetUsageLimitScreen(
+              selectedApps: extra?['selectedApps'],
+              selectedDays: extra?['selectedDays'],
+            ),
+            state,
+          );
+        },
       ),
 
       ///<<<=============>>>Timer Settings Screen <<<===============>>>

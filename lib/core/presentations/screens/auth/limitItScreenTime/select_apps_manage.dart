@@ -8,6 +8,7 @@ import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/app_strings.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
+import 'package:limit_it_app/core/models/app_limit_model.dart';
 
 class SelectAppsManageScreen extends StatefulWidget {
   const SelectAppsManageScreen({super.key});
@@ -250,7 +251,57 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
               /// ===================================> Continue Button ===============================>
               GestureDetector(
                 onTap: () {
-                  context.pushNamed(AppRoutes.setUsageLimitScreen);
+                  if (selectedApps.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select at least one app'),
+                        backgroundColor: Colors.orange,
+                      ),
+                    );
+                    return;
+                  }
+
+                  // Prepare selected apps data
+                  List<SelectedAppInfo> selectedAppsData = [];
+
+                  if (_appUsageList.isNotEmpty) {
+                    // Use real app data
+                    for (var packageName in selectedApps) {
+                      final appData = _appUsageList.firstWhere(
+                        (app) => app.packageName == packageName,
+                        orElse: () => AppUsageData(
+                          name: packageName,
+                          packageName: packageName,
+                          usageTimeMs: 0,
+                          percentage: 0,
+                          openCount: 0,
+                        ),
+                      );
+
+                      selectedAppsData.add(SelectedAppInfo(
+                        packageName: appData.packageName,
+                        appName: appData.name,
+                        appIcon: appData.icon,
+                      ));
+                    }
+                  } else {
+                    // Use dummy data
+                    for (var appName in selectedApps) {
+                      selectedAppsData.add(SelectedAppInfo(
+                        packageName: appName.toLowerCase(),
+                        appName: appName,
+                      ));
+                    }
+                  }
+
+                  // Navigate with selected apps and days
+                  context.pushNamed(
+                    AppRoutes.setUsageLimitScreen,
+                    extra: {
+                      'selectedApps': selectedAppsData,
+                      'selectedDays': selectedDays.toList(),
+                    },
+                  );
                 },
                 child: Container(
                   width: double.infinity,

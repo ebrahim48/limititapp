@@ -1,0 +1,94 @@
+import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
+
+/// Service to communicate with native Android app blocking functionality
+class AppBlockerService {
+  static const MethodChannel _channel = MethodChannel('com.example.limit_it_app/app_blocker');
+
+  /// Start the app monitoring service
+  static Future<bool> startMonitoring() async {
+    try {
+      final result = await _channel.invokeMethod('startMonitoring');
+      return result == true;
+    } catch (e) {
+      debugPrint('Error starting monitoring: $e');
+      return false;
+    }
+  }
+
+  /// Stop the app monitoring service
+  static Future<bool> stopMonitoring() async {
+    try {
+      final result = await _channel.invokeMethod('stopMonitoring');
+      return result == true;
+    } catch (e) {
+      debugPrint('Error stopping monitoring: $e');
+      return false;
+    }
+  }
+
+  /// Check if overlay permission is granted
+  static Future<bool> hasOverlayPermission() async {
+    try {
+      final result = await _channel.invokeMethod('hasOverlayPermission');
+      return result == true;
+    } catch (e) {
+      debugPrint('Error checking overlay permission: $e');
+      return false;
+    }
+  }
+
+  /// Request overlay permission from user
+  static Future<void> requestOverlayPermission() async {
+    try {
+      await _channel.invokeMethod('requestOverlayPermission');
+    } catch (e) {
+      debugPrint('Error requesting overlay permission: $e');
+    }
+  }
+
+  /// Check if accessibility service is enabled
+  static Future<bool> hasAccessibilityPermission() async {
+    try {
+      final result = await _channel.invokeMethod('hasAccessibilityPermission');
+      return result == true;
+    } catch (e) {
+      debugPrint('Error checking accessibility permission: $e');
+      return false;
+    }
+  }
+
+  /// Request accessibility permission from user
+  static Future<void> requestAccessibilityPermission() async {
+    try {
+      await _channel.invokeMethod('requestAccessibilityPermission');
+    } catch (e) {
+      debugPrint('Error requesting accessibility permission: $e');
+    }
+  }
+
+  /// Check if monitoring is currently active
+  static Future<bool> isMonitoringActive() async {
+    try {
+      final result = await _channel.invokeMethod('isMonitoringActive');
+      return result == true;
+    } catch (e) {
+      debugPrint('Error checking monitoring status: $e');
+      return false;
+    }
+  }
+
+  /// Check all required permissions
+  static Future<Map<String, bool>> checkAllPermissions() async {
+    return {
+      'overlay': await hasOverlayPermission(),
+      'accessibility': await hasAccessibilityPermission(),
+    };
+  }
+
+  /// Check if all permissions are granted
+  static Future<bool> hasAllPermissions() async {
+    final permissions = await checkAllPermissions();
+    return permissions.values.every((granted) => granted);
+  }
+}

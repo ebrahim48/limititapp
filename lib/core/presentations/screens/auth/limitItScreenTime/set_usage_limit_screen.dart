@@ -8,15 +8,44 @@ import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_slider.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
+import 'package:limit_it_app/core/models/app_limit_model.dart';
+import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
+import 'package:limit_it_app/core/presentations/screens/permissions/permissions_setup_screen.dart';
 
 class SetUsageLimitScreen extends StatefulWidget {
-  const SetUsageLimitScreen({super.key});
+  final List<SelectedAppInfo>? selectedApps;
+  final List<String>? selectedDays;
+
+  const SetUsageLimitScreen({
+    super.key,
+    this.selectedApps,
+    this.selectedDays,
+  });
 
   @override
   State<SetUsageLimitScreen> createState() => _SetUsageLimitScreenState();
 }
 
 class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
+  double totalScreenTime = 120;
+  Map<String, String> appOpens = {}; // packageName -> opens value
+  Map<String, String> appDurations = {}; // packageName -> duration value
+  bool _isSaving = false;
+
+  final List<String> opensList = ['1 Time', '3 Times', '5 Times', '10 Times', '15 Times', '20 Times'];
+  final List<String> durationList = ['15 Mins', '30 Mins', '45 Mins', '60 Mins', '90 Mins', '120 Mins'];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize limits for each selected app
+    if (widget.selectedApps != null) {
+      for (var app in widget.selectedApps!) {
+        appOpens[app.packageName] = '5 Times';
+        appDurations[app.packageName] = '30 Mins';
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,41 +92,64 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
                 CustomSoundSlider(),
                 SizedBox(height: 20.h),
 
-                /// =================== Facebook Section ===================
-                _buildAppLimitSection(
-                  icon: Assets.icons.facebook.svg(width: 32.w, height: 32.h),
-                  appName: "Facebook",
-                  opensValue: facebookOpens,
-                  durationValue: facebookDuration,
-                  onOpensChanged: (value) {
-                    setState(() => facebookOpens = value!);
-                  },
-                  onDurationChanged: (value) {
-                    setState(() => facebookDuration = value!);
-                  },
-                ),
-                SizedBox(height: 30.h),
-            
-                /// =================== Netflix Section ===================
-                _buildAppLimitSection(
-                  icon: Assets.icons.netflix.svg(width: 32.w, height: 32.h),
-                  appName: "Netflix",
-                  opensValue: netflixOpens,
-                  durationValue: netflixDuration,
-                  onOpensChanged: (value) {
-                    setState(() => netflixOpens = value!);
-                  },
-                  onDurationChanged: (value) {
-                    setState(() => netflixDuration = value!);
-                  },
-                ),
-                SizedBox(height: 48.h),
+                /// =================== Dynamic App Sections ===================
+                if (widget.selectedApps != null && widget.selectedApps!.isNotEmpty)
+                  ...widget.selectedApps!.map((app) {
+                    return Column(
+                      children: [
+                        _buildAppLimitSection(
+                          icon: app.appIcon != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  child: Image.memory(
+                                    app.appIcon!,
+                                    width: 32.w,
+                                    height: 32.h,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : Container(
+                                  width: 32.w,
+                                  height: 32.h,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade300,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  child: Icon(Icons.apps, size: 20.r),
+                                ),
+                          appName: app.appName,
+                          packageName: app.packageName,
+                          opensValue: appOpens[app.packageName] ?? '5 Times',
+                          durationValue: appDurations[app.packageName] ?? '30 Mins',
+                          onOpensChanged: (value) {
+                            setState(() => appOpens[app.packageName] = value!);
+                          },
+                          onDurationChanged: (value) {
+                            setState(() => appDurations[app.packageName] = value!);
+                          },
+                        ),
+                        SizedBox(height: 30.h),
+                      ],
+                    );
+                  }).toList()
+                else
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 40.h),
+                      child: CustomText(
+                        text: 'No apps selected. Please go back and select apps.',
+                        fontsize: 14.sp,
+                        color: Colors.grey,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+
+                SizedBox(height: 18.h),
                 CustomButton(
-                    title: AppString.saveContinue,
-                    onpress: () {
-                      context.pushNamed(AppRoutes.timerSettingsScreen);
-            
-                    },),
+                  title: _isSaving ? 'Saving...' : AppString.saveContinue,
+                  onpress: _isSaving ? () {} : _saveAndContinue,
+                ),
                 SizedBox(height: 20.h),
               ],
             ),
@@ -106,18 +158,88 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
       ),
     );
   }
-  double totalScreenTime = 120;
-  String facebookOpens = '5 Times';
-  String facebookDuration = '30 Mins';
-  String netflixOpens = '5 Times';
-  String netflixDuration = '30 Mins';
 
-  final List<String> opensList = ['1 Time', '3 Times', '5 Times', '10 Times'];
-  final List<String> durationList = ['15 Mins', '30 Mins', '45 Mins', '60 Mins'];
+  /// Save app limits to SharedPreferences and navigate
+  Future<void> _saveAndContinue() async {
+    if (widget.selectedApps == null || widget.selectedApps!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No apps to save'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+
+    setState(() => _isSaving = true);
+
+    try {
+      // Save daily screen time
+      await AppLimitStorageService.saveDailyScreenTime(totalScreenTime.toInt());
+
+      // Create app limit models
+      List<AppLimitModel> appLimits = [];
+
+      for (var app in widget.selectedApps!) {
+        final opensStr = appOpens[app.packageName] ?? '5 Times';
+        final durationStr = appDurations[app.packageName] ?? '30 Mins';
+
+        // Parse opens (e.g., "5 Times" -> 5)
+        final int maxOpens = int.tryParse(opensStr.split(' ').first) ?? 5;
+
+        // Parse duration (e.g., "30 Mins" -> 30)
+        final int maxDuration = int.tryParse(durationStr.split(' ').first) ?? 30;
+
+        appLimits.add(AppLimitModel(
+          packageName: app.packageName,
+          appName: app.appName,
+          appIcon: app.appIcon,
+          maxDailyOpens: maxOpens,
+          maxSessionDurationMinutes: maxDuration,
+          activeDays: widget.selectedDays ?? [],
+        ));
+      }
+
+      // Save app limits
+      final saved = await AppLimitStorageService.saveAppLimits(appLimits);
+
+      if (saved) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Saved limits for ${appLimits.length} apps'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // Navigate to permissions setup screen
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const PermissionsSetupScreen(),
+          ),
+        );
+      } else {
+        throw Exception('Failed to save app limits');
+      }
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error saving limits: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
+    }
+  }
 
   Widget _buildAppLimitSection({
     required Widget icon,
     required String appName,
+    required String packageName,
     required String opensValue,
     required String durationValue,
     required ValueChanged<String?> onOpensChanged,
