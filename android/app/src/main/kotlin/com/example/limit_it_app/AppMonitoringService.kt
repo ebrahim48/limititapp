@@ -2,12 +2,15 @@ package com.example.limit_it_app
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.app.usage.UsageEvents
+import android.app.usage.UsageStatsManager
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
-import android.content.Context
-import android.content.SharedPreferences
 import java.util.*
+
 
 /**
  * AccessibilityService to monitor app launches and enforce app limits
@@ -23,6 +26,8 @@ class AppMonitoringService : AccessibilityService() {
     private val appSessionStartTimes = mutableMapOf<String, Long>()
     private val appOpenCountsToday = mutableMapOf<String, Int>()
     private var blockedApps = mutableSetOf<String>()
+    private lateinit var usageStatsManager: UsageStatsManager
+
 
     // Debouncing mechanism
     private var lastBlockedPackage: String? = null
@@ -44,6 +49,7 @@ class AppMonitoringService : AccessibilityService() {
         Log.d(TAG, "AppMonitoringService created")
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         blockerPreferences = getSharedPreferences(BLOCKER_PREFS_NAME, Context.MODE_PRIVATE)
+        usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         isServiceRunning = true
 
         // Load blocked apps
@@ -308,6 +314,33 @@ class AppMonitoringService : AccessibilityService() {
         isServiceRunning = false
         currentlyBlockedApps.clear()
         Log.d(TAG, "AppMonitoringService destroyed")
+    }
+
+    private fun isAppInForeground(packageName: String): Boolean {
+        val time = System.currentTimeMillis()
+        val usageEvents = usageStatsManager.queryEvents(time - 1000 * 60, time)
+        var foregroundPackage: String? = null
+        val event = UsageEvents.Event()
+        while (usageEvents.hasNextEvent()) {
+            usageEvents.getNextEvent(event)
+            if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                foregroundPackage = event.packageName
+            }
+        }
+        return foregroundPackage == packageName
+    }
+
+    private fun bringAppToForeground(packageName: String) {
+        if (isAppInForeground(packageName)) {
+            Log.d(TAG, "App $packageName is already in foreground.")
+            return
+        }
+
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
     }
 
     data class AppLimit(
