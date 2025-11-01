@@ -24,6 +24,12 @@ class AppMonitoringService : AccessibilityService() {
     private val appOpenCountsToday = mutableMapOf<String, Int>()
     private var blockedApps = mutableSetOf<String>()
 
+    // Debouncing mechanism
+    private var lastBlockedPackage: String? = null
+    private var lastBlockTime: Long = 0
+    private val blockCooldownMs = 2000L // 2 seconds cooldown
+    private val currentlyBlockedApps = mutableSetOf<String>()
+
     companion object {
         var isServiceRunning = false
         private const val PREFS_NAME = "flutter.app_limits"
@@ -130,12 +136,25 @@ class AppMonitoringService : AccessibilityService() {
     }
 
     private fun checkAndBlockApp(packageName: String) {
+        val currentTime = System.currentTimeMillis()
+
+        // Check debouncing
+        if (lastBlockedPackage == packageName && currentTime - lastBlockTime < blockCooldownMs) {
+            Log.d(TAG, "Ignoring rapid block attempt for: $packageName")
+            return
+        }
+
+        // Check if app is currently being blocked
+        if (currentlyBlockedApps.contains(packageName)) {
+            Log.d(TAG, "App $packageName is already being blocked")
+            return
+        }
+
         // First check if app is in instant block list
         if (blockedApps.contains(packageName)) {
             Log.d(TAG, "Blocking $packageName - app is in instant block list")
-            showBlockingOverlay(packageName, "App Blocked",
+            blockApp(packageName, "App Blocked",
                 "This app has been blocked. You can unblock it from the app list.")
-            returnToHome()
             return
         }
 
@@ -154,9 +173,8 @@ class AppMonitoringService : AccessibilityService() {
         val opensToday = appOpenCountsToday.getOrDefault(packageName, 0)
         if (opensToday > limit.maxDailyOpens) {
             Log.d(TAG, "Blocking $packageName - exceeded open limit ($opensToday > ${limit.maxDailyOpens})")
-            showBlockingOverlay(packageName, "Daily open limit reached",
+            blockApp(packageName, "Daily open limit reached",
                 "You've opened ${limit.appName} $opensToday times today. Limit: ${limit.maxDailyOpens}")
-            returnToHome()
             return
         }
     }
@@ -167,30 +185,62 @@ class AppMonitoringService : AccessibilityService() {
 
         if (durationMinutes >= limit.maxSessionDurationMinutes) {
             Log.d(TAG, "Blocking $packageName - exceeded session duration ($durationMinutes >= ${limit.maxSessionDurationMinutes})")
-            showBlockingOverlay(packageName, "Session time limit reached",
+            blockApp(packageName, "Session time limit reached",
                 "You've used ${limit.appName} for $durationMinutes minutes. Limit: ${limit.maxSessionDurationMinutes} minutes")
-            returnToHome()
         }
     }
 
-    private fun showBlockingOverlay(packageName: String, title: String, message: String) {
-        val intent = Intent(this, BlockingOverlayActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-            putExtra("packageName", packageName)
-            putExtra("title", title)
-            putExtra("message", message)
-        }
-        startActivity(intent)
-    }
+    private fun blockApp(packageName: String, title: String, message: String) {
+        try {
+            val currentTime = System.currentTimeMillis()
 
-    private fun returnToHome() {
-        val homeIntent = Intent(Intent.ACTION_MAIN).apply {
-            addCategory(Intent.CATEGORY_HOME)
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            // Add to currently blocked set
+            currentlyBlockedApps.add(packageName)
+
+            // Update last block info
+            lastBlockedPackage = packageName
+            lastBlockTime = currentTime
+
+            Log.d(TAG, "Blocking app: $packageName")
+
+            // First, move the blocked app to the background by launching home
+            val homeIntent = Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_HOME)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            startActivity(homeIntent)
+
+            // Small delay to ensure home is launched, then show blocking overlay
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                try {
+                    val intent = Intent(this@AppMonitoringService, BlockingOverlayActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        putExtra("packageName", packageName)
+                        putExtra("title", title)
+                        putExtra("message", message)
+                    }
+                    startActivity(intent)
+                    Log.d(TAG, "Successfully blocked app: $packageName")
+
+                    // Remove from currently blocked set after a delay
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                        currentlyBlockedApps.remove(packageName)
+                    }, 1000)
+
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error starting BlockingOverlayActivity", e)
+                    currentlyBlockedApps.remove(packageName)
+                }
+            }, 200)
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error blocking app: $packageName", e)
+            currentlyBlockedApps.remove(packageName)
         }
-        startActivity(homeIntent)
     }
 
     private fun getAppLimitsFromPrefs(): List<AppLimit> {
@@ -256,6 +306,7 @@ class AppMonitoringService : AccessibilityService() {
     override fun onDestroy() {
         super.onDestroy()
         isServiceRunning = false
+        currentlyBlockedApps.clear()
         Log.d(TAG, "AppMonitoringService destroyed")
     }
 

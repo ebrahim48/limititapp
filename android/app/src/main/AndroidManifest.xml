@@ -78,7 +78,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:excludeFromRecents="true"
             android:taskAffinity=""
-            android:launchMode="singleInstance"/>
+            android:noHistory="true"
+            android:launchMode="singleTask"/>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

@@ -113,14 +113,20 @@ class BlockingOverlayActivity : Activity() {
         setContentView(mainLayout)
     }
 
+    @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
     override fun onBackPressed() {
-        // Prevent user from going back to the blocked app
-        moveTaskToBack(true)
+        // Prevent user from going back to the blocked app - do nothing
     }
 
     override fun onPause() {
         super.onPause()
         // When user leaves this activity, finish it
         finish()
+    }
+
+    override fun onNewIntent(intent: android.content.Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
     }
 }
