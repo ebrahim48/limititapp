@@ -5,8 +5,10 @@ import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/models/appinfo_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
+import 'package:limit_it_app/core/services/blocked_apps_service.dart';
+import 'package:limit_it_app/core/services/app_blocker_service.dart';
 
-class YourAppCard extends StatelessWidget {
+class YourAppCard extends StatefulWidget {
   final AppInfo? app;
   final AppUsageData? appData;
 
@@ -14,21 +16,125 @@ class YourAppCard extends StatelessWidget {
       : assert(app != null || appData != null, 'Either app or appData must be provided');
 
   @override
+  State<YourAppCard> createState() => _YourAppCardState();
+}
+
+class _YourAppCardState extends State<YourAppCard> {
+  bool _isBlocked = false;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBlockedState();
+  }
+
+  /// Load the blocked state from storage
+  Future<void> _loadBlockedState() async {
+    final String packageName = widget.appData?.packageName ?? widget.app!.name.toLowerCase();
+    final bool isBlocked = await BlockedAppsService.isAppBlocked(packageName);
+
+    if (mounted) {
+      setState(() {
+        _isBlocked = isBlocked;
+        _isLoading = false;
+      });
+    }
+  }
+
+  /// Toggle block state
+  Future<void> _toggleBlock() async {
+    final String appName = widget.appData?.name ?? widget.app!.name;
+    final String packageName = widget.appData?.packageName ?? widget.app!.name.toLowerCase();
+
+    // Store previous state for undo
+    final bool previousState = _isBlocked;
+
+    // Update UI immediately for better UX
+    setState(() {
+      _isBlocked = !_isBlocked;
+    });
+
+    // Persist the change
+    bool success;
+    if (_isBlocked) {
+      success = await BlockedAppsService.blockApp(packageName, appName);
+    } else {
+      success = await BlockedAppsService.unblockApp(packageName);
+    }
+
+    if (!success) {
+      // Revert on failure
+      if (mounted) {
+        setState(() {
+          _isBlocked = previousState;
+        });
+      }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to ${_isBlocked ? 'block' : 'unblock'} $appName'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
+    // Update native monitoring service with new blocked apps list
+    final blockedPackages = await BlockedAppsService.getBlockedPackageNames();
+    await AppBlockerService.updateBlockedApps(blockedPackages);
+
+    // Show confirmation message
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            _isBlocked ? '$appName is now blocked' : '$appName is now unblocked',
+          ),
+          backgroundColor: _isBlocked ? const Color(0xFFFF5252) : const Color(0xFF214432),
+          duration: const Duration(seconds: 2),
+          action: SnackBarAction(
+            label: 'Undo',
+            textColor: Colors.white,
+            onPressed: () async {
+              // Undo the action
+              if (_isBlocked) {
+                await BlockedAppsService.unblockApp(packageName);
+              } else {
+                await BlockedAppsService.blockApp(packageName, appName);
+              }
+              final updatedPackages = await BlockedAppsService.getBlockedPackageNames();
+              await AppBlockerService.updateBlockedApps(updatedPackages);
+
+              if (mounted) {
+                setState(() {
+                  _isBlocked = !_isBlocked;
+                });
+              }
+            },
+          ),
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Get display values based on which data is available
-    final String name = appData?.name ?? app!.name;
+    final String name = widget.appData?.name ?? widget.app!.name;
 
     // Build usage string with open count
     String usage;
-    if (appData != null) {
-      usage = "${appData!.usageString} • ${appData!.openCount} Opens";
+    if (widget.appData != null) {
+      usage = "${widget.appData!.usageString} • ${widget.appData!.openCount} Opens";
     } else {
-      usage = app!.usage;
+      usage = widget.app!.usage;
     }
 
-    final String percentage = appData?.percentageString ?? app!.percentage;
-    final double progressValue = appData != null
-        ? (appData!.percentage / 100).clamp(0.0, 1.0)
+    final String percentage = widget.appData?.percentageString ?? widget.app!.percentage;
+    final double progressValue = widget.appData != null
+        ? (widget.appData!.percentage / 100).clamp(0.0, 1.0)
         : 0.45;
 
     return Container(
@@ -91,6 +197,26 @@ class YourAppCard extends StatelessWidget {
               ),
             ],
           ),
+
+          SizedBox(width: 8.w),
+
+          // Block button
+          GestureDetector(
+            onTap: _toggleBlock,
+            child: Container(
+              width: 36.w,
+              height: 36.h,
+              decoration: BoxDecoration(
+                color: _isBlocked ? const Color(0xFFFF5252) : const Color(0xFF214432),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Icon(
+                _isBlocked ? Icons.lock_open : Icons.block,
+                color: Colors.white,
+                size: 18.sp,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -99,7 +225,7 @@ class YourAppCard extends StatelessWidget {
   /// Build app icon widget
   Widget _buildAppIcon() {
     // If we have actual app data with icon bytes, show it
-    if (appData?.icon != null) {
+    if (widget.appData?.icon != null) {
       return Container(
         width: 48.w,
         height: 48.h,
@@ -111,7 +237,7 @@ class YourAppCard extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8.r),
           child: Image.memory(
-            appData!.icon!,
+            widget.appData!.icon!,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               return _buildDefaultIcon();
@@ -122,7 +248,7 @@ class YourAppCard extends StatelessWidget {
     }
 
     // Fallback to SVG icon if available
-    if (app?.icon != null) {
+    if (widget.app?.icon != null) {
       return Container(
         width: 48.w,
         height: 48.h,
@@ -131,7 +257,7 @@ class YourAppCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: Colors.grey.shade300),
         ),
-        child: SvgPicture.asset(app!.icon, fit: BoxFit.contain),
+        child: SvgPicture.asset(widget.app!.icon, fit: BoxFit.contain),
       );
     }
 

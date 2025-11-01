@@ -44,11 +44,42 @@ class MainActivity : FlutterActivity() {
                 "isMonitoringActive" -> {
                     result.success(AppMonitoringService.isServiceRunning)
                 }
+                "updateBlockedApps" -> {
+                    val blockedApps = call.argument<List<String>>("blockedApps")
+                    if (blockedApps != null) {
+                        updateBlockedApps(blockedApps)
+                        result.success(true)
+                    } else {
+                        result.error("INVALID_ARGUMENT", "Blocked apps list is required", null)
+                    }
+                }
+                "getBlockedApps" -> {
+                    result.success(getBlockedApps())
+                }
                 else -> {
                     result.notImplemented()
                 }
             }
         }
+    }
+
+    private fun updateBlockedApps(blockedPackageNames: List<String>) {
+        // Store blocked apps in SharedPreferences
+        val prefs = getSharedPreferences("app_blocker_prefs", MODE_PRIVATE)
+        prefs.edit().putStringSet("blocked_apps", blockedPackageNames.toSet()).apply()
+
+        // If monitoring service is running, update it
+        if (AppMonitoringService.isServiceRunning) {
+            val intent = Intent(this, AppMonitoringService::class.java)
+            intent.action = "UPDATE_BLOCKED_APPS"
+            intent.putStringArrayListExtra("blocked_apps", ArrayList(blockedPackageNames))
+            startService(intent)
+        }
+    }
+
+    private fun getBlockedApps(): List<String> {
+        val prefs = getSharedPreferences("app_blocker_prefs", MODE_PRIVATE)
+        return prefs.getStringSet("blocked_apps", emptySet())?.toList() ?: emptyList()
     }
 
     private fun startMonitoringService() {

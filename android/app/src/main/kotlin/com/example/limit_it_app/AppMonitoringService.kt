@@ -19,24 +19,52 @@ class AppMonitoringService : AccessibilityService() {
     private val TAG = "AppMonitoringService"
 
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var blockerPreferences: SharedPreferences
     private val appSessionStartTimes = mutableMapOf<String, Long>()
     private val appOpenCountsToday = mutableMapOf<String, Int>()
+    private var blockedApps = mutableSetOf<String>()
 
     companion object {
         var isServiceRunning = false
         private const val PREFS_NAME = "flutter.app_limits"
         private const val KEY_APP_LIMITS = "app_limits"
         private const val KEY_LAST_RESET_DATE = "last_reset_date"
+        private const val BLOCKER_PREFS_NAME = "app_blocker_prefs"
+        private const val KEY_BLOCKED_APPS = "blocked_apps"
     }
 
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "AppMonitoringService created")
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        blockerPreferences = getSharedPreferences(BLOCKER_PREFS_NAME, Context.MODE_PRIVATE)
         isServiceRunning = true
+
+        // Load blocked apps
+        loadBlockedApps()
 
         // Check if we need to reset daily counters
         checkAndResetDailyCounters()
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // Handle intent actions
+        when (intent?.action) {
+            "UPDATE_BLOCKED_APPS" -> {
+                val blockedAppsList = intent.getStringArrayListExtra("blocked_apps")
+                if (blockedAppsList != null) {
+                    blockedApps.clear()
+                    blockedApps.addAll(blockedAppsList)
+                    Log.d(TAG, "Updated blocked apps: $blockedApps")
+                }
+            }
+        }
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    private fun loadBlockedApps() {
+        blockedApps = blockerPreferences.getStringSet(KEY_BLOCKED_APPS, emptySet())?.toMutableSet() ?: mutableSetOf()
+        Log.d(TAG, "Loaded blocked apps: $blockedApps")
     }
 
     override fun onServiceConnected() {
@@ -102,6 +130,16 @@ class AppMonitoringService : AccessibilityService() {
     }
 
     private fun checkAndBlockApp(packageName: String) {
+        // First check if app is in instant block list
+        if (blockedApps.contains(packageName)) {
+            Log.d(TAG, "Blocking $packageName - app is in instant block list")
+            showBlockingOverlay(packageName, "App Blocked",
+                "This app has been blocked. You can unblock it from the app list.")
+            returnToHome()
+            return
+        }
+
+        // Then check app limits
         val appLimits = getAppLimitsFromPrefs()
         val limit = appLimits.find { it.packageName == packageName } ?: return
 

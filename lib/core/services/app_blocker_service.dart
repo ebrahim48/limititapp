@@ -91,4 +91,31 @@ class AppBlockerService {
     final permissions = await checkAllPermissions();
     return permissions.values.every((granted) => granted);
   }
+
+  /// Update the list of blocked apps in the native monitoring service
+  static Future<bool> updateBlockedApps(List<String> blockedPackageNames) async {
+    try {
+      final result = await _channel.invokeMethod('updateBlockedApps', {
+        'blockedApps': blockedPackageNames,
+      });
+      return result == true;
+    } catch (e) {
+      debugPrint('Error updating blocked apps: $e');
+      return false;
+    }
+  }
+
+  /// Get the current list of blocked apps from native service
+  static Future<List<String>> getBlockedApps() async {
+    try {
+      final result = await _channel.invokeMethod('getBlockedApps');
+      if (result is List) {
+        return result.cast<String>();
+      }
+      return [];
+    } catch (e) {
+      debugPrint('Error getting blocked apps: $e');
+      return [];
+    }
+  }
 }
