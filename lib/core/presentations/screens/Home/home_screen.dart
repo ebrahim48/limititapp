@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/app_data_helper.dart';
@@ -83,11 +84,12 @@ class _HomeScreenState extends State<HomeScreen> {
       }
 
       // Check permission
-      bool hasPermission = await AppUsageService.hasPermission();
+      final appUsageService = Get.find<AppUsageService>();
+      bool hasPermission = await appUsageService.hasPermission();
 
       if (!hasPermission) {
         // Request permission
-        hasPermission = await AppUsageService.requestPermission();
+        hasPermission = await appUsageService.requestPermission();
       }
 
       setState(() {
@@ -96,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (hasPermission) {
         // Get app usage data
-        List<AppUsageData> usageData = await AppUsageService.getTodayAppUsage();
+        List<AppUsageData> usageData = await appUsageService.getTodayAppUsage();
 
         // Calculate total screen time in minutes
         int totalTimeMs = 0;

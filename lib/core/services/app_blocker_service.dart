@@ -5,8 +5,18 @@ import 'package:flutter/foundation.dart';
 class AppBlockerService {
   static const MethodChannel _channel = MethodChannel('com.example.limit_it_app/app_blocker');
 
+  // Singleton pattern
+  static AppBlockerService? _instance;
+
+  AppBlockerService._();
+
+  static AppBlockerService get instance {
+    _instance ??= AppBlockerService._();
+    return _instance!;
+  }
+
   /// Start the app monitoring service
-  static Future<bool> startMonitoring() async {
+  Future<bool> startMonitoring() async {
     try {
       final result = await _channel.invokeMethod('startMonitoring');
       return result == true;
@@ -17,7 +27,7 @@ class AppBlockerService {
   }
 
   /// Stop the app monitoring service
-  static Future<bool> stopMonitoring() async {
+  Future<bool> stopMonitoring() async {
     try {
       final result = await _channel.invokeMethod('stopMonitoring');
       return result == true;
@@ -28,7 +38,7 @@ class AppBlockerService {
   }
 
   /// Check if overlay permission is granted
-  static Future<bool> hasOverlayPermission() async {
+  Future<bool> hasOverlayPermission() async {
     try {
       final result = await _channel.invokeMethod('hasOverlayPermission');
       return result == true;
@@ -39,7 +49,7 @@ class AppBlockerService {
   }
 
   /// Request overlay permission from user
-  static Future<void> requestOverlayPermission() async {
+  Future<void> requestOverlayPermission() async {
     try {
       await _channel.invokeMethod('requestOverlayPermission');
     } catch (e) {
@@ -48,7 +58,7 @@ class AppBlockerService {
   }
 
   /// Check if accessibility service is enabled
-  static Future<bool> hasAccessibilityPermission() async {
+  Future<bool> hasAccessibilityPermission() async {
     try {
       final result = await _channel.invokeMethod('hasAccessibilityPermission');
       return result == true;
@@ -59,7 +69,7 @@ class AppBlockerService {
   }
 
   /// Request accessibility permission from user
-  static Future<void> requestAccessibilityPermission() async {
+  Future<void> requestAccessibilityPermission() async {
     try {
       await _channel.invokeMethod('requestAccessibilityPermission');
     } catch (e) {
@@ -68,7 +78,7 @@ class AppBlockerService {
   }
 
   /// Check if monitoring is currently active
-  static Future<bool> isMonitoringActive() async {
+  Future<bool> isMonitoringActive() async {
     try {
       final result = await _channel.invokeMethod('isMonitoringActive');
       return result == true;
@@ -79,7 +89,7 @@ class AppBlockerService {
   }
 
   /// Check all required permissions
-  static Future<Map<String, bool>> checkAllPermissions() async {
+  Future<Map<String, bool>> checkAllPermissions() async {
     return {
       'overlay': await hasOverlayPermission(),
       'accessibility': await hasAccessibilityPermission(),
@@ -87,13 +97,13 @@ class AppBlockerService {
   }
 
   /// Check if all permissions are granted
-  static Future<bool> hasAllPermissions() async {
+  Future<bool> hasAllPermissions() async {
     final permissions = await checkAllPermissions();
     return permissions.values.every((granted) => granted);
   }
 
   /// Update the list of blocked apps in the native monitoring service
-  static Future<bool> updateBlockedApps(List<String> blockedPackageNames) async {
+  Future<bool> updateBlockedApps(List<String> blockedPackageNames) async {
     try {
       final result = await _channel.invokeMethod('updateBlockedApps', {
         'blockedApps': blockedPackageNames,
@@ -106,7 +116,7 @@ class AppBlockerService {
   }
 
   /// Get the current list of blocked apps from native service
-  static Future<List<String>> getBlockedApps() async {
+  Future<List<String>> getBlockedApps() async {
     try {
       final result = await _channel.invokeMethod('getBlockedApps');
       if (result is List) {

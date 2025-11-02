@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
@@ -175,7 +176,8 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
 
     try {
       // Save daily screen time
-      await AppLimitStorageService.saveDailyScreenTime(totalScreenTime.toInt());
+      final appLimitStorageService = Get.find<AppLimitStorageService>();
+      await appLimitStorageService.saveDailyScreenTime(totalScreenTime.toInt());
 
       // Create app limit models
       List<AppLimitModel> appLimits = [];
@@ -201,7 +203,7 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
       }
 
       // Save app limits
-      final saved = await AppLimitStorageService.saveAppLimits(appLimits);
+      final saved = await appLimitStorageService.saveAppLimits(appLimits);
 
       if (saved) {
         if (!mounted) return;

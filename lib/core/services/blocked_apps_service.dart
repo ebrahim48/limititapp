@@ -35,8 +35,18 @@ class BlockedApp {
 class BlockedAppsService {
   static const String _keyBlockedApps = 'blocked_apps';
 
+  // Singleton pattern
+  static BlockedAppsService? _instance;
+
+  BlockedAppsService._();
+
+  static BlockedAppsService get instance {
+    _instance ??= BlockedAppsService._();
+    return _instance!;
+  }
+
   /// Get all blocked apps
-  static Future<List<BlockedApp>> getBlockedApps() async {
+  Future<List<BlockedApp>> getBlockedApps() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final String? jsonString = prefs.getString(_keyBlockedApps);
@@ -54,7 +64,7 @@ class BlockedAppsService {
   }
 
   /// Check if an app is blocked
-  static Future<bool> isAppBlocked(String packageName) async {
+  Future<bool> isAppBlocked(String packageName) async {
     try {
       final blockedApps = await getBlockedApps();
       return blockedApps.any((app) => app.packageName == packageName);
@@ -65,7 +75,7 @@ class BlockedAppsService {
   }
 
   /// Block an app
-  static Future<bool> blockApp(String packageName, String appName) async {
+  Future<bool> blockApp(String packageName, String appName) async {
     try {
       final blockedApps = await getBlockedApps();
 
@@ -90,7 +100,7 @@ class BlockedAppsService {
   }
 
   /// Unblock an app
-  static Future<bool> unblockApp(String packageName) async {
+  Future<bool> unblockApp(String packageName) async {
     try {
       final blockedApps = await getBlockedApps();
 
@@ -105,7 +115,7 @@ class BlockedAppsService {
   }
 
   /// Get list of blocked package names (for native integration)
-  static Future<List<String>> getBlockedPackageNames() async {
+  Future<List<String>> getBlockedPackageNames() async {
     try {
       final blockedApps = await getBlockedApps();
       return blockedApps.map((app) => app.packageName).toList();
@@ -116,7 +126,7 @@ class BlockedAppsService {
   }
 
   /// Clear all blocked apps
-  static Future<bool> clearAllBlockedApps() async {
+  Future<bool> clearAllBlockedApps() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       return await prefs.remove(_keyBlockedApps);
@@ -127,7 +137,7 @@ class BlockedAppsService {
   }
 
   /// Save blocked apps to SharedPreferences
-  static Future<bool> _saveBlockedApps(List<BlockedApp> blockedApps) async {
+  Future<bool> _saveBlockedApps(List<BlockedApp> blockedApps) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 

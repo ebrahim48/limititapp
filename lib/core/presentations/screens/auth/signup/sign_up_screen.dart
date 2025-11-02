@@ -23,9 +23,6 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
 
-
-
-  AuthController authController = Get.put(AuthController());
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final RxBool isChecked = false.obs;
@@ -35,6 +32,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authController = Get.find<AuthController>();
+
     return Scaffold(
       body: Stack(
         children: [

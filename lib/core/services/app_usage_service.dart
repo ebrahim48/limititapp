@@ -5,8 +5,18 @@ import 'package:installed_apps/app_info.dart' as installed;
 import 'package:flutter/foundation.dart';
 
 class AppUsageService {
+  // Singleton pattern
+  static AppUsageService? _instance;
+
+  AppUsageService._();
+
+  static AppUsageService get instance {
+    _instance ??= AppUsageService._();
+    return _instance!;
+  }
+
   /// Request usage stats permission (Android only)
-  static Future<bool> requestPermission() async {
+  Future<bool> requestPermission() async {
     if (Platform.isAndroid) {
       // Check if permission is already granted
       bool? grantedResult = await UsageStats.checkUsagePermission();
@@ -31,7 +41,7 @@ class AppUsageService {
   }
 
   /// Check if permission is granted
-  static Future<bool> hasPermission() async {
+  Future<bool> hasPermission() async {
     if (Platform.isAndroid) {
       return await UsageStats.checkUsagePermission() ?? false;
     }
@@ -39,7 +49,7 @@ class AppUsageService {
   }
 
   /// Get app usage data for today
-  static Future<List<AppUsageData>> getTodayAppUsage() async {
+  Future<List<AppUsageData>> getTodayAppUsage() async {
     try {
       if (!Platform.isAndroid) {
         return [];
@@ -154,7 +164,7 @@ class AppUsageService {
   }
 
   /// Get app name from package name
-  static String _getAppNameFromPackage(String packageName) {
+  String _getAppNameFromPackage(String packageName) {
     List<String> parts = packageName.split('.');
     if (parts.isNotEmpty) {
       String name = parts.last;
@@ -164,7 +174,7 @@ class AppUsageService {
   }
 
   /// Format milliseconds to readable time
-  static String formatUsageTime(int milliseconds) {
+  String formatUsageTime(int milliseconds) {
     int seconds = (milliseconds / 1000).round();
 
     if (seconds < 60) {
@@ -203,7 +213,7 @@ class AppUsageData {
 
   /// Get formatted usage string for display
   String get usageString {
-    String time = AppUsageService.formatUsageTime(usageTimeMs);
+    String time = AppUsageService.instance.formatUsageTime(usageTimeMs);
     return time;
   }
 

@@ -16,9 +16,6 @@ import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 class LoginInScreen extends StatelessWidget {
   LoginInScreen({super.key});
 
-
-
-  AuthController authController = Get.put(AuthController());
   final GlobalKey<FormState> _logKey = GlobalKey<FormState>();
 
   // Controllers
@@ -28,6 +25,8 @@ class LoginInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authController = Get.find<AuthController>();
+
     return Scaffold(
       body: Stack(
         children: [

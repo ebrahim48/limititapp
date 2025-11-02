@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
@@ -50,11 +51,12 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
       }
 
       // Check permission
-      bool hasPermission = await AppUsageService.hasPermission();
+      final appUsageService = Get.find<AppUsageService>();
+      bool hasPermission = await appUsageService.hasPermission();
 
       if (!hasPermission) {
         // Request permission
-        hasPermission = await AppUsageService.requestPermission();
+        hasPermission = await appUsageService.requestPermission();
       }
 
       setState(() {
@@ -63,7 +65,7 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
 
       if (hasPermission) {
         // Get app usage data
-        List<AppUsageData> usageData = await AppUsageService.getTodayAppUsage();
+        List<AppUsageData> usageData = await appUsageService.getTodayAppUsage();
 
         setState(() {
           _appUsageList = usageData;

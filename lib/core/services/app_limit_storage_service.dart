@@ -10,8 +10,18 @@ class AppLimitStorageService {
   static const String _keyAppUsageToday = 'app_usage_today_';
   static const String _keyLastResetDate = 'last_reset_date';
 
+  // Singleton pattern
+  static AppLimitStorageService? _instance;
+
+  AppLimitStorageService._();
+
+  static AppLimitStorageService get instance {
+    _instance ??= AppLimitStorageService._();
+    return _instance!;
+  }
+
   /// Save app limits to SharedPreferences
-  static Future<bool> saveAppLimits(List<AppLimitModel> limits) async {
+  Future<bool> saveAppLimits(List<AppLimitModel> limits) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
@@ -27,7 +37,7 @@ class AppLimitStorageService {
   }
 
   /// Get all app limits from SharedPreferences
-  static Future<List<AppLimitModel>> getAppLimits() async {
+  Future<List<AppLimitModel>> getAppLimits() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final String? jsonString = prefs.getString(_keyAppLimits);
@@ -45,7 +55,7 @@ class AppLimitStorageService {
   }
 
   /// Get app limit for a specific package
-  static Future<AppLimitModel?> getAppLimit(String packageName) async {
+  Future<AppLimitModel?> getAppLimit(String packageName) async {
     try {
       final limits = await getAppLimits();
       return limits.cast<AppLimitModel?>().firstWhere(
@@ -59,7 +69,7 @@ class AppLimitStorageService {
   }
 
   /// Delete a specific app limit
-  static Future<bool> deleteAppLimit(String packageName) async {
+  Future<bool> deleteAppLimit(String packageName) async {
     try {
       final limits = await getAppLimits();
       limits.removeWhere((limit) => limit.packageName == packageName);
@@ -71,7 +81,7 @@ class AppLimitStorageService {
   }
 
   /// Clear all app limits
-  static Future<bool> clearAllLimits() async {
+  Future<bool> clearAllLimits() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       return await prefs.remove(_keyAppLimits);
@@ -82,7 +92,7 @@ class AppLimitStorageService {
   }
 
   /// Save daily screen time limit (in minutes)
-  static Future<bool> saveDailyScreenTime(int minutes) async {
+  Future<bool> saveDailyScreenTime(int minutes) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       return await prefs.setInt(_keyDailyScreenTime, minutes);
@@ -93,7 +103,7 @@ class AppLimitStorageService {
   }
 
   /// Get daily screen time limit (in minutes)
-  static Future<int?> getDailyScreenTime() async {
+  Future<int?> getDailyScreenTime() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       return prefs.getInt(_keyDailyScreenTime);
@@ -104,7 +114,7 @@ class AppLimitStorageService {
   }
 
   /// Track app usage for today
-  static Future<bool> saveAppUsageToday(String packageName, int opensCount, int usageMinutes) async {
+  Future<bool> saveAppUsageToday(String packageName, int opensCount, int usageMinutes) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final String key = '$_keyAppUsageToday$packageName';
@@ -123,7 +133,7 @@ class AppLimitStorageService {
   }
 
   /// Get app usage for today
-  static Future<Map<String, int>?> getAppUsageToday(String packageName) async {
+  Future<Map<String, int>?> getAppUsageToday(String packageName) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final String key = '$_keyAppUsageToday$packageName';
@@ -157,7 +167,7 @@ class AppLimitStorageService {
   }
 
   /// Reset daily usage counters (should be called at midnight)
-  static Future<bool> resetDailyUsage() async {
+  Future<bool> resetDailyUsage() async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
@@ -182,7 +192,7 @@ class AppLimitStorageService {
   }
 
   /// Check if we need to reset daily usage
-  static Future<bool> shouldResetDailyUsage() async {
+  Future<bool> shouldResetDailyUsage() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final String? lastResetString = prefs.getString(_keyLastResetDate);

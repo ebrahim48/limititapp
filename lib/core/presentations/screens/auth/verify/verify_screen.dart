@@ -23,13 +23,10 @@ class VerifyScreen extends StatelessWidget {
   final String token;
   VerifyScreen({super.key,required this.screenType, required this.email,required this.token});
 
-
-  AuthController authController = Get.put(AuthController());
-
-
-
   @override
   Widget build(BuildContext context) {
+    final authController = Get.find<AuthController>();
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,

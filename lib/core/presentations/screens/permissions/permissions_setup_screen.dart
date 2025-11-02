@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_blocker_service.dart';
@@ -42,7 +43,8 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with Wi
   Future<void> _checkPermissions() async {
     setState(() => _isChecking = true);
 
-    final permissions = await AppBlockerService.checkAllPermissions();
+    final appBlockerService = Get.find<AppBlockerService>();
+    final permissions = await appBlockerService.checkAllPermissions();
 
     setState(() {
       _hasOverlayPermission = permissions['overlay'] ?? false;
@@ -52,12 +54,14 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with Wi
   }
 
   Future<void> _requestOverlayPermission() async {
-    await AppBlockerService.requestOverlayPermission();
+    final appBlockerService = Get.find<AppBlockerService>();
+    await appBlockerService.requestOverlayPermission();
     // Permission check will happen automatically when user returns
   }
 
   Future<void> _requestAccessibilityPermission() async {
-    await AppBlockerService.requestAccessibilityPermission();
+    final appBlockerService = Get.find<AppBlockerService>();
+    await appBlockerService.requestAccessibilityPermission();
     // Permission check will happen automatically when user returns
   }
 
@@ -65,7 +69,8 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with Wi
     setState(() => _isStartingMonitoring = true);
 
     // Check if we have saved app limits
-    final appLimits = await AppLimitStorageService.getAppLimits();
+    final appLimitStorageService = Get.find<AppLimitStorageService>();
+    final appLimits = await appLimitStorageService.getAppLimits();
 
     if (appLimits.isEmpty) {
       if (!mounted) return;
@@ -80,7 +85,8 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with Wi
     }
 
     // Start monitoring service
-    final started = await AppBlockerService.startMonitoring();
+    final appBlockerService = Get.find<AppBlockerService>();
+    final started = await appBlockerService.startMonitoring();
 
     if (!mounted) return;
 

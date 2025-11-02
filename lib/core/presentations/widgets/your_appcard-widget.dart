@@ -1,6 +1,7 @@
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/models/appinfo_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -31,8 +32,9 @@ class _YourAppCardState extends State<YourAppCard> {
 
   /// Load the blocked state from storage
   Future<void> _loadBlockedState() async {
+    final blockedAppsService = Get.find<BlockedAppsService>();
     final String packageName = widget.appData?.packageName ?? widget.app!.name.toLowerCase();
-    final bool isBlocked = await BlockedAppsService.isAppBlocked(packageName);
+    final bool isBlocked = await blockedAppsService.isAppBlocked(packageName);
 
     if (mounted) {
       setState(() {
@@ -56,11 +58,12 @@ class _YourAppCardState extends State<YourAppCard> {
     });
 
     // Persist the change
+    final blockedAppsService = Get.find<BlockedAppsService>();
     bool success;
     if (_isBlocked) {
-      success = await BlockedAppsService.blockApp(packageName, appName);
+      success = await blockedAppsService.blockApp(packageName, appName);
     } else {
-      success = await BlockedAppsService.unblockApp(packageName);
+      success = await blockedAppsService.unblockApp(packageName);
     }
 
     if (!success) {
@@ -82,8 +85,9 @@ class _YourAppCardState extends State<YourAppCard> {
     }
 
     // Update native monitoring service with new blocked apps list
-    final blockedPackages = await BlockedAppsService.getBlockedPackageNames();
-    await AppBlockerService.updateBlockedApps(blockedPackages);
+    final appBlockerService = Get.find<AppBlockerService>();
+    final blockedPackages = await blockedAppsService.getBlockedPackageNames();
+    await appBlockerService.updateBlockedApps(blockedPackages);
 
     // Show confirmation message
     if (mounted) {
@@ -100,12 +104,12 @@ class _YourAppCardState extends State<YourAppCard> {
             onPressed: () async {
               // Undo the action
               if (_isBlocked) {
-                await BlockedAppsService.unblockApp(packageName);
+                await blockedAppsService.unblockApp(packageName);
               } else {
-                await BlockedAppsService.blockApp(packageName, appName);
+                await blockedAppsService.blockApp(packageName, appName);
               }
-              final updatedPackages = await BlockedAppsService.getBlockedPackageNames();
-              await AppBlockerService.updateBlockedApps(updatedPackages);
+              final updatedPackages = await blockedAppsService.getBlockedPackageNames();
+              await appBlockerService.updateBlockedApps(updatedPackages);
 
               if (mounted) {
                 setState(() {

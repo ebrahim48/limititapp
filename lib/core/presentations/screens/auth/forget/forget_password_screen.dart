@@ -26,8 +26,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final TextEditingController emailCtrl = TextEditingController();
   final GlobalKey<FormState> _logKey = GlobalKey<FormState>();
 
-  AuthController authController = Get.put(AuthController());
-
   @override
   void initState() {
     print("====================${widget.email}");
@@ -39,6 +37,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authController = Get.find<AuthController>();
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
