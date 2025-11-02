@@ -97,22 +97,22 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
       if (hasPermission) {
-        // Get app usage data
-        List<AppUsageData> usageData = await appUsageService.getTodayAppUsage();
+        // Get ALL installed apps (with usage data merged)
+        List<AppUsageData> allApps = await appUsageService.getAllInstalledApps();
 
         // Calculate total screen time in minutes
         int totalTimeMs = 0;
-        for (var app in usageData) {
+        for (var app in allApps) {
           totalTimeMs += app.usageTimeMs;
         }
         int totalMinutes = (totalTimeMs / 1000 / 60).round();
 
         setState(() {
-          _appUsageList = usageData;
+          _appUsageList = allApps;
           _totalScreenTimeMinutes = totalMinutes;
           _isLoading = false;
-          if (usageData.isEmpty) {
-            _errorMessage = 'No app usage data available for today';
+          if (allApps.isEmpty) {
+            _errorMessage = 'No apps found on this device';
           }
         });
       } else {

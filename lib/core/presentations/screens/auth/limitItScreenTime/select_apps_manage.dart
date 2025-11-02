@@ -64,14 +64,14 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
       });
 
       if (hasPermission) {
-        // Get app usage data
-        List<AppUsageData> usageData = await appUsageService.getTodayAppUsage();
+        // Get ALL installed apps (not just ones with usage)
+        List<AppUsageData> allApps = await appUsageService.getAllInstalledApps();
 
         setState(() {
-          _appUsageList = usageData;
+          _appUsageList = allApps;
           _isLoading = false;
-          if (usageData.isEmpty) {
-            _errorMessage = 'No app usage data available for today';
+          if (allApps.isEmpty) {
+            _errorMessage = 'No apps found on this device';
           }
         });
       } else {

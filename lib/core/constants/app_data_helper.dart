@@ -70,8 +70,8 @@ class AppDataHelper {
       return dailyApps; // Return default data if no usage data
     }
 
-    // Take top 5 apps for the chart
-    final topApps = appUsageList.take(5).toList();
+    // Take all apps for the chart (no limit)
+    final topApps = appUsageList;
 
     // Define color palette for the chart bars
     final colors = [
