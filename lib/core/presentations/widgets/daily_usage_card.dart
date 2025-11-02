@@ -22,6 +22,38 @@ class DailyUsageCard extends StatelessWidget {
     this.isLoading = false,
   });
 
+  // Helper method to calculate dynamic max usage hours
+  double _getMaxUsageHours() {
+    double maxUsageHours = 10.0; // Default to 10 hours
+
+    if (appUsageData != null && appUsageData!.isNotEmpty) {
+      // Find max usage time in hours
+      int maxUsageMs = appUsageData!.fold(0, (max, app) => app.usageTimeMs > max ? app.usageTimeMs : max);
+      maxUsageHours = (maxUsageMs / (1000 * 60 * 60));
+
+      // Round up to nearest hour, minimum 1 hour
+      maxUsageHours = maxUsageHours.ceilToDouble();
+      if (maxUsageHours < 1) maxUsageHours = 1;
+
+      // Round to nice intervals (1, 2, 3, 4, 5, 6, 8, 10, 12, etc.)
+      if (maxUsageHours <= 5) {
+        // Keep as is for small values
+      } else if (maxUsageHours <= 10) {
+        maxUsageHours = 10;
+      } else if (maxUsageHours <= 12) {
+        maxUsageHours = 12;
+      } else if (maxUsageHours <= 16) {
+        maxUsageHours = 16;
+      } else if (maxUsageHours <= 20) {
+        maxUsageHours = 20;
+      } else {
+        maxUsageHours = ((maxUsageHours / 5).ceil() * 5).toDouble(); // Round to nearest 5
+      }
+    }
+
+    return maxUsageHours;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -86,33 +118,8 @@ class DailyUsageCard extends StatelessWidget {
   }
 
   Widget _buildYAxisLabels() {
-    // Calculate max usage time dynamically
-    double maxUsageHours = 10.0; // Default to 10 hours
-
-    if (appUsageData != null && appUsageData!.isNotEmpty) {
-      // Find max usage time in hours
-      int maxUsageMs = appUsageData!.fold(0, (max, app) => app.usageTimeMs > max ? app.usageTimeMs : max);
-      maxUsageHours = (maxUsageMs / (1000 * 60 * 60));
-
-      // Round up to nearest hour, minimum 1 hour
-      maxUsageHours = maxUsageHours.ceilToDouble();
-      if (maxUsageHours < 1) maxUsageHours = 1;
-
-      // Round to nice intervals (1, 2, 3, 4, 5, 6, 8, 10, 12, etc.)
-      if (maxUsageHours <= 5) {
-        // Keep as is for small values
-      } else if (maxUsageHours <= 10) {
-        maxUsageHours = 10;
-      } else if (maxUsageHours <= 12) {
-        maxUsageHours = 12;
-      } else if (maxUsageHours <= 16) {
-        maxUsageHours = 16;
-      } else if (maxUsageHours <= 20) {
-        maxUsageHours = 20;
-      } else {
-        maxUsageHours = ((maxUsageHours / 5).ceil() * 5).toDouble(); // Round to nearest 5
-      }
-    }
+    // Use the helper method to get max usage hours
+    double maxUsageHours = _getMaxUsageHours();
 
     // Generate 5 labels from max to 0
     List<String> labels = [];
@@ -203,6 +210,10 @@ class DailyUsageCard extends StatelessWidget {
       );
     }
 
+    // Get dynamic max for scaling
+    double maxUsageHours = _getMaxUsageHours();
+    const double chartHeight = 130.0; // Should match Y-axis height
+
     return SizedBox(
       height: 153.h,
       child: Row(
@@ -219,12 +230,23 @@ class DailyUsageCard extends StatelessWidget {
                 realIcon = appUsageData![index].icon;
               }
 
+              // Calculate bar height based on actual usage and dynamic max
+              double barHeight = 0;
+              if (appUsageData != null && index < appUsageData!.length) {
+                double actualUsageHours = appUsageData![index].usageTimeMs / (1000 * 60 * 60);
+                barHeight = (actualUsageHours / maxUsageHours) * chartHeight;
+                barHeight = barHeight.clamp(0.0, chartHeight); // Ensure within bounds
+              } else {
+                // Fallback to old calculation if no usage data
+                barHeight = app.height * 10.0;
+              }
+
               return Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
                     width: 40.w,
-                    height: app.height * 10.h,
+                    height: barHeight.h,
                     decoration: BoxDecoration(
                       color: app.color,
                       borderRadius: BorderRadius.vertical(
