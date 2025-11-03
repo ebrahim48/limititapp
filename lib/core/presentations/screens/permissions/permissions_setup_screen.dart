@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/presentations/screens/Home/home_screen.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_blocker_service.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
@@ -13,7 +15,8 @@ class PermissionsSetupScreen extends StatefulWidget {
   State<PermissionsSetupScreen> createState() => _PermissionsSetupScreenState();
 }
 
-class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with WidgetsBindingObserver {
+class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
+    with WidgetsBindingObserver {
   bool _hasOverlayPermission = false;
   bool _hasAccessibilityPermission = false;
   bool _isChecking = true;
@@ -76,7 +79,9 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with Wi
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('No app limits configured. Please set up app limits first.'),
+          content: Text(
+            'No app limits configured. Please set up app limits first.',
+          ),
           backgroundColor: Colors.orange,
         ),
       );
@@ -99,7 +104,7 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with Wi
       );
 
       // Navigate back or to home
-      Navigator.of(context).pop(true);
+      Navigator.of(context).pop(HomeScreen());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -113,7 +118,8 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with Wi
 
   @override
   Widget build(BuildContext context) {
-    final bool allPermissionsGranted = _hasOverlayPermission && _hasAccessibilityPermission;
+    final bool allPermissionsGranted =
+        _hasOverlayPermission && _hasAccessibilityPermission;
 
     return Scaffold(
       appBar: AppBar(
@@ -141,7 +147,8 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with Wi
               ),
               SizedBox(height: 12.h),
               CustomText(
-                text: 'LimitIt needs these permissions to monitor and block apps when limits are reached.',
+                text:
+                    'LimitIt needs these permissions to monitor and block apps when limits are reached.',
                 fontsize: 14.sp,
                 color: const Color(0xFF5D5D5D),
                 maxline: 3,
@@ -155,7 +162,8 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with Wi
                 _buildPermissionCard(
                   icon: Icons.visibility,
                   title: 'Overlay Permission',
-                  description: 'Allows LimitIt to display blocking screen over other apps',
+                  description:
+                      'Allows LimitIt to display blocking screen over other apps',
                   isGranted: _hasOverlayPermission,
                   onRequest: _requestOverlayPermission,
                 ),
@@ -174,11 +182,11 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with Wi
               // Start button
               SizedBox(
                 width: double.infinity,
-                height: 56.h,
                 child: ElevatedButton(
-                  onPressed: allPermissionsGranted && !_isStartingMonitoring
-                      ? _startMonitoringAndFinish
-                      : null,
+                  onPressed:
+                      allPermissionsGranted && !_isStartingMonitoring
+                          ? _startMonitoringAndFinish
+                          : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF214432),
                     disabledBackgroundColor: Colors.grey.shade300,
@@ -186,14 +194,21 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen> with Wi
                       borderRadius: BorderRadius.circular(28.r),
                     ),
                   ),
-                  child: _isStartingMonitoring
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : CustomText(
-                          text: allPermissionsGranted ? 'Start Monitoring' : 'Grant All Permissions First',
-                          fontsize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: allPermissionsGranted ? Colors.white : Colors.grey.shade600,
-                        ),
+                  child:
+                      _isStartingMonitoring
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : CustomText(
+                            text:
+                                allPermissionsGranted
+                                    ? 'Start Monitoring'
+                                    : 'Grant All Permissions First',
+                            fontsize: 16,
+                            fontWeight: FontWeight.w500,
+                            color:
+                                allPermissionsGranted
+                                    ? Colors.white
+                                    : Colors.grey.shade600,
+                          ),
                 ),
               ),
               SizedBox(height: 16.h),
