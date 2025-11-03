@@ -179,8 +179,11 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
       final appLimitStorageService = Get.find<AppLimitStorageService>();
       await appLimitStorageService.saveDailyScreenTime(totalScreenTime.toInt());
 
-      // Create app limit models
-      List<AppLimitModel> appLimits = [];
+      // Load existing app limits
+      List<AppLimitModel> existingLimits = await appLimitStorageService.getAppLimits();
+
+      // Create app limit models for new apps
+      List<AppLimitModel> newAppLimits = [];
 
       for (var app in widget.selectedApps!) {
         final opensStr = appOpens[app.packageName] ?? '5 Times';
@@ -192,7 +195,7 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
         // Parse duration (e.g., "30 Mins" -> 30)
         final int maxDuration = int.tryParse(durationStr.split(' ').first) ?? 30;
 
-        appLimits.add(AppLimitModel(
+        newAppLimits.add(AppLimitModel(
           packageName: app.packageName,
           appName: app.appName,
           appIcon: app.appIcon,
@@ -202,14 +205,21 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
         ));
       }
 
-      // Save app limits
-      final saved = await appLimitStorageService.saveAppLimits(appLimits);
+      // Remove duplicates from existing limits (if user is re-adding an app)
+      existingLimits.removeWhere((existing) =>
+          newAppLimits.any((newLimit) => newLimit.packageName == existing.packageName));
+
+      // Combine existing and new limits
+      final allLimits = [...existingLimits, ...newAppLimits];
+
+      // Save combined app limits
+      final saved = await appLimitStorageService.saveAppLimits(allLimits);
 
       if (saved) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Saved limits for ${appLimits.length} apps'),
+            content: Text('Saved limits for ${newAppLimits.length} apps'),
             backgroundColor: Colors.green,
           ),
         );
