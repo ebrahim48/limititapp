@@ -8,6 +8,7 @@ import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/core/services/blocked_apps_service.dart';
 import 'package:limit_it_app/core/services/app_blocker_service.dart';
+import 'package:limit_it_app/core/presentations/screens/permissions/permissions_setup_screen.dart';
 
 class YourAppCard extends StatefulWidget {
   final AppInfo? app;
@@ -44,10 +45,110 @@ class _YourAppCardState extends State<YourAppCard> {
     }
   }
 
+  /// Check and ensure monitoring is active before blocking
+  /// Returns true if monitoring is ready, false otherwise
+  Future<bool> _ensureMonitoringActive() async {
+    final appBlockerService = Get.find<AppBlockerService>();
+
+    // Check if monitoring service is already running
+    final isMonitoring = await appBlockerService.isMonitoringActive();
+    if (isMonitoring) {
+      return true; // All good, monitoring is active
+    }
+
+    // Monitoring is not active, check if permissions are granted
+    final hasAllPermissions = await appBlockerService.hasAllPermissions();
+
+    if (!hasAllPermissions) {
+      // Permissions are missing, show dialog to navigate to permissions screen
+      if (mounted) {
+        _showPermissionsRequiredDialog();
+      }
+      return false;
+    }
+
+    // Permissions are granted but service isn't running, start it
+    if (mounted) {
+      // Show loading indicator
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Starting monitoring service...'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+
+    final started = await appBlockerService.startMonitoring();
+    if (!started) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to start monitoring service'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return false;
+    }
+
+    // Wait a moment for service to fully initialize
+    await Future.delayed(const Duration(milliseconds: 500));
+    return true;
+  }
+
+  /// Show dialog explaining permissions are required
+  void _showPermissionsRequiredDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Permissions Required'),
+          content: const Text(
+            'To block apps, you need to grant Overlay and Accessibility permissions. '
+            'Would you like to go to the permissions setup screen?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Navigate to permissions screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PermissionsSetupScreen(),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF214432),
+              ),
+              child: const Text('Grant Permissions', style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   /// Toggle block state
   Future<void> _toggleBlock() async {
     final String appName = widget.appData?.name ?? widget.app!.name;
     final String packageName = widget.appData?.packageName ?? widget.app!.name.toLowerCase();
+
+    // If trying to block an app, ensure monitoring is active first
+    if (!_isBlocked) {
+      final monitoringReady = await _ensureMonitoringActive();
+      if (!monitoringReady) {
+        // Monitoring couldn't be started, abort the block operation
+        return;
+      }
+    }
 
     // Store previous state for undo
     final bool previousState = _isBlocked;
