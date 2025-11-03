@@ -23,7 +23,6 @@ class YourAppCard extends StatefulWidget {
 
 class _YourAppCardState extends State<YourAppCard> {
   bool _isBlocked = false;
-  bool _isLoading = true;
 
   @override
   void initState() {
@@ -40,7 +39,6 @@ class _YourAppCardState extends State<YourAppCard> {
     if (mounted) {
       setState(() {
         _isBlocked = isBlocked;
-        _isLoading = false;
       });
     }
   }
@@ -281,26 +279,33 @@ class _YourAppCardState extends State<YourAppCard> {
           ),
 
           // Circular Progress
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                width: 32.w,
-                height: 32.h,
-                child: CircularProgressIndicator(
-                  value: progressValue,
-                  backgroundColor: const Color(0xFF5D5D5D).withValues(alpha: 0.4),
-                  valueColor: const AlwaysStoppedAnimation(Color(0xFFDDA742)),
-                  strokeWidth: 3,
-                ),
-              ),
-              CustomText(
-                text: percentage,
-                fontsize: 8.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black,
-              ),
-            ],
+          TweenAnimationBuilder<double>(
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeOutCubic,
+            tween: Tween(begin: 0.0, end: progressValue),
+            builder: (context, value, child) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: 32.w,
+                    height: 32.h,
+                    child: CircularProgressIndicator(
+                      value: value,
+                      backgroundColor: const Color(0xFF5D5D5D).withValues(alpha: 0.4),
+                      valueColor: const AlwaysStoppedAnimation(Color(0xFFDDA742)),
+                      strokeWidth: 3,
+                    ),
+                  ),
+                  CustomText(
+                    text: percentage,
+                    fontsize: 8.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ],
+              );
+            },
           ),
 
           SizedBox(width: 8.w),
@@ -308,17 +313,29 @@ class _YourAppCardState extends State<YourAppCard> {
           // Block button
           GestureDetector(
             onTap: _toggleBlock,
-            child: Container(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
               width: 36.w,
               height: 36.h,
               decoration: BoxDecoration(
                 color: _isBlocked ? const Color(0xFFFF5252) : const Color(0xFF214432),
                 borderRadius: BorderRadius.circular(8.r),
               ),
-              child: Icon(
-                _isBlocked ? Icons.lock_open : Icons.block,
-                color: Colors.white,
-                size: 18.sp,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (child, animation) {
+                  return ScaleTransition(
+                    scale: animation,
+                    child: child,
+                  );
+                },
+                child: Icon(
+                  _isBlocked ? Icons.lock_open : Icons.block,
+                  key: ValueKey(_isBlocked),
+                  color: Colors.white,
+                  size: 18.sp,
+                ),
               ),
             ),
           ),
