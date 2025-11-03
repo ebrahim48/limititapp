@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/app_constants/app_constants.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'dart:ui';
 import 'package:limit_it_app/core/helpers/prefs_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -106,7 +106,7 @@ class _SplashScreenState extends State<SplashScreen>
                     ),
                     SizedBox(width: 4.w),
                     CustomText(
-                      text: AppString.limitIt,
+                      text: context.l10n.appTitle,
                       fontsize: 48.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColors.primaryColor,

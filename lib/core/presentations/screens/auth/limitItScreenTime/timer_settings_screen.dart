@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 
@@ -37,7 +37,7 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: AppString.timerSettings,
+              text: context.l10n.timerSettings,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -56,7 +56,7 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
 
                 CustomText(
                   textAlign: TextAlign.start,
-                  text: AppString.preOpening,
+                  text: context.l10n.preOpeningCountdown,
                   fontsize: 20.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textColor3D3D3D,
@@ -139,7 +139,7 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
 
                 // Motivational Phrases
                 CustomText(
-                  text: AppString.motivational,
+                  text: context.l10n.motivationalPhrases,
                   fontsize: 20.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textColor3D3D3D,
@@ -154,7 +154,7 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
 
                 // Save button
                 CustomButton(
-                  title: AppString.save,
+                  title: context.l10n.save,
                   onpress: () {
                  context.pushNamed(AppRoutes.timerSuccessScreen);
                   },

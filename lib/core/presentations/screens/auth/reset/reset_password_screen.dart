@@ -6,7 +6,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
@@ -43,7 +43,7 @@ class ResetPasswordScreen extends StatelessWidget {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: AppString.resetPassWord,
+              text: context.l10n.resetPassword,
               color: AppColors.textColor3D3D3D,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
@@ -112,7 +112,7 @@ class ResetPasswordScreen extends StatelessWidget {
                       hintextColor: AppColors.textColor5D5D5D,
                       controller: newPassWordCtrl,
                       prefixIcon: Assets.icons.pass.svg(),
-                      hintText: AppString.setNewPassword,
+                      hintText: context.l10n.setNewPassword,
                       isPassword: true,
                     ),
 
@@ -122,7 +122,7 @@ class ResetPasswordScreen extends StatelessWidget {
                       hintextColor: AppColors.textColor5D5D5D,
                       controller: confirmNewPassWordCtrl,
                       prefixIcon: Assets.icons.pass.svg(),
-                      hintText: AppString.conNewPassword,
+                      hintText: context.l10n.confirmNewPassword,
                       isPassword: true,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -148,7 +148,7 @@ class ResetPasswordScreen extends StatelessWidget {
                         ? Align(
                       alignment: Alignment.centerLeft,
                       child: CustomText(
-                        text: AppString.passMatch,
+                        text: context.l10n.passwordMatched,
                         color: Colors.green,
                         fontsize: 12.sp,
                       ),
@@ -163,7 +163,7 @@ class ResetPasswordScreen extends StatelessWidget {
 
 
                     CustomButton(
-                      title: AppString.resetPassWord,
+                      title: context.l10n.resetPassword,
                       onpress: () {
                         context.pushNamed(AppRoutes.resetSuccessFullyScreen);
                       },

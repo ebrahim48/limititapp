@@ -1,0 +1,255 @@
+{
+  "@@locale": "en",
+  "appTitle": "LimitIt",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "Welcome message"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Home screen title"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings screen title"
+  },
+  "appUsage": "App Usage",
+  "@appUsage": {
+    "description": "App usage screen title"
+  },
+  "dailyLimit": "Daily Limit",
+  "@dailyLimit": {
+    "description": "Daily limit label"
+  },
+  "timeSpent": "Time Spent",
+  "@timeSpent": {
+    "description": "Time spent label"
+  },
+  "save": "Save",
+  "@save": {
+    "description": "Save button text"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button text"
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Yes button text"
+  },
+  "no": "No",
+  "@no": {
+    "description": "No button text"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language setting label"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Theme setting label"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications setting label"
+  },
+  "about": "About",
+  "@about": {
+    "description": "About section label"
+  },
+  "selectYourLanguage": "Select Your Language",
+  "@selectYourLanguage": {
+    "description": "Select language prompt"
+  },
+  "getStarted": "Get Started",
+  "@getStarted": {
+    "description": "Get started button"
+  },
+  "welcomeToLimitIt": "Welcome to LimitIt",
+  "@welcomeToLimitIt": {
+    "description": "Welcome message with app name"
+  },
+  "startingToday": "Starting today, let's focus better and\naccomplish your dreams",
+  "@startingToday": {
+    "description": "Motivational message on start screen"
+  },
+  "signUpYourAccount": "Sign up your account",
+  "@signUpYourAccount": {
+    "description": "Sign up screen title"
+  },
+  "enterYourDetails": "Enter your details below to continue",
+  "@enterYourDetails": {
+    "description": "Sign up instruction"
+  },
+  "firstName": "First Name",
+  "@firstName": {
+    "description": "First name field label"
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  "setNewPassword": "Set New Password",
+  "@setNewPassword": {
+    "description": "Set new password label"
+  },
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  "confirmNewPassword": "Confirm New Password",
+  "@confirmNewPassword": {
+    "description": "Confirm new password field label"
+  },
+  "byCreatingAccount": "By creating an account, I accept the ",
+  "@byCreatingAccount": {
+    "description": "Terms acceptance prefix"
+  },
+  "termsAndConditions": "Terms & Conditions",
+  "@termsAndConditions": {
+    "description": "Terms and conditions link"
+  },
+  "passwordMatched": "Password Matched ✓",
+  "@passwordMatched": {
+    "description": "Password match confirmation"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Privacy policy link"
+  },
+  "alreadyHaveAccount": "Already have an account? ",
+  "@alreadyHaveAccount": {
+    "description": "Login prompt for existing users"
+  },
+  "login": " Login",
+  "@login": {
+    "description": "Login button text"
+  },
+  "signUp": "Sign Up",
+  "@signUp": {
+    "description": "Sign up button text"
+  },
+  "logInYourAccount": "Log in your account",
+  "@logInYourAccount": {
+    "description": "Login screen title"
+  },
+  "allSetPasswordUpdated": "All set !\nPassword Successfully Updated",
+  "@allSetPasswordUpdated": {
+    "description": "Password update success message"
+  },
+  "logInSecurely": "Log in Securely to access your full app",
+  "@logInSecurely": {
+    "description": "Login screen subtitle"
+  },
+  "forgetPassword": "Forget Password?",
+  "@forgetPassword": {
+    "description": "Forget password link"
+  },
+  "forgetPasswordTitle": "Forget Password",
+  "@forgetPasswordTitle": {
+    "description": "Forget password screen title"
+  },
+  "resetPassword": "Reset Password",
+  "@resetPassword": {
+    "description": "Reset password button"
+  },
+  "getOtp": "Get OTP",
+  "@getOtp": {
+    "description": "Get OTP button"
+  },
+  "verifyOtp": "Verify OTP",
+  "@verifyOtp": {
+    "description": "Verify OTP screen title"
+  },
+  "verify": "Verify",
+  "@verify": {
+    "description": "Verify button"
+  },
+  "didntGetCode": "Didn't get the code?",
+  "@didntGetCode": {
+    "description": "Resend code prompt"
+  },
+  "backToLogin": "Back to Log in",
+  "@backToLogin": {
+    "description": "Back to login button"
+  },
+  "takeControl": "Take Control of your digital habits",
+  "@takeControl": {
+    "description": "App tagline"
+  },
+  "backToHome": "Back to Home",
+  "@backToHome": {
+    "description": "Back to home button"
+  },
+  "iAcceptPrivacy": "I accept the privacy policy and terms of Service",
+  "@iAcceptPrivacy": {
+    "description": "Privacy acceptance checkbox"
+  },
+  "privacyDataProtection": "Privacy & Data Protection",
+  "@privacyDataProtection": {
+    "description": "Privacy section title"
+  },
+  "usageDataStaysOnDevice": "Your usage data stays on your device",
+  "@usageDataStaysOnDevice": {
+    "description": "Privacy point 1"
+  },
+  "noPersonalInfoCollection": "We don't collect personal information",
+  "@noPersonalInfoCollection": {
+    "description": "Privacy point 2"
+  },
+  "gdprCompliance": "GDPR compliance is our priority",
+  "@gdprCompliance": {
+    "description": "Privacy point 3"
+  },
+  "transparentPermissions": "Transparent Permission requests",
+  "@transparentPermissions": {
+    "description": "Privacy point 4"
+  },
+  "selectAppsToManage": "Select Apps to Manage",
+  "@selectAppsToManage": {
+    "description": "App selection screen title"
+  },
+  "setUsageLimit": "Set Usage Limit",
+  "@setUsageLimit": {
+    "description": "Usage limit screen title"
+  },
+  "totalDailyScreenTime": "Total Daily Screen Time",
+  "@totalDailyScreenTime": {
+    "description": "Daily screen time label"
+  },
+  "all": "All",
+  "@all": {
+    "description": "All items filter"
+  },
+  "saveContinue": "Save & Continue",
+  "@saveContinue": {
+    "description": "Save and continue button"
+  },
+  "timerSettings": "Timer Settings",
+  "@timerSettings": {
+    "description": "Timer settings title"
+  },
+  "preOpeningCountdown": "Pre - Opening Countdown\nDuration",
+  "@preOpeningCountdown": {
+    "description": "Countdown duration label"
+  },
+  "motivationalPhrases": "Motivational Phrases",
+  "@motivationalPhrases": {
+    "description": "Motivational phrases section"
+  },
+  "allSetAppLimit": "All set !\nYou have Successfully Set App Limit",
+  "@allSetAppLimit": {
+    "description": "App limit success message"
+  }
+}

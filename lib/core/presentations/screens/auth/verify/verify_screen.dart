@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/verify/custom_pin_text_field.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
@@ -43,7 +43,7 @@ class VerifyScreen extends StatelessWidget {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: AppString.verifyOtp,
+              text: context.l10n.verifyOtp,
               color: AppColors.textColor3D3D3D,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
@@ -120,7 +120,7 @@ class VerifyScreen extends StatelessWidget {
                           children: [
                             CustomText(
                               textAlign: TextAlign.center,
-                              text: AppString.didnt,
+                              text: context.l10n.didntGetCode,
                               color: AppColors.textColor3D3D3D,
                               fontWeight: FontWeight.w400,
                               fontsize: 12.sp,
@@ -160,7 +160,7 @@ class VerifyScreen extends StatelessWidget {
 
                     Obx(() => CustomButton(
                       loading: authController.verfyLoading.value,
-                      title: "Verify",
+                      title: context.l10n.verify,
                       onpress: () {
                         if (otpTEController.text.isEmpty) {
                           ToastMessageHelper.showToastMessage("Please enter OTP");

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/core/presentations/controller/locale_controller.dart';
+import 'package:limit_it_app/l10n/app_localizations.dart';
 import 'dart:ui';
 import '../../../constants/app_colors.dart';
 
@@ -18,6 +20,7 @@ class LanguageScreen extends StatefulWidget {
 class _LanguageScreenState extends State<LanguageScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  late LocaleController localeController;
   String selectedLanguage = 'Italian';
 
   final List<String> languages = ['Italian', 'English'];
@@ -25,6 +28,8 @@ class _LanguageScreenState extends State<LanguageScreen>
   @override
   void initState() {
     super.initState();
+    localeController = Get.find<LocaleController>();
+    selectedLanguage = localeController.currentLanguageName;
     _controller = AnimationController(
       duration: const Duration(seconds: 10),
       vsync: this,
@@ -39,11 +44,14 @@ class _LanguageScreenState extends State<LanguageScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
+    return Obx(() {
+      // Force rebuild when locale changes
+      final _ = localeController.locale.value;
 
-          Positioned(
+      return Scaffold(
+        body: Stack(
+          children: [
+            Positioned(
             top: 18.h,
             left: 109.w,
             child: Container(
@@ -56,14 +64,11 @@ class _LanguageScreenState extends State<LanguageScreen>
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
+                  decoration: BoxDecoration(color: Colors.transparent),
                 ),
               ),
             ),
           ),
-
 
           Positioned(
             bottom: 0,
@@ -78,9 +83,7 @@ class _LanguageScreenState extends State<LanguageScreen>
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
+                  decoration: BoxDecoration(color: Colors.transparent),
                 ),
               ),
             ),
@@ -94,22 +97,22 @@ class _LanguageScreenState extends State<LanguageScreen>
                 children: [
                   SizedBox(height: 198.h),
 
-
                   CustomText(
-                    text: AppString.select,
+                    text: AppLocalizations.of(context)!.selectYourLanguage,
                     fontsize: 20.sp,
                     fontWeight: FontWeight.w500,
                     color: AppColors.textColor3D3D3D,
                   ),
 
                   SizedBox(height: 12.h),
-                  ...languages.map((language) => _buildLanguageOption(language)),
+                  ...languages.map(
+                    (language) => _buildLanguageOption(language),
+                  ),
 
                   SizedBox(height: 32.h),
 
-
                   CustomButton(
-                    title: AppString.start,
+                    title: AppLocalizations.of(context)!.getStarted,
                     onpress: () {
                       context.pushNamed(AppRoutes.onBoardingStartScreen);
                     },
@@ -123,6 +126,7 @@ class _LanguageScreenState extends State<LanguageScreen>
         ],
       ),
     );
+    });
   }
 
   Widget _buildLanguageOption(String language) {
@@ -133,6 +137,9 @@ class _LanguageScreenState extends State<LanguageScreen>
         setState(() {
           selectedLanguage = language;
         });
+        // Change locale immediately
+        final languageCode = language == 'Italian' ? 'it' : 'en';
+        localeController.changeLocale(languageCode);
       },
       child: Container(
         width: 328.w,
@@ -141,10 +148,7 @@ class _LanguageScreenState extends State<LanguageScreen>
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100.r),
-          border: Border.all(
-            color: AppColors.borderColor,
-            width: 1,
-          ),
+          border: Border.all(color: AppColors.borderColor, width: 1),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

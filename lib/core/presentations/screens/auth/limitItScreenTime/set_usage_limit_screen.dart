@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_slider.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -65,7 +65,7 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
               onPressed: () => Navigator.pop(context),
             ),
             SizedBox(width: 12.w),
-            CustomText(text: AppString.usageLimit,
+            CustomText(text: context.l10n.setUsageLimit,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -81,9 +81,9 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20.h),
-            
+
                 CustomText(
-                   text: AppString.dailyScreen,
+                   text: context.l10n.totalDailyScreenTime,
                   fontsize: 20.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textColor3D3D3D,
@@ -148,7 +148,7 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
 
                 SizedBox(height: 18.h),
                 CustomButton(
-                  title: _isSaving ? 'Saving...' : AppString.saveContinue,
+                  title: _isSaving ? 'Saving...' : context.l10n.saveContinue,
                   onpress: _isSaving ? () {} : _saveAndContinue,
                 ),
                 SizedBox(height: 20.h),

@@ -4,6 +4,7 @@ import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/controllers/schedules_limits_controller.dart';
 import 'package:limit_it_app/controllers/upgrade_premium_controller.dart';
 import 'package:limit_it_app/core/presentations/controller/theme_controller.dart';
+import 'package:limit_it_app/core/presentations/controller/locale_controller.dart';
 import 'package:limit_it_app/core/services/app_blocker_service.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
@@ -22,6 +23,7 @@ class DependencyInjection implements Bindings {
 
     // Register all controllers as singletons (lazy load)
     Get.lazyPut<ThemeController>(() => ThemeController(), fenix: true);
+    Get.lazyPut<LocaleController>(() => LocaleController(), fenix: true);
     Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
     Get.lazyPut<SchedulesLimitsController>(() => SchedulesLimitsController(), fenix: true);
     Get.lazyPut<UpgradePremiumController>(() => UpgradePremiumController(), fenix: true);
