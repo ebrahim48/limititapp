@@ -13,7 +13,7 @@ class UpgradePremiumScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(UpgradePremiumController());
+    final controller = Get.find<UpgradePremiumController>();
 
     return Scaffold(
       appBar: _buildAppBar(context),

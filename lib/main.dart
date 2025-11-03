@@ -17,7 +17,6 @@ void main() async {
   di.dependencies();
   di.lockDevicePortrait();
 
-  Get.put(ThemeController());
   runApp(
     DevicePreview(
 

@@ -4,18 +4,36 @@ import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_thumber.dart';
 
-class CustomScreenTimeSlider extends StatefulWidget {
-  const CustomScreenTimeSlider({super.key});
+class CustomScreenTimeSlider extends StatelessWidget {
+  final int totalScreenTimeMinutes;
 
-  @override
-  State<CustomScreenTimeSlider> createState() => _CustomScreenTimeSliderState();
-}
-
-class _CustomScreenTimeSliderState extends State<CustomScreenTimeSlider> {
-  double soundVolume = 0.83;
+  const CustomScreenTimeSlider({
+    super.key,
+    required this.totalScreenTimeMinutes,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // Calculate slider value based on screen time (max 8 hours = 480 minutes)
+    final double sliderValue =
+        totalScreenTimeMinutes > 0
+            ? (totalScreenTimeMinutes / 480).clamp(0.0, 1.0)
+            : 0.0;
+
+    // Format the screen time display
+    String formattedTime;
+    if (totalScreenTimeMinutes >= 60) {
+      int hours = totalScreenTimeMinutes ~/ 60;
+      int minutes = totalScreenTimeMinutes % 60;
+      if (minutes == 0) {
+        formattedTime = '$hours ${hours == 1 ? 'hr' : 'hrs'}';
+      } else {
+        formattedTime = '$hours ${hours == 1 ? 'hr' : 'hrs'} $minutes mins';
+      }
+    } else {
+      formattedTime = '$totalScreenTimeMinutes mins';
+    }
+
     return Container(
       width: 345.w,
       height: 100.h,
@@ -40,7 +58,7 @@ class _CustomScreenTimeSliderState extends State<CustomScreenTimeSlider> {
               ),
               CustomText(
                 textAlign: TextAlign.start,
-                text: "${(soundVolume * 120).round()} Mins",
+                text: formattedTime,
                 fontsize: 13.sp,
                 fontWeight: FontWeight.w400,
                 color: AppColors.textColor3D3D3D,
@@ -49,21 +67,18 @@ class _CustomScreenTimeSliderState extends State<CustomScreenTimeSlider> {
           ),
           SizedBox(height: 8.h),
 
-          /// Custom Slider
+          /// Custom Slider (disabled - display only)
           SliderTheme(
             data: SliderTheme.of(context).copyWith(
-              trackHeight: 8.h,
-              trackShape: const RoundedRectSliderTrackShape(),
+              trackHeight: 8,
               activeTrackColor: AppColors.primaryColor4C956C,
               inactiveTrackColor: AppColors.textColor3D3D3D,
               overlayShape: SliderComponentShape.noOverlay,
               thumbShape: CustomCircleThumb(),
             ),
             child: Slider(
-              value: soundVolume,
-              onChanged: (val) {
-                setState(() => soundVolume = val);
-              },
+              value: sliderValue,
+              onChanged: null, // Disabled - null makes it non-interactive
             ),
           ),
         ],

@@ -1,0 +1,353 @@
+package com.example.limit_it_app
+
+import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.AccessibilityServiceInfo
+import android.app.usage.UsageEvents
+import android.app.usage.UsageStatsManager
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.util.Log
+import android.view.accessibility.AccessibilityEvent
+import java.util.*
+
+
+/**
+ * AccessibilityService to monitor app launches and enforce app limits
+ */
+class AppMonitoringService : AccessibilityService() {
+
+    private var lastPackageName: String? = null
+    private var appLaunchTime: Long = 0
+    private val TAG = "AppMonitoringService"
+
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var blockerPreferences: SharedPreferences
+    private val appSessionStartTimes = mutableMapOf<String, Long>()
+    private val appOpenCountsToday = mutableMapOf<String, Int>()
+    private var blockedApps = mutableSetOf<String>()
+    private lateinit var usageStatsManager: UsageStatsManager
+
+
+    // Debouncing mechanism
+    private var lastBlockedPackage: String? = null
+    private var lastBlockTime: Long = 0
+    private val blockCooldownMs = 2000L // 2 seconds cooldown
+    private val currentlyBlockedApps = mutableSetOf<String>()
+
+    companion object {
+        var isServiceRunning = false
+        private const val PREFS_NAME = "flutter.app_limits"
+        private const val KEY_APP_LIMITS = "app_limits"
+        private const val KEY_LAST_RESET_DATE = "last_reset_date"
+        private const val BLOCKER_PREFS_NAME = "app_blocker_prefs"
+        private const val KEY_BLOCKED_APPS = "blocked_apps"
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        Log.d(TAG, "AppMonitoringService created")
+        sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        blockerPreferences = getSharedPreferences(BLOCKER_PREFS_NAME, Context.MODE_PRIVATE)
+        usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        isServiceRunning = true
+
+        // Load blocked apps
+        loadBlockedApps()
+
+        // Check if we need to reset daily counters
+        checkAndResetDailyCounters()
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // Handle intent actions
+        when (intent?.action) {
+            "UPDATE_BLOCKED_APPS" -> {
+                val blockedAppsList = intent.getStringArrayListExtra("blocked_apps")
+                if (blockedAppsList != null) {
+                    blockedApps.clear()
+                    blockedApps.addAll(blockedAppsList)
+                    Log.d(TAG, "Updated blocked apps: $blockedApps")
+                }
+            }
+        }
+        return super.onStartCommand(intent, flags, startId)
+    }
+
+    private fun loadBlockedApps() {
+        blockedApps = blockerPreferences.getStringSet(KEY_BLOCKED_APPS, emptySet())?.toMutableSet() ?: mutableSetOf()
+        Log.d(TAG, "Loaded blocked apps: $blockedApps")
+    }
+
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        Log.d(TAG, "AppMonitoringService connected")
+
+        val info = AccessibilityServiceInfo()
+        info.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+        info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC
+        info.flags = AccessibilityServiceInfo.FLAG_INCLUDE_NOT_IMPORTANT_VIEWS
+        info.notificationTimeout = 100
+
+        serviceInfo = info
+    }
+
+    override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+        if (event == null) return
+
+        if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            event.packageName?.toString()?.let { packageName ->
+                // Ignore our own app and system UI
+                if (packageName == this.packageName ||
+                    packageName == "com.android.systemui" ||
+                    packageName == "android") {
+                    return
+                }
+
+                handleAppSwitch(packageName)
+            }
+        }
+    }
+
+    private fun handleAppSwitch(packageName: String) {
+        val currentTime = System.currentTimeMillis()
+
+        // Track session time for previous app
+        if (lastPackageName != null && lastPackageName != packageName) {
+            val sessionDuration = (currentTime - appLaunchTime) / 1000 / 60 // minutes
+            Log.d(TAG, "Previous app $lastPackageName session: $sessionDuration minutes")
+        }
+
+        // Check if this is a new app launch
+        if (lastPackageName != packageName) {
+            lastPackageName = packageName
+            appLaunchTime = currentTime
+
+            // Increment open count
+            val currentCount = appOpenCountsToday.getOrDefault(packageName, 0)
+            appOpenCountsToday[packageName] = currentCount + 1
+
+            // Store session start time
+            appSessionStartTimes[packageName] = currentTime
+
+            Log.d(TAG, "App launched: $packageName (Opens today: ${appOpenCountsToday[packageName]})")
+
+            // Check if app should be blocked
+            checkAndBlockApp(packageName)
+        } else {
+            // Same app, check session duration
+            val sessionDuration = (currentTime - appLaunchTime) / 1000 / 60 // minutes
+            checkSessionDuration(packageName, sessionDuration.toInt())
+        }
+    }
+
+    private fun checkAndBlockApp(packageName: String) {
+        val currentTime = System.currentTimeMillis()
+
+        // Check debouncing
+        if (lastBlockedPackage == packageName && currentTime - lastBlockTime < blockCooldownMs) {
+            Log.d(TAG, "Ignoring rapid block attempt for: $packageName")
+            return
+        }
+
+        // Check if app is currently being blocked
+        if (currentlyBlockedApps.contains(packageName)) {
+            Log.d(TAG, "App $packageName is already being blocked")
+            return
+        }
+
+        // First check if app is in instant block list
+        if (blockedApps.contains(packageName)) {
+            Log.d(TAG, "Blocking $packageName - app is in instant block list")
+            blockApp(packageName, "App Blocked",
+                "This app has been blocked. You can unblock it from the app list.")
+            return
+        }
+
+        // Then check app limits
+        val appLimits = getAppLimitsFromPrefs()
+        val limit = appLimits.find { it.packageName == packageName } ?: return
+
+        // Check if today is an active day
+        val today = getDayOfWeek()
+        if (!limit.activeDays.contains(today)) {
+            Log.d(TAG, "Today ($today) is not an active day for $packageName")
+            return
+        }
+
+        // Check open count limit
+        val opensToday = appOpenCountsToday.getOrDefault(packageName, 0)
+        if (opensToday > limit.maxDailyOpens) {
+            Log.d(TAG, "Blocking $packageName - exceeded open limit ($opensToday > ${limit.maxDailyOpens})")
+            blockApp(packageName, "Daily open limit reached",
+                "You've opened ${limit.appName} $opensToday times today. Limit: ${limit.maxDailyOpens}")
+            return
+        }
+    }
+
+    private fun checkSessionDuration(packageName: String, durationMinutes: Int) {
+        val appLimits = getAppLimitsFromPrefs()
+        val limit = appLimits.find { it.packageName == packageName } ?: return
+
+        if (durationMinutes >= limit.maxSessionDurationMinutes) {
+            Log.d(TAG, "Blocking $packageName - exceeded session duration ($durationMinutes >= ${limit.maxSessionDurationMinutes})")
+            blockApp(packageName, "Session time limit reached",
+                "You've used ${limit.appName} for $durationMinutes minutes. Limit: ${limit.maxSessionDurationMinutes} minutes")
+        }
+    }
+
+    private fun blockApp(packageName: String, title: String, message: String) {
+        try {
+            val currentTime = System.currentTimeMillis()
+
+            // Add to currently blocked set
+            currentlyBlockedApps.add(packageName)
+
+            // Update last block info
+            lastBlockedPackage = packageName
+            lastBlockTime = currentTime
+
+            Log.d(TAG, "Blocking app: $packageName")
+
+            // First, move the blocked app to the background by launching home
+            val homeIntent = Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_HOME)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            startActivity(homeIntent)
+
+            // Small delay to ensure home is launched, then show blocking overlay
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                try {
+                    val intent = Intent(this@AppMonitoringService, BlockingOverlayActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                        putExtra("packageName", packageName)
+                        putExtra("title", title)
+                        putExtra("message", message)
+                    }
+                    startActivity(intent)
+                    Log.d(TAG, "Successfully blocked app: $packageName")
+
+                    // Remove from currently blocked set after a delay
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                        currentlyBlockedApps.remove(packageName)
+                    }, 1000)
+
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error starting BlockingOverlayActivity", e)
+                    currentlyBlockedApps.remove(packageName)
+                }
+            }, 200)
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error blocking app: $packageName", e)
+            currentlyBlockedApps.remove(packageName)
+        }
+    }
+
+    private fun getAppLimitsFromPrefs(): List<AppLimit> {
+        val json = sharedPreferences.getString(KEY_APP_LIMITS, null) ?: return emptyList()
+
+        return try {
+            val jsonArray = org.json.JSONArray(json)
+            val limits = mutableListOf<AppLimit>()
+
+            for (i in 0 until jsonArray.length()) {
+                val obj = jsonArray.getJSONObject(i)
+                limits.add(AppLimit(
+                    packageName = obj.getString("packageName"),
+                    appName = obj.getString("appName"),
+                    maxDailyOpens = obj.getInt("maxDailyOpens"),
+                    maxSessionDurationMinutes = obj.getInt("maxSessionDurationMinutes"),
+                    activeDays = obj.getJSONArray("activeDays").let { arr ->
+                        List(arr.length()) { arr.getString(it) }
+                    }
+                ))
+            }
+            limits
+        } catch (e: Exception) {
+            Log.e(TAG, "Error parsing app limits", e)
+            emptyList()
+        }
+    }
+
+    private fun checkAndResetDailyCounters() {
+        val today = getTodayDate()
+        val lastReset = sharedPreferences.getString(KEY_LAST_RESET_DATE, null)
+
+        if (lastReset != today) {
+            Log.d(TAG, "Resetting daily counters (last reset: $lastReset, today: $today)")
+            appOpenCountsToday.clear()
+            sharedPreferences.edit().putString(KEY_LAST_RESET_DATE, today).apply()
+        }
+    }
+
+    private fun getTodayDate(): String {
+        val calendar = Calendar.getInstance()
+        return "${calendar.get(Calendar.YEAR)}-${calendar.get(Calendar.MONTH)}-${calendar.get(Calendar.DAY_OF_MONTH)}"
+    }
+
+    private fun getDayOfWeek(): String {
+        val calendar = Calendar.getInstance()
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> "SUN"
+            Calendar.MONDAY -> "MON"
+            Calendar.TUESDAY -> "TUE"
+            Calendar.WEDNESDAY -> "WED"
+            Calendar.THURSDAY -> "THU"
+            Calendar.FRIDAY -> "FRI"
+            Calendar.SATURDAY -> "SAT"
+            else -> ""
+        }
+    }
+
+    override fun onInterrupt() {
+        Log.d(TAG, "AppMonitoringService interrupted")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        isServiceRunning = false
+        currentlyBlockedApps.clear()
+        Log.d(TAG, "AppMonitoringService destroyed")
+    }
+
+    private fun isAppInForeground(packageName: String): Boolean {
+        val time = System.currentTimeMillis()
+        val usageEvents = usageStatsManager.queryEvents(time - 1000 * 60, time)
+        var foregroundPackage: String? = null
+        val event = UsageEvents.Event()
+        while (usageEvents.hasNextEvent()) {
+            usageEvents.getNextEvent(event)
+            if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                foregroundPackage = event.packageName
+            }
+        }
+        return foregroundPackage == packageName
+    }
+
+    private fun bringAppToForeground(packageName: String) {
+        if (isAppInForeground(packageName)) {
+            Log.d(TAG, "App $packageName is already in foreground.")
+            return
+        }
+
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
+    }
+
+    data class AppLimit(
+        val packageName: String,
+        val appName: String,
+        val maxDailyOpens: Int,
+        val maxSessionDurationMinutes: Int,
+        val activeDays: List<String>
+    )
+}

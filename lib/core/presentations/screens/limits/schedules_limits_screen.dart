@@ -14,7 +14,7 @@ class SchedulesLimitsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(SchedulesLimitsController());
+    final controller = Get.find<SchedulesLimitsController>();
 
     return Scaffold(
       appBar: AppBar(

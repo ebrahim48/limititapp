@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/app_data_helper.dart';
@@ -30,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _hasPermission = false;
   List<AppUsageData> _appUsageList = [];
   String? _errorMessage;
+  int _totalScreenTimeMinutes = 0;
 
   @override
   void initState() {
@@ -82,11 +84,12 @@ class _HomeScreenState extends State<HomeScreen> {
       }
 
       // Check permission
-      bool hasPermission = await AppUsageService.hasPermission();
+      final appUsageService = Get.find<AppUsageService>();
+      bool hasPermission = await appUsageService.hasPermission();
 
       if (!hasPermission) {
         // Request permission
-        hasPermission = await AppUsageService.requestPermission();
+        hasPermission = await appUsageService.requestPermission();
       }
 
       setState(() {
@@ -94,14 +97,22 @@ class _HomeScreenState extends State<HomeScreen> {
       });
 
       if (hasPermission) {
-        // Get app usage data
-        List<AppUsageData> usageData = await AppUsageService.getTodayAppUsage();
+        // Get ALL installed apps (with usage data merged)
+        List<AppUsageData> allApps = await appUsageService.getAllInstalledApps();
+
+        // Calculate total screen time in minutes
+        int totalTimeMs = 0;
+        for (var app in allApps) {
+          totalTimeMs += app.usageTimeMs;
+        }
+        int totalMinutes = (totalTimeMs / 1000 / 60).round();
 
         setState(() {
-          _appUsageList = usageData;
+          _appUsageList = allApps;
+          _totalScreenTimeMinutes = totalMinutes;
           _isLoading = false;
-          if (usageData.isEmpty) {
-            _errorMessage = 'No app usage data available for today';
+          if (allApps.isEmpty) {
+            _errorMessage = 'No apps found on this device';
           }
         });
       } else {
@@ -134,9 +145,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(height: 20.h),
 
                 /// -====================================> slider ==========================
-                CustomScreenTimeSlider(),
+                CustomScreenTimeSlider(
+                  totalScreenTimeMinutes: _totalScreenTimeMinutes,
+                ),
                 SizedBox(height: 24.h),
-                DailyUsageCard(dailyApps: AppDataHelper.dailyApps),
+                DailyUsageCard(
+                  dailyApps: _appUsageList.isNotEmpty
+                      ? AppDataHelper.convertToDailyUsageApps(_appUsageList)
+                      : AppDataHelper.dailyApps,
+                  appUsageData: _appUsageList.isNotEmpty ? _appUsageList : null,
+                  isLoading: _isLoading,
+                ),
                 SizedBox(height: 24.h),
                 // Banner Ad Section
                 if (_isBannerAdReady && _bannerAd != null)

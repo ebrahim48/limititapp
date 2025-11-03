@@ -96,14 +96,6 @@ class AppRoutes {
         path: splashScreen,
         name: splashScreen,
         builder: (context, state) => const SplashScreen(),
-        redirect: (context, state) {
-          Future.delayed(const Duration(seconds: 3), () async {
-              AppRoutes.goRouter.replaceNamed(AppRoutes.onBoardingScreen);
-            }
-          );
-
-          return;
-        },
       ),
 
       ///<<<=============>>> ONBOARDING SCREEN <<<===============>>>
@@ -221,9 +213,16 @@ class AppRoutes {
       GoRoute(
         path: setUsageLimitScreen,
         name: setUsageLimitScreen,
-        pageBuilder:
-            (context, state) =>
-                _customTransitionPage(SetUsageLimitScreen(), state),
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return _customTransitionPage(
+            SetUsageLimitScreen(
+              selectedApps: extra?['selectedApps'],
+              selectedDays: extra?['selectedDays'],
+            ),
+            state,
+          );
+        },
       ),
 
       ///<<<=============>>>Timer Settings Screen <<<===============>>>

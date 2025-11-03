@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/core/app_constants/app_constants.dart';
 import 'package:limit_it_app/core/constants/app_strings.dart';
 import 'dart:ui';
+import 'package:limit_it_app/core/helpers/prefs_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
+import '../../../config/app_routes/app_routes.dart';
 import '../../../constants/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -24,6 +28,21 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(seconds: 10),
       vsync: this,
     )..repeat();
+    _checkAuthAndNavigate();
+  }
+
+  Future<void> _checkAuthAndNavigate() async {
+    await Future.delayed(const Duration(seconds: 3));
+
+    final bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+
+    if (!mounted) return;
+
+    if (bearerToken.isNotEmpty) {
+      context.goNamed(AppRoutes.bottomNavBarScreen);
+    } else {
+      context.goNamed(AppRoutes.onBoardingScreen);
+    }
   }
 
   @override
