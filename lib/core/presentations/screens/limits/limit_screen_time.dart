@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
@@ -91,7 +92,7 @@ class _LimitScreenTimeState extends State<LimitScreenTime> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: 'Screen Time',
+              text: context.l10n.screenTime,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -112,7 +113,7 @@ class _LimitScreenTimeState extends State<LimitScreenTime> {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 40.h),
                         child: CustomText(
-                          text: 'No screen time limits set yet',
+                          text: context.l10n.noScreenTimeLimits,
                           fontsize: 16.sp,
                           fontWeight: FontWeight.w400,
                           color: Colors.grey,
@@ -129,7 +130,7 @@ class _LimitScreenTimeState extends State<LimitScreenTime> {
                         )),
                   SizedBox(height: 32.h),
                   CustomButton(
-                    title: 'Add New ScreenTime',
+                    title: context.l10n.addNewScreenTime,
                     onpress: () async {
                       await context.pushNamed(AppRoutes.selectAppsManageScreen);
                       // Reload data when returning from add screen

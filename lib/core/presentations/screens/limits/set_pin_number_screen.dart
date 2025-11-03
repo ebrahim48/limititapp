@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
@@ -34,7 +35,7 @@ class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: 'Set Pin Number',
+              text: context.l10n.setPinNumber,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -52,13 +53,13 @@ class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
             CustomTextField(
               hintextColor: AppColors.textColor5D5D5D,
               controller: pinNumberController,
-              hintText: 'Enter the Pin Number',
+              hintText: context.l10n.enterPinNumber,
               isPassword: true,
             ),
             SizedBox(height: 24.h),
 
             CustomButton(
-              title: 'Save Pin Number',
+              title: context.l10n.savePinNumber,
               onpress: () {
 
               },

@@ -226,7 +226,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               screenType: "signup",
                             );
                           } else if (!isChecked.value) {
-                            ToastMessageHelper.showToastMessage("Please accept Privacy Policy",title: 'Failed');
+                            ToastMessageHelper.showToastMessage(context.l10n.pleaseAcceptPrivacyPolicy,title: context.l10n.failed);
                           }
                         },
                       )),

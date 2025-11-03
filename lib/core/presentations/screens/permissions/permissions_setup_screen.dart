@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/screens/Home/home_screen.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_blocker_service.dart';
@@ -124,7 +125,7 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
     return Scaffold(
       appBar: AppBar(
         title: CustomText(
-          text: 'Setup Permissions',
+          text: context.l10n.setupPermissions,
           fontsize: 20.sp,
           fontWeight: FontWeight.w500,
           color: AppColors.textColor3D3D3D,
@@ -140,15 +141,14 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
             children: [
               // Header
               CustomText(
-                text: 'Grant Required Permissions',
+                text: context.l10n.grantRequiredPermissions,
                 fontsize: 24.sp,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textColor2C2C2C,
               ),
               SizedBox(height: 12.h),
               CustomText(
-                text:
-                    'LimitIt needs these permissions to monitor and block apps when limits are reached.',
+                text: context.l10n.permissionsDescription,
                 fontsize: 14.sp,
                 color: const Color(0xFF5D5D5D),
                 maxline: 3,
@@ -161,17 +161,16 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
               else ...[
                 _buildPermissionCard(
                   icon: Icons.visibility,
-                  title: 'Overlay Permission',
-                  description:
-                      'Allows LimitIt to display blocking screen over other apps',
+                  title: context.l10n.overlayPermission,
+                  description: context.l10n.overlayPermissionDesc,
                   isGranted: _hasOverlayPermission,
                   onRequest: _requestOverlayPermission,
                 ),
                 SizedBox(height: 16.h),
                 _buildPermissionCard(
                   icon: Icons.accessibility_new,
-                  title: 'Accessibility Service',
-                  description: 'Monitors which apps you open to enforce limits',
+                  title: context.l10n.accessibilityService,
+                  description: context.l10n.accessibilityServiceDesc,
                   isGranted: _hasAccessibilityPermission,
                   onRequest: _requestAccessibilityPermission,
                 ),
@@ -200,8 +199,8 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
                           : CustomText(
                             text:
                                 allPermissionsGranted
-                                    ? 'Start Monitoring'
-                                    : 'Grant All Permissions First',
+                                    ? context.l10n.startMonitoring
+                                    : context.l10n.grantAllPermissionsFirst,
                             fontsize: 16,
                             fontWeight: FontWeight.w500,
                             color:
@@ -276,7 +275,7 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
             TextButton(
               onPressed: onRequest,
               child: CustomText(
-                text: 'Grant',
+                text: context.l10n.grant,
                 fontsize: 14.sp,
                 fontWeight: FontWeight.w600,
                 color: const Color(0xFF214432),

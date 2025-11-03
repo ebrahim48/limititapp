@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/appselection_helper.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/app_model_pin.dart';
 import 'package:limit_it_app/core/presentations/widgets/app_pin_lock_card.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
@@ -38,7 +39,7 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: 'Detox Mode',
+              text: context.l10n.detoxMode,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -89,7 +90,7 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
                         ),
                         SizedBox(width: 8.w),
                         CustomText(
-                          text: 'Select All',
+                          text: context.l10n.selectAll,
                           fontsize: 14.sp,
                           fontWeight: FontWeight.w400,
                           color: const Color(0xFF5D5D5D),
@@ -122,7 +123,7 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
                 : const SizedBox.shrink()),
             SizedBox(height: 32.h),
             CustomButton(
-              title: 'Save Detox Mode(2 apps)',
+              title: context.l10n.saveDetoxMode,
               onpress: () {
 
               },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'dart:ui';
@@ -97,7 +98,7 @@ class _OnboardingStartScreenState extends State<OnboardingStartScreen> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
                   child: CustomButton(
-                    title: _currentPage == _pages.length - 1 ? 'Sign Up Now' : 'Next',
+                    title: _currentPage == _pages.length - 1 ? context.l10n.signUpNow : context.l10n.next,
                     onpress: _nextPage,
                   ),
                 ),
@@ -170,26 +171,26 @@ class _OnboardingStartScreenState extends State<OnboardingStartScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<OnboardingData> _pages = [
+  List<OnboardingData> get _pages => [
     OnboardingData(
       image: Assets.images.screentime,
-      title: 'Take Control of Your\nScreen Time',
-      subtitle: 'Regain Control of Your Digital Life',
+      title: context.l10n.takeControlScreenTime,
+      subtitle: context.l10n.regainControl,
     ),
     OnboardingData(
       image: Assets.images.limit,
-      title: 'Limit the Apps That\nDistract You',
-      subtitle: 'Choose Which Apps to Limit',
+      title: context.l10n.limitDistractingApps,
+      subtitle: context.l10n.chooseAppsToLimit,
     ),
     OnboardingData(
       image: Assets.images.resets,
-      title: 'Smart Scheduling &\nDaily Resets',
-      subtitle: 'Create Your Perfect Schedule',
+      title: context.l10n.smartScheduling,
+      subtitle: context.l10n.createPerfectSchedule,
     ),
     OnboardingData(
       image: Assets.images.progress,
-      title: 'Track Your Progress\n& Improve',
-      subtitle: 'Stay Motivated with Weekly Reports',
+      title: context.l10n.trackYourProgress,
+      subtitle: context.l10n.stayMotivated,
     ),
   ];
 

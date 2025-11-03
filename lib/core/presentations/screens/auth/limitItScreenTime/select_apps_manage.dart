@@ -229,7 +229,7 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
                         TextButton(
                           onPressed: _loadAppUsageData,
                           child: Text(
-                            'Retry',
+                            context.l10n.retry,
                             style: TextStyle(
                               fontSize: 12.sp,
                               color: const Color(0xFFFF9800),
@@ -255,8 +255,8 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
                 onTap: () {
                   if (selectedApps.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select at least one app'),
+                      SnackBar(
+                        content: Text(context.l10n.pleaseSelectAtLeastOneApp),
                         backgroundColor: Colors.orange,
                       ),
                     );
@@ -314,7 +314,7 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
                     borderRadius: BorderRadius.circular(28.r),
                   ),
                   child: CustomText(
-                    text: "Continue (${selectedApps.length} apps Selected)",
+                    text: context.l10n.continueWithAppsCount(selectedApps.length),
                     fontsize: 16.sp,
                     fontWeight: FontWeight.w500,
                     color: AppColors.textColorF6F6F6,

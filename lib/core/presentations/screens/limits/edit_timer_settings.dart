@@ -35,7 +35,7 @@ class _EditTimerSettingsScreenState extends State<EditTimerSettingsScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: 'Edit Timer Settings',
+              text: context.l10n.editTimerSettings,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -115,7 +115,7 @@ class _EditTimerSettingsScreenState extends State<EditTimerSettingsScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         CustomText(
-                          text: showMoreDurations.value ? 'Less' : 'More',
+                          text: showMoreDurations.value ? context.l10n.less : context.l10n.more,
                           fontsize: 12.sp,
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
@@ -152,7 +152,7 @@ class _EditTimerSettingsScreenState extends State<EditTimerSettingsScreen> {
 
                 // Save button
                 CustomButton(
-                  title: 'Update ScreenTime',
+                  title: context.l10n.updateScreenTime,
                   onpress: () {
 
                   },

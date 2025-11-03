@@ -182,7 +182,7 @@ abstract class AppLocalizations {
   /// **'Theme'**
   String get theme;
 
-  /// Notifications setting label
+  /// Notifications screen title
   ///
   /// In en, this message translates to:
   /// **'Notifications'**
@@ -475,6 +475,456 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All set !\nYou have Successfully Set App Limit'**
   String get allSetAppLimit;
+
+  /// Reports screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Reports'**
+  String get reports;
+
+  /// Most used apps section
+  ///
+  /// In en, this message translates to:
+  /// **'Most Used Apps'**
+  String get mostUsedApps;
+
+  /// Download report button
+  ///
+  /// In en, this message translates to:
+  /// **'Download Report'**
+  String get downloadReport;
+
+  /// Empty notifications message
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet'**
+  String get noNotificationsYet;
+
+  /// Empty notifications description
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll notify you when something new arrives'**
+  String get notifyWhenNewArrives;
+
+  /// Detox mode screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Detox Mode'**
+  String get detoxMode;
+
+  /// Select all checkbox
+  ///
+  /// In en, this message translates to:
+  /// **'Select All'**
+  String get selectAll;
+
+  /// Save detox mode button
+  ///
+  /// In en, this message translates to:
+  /// **'Save Detox Mode'**
+  String get saveDetoxMode;
+
+  /// Setup permissions screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Setup Permissions'**
+  String get setupPermissions;
+
+  /// Grant permissions header
+  ///
+  /// In en, this message translates to:
+  /// **'Grant Required Permissions'**
+  String get grantRequiredPermissions;
+
+  /// Permissions explanation
+  ///
+  /// In en, this message translates to:
+  /// **'LimitIt needs these permissions to monitor and block apps when limits are reached.'**
+  String get permissionsDescription;
+
+  /// Overlay permission title
+  ///
+  /// In en, this message translates to:
+  /// **'Overlay Permission'**
+  String get overlayPermission;
+
+  /// Overlay permission description
+  ///
+  /// In en, this message translates to:
+  /// **'Allows LimitIt to display blocking screen over other apps'**
+  String get overlayPermissionDesc;
+
+  /// Accessibility service title
+  ///
+  /// In en, this message translates to:
+  /// **'Accessibility Service'**
+  String get accessibilityService;
+
+  /// Accessibility service description
+  ///
+  /// In en, this message translates to:
+  /// **'Monitors which apps you open to enforce limits'**
+  String get accessibilityServiceDesc;
+
+  /// Start monitoring button
+  ///
+  /// In en, this message translates to:
+  /// **'Start Monitoring'**
+  String get startMonitoring;
+
+  /// Grant permissions prompt
+  ///
+  /// In en, this message translates to:
+  /// **'Grant All Permissions First'**
+  String get grantAllPermissionsFirst;
+
+  /// Grant button
+  ///
+  /// In en, this message translates to:
+  /// **'Grant'**
+  String get grant;
+
+  /// Sign up now button
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up Now'**
+  String get signUpNow;
+
+  /// Next button
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// Onboarding page 1 title
+  ///
+  /// In en, this message translates to:
+  /// **'Take Control of Your\nScreen Time'**
+  String get takeControlScreenTime;
+
+  /// Onboarding page 1 subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Regain Control of Your Digital Life'**
+  String get regainControl;
+
+  /// Onboarding page 2 title
+  ///
+  /// In en, this message translates to:
+  /// **'Limit the Apps That\nDistract You'**
+  String get limitDistractingApps;
+
+  /// Onboarding page 2 subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Which Apps to Limit'**
+  String get chooseAppsToLimit;
+
+  /// Onboarding page 3 title
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Scheduling &\nDaily Resets'**
+  String get smartScheduling;
+
+  /// Onboarding page 3 subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Create Your Perfect Schedule'**
+  String get createPerfectSchedule;
+
+  /// Onboarding page 4 title
+  ///
+  /// In en, this message translates to:
+  /// **'Track Your Progress\n& Improve'**
+  String get trackYourProgress;
+
+  /// Onboarding page 4 subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Motivated with Weekly Reports'**
+  String get stayMotivated;
+
+  /// Edit profile screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfile;
+
+  /// Update profile button
+  ///
+  /// In en, this message translates to:
+  /// **'Update Profile'**
+  String get updateProfile;
+
+  /// Take photo option
+  ///
+  /// In en, this message translates to:
+  /// **'Take a Photo'**
+  String get takePhoto;
+
+  /// Choose from gallery option
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from Gallery'**
+  String get chooseFromGallery;
+
+  /// Edit timer settings screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Timer Settings'**
+  String get editTimerSettings;
+
+  /// Less button
+  ///
+  /// In en, this message translates to:
+  /// **'Less'**
+  String get less;
+
+  /// More button
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get more;
+
+  /// Update screen time button
+  ///
+  /// In en, this message translates to:
+  /// **'Update ScreenTime'**
+  String get updateScreenTime;
+
+  /// Pin lock screen title
+  ///
+  /// In en, this message translates to:
+  /// **'PinLock'**
+  String get pinLock;
+
+  /// Edit usage limit screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Usage Limit'**
+  String get editUsageLimit;
+
+  /// Daily opens limit label
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Opens Limit'**
+  String get dailyOpensLimit;
+
+  /// Session duration label
+  ///
+  /// In en, this message translates to:
+  /// **'Session Duration'**
+  String get sessionDuration;
+
+  /// Motivation quotes hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Motivation Quotes'**
+  String get enterMotivationQuotes;
+
+  /// Author name hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter author name'**
+  String get enterAuthorName;
+
+  /// Save motivation button
+  ///
+  /// In en, this message translates to:
+  /// **'Save Motivation'**
+  String get saveMotivation;
+
+  /// Set pin number screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Set Pin Number'**
+  String get setPinNumber;
+
+  /// Enter pin number hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the Pin Number'**
+  String get enterPinNumber;
+
+  /// Save pin number button
+  ///
+  /// In en, this message translates to:
+  /// **'Save Pin Number'**
+  String get savePinNumber;
+
+  /// Privacy policy acceptance error
+  ///
+  /// In en, this message translates to:
+  /// **'Please accept Privacy Policy'**
+  String get pleaseAcceptPrivacyPolicy;
+
+  /// Screen time screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Screen Time'**
+  String get screenTime;
+
+  /// Empty screen time message
+  ///
+  /// In en, this message translates to:
+  /// **'No screen time limits set yet'**
+  String get noScreenTimeLimits;
+
+  /// Add new screen time button
+  ///
+  /// In en, this message translates to:
+  /// **'Add New ScreenTime'**
+  String get addNewScreenTime;
+
+  /// Retry button
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// App selection error
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least one app'**
+  String get pleaseSelectAtLeastOneApp;
+
+  /// Continue button with count
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueWithApps;
+
+  /// Continue button with app count
+  ///
+  /// In en, this message translates to:
+  /// **'Continue ({count} apps Selected)'**
+  String continueWithAppsCount(int count);
+
+  /// Subscription menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get subscription;
+
+  /// Change password menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
+
+  /// About us menu item
+  ///
+  /// In en, this message translates to:
+  /// **'About Us'**
+  String get aboutUs;
+
+  /// Notification menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Notification'**
+  String get notification;
+
+  /// Log out button
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get logOut;
+
+  /// Log out dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to Log out ?'**
+  String get readyToLogOut;
+
+  /// No apps selected message
+  ///
+  /// In en, this message translates to:
+  /// **'No apps selected. Please go back and select apps.'**
+  String get noAppsSelected;
+
+  /// Saving button text
+  ///
+  /// In en, this message translates to:
+  /// **'Saving...'**
+  String get saving;
+
+  /// Schedules screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Schedules'**
+  String get schedules;
+
+  /// App block lists section
+  ///
+  /// In en, this message translates to:
+  /// **'App Block Lists'**
+  String get appBlockLists;
+
+  /// Save app block button
+  ///
+  /// In en, this message translates to:
+  /// **'Save App Block'**
+  String get saveAppBlock;
+
+  /// Add motivation button
+  ///
+  /// In en, this message translates to:
+  /// **'Add Motivation'**
+  String get addMotivation;
+
+  /// Upgrade to premium screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to premium'**
+  String get upgradeToPremium;
+
+  /// Premium plan title
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Monthly Plan'**
+  String get premiumMonthlyPlan;
+
+  /// Price per month
+  ///
+  /// In en, this message translates to:
+  /// **'€1/month'**
+  String get pricePerMonth;
+
+  /// Subscribe now button
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe Now'**
+  String get subscribeNow;
+
+  /// Confirm subscription dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Subscription'**
+  String get confirmSubscription;
+
+  /// Subscription confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe to Premium Monthly Plan for €1/month?'**
+  String get subscriptionConfirmMessage;
+
+  /// Subscribe button
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe'**
+  String get subscribe;
+
+  /// Subscription success message
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription successful!'**
+  String get subscriptionSuccessful;
+
+  /// Failed status
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get failed;
 }
 
 class _AppLocalizationsDelegate

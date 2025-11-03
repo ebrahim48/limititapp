@@ -251,5 +251,318 @@
   "allSetAppLimit": "All set !\nYou have Successfully Set App Limit",
   "@allSetAppLimit": {
     "description": "App limit success message"
+  },
+  "reports": "Reports",
+  "@reports": {
+    "description": "Reports screen title"
+  },
+  "mostUsedApps": "Most Used Apps",
+  "@mostUsedApps": {
+    "description": "Most used apps section"
+  },
+  "downloadReport": "Download Report",
+  "@downloadReport": {
+    "description": "Download report button"
+  },
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications screen title"
+  },
+  "noNotificationsYet": "No notifications yet",
+  "@noNotificationsYet": {
+    "description": "Empty notifications message"
+  },
+  "notifyWhenNewArrives": "We'll notify you when something new arrives",
+  "@notifyWhenNewArrives": {
+    "description": "Empty notifications description"
+  },
+  "detoxMode": "Detox Mode",
+  "@detoxMode": {
+    "description": "Detox mode screen title"
+  },
+  "selectAll": "Select All",
+  "@selectAll": {
+    "description": "Select all checkbox"
+  },
+  "saveDetoxMode": "Save Detox Mode",
+  "@saveDetoxMode": {
+    "description": "Save detox mode button"
+  },
+  "setupPermissions": "Setup Permissions",
+  "@setupPermissions": {
+    "description": "Setup permissions screen title"
+  },
+  "grantRequiredPermissions": "Grant Required Permissions",
+  "@grantRequiredPermissions": {
+    "description": "Grant permissions header"
+  },
+  "permissionsDescription": "LimitIt needs these permissions to monitor and block apps when limits are reached.",
+  "@permissionsDescription": {
+    "description": "Permissions explanation"
+  },
+  "overlayPermission": "Overlay Permission",
+  "@overlayPermission": {
+    "description": "Overlay permission title"
+  },
+  "overlayPermissionDesc": "Allows LimitIt to display blocking screen over other apps",
+  "@overlayPermissionDesc": {
+    "description": "Overlay permission description"
+  },
+  "accessibilityService": "Accessibility Service",
+  "@accessibilityService": {
+    "description": "Accessibility service title"
+  },
+  "accessibilityServiceDesc": "Monitors which apps you open to enforce limits",
+  "@accessibilityServiceDesc": {
+    "description": "Accessibility service description"
+  },
+  "startMonitoring": "Start Monitoring",
+  "@startMonitoring": {
+    "description": "Start monitoring button"
+  },
+  "grantAllPermissionsFirst": "Grant All Permissions First",
+  "@grantAllPermissionsFirst": {
+    "description": "Grant permissions prompt"
+  },
+  "grant": "Grant",
+  "@grant": {
+    "description": "Grant button"
+  },
+  "signUpNow": "Sign Up Now",
+  "@signUpNow": {
+    "description": "Sign up now button"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next button"
+  },
+  "takeControlScreenTime": "Take Control of Your\nScreen Time",
+  "@takeControlScreenTime": {
+    "description": "Onboarding page 1 title"
+  },
+  "regainControl": "Regain Control of Your Digital Life",
+  "@regainControl": {
+    "description": "Onboarding page 1 subtitle"
+  },
+  "limitDistractingApps": "Limit the Apps That\nDistract You",
+  "@limitDistractingApps": {
+    "description": "Onboarding page 2 title"
+  },
+  "chooseAppsToLimit": "Choose Which Apps to Limit",
+  "@chooseAppsToLimit": {
+    "description": "Onboarding page 2 subtitle"
+  },
+  "smartScheduling": "Smart Scheduling &\nDaily Resets",
+  "@smartScheduling": {
+    "description": "Onboarding page 3 title"
+  },
+  "createPerfectSchedule": "Create Your Perfect Schedule",
+  "@createPerfectSchedule": {
+    "description": "Onboarding page 3 subtitle"
+  },
+  "trackYourProgress": "Track Your Progress\n& Improve",
+  "@trackYourProgress": {
+    "description": "Onboarding page 4 title"
+  },
+  "stayMotivated": "Stay Motivated with Weekly Reports",
+  "@stayMotivated": {
+    "description": "Onboarding page 4 subtitle"
+  },
+  "editProfile": "Edit Profile",
+  "@editProfile": {
+    "description": "Edit profile screen title"
+  },
+  "updateProfile": "Update Profile",
+  "@updateProfile": {
+    "description": "Update profile button"
+  },
+  "takePhoto": "Take a Photo",
+  "@takePhoto": {
+    "description": "Take photo option"
+  },
+  "chooseFromGallery": "Choose from Gallery",
+  "@chooseFromGallery": {
+    "description": "Choose from gallery option"
+  },
+  "editTimerSettings": "Edit Timer Settings",
+  "@editTimerSettings": {
+    "description": "Edit timer settings screen title"
+  },
+  "less": "Less",
+  "@less": {
+    "description": "Less button"
+  },
+  "more": "More",
+  "@more": {
+    "description": "More button"
+  },
+  "updateScreenTime": "Update ScreenTime",
+  "@updateScreenTime": {
+    "description": "Update screen time button"
+  },
+  "pinLock": "PinLock",
+  "@pinLock": {
+    "description": "Pin lock screen title"
+  },
+  "editUsageLimit": "Edit Usage Limit",
+  "@editUsageLimit": {
+    "description": "Edit usage limit screen title"
+  },
+  "dailyOpensLimit": "Daily Opens Limit",
+  "@dailyOpensLimit": {
+    "description": "Daily opens limit label"
+  },
+  "sessionDuration": "Session Duration",
+  "@sessionDuration": {
+    "description": "Session duration label"
+  },
+  "enterMotivationQuotes": "Enter Motivation Quotes",
+  "@enterMotivationQuotes": {
+    "description": "Motivation quotes hint"
+  },
+  "enterAuthorName": "Enter author name",
+  "@enterAuthorName": {
+    "description": "Author name hint"
+  },
+  "saveMotivation": "Save Motivation",
+  "@saveMotivation": {
+    "description": "Save motivation button"
+  },
+  "setPinNumber": "Set Pin Number",
+  "@setPinNumber": {
+    "description": "Set pin number screen title"
+  },
+  "enterPinNumber": "Enter the Pin Number",
+  "@enterPinNumber": {
+    "description": "Enter pin number hint"
+  },
+  "savePinNumber": "Save Pin Number",
+  "@savePinNumber": {
+    "description": "Save pin number button"
+  },
+  "pleaseAcceptPrivacyPolicy": "Please accept Privacy Policy",
+  "@pleaseAcceptPrivacyPolicy": {
+    "description": "Privacy policy acceptance error"
+  },
+  "screenTime": "Screen Time",
+  "@screenTime": {
+    "description": "Screen time screen title"
+  },
+  "noScreenTimeLimits": "No screen time limits set yet",
+  "@noScreenTimeLimits": {
+    "description": "Empty screen time message"
+  },
+  "addNewScreenTime": "Add New ScreenTime",
+  "@addNewScreenTime": {
+    "description": "Add new screen time button"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button"
+  },
+  "pleaseSelectAtLeastOneApp": "Please select at least one app",
+  "@pleaseSelectAtLeastOneApp": {
+    "description": "App selection error"
+  },
+  "continueWithApps": "Continue",
+  "@continueWithApps": {
+    "description": "Continue button with count"
+  },
+  "continueWithAppsCount": "Continue ({count} apps Selected)",
+  "@continueWithAppsCount": {
+    "description": "Continue button with app count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings screen title"
+  },
+  "subscription": "Subscription",
+  "@subscription": {
+    "description": "Subscription menu item"
+  },
+  "changePassword": "Change Password",
+  "@changePassword": {
+    "description": "Change password menu item"
+  },
+  "aboutUs": "About Us",
+  "@aboutUs": {
+    "description": "About us menu item"
+  },
+  "notification": "Notification",
+  "@notification": {
+    "description": "Notification menu item"
+  },
+  "logOut": "Log out",
+  "@logOut": {
+    "description": "Log out button"
+  },
+  "readyToLogOut": "Ready to Log out ?",
+  "@readyToLogOut": {
+    "description": "Log out dialog title"
+  },
+  "noAppsSelected": "No apps selected. Please go back and select apps.",
+  "@noAppsSelected": {
+    "description": "No apps selected message"
+  },
+  "saving": "Saving...",
+  "@saving": {
+    "description": "Saving button text"
+  },
+  "schedules": "Schedules",
+  "@schedules": {
+    "description": "Schedules screen title"
+  },
+  "appBlockLists": "App Block Lists",
+  "@appBlockLists": {
+    "description": "App block lists section"
+  },
+  "saveAppBlock": "Save App Block",
+  "@saveAppBlock": {
+    "description": "Save app block button"
+  },
+  "addMotivation": "Add Motivation",
+  "@addMotivation": {
+    "description": "Add motivation button"
+  },
+  "upgradeToPremium": "Upgrade to premium",
+  "@upgradeToPremium": {
+    "description": "Upgrade to premium screen title"
+  },
+  "premiumMonthlyPlan": "Premium Monthly Plan",
+  "@premiumMonthlyPlan": {
+    "description": "Premium plan title"
+  },
+  "pricePerMonth": "€1/month",
+  "@pricePerMonth": {
+    "description": "Price per month"
+  },
+  "subscribeNow": "Subscribe Now",
+  "@subscribeNow": {
+    "description": "Subscribe now button"
+  },
+  "confirmSubscription": "Confirm Subscription",
+  "@confirmSubscription": {
+    "description": "Confirm subscription dialog title"
+  },
+  "subscriptionConfirmMessage": "Subscribe to Premium Monthly Plan for €1/month?",
+  "@subscriptionConfirmMessage": {
+    "description": "Subscription confirmation message"
+  },
+  "subscribe": "Subscribe",
+  "@subscribe": {
+    "description": "Subscribe button"
+  },
+  "subscriptionSuccessful": "Subscription successful!",
+  "@subscriptionSuccessful": {
+    "description": "Subscription success message"
+  },
+  "failed": "Failed",
+  "@failed": {
+    "description": "Failed status"
   }
 }
