@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_slider.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -35,7 +35,7 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
               onPressed: () => Navigator.pop(context),
             ),
             SizedBox(width: 12.w),
-            CustomText(text: 'Edit Usage Limit',
+            CustomText(text: context.l10n.editUsageLimit,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -53,7 +53,7 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
                 SizedBox(height: 20.h),
 
                 CustomText(
-                  text: AppString.dailyScreen,
+                  text: context.l10n.totalDailyScreenTime,
                   fontsize: 20.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textColor3D3D3D,
@@ -93,7 +93,7 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
                 ),
                 SizedBox(height: 48.h),
                 CustomButton(
-                  title: 'Next',
+                  title: context.l10n.next,
                   onpress: () {
                     context.pushNamed(AppRoutes.editTimerSettingsScreen);
                   },),
@@ -139,7 +139,7 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
         ),
         SizedBox(height: 12.h),
         CustomText(
-          text: "Daily Opens Limit",
+          text: context.l10n.dailyOpensLimit,
           fontsize: 16.sp,
           color: AppColors.textColor3D3D3D,
           fontWeight: FontWeight.w400,
@@ -148,7 +148,7 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
         _buildDropdown(opensValue, opensList, onOpensChanged),
         SizedBox(height: 16.h),
         CustomText(
-          text: "Session Duration",
+          text: context.l10n.sessionDuration,
           fontsize: 16.sp,
           color: AppColors.textColor3D3D3D,
           fontWeight: FontWeight.w400,

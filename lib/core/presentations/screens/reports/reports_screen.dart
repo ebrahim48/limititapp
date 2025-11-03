@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/app_data_helper.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/background_layers.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -32,7 +33,7 @@ class ReportsScreen extends StatelessWidget {
           children: [
             SizedBox(width: 24.w),
             CustomText(
-              text: 'Reports',
+              text: context.l10n.reports,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -54,7 +55,7 @@ class ReportsScreen extends StatelessWidget {
 
                 SizedBox(height: 24.h),
                 CustomText(
-                  text: 'Most Used Apps',
+                  text: context.l10n.mostUsedApps,
                   fontsize: 20.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textColor2C2C2C,
@@ -64,7 +65,7 @@ class ReportsScreen extends StatelessWidget {
                 ...AppDataHelper.yourApps.map((app) => YourAppCard(app: app)).toList(),
                 SizedBox(height: 24.h),
                 CustomButton(
-                    title: 'Download Report',
+                    title: context.l10n.downloadReport,
                     onpress: () {
 
                     },

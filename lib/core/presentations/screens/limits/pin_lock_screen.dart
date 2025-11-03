@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/appselection_helper.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/app_model_pin.dart';
 import 'package:limit_it_app/core/presentations/widgets/app_pin_lock_card.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
@@ -40,7 +41,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: 'PinLock',
+              text: context.l10n.pinLock,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -91,7 +92,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
                         ),
                         SizedBox(width: 8.w),
                         CustomText(
-                          text: 'Select All',
+                          text: context.l10n.selectAll,
                           fontsize: 14.sp,
                           fontWeight: FontWeight.w400,
                           color: const Color(0xFF5D5D5D),
@@ -124,7 +125,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
                 : const SizedBox.shrink()),
             SizedBox(height: 32.h),
             CustomButton(
-              title: 'Next',
+              title: context.l10n.next,
               onpress: () {
                 context.pushNamed(AppRoutes.setPinNumberScreen);
 

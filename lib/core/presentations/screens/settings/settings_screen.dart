@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_delete_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -37,7 +38,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: "Settings",
+              text: context.l10n.settings,
               color: AppColors.textColor3D3D3D,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
@@ -77,7 +78,7 @@ class SettingsScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: Row(
                         children: [
-                          CustomText(text: 'Motivation Phrases',
+                          CustomText(text: context.l10n.motivationalPhrases,
                             fontsize: 16.sp,
                             color: AppColors.textColor5D5D5D,
                             fontWeight: FontWeight.w500,
@@ -120,7 +121,7 @@ class SettingsScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: Row(
                         children: [
-                          CustomText(text: 'Subscription',
+                          CustomText(text: context.l10n.subscription,
                             fontsize: 16.sp,
                             color: AppColors.textColor5D5D5D,
                             fontWeight: FontWeight.w500,
@@ -163,7 +164,7 @@ class SettingsScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: Row(
                         children: [
-                          CustomText(text: 'Change Password',
+                          CustomText(text: context.l10n.changePassword,
                             fontsize: 16.sp,
                             color: AppColors.textColor5D5D5D,
                             fontWeight: FontWeight.w500,
@@ -207,7 +208,7 @@ class SettingsScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: Row(
                         children: [
-                          CustomText(text: 'Privacy Policy',
+                          CustomText(text: context.l10n.privacyPolicy,
                             fontsize: 16.sp,
                             color: AppColors.textColor5D5D5D,
                             fontWeight: FontWeight.w500,
@@ -249,7 +250,7 @@ class SettingsScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: Row(
                         children: [
-                          CustomText(text: 'Terms & Conditions',
+                          CustomText(text: context.l10n.termsAndConditions,
                             fontsize: 16.sp,
                             color: AppColors.textColor5D5D5D,
                             fontWeight: FontWeight.w500,
@@ -291,7 +292,7 @@ class SettingsScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: Row(
                         children: [
-                          CustomText(text: 'About Us',
+                          CustomText(text: context.l10n.aboutUs,
                             fontsize: 16.sp,
                             color: AppColors.textColor5D5D5D,
                             fontWeight: FontWeight.w500,
@@ -336,7 +337,7 @@ class SettingsScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       child: Row(
                         children: [
-                          CustomText(text: 'Notification',
+                          CustomText(text: context.l10n.notification,
                             fontsize: 16.sp,
                             color: AppColors.textColor5D5D5D,
                             fontWeight: FontWeight.w500,
@@ -362,7 +363,7 @@ class SettingsScreen extends StatelessWidget {
 
 
             CustomButton(
-                title: 'Log out',
+                title: context.l10n.logOut,
                 onpress: () {
                   _showLogoutConfirmationDialog(context);
                 },
@@ -391,7 +392,7 @@ class SettingsScreen extends StatelessWidget {
               children: [
                 SizedBox(height: 12.h),
                 CustomText(
-                  text: 'Ready to Log out ?',
+                  text: context.l10n.readyToLogOut,
                   fontsize: 14.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textColor3D3D3D,
@@ -402,7 +403,7 @@ class SettingsScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: CustomDeleteTwoButton(
-                        title: 'Cancel',
+                        title: context.l10n.cancel,
                         bgColor: AppColors.textColorE7E7E7,
                         textColor: AppColors.textColor3D3D3D,
                         onTap: () => Navigator.pop(context),
@@ -411,7 +412,7 @@ class SettingsScreen extends StatelessWidget {
                     SizedBox(width: 16.w),
                     Expanded(
                       child: CustomDeleteTwoButton(
-                        title: 'Log Out',
+                        title: context.l10n.logOut,
                         bgColor: AppColors.textColorA70D0D,
                         textColor: AppColors.textColorFFFFFF,
                         onTap: () async {

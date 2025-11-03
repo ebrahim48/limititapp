@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_slider.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -65,7 +65,7 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
               onPressed: () => Navigator.pop(context),
             ),
             SizedBox(width: 12.w),
-            CustomText(text: AppString.usageLimit,
+            CustomText(text: context.l10n.setUsageLimit,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -81,9 +81,9 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20.h),
-            
+
                 CustomText(
-                   text: AppString.dailyScreen,
+                   text: context.l10n.totalDailyScreenTime,
                   fontsize: 20.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textColor3D3D3D,
@@ -138,7 +138,7 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 40.h),
                       child: CustomText(
-                        text: 'No apps selected. Please go back and select apps.',
+                        text: context.l10n.noAppsSelected,
                         fontsize: 14.sp,
                         color: Colors.grey,
                         textAlign: TextAlign.center,
@@ -148,7 +148,7 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
 
                 SizedBox(height: 18.h),
                 CustomButton(
-                  title: _isSaving ? 'Saving...' : AppString.saveContinue,
+                  title: _isSaving ? context.l10n.saving : context.l10n.saveContinue,
                   onpress: _isSaving ? () {} : _saveAndContinue,
                 ),
                 SizedBox(height: 20.h),
@@ -274,7 +274,7 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
         ),
         SizedBox(height: 12.h),
         CustomText(
-          text: "Daily Opens Limit",
+          text: context.l10n.dailyOpensLimit,
           fontsize: 16.sp,
           color: AppColors.textColor3D3D3D,
           fontWeight: FontWeight.w400,
@@ -283,7 +283,7 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
         _buildDropdown(opensValue, opensList, onOpensChanged),
         SizedBox(height: 16.h),
         CustomText(
-          text: "Session Duration",
+          text: context.l10n.sessionDuration,
           fontsize: 16.sp,
           color: AppColors.textColor3D3D3D,
           fontWeight: FontWeight.w400,

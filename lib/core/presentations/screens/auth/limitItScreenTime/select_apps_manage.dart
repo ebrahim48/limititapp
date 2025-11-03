@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
@@ -107,7 +107,7 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: AppString.selectApp,
+              text: context.l10n.selectAppsToManage,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -147,7 +147,7 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
                               onChanged: (val) => toggleAllDays(val ?? false),
                             ),
                             CustomText(
-                              text: AppString.all,
+                              text: context.l10n.all,
                               fontsize: 10.sp,
                               fontWeight: FontWeight.w500,
                               color: AppColors.textColor3D3D3D,
@@ -229,7 +229,7 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
                         TextButton(
                           onPressed: _loadAppUsageData,
                           child: Text(
-                            'Retry',
+                            context.l10n.retry,
                             style: TextStyle(
                               fontSize: 12.sp,
                               color: const Color(0xFFFF9800),
@@ -255,8 +255,8 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
                 onTap: () {
                   if (selectedApps.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select at least one app'),
+                      SnackBar(
+                        content: Text(context.l10n.pleaseSelectAtLeastOneApp),
                         backgroundColor: Colors.orange,
                       ),
                     );
@@ -314,7 +314,7 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
                     borderRadius: BorderRadius.circular(28.r),
                   ),
                   child: CustomText(
-                    text: "Continue (${selectedApps.length} apps Selected)",
+                    text: context.l10n.continueWithAppsCount(selectedApps.length),
                     fontsize: 16.sp,
                     fontWeight: FontWeight.w500,
                     color: AppColors.textColorF6F6F6,

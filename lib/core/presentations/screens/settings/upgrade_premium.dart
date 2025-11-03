@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/controllers/upgrade_premium_controller.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/feature_item.dart';
@@ -25,7 +26,7 @@ class UpgradePremiumScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 25.h),
-                _buildPlanHeader(controller),
+                _buildPlanHeader(context, controller),
                 SizedBox(height: 16.h),
                 _buildFeatureList(controller),
                 SizedBox(height: 32.h),
@@ -54,7 +55,7 @@ class UpgradePremiumScreen extends StatelessWidget {
         ),
         SizedBox(width: 12.w),
         CustomText(
-          text: 'Upgrade to premium',
+          text: context.l10n.upgradeToPremium,
           fontsize: 24.sp,
           fontWeight: FontWeight.w500,
           color: AppColors.textColor3D3D3D,
@@ -63,12 +64,12 @@ class UpgradePremiumScreen extends StatelessWidget {
     ),
   );
 
-  Widget _buildPlanHeader(UpgradePremiumController controller) {
+  Widget _buildPlanHeader(BuildContext context, UpgradePremiumController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(
-          text: 'Premium Monthly Plan',
+          text: context.l10n.premiumMonthlyPlan,
           fontsize: 20.sp,
           fontWeight: FontWeight.w600,
           color: AppColors.textColor3D3D3D,
@@ -76,7 +77,7 @@ class UpgradePremiumScreen extends StatelessWidget {
         SizedBox(height: 8.h),
         CustomText(
           textAlign: TextAlign.start,
-          text: '€1/month',
+          text: context.l10n.pricePerMonth,
           fontsize: 32.sp,
           fontWeight: FontWeight.w700,
           color: AppColors.primaryColor526E4B,
@@ -100,7 +101,7 @@ class UpgradePremiumScreen extends StatelessWidget {
 
   Widget _buildSubscribeButton(BuildContext context) {
     return CustomButton(
-      title: 'Subscribe Now',
+      title: context.l10n.subscribeNow,
       onpress: () => _showSubscriptionConfirmation(context),
     );
   }
@@ -115,13 +116,13 @@ class UpgradePremiumScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.r),
         ),
         title: CustomText(
-          text: 'Confirm Subscription',
+          text: context.l10n.confirmSubscription,
           fontsize: 18.sp,
           fontWeight: FontWeight.w600,
           color: Colors.black,
         ),
         content: CustomText(
-          text: 'Subscribe to Premium Monthly Plan for €1/month?',
+          text: context.l10n.subscriptionConfirmMessage,
           fontsize: 14.sp,
           fontWeight: FontWeight.w400,
           color: const Color(0xFF5D5D5D),
@@ -130,7 +131,7 @@ class UpgradePremiumScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: CustomText(text: 'Cancel', color: Colors.grey),
+            child: CustomText(text: context.l10n.cancel, color: Colors.grey),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -142,13 +143,13 @@ class UpgradePremiumScreen extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Subscription successful!'),
+                SnackBar(
+                  content: Text(context.l10n.subscriptionSuccessful),
                   backgroundColor: Color(0xFF4C956C),
                 ),
               );
             },
-            child:  CustomText(text: 'Subscribe', color: Colors.white),
+            child:  CustomText(text: context.l10n.subscribe, color: Colors.white),
           ),
         ],
       ),

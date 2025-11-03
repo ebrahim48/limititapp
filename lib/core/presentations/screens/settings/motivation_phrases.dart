@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 
@@ -35,7 +36,7 @@ class _MotivationPhrasesScreenState extends State<MotivationPhrasesScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: 'Motivation Phrases',
+              text: context.l10n.motivationalPhrases,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -85,7 +86,7 @@ class _MotivationPhrasesScreenState extends State<MotivationPhrasesScreen> {
 
                 // Add Motivation button
                 CustomButton(
-                  title: 'Add Motivation',
+                  title: context.l10n.addMotivation,
                   onpress: () {
                     context.pushNamed(AppRoutes.saveMotivationPhrasesScreen);
                   },

@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -95,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       // Title
                       CustomText(
-                        text: AppString.signUp,
+                        text: context.l10n.signUpYourAccount,
                         fontsize: 24.sp,
                         fontWeight: FontWeight.w500,
                         color: AppColors.textColor3D3D3D,
@@ -106,7 +106,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       // Subtitle
                       CustomText(
                         textAlign: TextAlign.start,
-                        text: AppString.enter,
+                        text: context.l10n.enterYourDetails,
                         fontsize: 14.sp,
                         color: AppColors.textColor5D5D5D,
                         maxline: 2,
@@ -118,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       CustomTextField(
                         hintextColor: AppColors.textColor5D5D5D,
                         controller: nameCtrl,
-                        hintText: AppString.firstName,
+                        hintText: context.l10n.firstName,
                         prefixIcon: Assets.icons.nameProfile.svg(),
                       ),
 
@@ -127,7 +127,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       CustomTextField(
                         hintextColor: AppColors.textColor5D5D5D,
                         controller: emailCtrl,
-                        hintText: AppString.email,
+                        hintText: context.l10n.email,
                         prefixIcon: Assets.icons.email.svg(),
                         isEmail: true,
                       ),
@@ -138,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         hintextColor: AppColors.textColor5D5D5D,
                         controller: passWordCtrl,
                         prefixIcon: Assets.icons.pass.svg(),
-                        hintText: AppString.password,
+                        hintText: context.l10n.password,
                         isPassword: true,
                       ),
 
@@ -171,10 +171,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                   children: [
                                     TextSpan(
-                                      text: AppString.creating,
+                                      text: context.l10n.byCreatingAccount,
                                     ),
                                     TextSpan(
-                                      text: AppString.terms,
+                                      text: context.l10n.termsAndConditions,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 12.sp,
@@ -188,7 +188,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     ),
                                     TextSpan(text: ' & '),
                                     TextSpan(
-                                      text: AppString.privacy,
+                                      text: context.l10n.privacyPolicy,
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 12.sp,
@@ -213,7 +213,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       /// ====================> Sign Up button =========================================
                       Obx(() => CustomButton(
                         loading: authController.signUpLoading.value,
-                        title: AppString.signUps,
+                        title: context.l10n.signUp,
                         onpress: () {
                           if ((formKey.currentState?.validate() ?? false) && isChecked.value) {
                             authController.handleSignUp(
@@ -226,7 +226,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               screenType: "signup",
                             );
                           } else if (!isChecked.value) {
-                            ToastMessageHelper.showToastMessage("Please accept Privacy Policy",title: 'Failed');
+                            ToastMessageHelper.showToastMessage(context.l10n.pleaseAcceptPrivacyPolicy,title: context.l10n.failed);
                           }
                         },
                       )),
@@ -240,7 +240,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             CustomText(
-                              text: AppString.already,
+                              text: context.l10n.alreadyHaveAccount,
                               color: AppColors.textColor1A1A1A,
                               fontsize: 14.sp,
                               fontWeight: FontWeight.w400,
@@ -250,7 +250,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 context.pushNamed(AppRoutes.logInScreen);
                               },
                               child: CustomText(
-                                text: AppString.login,
+                                text: context.l10n.login,
                                 color: AppColors.primaryColor,
                                 fontsize: 14.sp,
                                 fontWeight: FontWeight.w600,

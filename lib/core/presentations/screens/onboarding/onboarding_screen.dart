@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'dart:ui';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../constants/app_colors.dart';
@@ -88,21 +88,21 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 ),
                 SizedBox(height: 58.h),
                 CustomText(
-                  text: AppString.welcomeLimitIt,
+                  text: context.l10n.welcomeToLimitIt,
                   fontsize: 24.sp,
                   fontWeight: FontWeight.w700,
                   color: AppColors.primaryColor,
                 ),
                 SizedBox(height: 12.h),
                 CustomText(
-                  text: AppString.starting,
+                  text: context.l10n.startingToday,
                   maxline: 2,
                 ),
                 SizedBox(height: 32.h),
                 Padding(
                   padding:  EdgeInsets.symmetric(vertical: 20,horizontal: 20),
                   child: CustomButton(
-                      title: AppString.start,
+                      title: context.l10n.getStarted,
                       onpress: () {
                         context.pushNamed(AppRoutes.languageScreen);
                       },

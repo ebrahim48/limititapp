@@ -12,7 +12,6 @@ import 'package:limit_it_app/core/presentations/widgets/daily_usage_card.dart';
 import 'package:limit_it_app/core/presentations/widgets/screen_time_slider.dart';
 import 'package:limit_it_app/core/presentations/widgets/your_appcard-widget.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
-import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,7 +24,6 @@ class _HomeScreenState extends State<HomeScreen> {
   BannerAd? _bannerAd;
   bool _isBannerAdReady = false;
   final apps = AppDataHelper.dailyApps;
-  String _statusMessage = 'AdMob Demo - Tap buttons to show ads';
 
   bool _isLoading = true;
   bool _hasPermission = false;
@@ -50,13 +48,9 @@ class _HomeScreenState extends State<HomeScreen> {
         onAdLoaded: (ad) {
           setState(() {
             _isBannerAdReady = true;
-            _statusMessage = 'Banner Ad loaded';
           });
         },
         onAdFailedToLoad: (ad, error) {
-          setState(() {
-            _statusMessage = 'Banner Ad failed: ${error.message}';
-          });
           ad.dispose();
         },
       ),
@@ -138,6 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           BackgroundBlurLayers(),
           SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,9 +274,12 @@ class _HomeScreenState extends State<HomeScreen> {
             uniqueApps.asMap().entries.map((entry) {
               final index = entry.key;
               final appData = entry.value;
-              return YourAppCard(
-                appData: appData,
-                key: ValueKey('${appData.packageName}_$index'),
+              return _buildAnimatedAppCard(
+                index: index,
+                child: YourAppCard(
+                  appData: appData,
+                  key: ValueKey('${appData.packageName}_$index'),
+                ),
               );
             }).toList(),
       );
@@ -293,8 +291,30 @@ class _HomeScreenState extends State<HomeScreen> {
           AppDataHelper.yourApps.asMap().entries.map((entry) {
             final index = entry.key;
             final app = entry.value;
-            return YourAppCard(app: app, key: ValueKey('dummy_app_$index'));
+            return _buildAnimatedAppCard(
+              index: index,
+              child: YourAppCard(app: app, key: ValueKey('dummy_app_$index')),
+            );
           }).toList(),
+    );
+  }
+
+  /// Build animated app card with staggered entrance animation
+  Widget _buildAnimatedAppCard({required int index, required Widget child}) {
+    return TweenAnimationBuilder<double>(
+      duration: Duration(milliseconds: 300 + (index * 100)),
+      curve: Curves.easeOutCubic,
+      tween: Tween(begin: 0.0, end: 1.0),
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: Offset(0, 20 * (1 - value)),
+          child: Opacity(
+            opacity: value,
+            child: child,
+          ),
+        );
+      },
+      child: child,
     );
   }
 

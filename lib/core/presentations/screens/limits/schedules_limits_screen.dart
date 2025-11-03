@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/controllers/schedules_limits_controller.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/app_block_card.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -31,7 +32,7 @@ class SchedulesLimitsScreen extends StatelessWidget {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: 'Schedules',
+              text: context.l10n.schedules,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -46,7 +47,7 @@ class SchedulesLimitsScreen extends StatelessWidget {
           children: [
             SizedBox(height: 20.h),
             CustomText(
-              text: 'App Block Lists',
+              text: context.l10n.appBlockLists,
               color: AppColors.textColor3D3D3D,
               fontsize: 20.sp,
               fontWeight: FontWeight.w500,
@@ -81,7 +82,7 @@ class SchedulesLimitsScreen extends StatelessWidget {
             ),
             SizedBox(height: 32.h),
             CustomButton(
-              title: 'Save App Block',
+              title: context.l10n.saveAppBlock,
               onpress: () {
                 controller.appBlocks.forEach((app) {
                   if (app.isEnabled.value) {
