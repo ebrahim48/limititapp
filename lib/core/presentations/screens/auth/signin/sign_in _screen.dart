@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -16,9 +16,6 @@ import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 class LoginInScreen extends StatelessWidget {
   LoginInScreen({super.key});
 
-
-
-  AuthController authController = Get.put(AuthController());
   final GlobalKey<FormState> _logKey = GlobalKey<FormState>();
 
   // Controllers
@@ -28,6 +25,8 @@ class LoginInScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authController = Get.find<AuthController>();
+
     return Scaffold(
       body: Stack(
         children: [
@@ -89,7 +88,7 @@ class LoginInScreen extends StatelessWidget {
 
                       // Title
                       CustomText(
-                        text: AppString.loginYour,
+                        text: context.l10n.logInYourAccount,
                         fontsize: 24.sp,
                         fontWeight: FontWeight.w500,
                         color: AppColors.textColor3D3D3D,
@@ -100,7 +99,7 @@ class LoginInScreen extends StatelessWidget {
                       // Subtitle
                       CustomText(
                         textAlign: TextAlign.start,
-                        text: AppString.loginYourSecurity,
+                        text: context.l10n.logInSecurely,
                         fontsize: 14.sp,
                         color: AppColors.textColor5D5D5D,
                         maxline: 2,
@@ -111,7 +110,7 @@ class LoginInScreen extends StatelessWidget {
                       CustomTextField(
                         hintextColor: AppColors.textColor5D5D5D,
                         controller: emailCtrl,
-                        hintText: AppString.email,
+                        hintText: context.l10n.email,
                         prefixIcon: Assets.icons.email.svg(),
                         isEmail: true,
                       ),
@@ -123,7 +122,7 @@ class LoginInScreen extends StatelessWidget {
                         hintextColor: AppColors.textColor5D5D5D,
                         controller: passWordCtrl,
                         prefixIcon: Assets.icons.pass.svg(),
-                        hintText: AppString.password,
+                        hintText: context.l10n.password,
                         isPassword: true,
                       ),
 
@@ -142,7 +141,7 @@ class LoginInScreen extends StatelessWidget {
                           }
                         },
                         child: CustomText(
-                          text: AppString.forgetPass,
+                          text: context.l10n.forgetPassword,
                           color: AppColors.primaryColor,
                           fontsize: 12.sp,
                           fontWeight: FontWeight.w500,
@@ -164,7 +163,7 @@ class LoginInScreen extends StatelessWidget {
                       Obx(()=>
                       CustomButton(
                         loading: authController.loginLoading.value,
-                          title: AppString.login,
+                          title: context.l10n.login,
                           onpress: () {
                             if (_logKey.currentState?.validate()?? true) {
                               authController.handleLogIn(
@@ -180,7 +179,7 @@ class LoginInScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             CustomText(
-                              text: AppString.already,
+                              text: context.l10n.alreadyHaveAccount,
                               color: AppColors.textColor1A1A1A,
                               fontsize: 14.sp,
                               fontWeight: FontWeight.w400,
@@ -190,7 +189,7 @@ class LoginInScreen extends StatelessWidget {
                                 context.pushNamed(AppRoutes.signUpScreen);
                               },
                               child: CustomText(
-                                text: AppString.signUps,
+                                text: context.l10n.signUp,
                                 color: AppColors.primaryColor,
                                 fontsize: 14.sp,
                                 fontWeight: FontWeight.w600,

@@ -1,54 +1,18 @@
-class AppString{
-  static const String limitIt = 'LimitIt';
-  static const String welcomeLimitIt = 'Welcome to LimitIt';
-  static const String starting = 'Staring today,let’s focus better and\naccomplish your dreams';
-  static const String start = 'Get Started';
-  static const String select = 'Select Your Language';
-  static const String signUp = 'Sign up your account';
-  static const String enter = 'Enter your details below to continue';
-  static const String firstName = 'First Name';
-  static const String email = 'Email';
-  static const String password = 'Password';
-  static const String setNewPassword = 'Set New Password';
-  static const String conPassword = 'Confirm Password';
-  static const String conNewPassword = 'Confirm New Password';
-  static const String creating = 'By creating an account, I accept the ';
-  static const String terms = 'Terms & Conditions';
-  static const String passMatch = 'Password Matched ✓';
-  static const String privacy = 'Privacy Policy';
-  static const String already = 'Already have an account? ';
-  static const String login = ' Login';
-  static const String signUps = 'Sign Up';
-  static const String limit = 'limitIt';
-  static const String loginYour = 'Log in your account';
-  static const String allSet = 'All set !\nPassword Successfully Updated';
-  static const String loginYourSecurity = 'Log in Securely to access your full app';
-  static const String forgetPass = 'Forget Password?';
-  static const String forgetPassWord = 'Forget Password';
-  static const String resetPassWord = 'Reset Password';
-  static const String getOtp = 'Get OTP';
-  static const String verifyOtp = 'Verify OTP';
-  static const String verify = 'Verify';
-  static const String didnt = 'Didn’t get the code?';
-  static const String backlog = 'Back to Log in';
-  static const String takeControl = 'Take Control of yur digital habits';
-  static const String backHome = 'Back to Home';
-  static const String getStarted = 'Get Started';
-  static const String iAccept = 'I accept the privacy policy and terms of Service';
-  static const String dataProtection = 'Privacy & Data Protection';
-  static const String usage = 'Your usage data stays on your device';
-  static const String we = 'We don\'t collect personal information';
-  static const String gdpr = 'GDPR compliance is our priority';
-  static const String trans = 'Transparent Permission requests';
-  static const String selectApp = "Select Apps to Manage";
-  static const String usageLimit = "Set Usage Limit";
-  static const String dailyScreen = "Total Daily Screen Time";
-  static const String all = "All";
-  static const String saveContinue = "Save & Continue";
-  static const String timerSettings = "Timer Settings";
-  static const String preOpening = "Pre - Opening Countdown\nDuration";
-  static const String save = "Save";
-  static const String motivational = 'Motivational Phrases';
-  static const String successLimit = 'All set !\nYou have Successfully Set App Limit';
+import 'package:flutter/material.dart';
+import 'package:limit_it_app/l10n/app_localizations.dart';
 
+/// Helper class to access localized strings
+///
+/// Usage in widgets:
+/// - With context: AppString.of(context).welcomeLimitIt
+/// - Or use the extension: context.l10n.welcomeLimitIt
+class AppString {
+  /// Get AppLocalizations from context
+  static AppLocalizations of(BuildContext context) {
+    return AppLocalizations.of(context)!;
+  }
+
+  // Legacy constants kept for backward compatibility (not localized)
+  static const String limitIt = 'LimitIt';
+  static const String limit = 'limitIt';
 }

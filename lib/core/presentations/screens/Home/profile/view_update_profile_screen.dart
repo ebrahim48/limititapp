@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
@@ -37,7 +38,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: "Edit Profile",
+              text: context.l10n.editProfile,
               color: AppColors.textColor3D3D3D,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
@@ -143,7 +144,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   SizedBox(height: 300.h),
 
                   CustomButton(
-                    title: 'Update Profile',
+                    title: context.l10n.updateProfile,
                     onpress: () {
                       // handle update
                     },
@@ -189,12 +190,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             children: [
               ListTile(
                 leading: const Icon(Icons.camera_alt, color: Colors.black),
-                title: const Text("Take a Photo"),
+                title: Text(context.l10n.takePhoto),
                 onTap: () => _pickImage(ImageSource.camera),
               ),
               ListTile(
                 leading: const Icon(Icons.photo, color: Colors.black),
-                title: const Text("Choose from Gallery"),
+                title: Text(context.l10n.chooseFromGallery),
                 onTap: () => _pickImage(ImageSource.gallery),
               ),
             ],

@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/notification_widget.dart';
 
@@ -64,7 +65,7 @@ class NotificationsScreen extends StatelessWidget {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: "Notifications",
+              text: context.l10n.notifications,
               color: AppColors.textColor3D3D3D,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
@@ -74,7 +75,7 @@ class NotificationsScreen extends StatelessWidget {
 
       ),
       body: notifications.isEmpty
-          ? _buildEmptyState()
+          ? _buildEmptyState(context)
           : ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
         itemCount: notifications.length,
@@ -92,7 +93,7 @@ class NotificationsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -104,14 +105,14 @@ class NotificationsScreen extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           CustomText(
-            text: 'No notifications yet',
+            text: context.l10n.noNotificationsYet,
             fontsize: 18.sp,
             fontWeight: FontWeight.w500,
             color: Colors.grey,
           ),
           SizedBox(height: 8.h),
           CustomText(
-            text: 'We\'ll notify you when something new arrives',
+            text: context.l10n.notifyWhenNewArrives,
             fontsize: 14.sp,
             fontWeight: FontWeight.w400,
             color: Colors.grey,

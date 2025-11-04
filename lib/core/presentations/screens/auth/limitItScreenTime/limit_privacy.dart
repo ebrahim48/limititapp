@@ -6,7 +6,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
@@ -82,7 +82,7 @@ class _LimitPrivacyProtectionScreenState extends State<LimitPrivacyProtectionScr
 
                     // Title
                     CustomText(
-                      text: AppString.limit,
+                      text: "Limit It",
                       fontsize: 32.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColors.textColor2C2C2C,
@@ -91,7 +91,7 @@ class _LimitPrivacyProtectionScreenState extends State<LimitPrivacyProtectionScr
                     SizedBox(height: 12.h),
 
                     CustomText(
-                      text: AppString.takeControl,
+                      text: context.l10n.takeControl,
                       fontsize: 16.sp,
                       fontWeight: FontWeight.w400,
                       color: AppColors.textColor454545,
@@ -125,7 +125,7 @@ class _LimitPrivacyProtectionScreenState extends State<LimitPrivacyProtectionScr
                         children: [
                           // Title
                           CustomText(
-                            text: AppString.dataProtection,
+                            text: context.l10n.privacyDataProtection,
                             fontsize: 24.sp,
                             fontWeight: FontWeight.w500,
                             color: AppColors.textColor2C2C2C,
@@ -133,16 +133,16 @@ class _LimitPrivacyProtectionScreenState extends State<LimitPrivacyProtectionScr
 
                           SizedBox(height: 16.h),
 
-                          _buildPrivacyPoint(AppString.usage),
+                          _buildPrivacyPoint(context.l10n.usageDataStaysOnDevice),
                           SizedBox(height: 12.h),
 
-                          _buildPrivacyPoint(AppString.we),
+                          _buildPrivacyPoint(context.l10n.noPersonalInfoCollection),
                           SizedBox(height: 12.h),
 
-                          _buildPrivacyPoint(AppString.gdpr),
+                          _buildPrivacyPoint(context.l10n.gdprCompliance),
                           SizedBox(height: 12.h),
 
-                          _buildPrivacyPoint(AppString.trans),
+                          _buildPrivacyPoint(context.l10n.transparentPermissions),
                         ],
                       ),
                     ),
@@ -175,7 +175,7 @@ class _LimitPrivacyProtectionScreenState extends State<LimitPrivacyProtectionScr
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: AppString.iAccept,
+                                    text: context.l10n.iAcceptPrivacy,
                                   ),
 
 
@@ -191,7 +191,7 @@ class _LimitPrivacyProtectionScreenState extends State<LimitPrivacyProtectionScr
 
                     // Get Started button
                     CustomButton(
-                      title: AppString.getStarted,
+                      title: "Get Started",
                       onpress: () {
                         context.pushNamed(AppRoutes.selectAppsManageScreen);
                       },

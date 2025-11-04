@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 
@@ -32,7 +33,7 @@ class _SaveMotivationPhrasesScreenState extends State<SaveMotivationPhrasesScree
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: 'Motivation Phrases',
+              text: context.l10n.motivationalPhrases,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -53,7 +54,7 @@ class _SaveMotivationPhrasesScreenState extends State<SaveMotivationPhrasesScree
                   controller: enterMotivationController,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: 'Enter Motivation Quotes',
+                    hintText: context.l10n.enterMotivationQuotes,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
                     ),
@@ -63,7 +64,7 @@ class _SaveMotivationPhrasesScreenState extends State<SaveMotivationPhrasesScree
                 TextField(
                   controller: enterAuthorNameController,
                   decoration: InputDecoration(
-                    hintText: 'Enter author name',
+                    hintText: context.l10n.enterAuthorName,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
                     ),
@@ -75,7 +76,7 @@ class _SaveMotivationPhrasesScreenState extends State<SaveMotivationPhrasesScree
                 SizedBox(height: 35.h),
 
                 CustomButton(
-                  title: 'Save Motivation',
+                  title: context.l10n.saveMotivation,
                   onpress: () {
 
                   },

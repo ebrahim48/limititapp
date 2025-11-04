@@ -21,7 +21,6 @@ class AppBlockCard extends StatelessWidget {
       children: [
         Container(
           width: 345.w,
-          height: 64.h,
           margin: EdgeInsets.only(bottom: 12.h),
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           decoration: BoxDecoration(
@@ -52,36 +51,50 @@ class AppBlockCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Obx(() => Switch(
-                value: app.isEnabled.value,
-                activeColor: AppColors.textColorDDA742,
-                activeTrackColor: AppColors.textColor3D3D3D,
-                inactiveThumbColor: AppColors.textColor888888,
-                inactiveTrackColor: AppColors.borderColorD1D1D1,
-                onChanged: (v) => app.isEnabled.value = v,
-              )),
+              Obx(
+                () => Switch(
+                  value: app.isEnabled.value,
+                  activeColor: AppColors.textColorDDA742,
+                  activeTrackColor: AppColors.textColor3D3D3D,
+                  inactiveThumbColor: AppColors.textColor888888,
+                  inactiveTrackColor: AppColors.borderColorD1D1D1,
+                  onChanged: (v) => app.isEnabled.value = v,
+                ),
+              ),
             ],
           ),
         ),
 
         // Time pickers only visible when enabled
-        Obx(() => app.isEnabled.value
-            ? Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTimePicker(context, 'Start Time', app.startTime, true),
-            SizedBox(height: 16.h),
-            _buildTimePicker(context, 'End Time', app.endTime, false),
-            SizedBox(height: 24.h),
-          ],
-        )
-            : const SizedBox.shrink()),
+        Obx(
+          () =>
+              app.isEnabled.value
+                  ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildTimePicker(
+                        context,
+                        'Start Time',
+                        app.startTime,
+                        true,
+                      ),
+                      SizedBox(height: 16.h),
+                      _buildTimePicker(context, 'End Time', app.endTime, false),
+                      SizedBox(height: 24.h),
+                    ],
+                  )
+                  : const SizedBox.shrink(),
+        ),
       ],
     );
   }
 
   Widget _buildTimePicker(
-      BuildContext context, String label, RxString time, bool isStart) {
+    BuildContext context,
+    String label,
+    RxString time,
+    bool isStart,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -105,13 +118,19 @@ class AppBlockCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(() => CustomText(
-                  text: time.value,
-                  fontsize: 16.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                )),
-                Icon(Icons.access_time, size: 24.r, color: const Color(0xFF5D5D5D)),
+                Obx(
+                  () => CustomText(
+                    text: time.value,
+                    fontsize: 16.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
+                Icon(
+                  Icons.access_time,
+                  size: 24.r,
+                  color: const Color(0xFF5D5D5D),
+                ),
               ],
             ),
           ),

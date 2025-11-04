@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import 'package:limit_it_app/core/constants/app_strings.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
@@ -26,8 +26,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final TextEditingController emailCtrl = TextEditingController();
   final GlobalKey<FormState> _logKey = GlobalKey<FormState>();
 
-  AuthController authController = Get.put(AuthController());
-
   @override
   void initState() {
     print("====================${widget.email}");
@@ -39,6 +37,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authController = Get.find<AuthController>();
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -55,7 +55,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: AppString.forgetPassWord,
+              text: context.l10n.forgetPasswordTitle,
               color: AppColors.textColor3D3D3D,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
@@ -128,7 +128,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       CustomTextField(
                         hintextColor: AppColors.textColor5D5D5D,
                         controller: emailCtrl,
-                        hintText: AppString.email,
+                        hintText: context.l10n.email,
                         prefixIcon: Assets.icons.email.svg(),
                         isEmail: true,
                       ),
@@ -144,7 +144,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       Obx(()=>
                          CustomButton(
                            loading: authController.forgotLoading.value,
-                          title: AppString.getOtp,
+                          title: context.l10n.getOtp,
                           onpress: () {
                             if(_logKey.currentState?.validate()??true){
                               authController.handleForgot(

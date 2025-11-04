@@ -8,11 +8,7 @@ class LimitCard extends StatelessWidget {
   final LimitOption option;
   final VoidCallback? onTap;
 
-  const LimitCard({
-    super.key,
-    required this.option,
-    this.onTap,
-  });
+  const LimitCard({super.key, required this.option, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +16,7 @@ class LimitCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 156.w,
-        height: 85.h,
+
         padding: EdgeInsets.all(12.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.r),
