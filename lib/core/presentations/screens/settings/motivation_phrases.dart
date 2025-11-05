@@ -53,7 +53,6 @@ class _MotivationPhrasesScreenState extends State<MotivationPhrasesScreen> {
               children: [
                 SizedBox(height: 23.h),
 
-                // Quotes list - Show 3 or all based on isExpanded
                 Obx(() {
                   final displayQuotes = isExpanded.value
                       ? quotes
