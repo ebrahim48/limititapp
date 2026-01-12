@@ -6,7 +6,7 @@ import '../../widgets/custom_text.dart';
 
 
 class PrivacyPolicyScreen extends StatelessWidget {
-  PrivacyPolicyScreen({super.key});
+  const PrivacyPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

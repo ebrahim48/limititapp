@@ -7,7 +7,7 @@ import 'package:limit_it_app/core/presentations/widgets/background_layers.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/daily_usage_card.dart';
-import 'package:limit_it_app/core/presentations/widgets/your_appcard-widget.dart';
+import 'package:limit_it_app/core/presentations/widgets/your_appcard_widget.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
 
@@ -62,7 +62,7 @@ class ReportsScreen extends StatelessWidget {
                 ),
 
                 SizedBox(height: 12.h),
-                ...AppDataHelper.yourApps.map((app) => YourAppCard(app: app)).toList(),
+                ...AppDataHelper.yourApps.map((app) => YourAppCard(app: app)),
                 SizedBox(height: 24.h),
                 CustomButton(
                     title: context.l10n.downloadReport,

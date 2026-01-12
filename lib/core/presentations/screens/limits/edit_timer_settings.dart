@@ -146,7 +146,7 @@ class _EditTimerSettingsScreenState extends State<EditTimerSettingsScreen> {
                 SizedBox(height: 16.h),
 
                 // Quotes list
-                ...quotes.map((quote) => _buildQuoteCard(quote)).toList(),
+                ...quotes.map((quote) => _buildQuoteCard(quote)),
 
                 SizedBox(height: 35.h),
 

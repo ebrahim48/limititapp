@@ -10,7 +10,7 @@ import 'package:limit_it_app/core/presentations/widgets/custom_home_appbar.dart'
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/daily_usage_card.dart';
 import 'package:limit_it_app/core/presentations/widgets/screen_time_slider.dart';
-import 'package:limit_it_app/core/presentations/widgets/your_appcard-widget.dart';
+import 'package:limit_it_app/core/presentations/widgets/your_appcard_widget.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 
 class HomeScreen extends StatefulWidget {

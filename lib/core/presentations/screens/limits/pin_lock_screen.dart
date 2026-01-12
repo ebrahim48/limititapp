@@ -65,7 +65,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
                   child: GestureDetector(
                     onTap: () => setState(() {
                       selectedApps.value =
-                          AppSelectionHelper.toggleSelectAll(selectedApps, apps);
+                          AppSelectionHelper.toggleSelectAll(selectedApps.value, apps);
                     }),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -115,7 +115,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
                       isSelected: isSelected,
                       onTap: () => setState(() {
                         selectedApps.value =
-                            AppSelectionHelper.toggleApp(selectedApps, appKey);
+                            AppSelectionHelper.toggleApp(selectedApps.value, appKey);
                       }),
                     );
                   }).toList(),
@@ -152,5 +152,5 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
     AppModel(name: 'Netflix', icon: 'assets/icons/netflix.svg'),
   ];
 
-  bool get isAllSelected => selectedApps.length == apps.length;
+  bool get isAllSelected => selectedApps.value.length == apps.length;
 }

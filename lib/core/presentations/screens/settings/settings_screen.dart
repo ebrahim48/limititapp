@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
@@ -14,7 +15,7 @@ import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
 
 class SettingsScreen extends StatelessWidget {
-  SettingsScreen({super.key});
+  const SettingsScreen({super.key});
 
 
 
@@ -350,7 +351,7 @@ class SettingsScreen extends StatelessWidget {
                       child: CustomToggle(
                         initialValue: false,
                         onChanged: (value) {
-                          print('Notification toggled: $value');
+                          debugPrint('Notification toggled: $value');
                         },
                       ),
                     ),

@@ -49,6 +49,7 @@ dependencies:
   flutter_staggered_animations: ^1.1.1
   shared_preferences: ^2.5.3
   get: ^4.6.6
+  mime: ^1.0.0
   mime_type: ^1.0.1
   flutter_spinkit: ^5.2.1
   toastification:
@@ -80,7 +81,8 @@ dev_dependencies:
 flutter_gen:
   output: lib/global/custom_assets/ # Optional (default: lib/gen/)
   line_length: 80 # Optional (default: 80)
-  # Optional
+  synthetic-package: false
+ # Optional
   integrations:
     flutter_svg: true
     # flare_flutter: true

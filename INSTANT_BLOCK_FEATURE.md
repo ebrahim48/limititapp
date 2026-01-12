@@ -5,7 +5,7 @@ This feature allows users to instantly block or unblock apps directly from the "
 
 ## Implementation Details
 
-### 1. UI Component (`your_appcard-widget.dart`)
+### 1. UI Component (`your_appcard_widget.dart`)
 - Added a block/unblock button next to each app in the "Your Apps" list
 - Button shows a block icon (🚫) when app is not blocked
 - Button shows an unlock icon when app is blocked

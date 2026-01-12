@@ -47,7 +47,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
               width: 259.w,
               height: 195.h,
               decoration: BoxDecoration(
-                color: AppColors.primaryColor.withOpacity(0.5),
+                color: AppColors.primaryColor.withValues(alpha: 0.5),
                 shape: BoxShape.circle,
               ),
               child: BackdropFilter(
@@ -64,7 +64,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             width: 158.w,
             height: 219.h,
             decoration: BoxDecoration(
-              color: AppColors.textColor803D20.withOpacity(0.3),
+              color: AppColors.textColor803D20.withValues(alpha: 0.3),
               shape: BoxShape.circle,
             ),
             child: BackdropFilter(

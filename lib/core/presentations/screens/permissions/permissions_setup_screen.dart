@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/screens/Home/home_screen.dart';

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:toastification/toastification.dart';
 
 import '../constants/app_colors.dart';
@@ -82,10 +83,10 @@ class ToastMessageHelper {
       dragToClose: true,
       applyBlurEffect: true,
       callbacks: ToastificationCallbacks(
-        onTap: (toastItem) => print('Toast ${toastItem.id} tapped'),
-        onCloseButtonTap: (toastItem) => print('Toast ${toastItem.id} close button tapped'),
-        onAutoCompleteCompleted: (toastItem) => print('Toast ${toastItem.id} auto complete completed'),
-        onDismissed: (toastItem) => print('Toast ${toastItem.id} dismissed'),
+        onTap: (toastItem) => debugPrint('Toast ${toastItem.id} tapped'),
+        onCloseButtonTap: (toastItem) => debugPrint('Toast ${toastItem.id} close button tapped'),
+        onAutoCompleteCompleted: (toastItem) => debugPrint('Toast ${toastItem.id} auto complete completed'),
+        onDismissed: (toastItem) => debugPrint('Toast ${toastItem.id} dismissed'),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
@@ -13,7 +14,7 @@ class NetworkController extends GetxController {
 
     // Listen to connection status changes
     interNetConnectionState = InternetConnection().onStatusChange.listen((event) {
-      print("----------------internet : $event");
+      debugPrint("----------------internet : $event");
       isConnection.value = event == InternetStatus.connected;
     });
   }

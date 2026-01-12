@@ -6,7 +6,7 @@ import '../../widgets/custom_text.dart';
 
 
 class TermsServicesScreen extends StatelessWidget {
-  TermsServicesScreen({super.key});
+  const TermsServicesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

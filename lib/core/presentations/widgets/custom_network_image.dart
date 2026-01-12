@@ -45,14 +45,14 @@ class CustomNetworkImage extends StatelessWidget {
               child: child,
             ),
         placeholder: (context, url) => Shimmer.fromColors(
-            baseColor: Colors.grey.withOpacity(0.6),
-            highlightColor: Colors.grey.withOpacity(0.3),
+            baseColor: Colors.grey.withValues(alpha: 0.6),
+            highlightColor: Colors.grey.withValues(alpha: 0.3),
             child: Container(
               height: height,
               width: width,
               decoration: BoxDecoration(
                 border: border,
-                color: Colors.grey.withOpacity(0.6),
+                color: Colors.grey.withValues(alpha: 0.6),
                 borderRadius: borderRadius,
                 shape: boxShape,
               ),
@@ -62,7 +62,7 @@ class CustomNetworkImage extends StatelessWidget {
               width: width,
               decoration: BoxDecoration(
                 border: border,
-                color: Colors.grey.withOpacity(0.6),
+                color: Colors.grey.withValues(alpha: 0.6),
                 borderRadius: borderRadius,
                 shape: boxShape,
               ),

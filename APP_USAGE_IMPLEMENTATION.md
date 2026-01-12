@@ -35,7 +35,7 @@ The "Your Apps" section on the home screen now displays actual app usage data fr
 ### Modified Files
 - `pubspec.yaml` - Added dependencies
 - `lib/core/presentations/screens/Home/home_screen.dart` - Converted to StatefulWidget, added data loading
-- `lib/core/presentations/widgets/your_appcard-widget.dart` - Enhanced to support both dummy and real data
+- `lib/core/presentations/widgets/your_appcard_widget.dart` - Enhanced to support both dummy and real data
 - `android/app/src/main/AndroidManifest.xml` - Added required permissions
 
 ## Dependencies Added

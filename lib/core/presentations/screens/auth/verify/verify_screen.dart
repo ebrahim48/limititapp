@@ -3,8 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
@@ -61,7 +59,7 @@ class VerifyScreen extends StatelessWidget {
               width: 259.w,
               height: 195.h,
               decoration: BoxDecoration(
-                color: AppColors.primaryColor.withOpacity(0.5),
+                color: AppColors.primaryColor.withValues(alpha: 0.5),
                 shape: BoxShape.circle,
               ),
               child: BackdropFilter(
@@ -83,7 +81,7 @@ class VerifyScreen extends StatelessWidget {
               width: 158.w,
               height: 219.h,
               decoration: BoxDecoration(
-                color: AppColors.textColor803D20.withOpacity(0.3),
+                color: AppColors.textColor803D20.withValues(alpha: 0.3),
                 shape: BoxShape.circle,
               ),
               child: BackdropFilter(

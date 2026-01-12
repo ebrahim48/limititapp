@@ -8,10 +8,9 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:limit_it_app/core/app_constants/app_constants.dart';
 import 'package:limit_it_app/core/helpers/prefs_helper.dart';
-import 'package:mime_type/mime_type.dart';
+import 'package:mime/mime.dart';
 import 'api_constants.dart';
 import 'error_response.dart';
-import 'package:mime/mime.dart';
 
 
 class ApiClient extends GetxService {
@@ -55,8 +54,8 @@ class ApiClient extends GetxService {
     };
 
     try {
-      print('====> API Call: $uri\nHeader: $mainHeaders');
-      print('====> API Body: $body');
+      debugPrint('====> API Call: $uri\nHeader: $mainHeaders');
+      debugPrint('====> API Body: $body');
 
       http.Response response = await client.post(
         Uri.parse(ApiConstants.baseUrl + uri),
@@ -64,11 +63,11 @@ class ApiClient extends GetxService {
         headers: headers ?? mainHeaders,
       ).timeout(const Duration(seconds: timeoutInSeconds));
 
-      print("==========> Response Post Method : ${response.statusCode} \n*********${response.body}");
+      debugPrint("==========> Response Post Method : ${response.statusCode} \n*********${response.body}");
       return handleResponse(response, uri);
     } catch (e, s) {
-      print("===> Error in postData: e$e");
-      print("===> Error in postData: s$s");
+      debugPrint("===> Error in postData: e$e");
+      debugPrint("===> Error in postData: s$s");
       return const Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
@@ -102,8 +101,8 @@ class ApiClient extends GetxService {
           "==========> Response Post Method :------ : ${response.statusCode}");
       return handleResponse(response, uri);
     } catch (e, s) {
-      print("===> $e");
-      print("===> $s");
+      debugPrint("===> $e");
+      debugPrint("===> $s");
       return const Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
@@ -264,7 +263,7 @@ class ApiClient extends GetxService {
       if (multipartBody!.isNotEmpty) {
         multipartBody.forEach((element) async {
           debugPrint("path : ${element.file.path}");
-          String? mimeType = mime(element.file.path);
+          String? mimeType = lookupMimeType(element.file.path);
           request.files.add(http.MultipartFile(
             element.key,
             element.file.readAsBytes().asStream(),
@@ -284,7 +283,7 @@ class ApiClient extends GetxService {
           statusText: noInternetMessage,
           body: json.decode(content));
     } catch (e) {
-      print("====================================e $e");
+      debugPrint("====================================e $e");
       return const Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
@@ -313,7 +312,7 @@ class ApiClient extends GetxService {
       if (multipartBody!.isNotEmpty) {
         multipartBody.forEach((element) async {
           debugPrint("path : ${element.file.path}");
-          String? mimeType = mime(element.file.path);
+          String? mimeType = lookupMimeType(element.file.path);
           request.files.add(http.MultipartFile(
             element.key,
             element.file.readAsBytes().asStream(),
@@ -334,7 +333,7 @@ class ApiClient extends GetxService {
           statusText: noInternetMessage,
           body: json.decode(content));
     } catch (e) {
-      print("====================================e $e");
+      debugPrint("====================================e $e");
       return const Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
