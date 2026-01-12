@@ -17,7 +17,7 @@ class CustomButton extends StatelessWidget {
   final bool loading;
   final bool loaderIgnore;
 
-  CustomButton({
+  const CustomButton({
     super.key,
     required this.title,
     required this.onpress,

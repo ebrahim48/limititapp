@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
@@ -11,7 +9,6 @@ import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
 import '../core/app_constants/app_constants.dart';
-import '../core/constants/app_colors.dart';
 
 
 
@@ -73,14 +70,17 @@ class AuthController extends GetxController {
           "A verification email has been sent to $email",
         );
 
-        context.pushNamed(
-          AppRoutes.verifyScreen,
-          extra: {
-            "screenType": screenType,
-            "email": email,
-            "token": token,
-          },
-        );
+        // Check if context is still mounted before navigation
+        if (context.mounted) {
+          context.pushNamed(
+            AppRoutes.verifyScreen,
+            extra: {
+              "screenType": screenType,
+              "email": email,
+              "token": token,
+            },
+          );
+        }
       } else {
         final msg = response.body["message"] ?? "Attention";
         ToastMessageHelper.showToastMessage(msg);
@@ -125,9 +125,13 @@ class AuthController extends GetxController {
 
 
         if (screenType == 'signup') {
-          context.go(AppRoutes.logInScreen);
+          if (context.mounted) {
+            context.go(AppRoutes.logInScreen);
+          }
         } else if (screenType == 'forgot') {
-          context.go(AppRoutes.resetPasswordScreen);
+          if (context.mounted) {
+            context.go(AppRoutes.resetPasswordScreen);
+          }
         }
       } else {
         ToastMessageHelper.showToastMessage(
@@ -170,7 +174,7 @@ class AuthController extends GetxController {
 
     loginLoading.value = false;
 
-    print("========================${response.statusCode} \n ${response.body}");
+    debugPrint("========================${response.statusCode} \n ${response.body}");
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = response.body['data'];
@@ -188,11 +192,13 @@ class AuthController extends GetxController {
       await PrefsHelper.setString(AppConstants.userId, data['_id'].toString());
 
       var role = data['role'].toString().toLowerCase();
-      print("========================================= role : $role");
+      debugPrint("========================================= role : $role");
 
       if (role == "user" || role == "usr") {
         await PrefsHelper.setBool(AppConstants.isLogged, true);
-        context.go(AppRoutes.limitPrivacyProtectionScreen);
+        if (context.mounted) {
+          context.go(AppRoutes.limitPrivacyProtectionScreen);
+        }
         ToastMessageHelper.showToastMessage("You are logged in",title: 'Success');
       } else {
         final message = response.body["message"];
@@ -205,7 +211,9 @@ class AuthController extends GetxController {
           ToastMessageHelper.showToastMessage(message);
         } else {
           await PrefsHelper.setBool(AppConstants.isLogged, true);
-          context.go(AppRoutes.limitPrivacyProtectionScreen);
+          if (context.mounted) {
+            context.go(AppRoutes.limitPrivacyProtectionScreen);
+          }
           ToastMessageHelper.showToastMessage(
             message ?? "You are logged in",
             title: 'Success');
@@ -228,13 +236,13 @@ class AuthController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       final responseData = response.body["data"];
       String? token;
-      
+
       if (responseData is String) {
         token = responseData;
       } else if (responseData is Map<String, dynamic>) {
         token = responseData["token"]?.toString() ?? responseData["oneTimeCode"]?.toString();
       }
-      
+
       if (token != null) {
         await PrefsHelper.setString(AppConstants.bearerToken, token);
       } else {
@@ -242,10 +250,12 @@ class AuthController extends GetxController {
       }
 
       if (screenType == "forgot") {
-        context.pushNamed(AppRoutes.verifyScreen, extra: {
-          "screenType": "forgot",
-          "email": email,
-        });
+        if (context.mounted) {
+          context.pushNamed(AppRoutes.verifyScreen, extra: {
+            "screenType": "forgot",
+            "email": email,
+          });
+        }
       }
 
       forgotLoading.value = false;
@@ -270,9 +280,11 @@ class AuthController extends GetxController {
         ApiConstants.resetPasswordEndPoint, jsonEncode(body));
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      context.pushNamed(AppRoutes.logInScreen);
+      if (context.mounted) {
+        context.pushNamed(AppRoutes.logInScreen);
+      }
       ToastMessageHelper.showToastMessage('${response.body["message"]}');
-      print("======>>> successful");
+      debugPrint("======>>> successful");
       setPasswordLoading(false);
     } else if(response.statusCode == 1){
       setPasswordLoading(false);

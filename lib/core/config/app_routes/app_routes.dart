@@ -11,7 +11,7 @@ import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/t
 import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/timer_success_message.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/reset/reset_password_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/reset/reset_successfully_screen.dart';
-import 'package:limit_it_app/core/presentations/screens/auth/signin/sign_in%20_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/auth/signin/sign_in_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/signup/sign_up_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/verify/verify_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/bottomnavbar/bottom_navbar_screen.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:limit_it_app/core/models/feature_premium-model.dart';
+import 'package:limit_it_app/core/models/feature_premium_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 
 class FeatureItem extends StatelessWidget {

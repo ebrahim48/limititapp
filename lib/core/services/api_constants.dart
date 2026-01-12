@@ -1,7 +1,7 @@
 class ApiConstants{
 
-  static const String baseUrl = "https://ahad6000.joblessorg.com/api/v1";
-  static const String imageBaseUrl = "https://ahad6000.joblessorg.com";
+  static const String baseUrl = "https://jakuan5000.syedbipul.me/api/v1";
+  static const String imageBaseUrl = "https://jakuan5000.syedbipul.me";
 
 
 
@@ -15,7 +15,7 @@ class ApiConstants{
   static const String verifyEmailEndPoint = "/users/verify-code";
   static const String forgotPasswordEndPoint = "/users/forgot-password";
   static const String resetPasswordEndPoint = "/users/set-password";
-  static const String resendOtpEndPoint = "/auth/resend-otp";
+  static const String resendOtpEndPoint = "/users/resend-otp";
 
 
 }

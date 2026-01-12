@@ -146,5 +146,5 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
     AppModel(name: 'Netflix', icon: 'assets/icons/netflix.svg'),
   ];
 
-  bool get isAllSelected => selectedApps.length == apps.length;
+  bool get isAllSelected => selectedApps.value.length == apps.length;
 }

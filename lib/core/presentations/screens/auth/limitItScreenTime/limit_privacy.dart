@@ -12,7 +12,7 @@ import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
 class LimitPrivacyProtectionScreen extends StatefulWidget {
-  LimitPrivacyProtectionScreen({super.key});
+  const LimitPrivacyProtectionScreen({super.key});
 
   @override
   State<LimitPrivacyProtectionScreen> createState() => _LimitPrivacyProtectionScreenState();
@@ -35,7 +35,7 @@ class _LimitPrivacyProtectionScreenState extends State<LimitPrivacyProtectionScr
               width: 259.w,
               height: 195.h,
               decoration: BoxDecoration(
-                color: AppColors.primaryColor.withOpacity(0.5),
+                color: AppColors.primaryColor.withValues(alpha: 0.5),
                 shape: BoxShape.circle,
               ),
               child: BackdropFilter(
@@ -56,7 +56,7 @@ class _LimitPrivacyProtectionScreenState extends State<LimitPrivacyProtectionScr
               width: 158.w,
               height: 219.h,
               decoration: BoxDecoration(
-                color: AppColors.textColor803D20.withOpacity(0.3),
+                color: AppColors.textColor803D20.withValues(alpha: 0.3),
                 shape: BoxShape.circle,
               ),
               child: BackdropFilter(

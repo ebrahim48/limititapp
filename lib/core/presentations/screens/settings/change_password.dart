@@ -12,9 +12,14 @@ import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
 
 
-class ChangePasswordScreen extends StatelessWidget {
-   ChangePasswordScreen({super.key});
+class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({super.key});
 
+  @override
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
+}
+
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
 
@@ -74,27 +79,35 @@ class ChangePasswordScreen extends StatelessWidget {
                   isPassword: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      Future.delayed(Duration.zero, () => isMatched.value = false);
+                      Future.delayed(Duration.zero, () => setState(() {
+                        isMatched = false;
+                      }));
                       return 'Please enter your confirm password';
                     } else if (setNewPassCtrl.text == value) {
-                      Future.delayed(Duration.zero, () => isMatched.value = true);
+                      Future.delayed(Duration.zero, () => setState(() {
+                        isMatched = true;
+                      }));
                       return null;
                     } else {
-                      Future.delayed(Duration.zero, () => isMatched.value = false);
+                      Future.delayed(Duration.zero, () => setState(() {
+                        isMatched = false;
+                      }));
                       return 'Password Not Matching';
                     }
                   },
                   onChanged: (value) {
-                    isMatched.value = setNewPassCtrl.text == value;
+                    setState(() {
+                      isMatched = setNewPassCtrl.text == value;
+                    });
                   },
                 ),
-                Obx(() => Align(
+                Align(
                     alignment: Alignment.centerLeft,
                     child: CustomText(
-                      text: isMatched.value ? 'Password Matched' : "",
+                      text: isMatched ? 'Password Matched' : "",
                       color: Colors.green,
                       fontsize: 14.sp,
-                    ))),
+                    )),
 
                 GestureDetector(
                   onTap: () {
@@ -131,16 +144,20 @@ class ChangePasswordScreen extends StatelessWidget {
 
 
 
-  RxBool isMatched = false.obs;
-  RxBool isObscureConfirmPassword = true.obs;
+  bool isMatched = false;
+  bool isObscureConfirmPassword = true;
   toggleIsObscureConfirmPassword() {
-    isObscureConfirmPassword.value = !isObscureConfirmPassword.value;
+    setState(() {
+      isObscureConfirmPassword = !isObscureConfirmPassword;
+    });
   }
 
   ismMatchedColor() {
-    isMatched.value = !isMatched.value;
+    setState(() {
+      isMatched = !isMatched;
+    });
   }
 
-  RxBool isChecked = false.obs;
+  bool isChecked = false;
 
 }

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:limit_it_app/core/models/feature_premium-model.dart';
+import 'package:limit_it_app/core/models/feature_premium_model.dart';
 
 class UpgradePremiumController extends GetxController {
   final selectedPlan = 'monthly'.obs;

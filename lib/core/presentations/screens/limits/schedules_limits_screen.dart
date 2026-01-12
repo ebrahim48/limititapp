@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/controllers/schedules_limits_controller.dart';
@@ -84,12 +85,12 @@ class SchedulesLimitsScreen extends StatelessWidget {
             CustomButton(
               title: context.l10n.saveAppBlock,
               onpress: () {
-                controller.appBlocks.forEach((app) {
+                for (final app in controller.appBlocks) {
                   if (app.isEnabled.value) {
-                    print(
+                    debugPrint(
                         '${app.name}: ${app.startTime.value} - ${app.endTime.value}');
                   }
-                });
+                }
               },
             ),
             SizedBox(height: 60.h),

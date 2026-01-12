@@ -46,7 +46,6 @@ class MyApp extends StatelessWidget {
               theme: Themes().lightTheme,
               darkTheme: Themes().lightTheme,
               builder: DevicePreview.appBuilder,
-              useInheritedMediaQuery: true,
               locale: localeController.locale.value,
               localizationsDelegates: const [
                 AppLocalizations.delegate,

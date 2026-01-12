@@ -66,7 +66,7 @@ class Themes {
 
 
     scrollbarTheme: ScrollbarThemeData(
-        thumbColor: MaterialStatePropertyAll(Colors.red.withOpacity(.50))
+        thumbColor: WidgetStatePropertyAll(Colors.red.withValues(alpha: 0.50))
     ),
 
     ///-----------------app bar theme------------------>

@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/models/daily_usage.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
-import 'package:limit_it_app/core/presentations/widgets/dash-line_painter.dart';
+import 'package:limit_it_app/core/presentations/widgets/dash_line_painter.dart';
 import 'package:limit_it_app/core/presentations/widgets/time_range_widget.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:flutter/foundation.dart';
@@ -241,30 +241,32 @@ class DailyUsageCard extends StatelessWidget {
                 barHeight = app.height * 10.0;
               }
 
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    width: 40.w,
-                    height: barHeight.h,
-                    decoration: BoxDecoration(
-                      color: app.color,
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(4.r),
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      width: 40.w,
+                      height: barHeight.h,
+                      decoration: BoxDecoration(
+                        color: app.color,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(4.r),
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: CustomText(
+                        text: app.percentage,
+                        fontsize: 10.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textColorF6F6F6,
                       ),
                     ),
-                    alignment: Alignment.center,
-                    child: CustomText(
-                      text: app.percentage,
-                      fontsize: 10.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textColorF6F6F6,
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  // Display real icon or fallback to placeholder
-                  _buildAppIcon(realIcon, app.icon, app.name),
-                ],
+                    SizedBox(height: 8.h),
+                    // Display real icon or fallback to placeholder
+                    _buildAppIcon(realIcon, app.icon, app.name),
+                  ],
+                ),
               );
             }).toList(),
       ),

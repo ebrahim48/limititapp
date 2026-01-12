@@ -49,40 +49,58 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Assets.icons.home.svg(
-              color: AppColors.borderColor,
               width: 22.w,
               height: 22.h,
+              colorFilter: ColorFilter.mode(
+                AppColors.borderColor,
+                BlendMode.srcIn,
+              ),
             ),
             activeIcon: Assets.icons.home.svg(
-              color: AppColors.textColorFFFFFF,
               width: 22.w,
               height: 22.h,
+              colorFilter: ColorFilter.mode(
+                AppColors.textColorFFFFFF,
+                BlendMode.srcIn,
+              ),
             ),
             label: "Homepage",
           ),
           BottomNavigationBarItem(
             icon: Assets.icons.limit.svg(
-              color: AppColors.borderColor,
               width: 22.w,
               height: 22.h,
+              colorFilter: ColorFilter.mode(
+                AppColors.borderColor,
+                BlendMode.srcIn,
+              ),
             ),
             activeIcon: Assets.icons.limit.svg(
-              color: AppColors.textColorFFFFFF,
               width: 22.w,
               height: 22.h,
+              colorFilter: ColorFilter.mode(
+                AppColors.textColorFFFFFF,
+                BlendMode.srcIn,
+              ),
             ),
             label: "Limits",
           ),
           BottomNavigationBarItem(
             icon: Assets.icons.reports.svg(
-              color: AppColors.borderColor,
               width: 22.w,
               height: 22.h,
+              colorFilter: ColorFilter.mode(
+                AppColors.borderColor,
+                BlendMode.srcIn,
+              ),
             ),
             activeIcon: Assets.icons.reports.svg(
-              color: AppColors.textColorFFFFFF,
               width: 22.w,
               height: 22.h,
+              colorFilter: ColorFilter.mode(
+                AppColors.textColorFFFFFF,
+                BlendMode.srcIn,
+              ),
             ),
             label: "Reports",
           ),

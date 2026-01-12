@@ -8,7 +8,7 @@ import '../../constants/app_colors.dart';
 
 class CustomText extends StatelessWidget {
 
-  CustomText(
+  const CustomText(
       {super.key,
         this.maxline,
         this.textOverflow,

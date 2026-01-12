@@ -6,7 +6,7 @@ import '../../widgets/custom_text.dart';
 
 
 class AboutUsScreen extends StatelessWidget {
-  AboutUsScreen({super.key});
+  const AboutUsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
