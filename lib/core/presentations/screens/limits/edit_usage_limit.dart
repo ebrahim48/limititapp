@@ -1,22 +1,129 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
+import 'package:limit_it_app/core/models/app_limit_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_slider.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
-import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
+import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
 
 class EditUsageLimitScreen extends StatefulWidget {
-  const EditUsageLimitScreen({super.key});
+  final String? packageName; // Pass the package name to edit
+
+  const EditUsageLimitScreen({super.key, this.packageName});
 
   @override
   State<EditUsageLimitScreen> createState() => _EditUsageLimitScreenState();
 }
 
 class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
+  late AppLimitModel _appLimit;
+  double totalScreenTime = 120;
+  String opensValue = '5 Times';
+  String durationValue = '30 Mins';
+  bool _isLoading = true;
+
+  final List<String> opensList = ['1 Time', '3 Times', '5 Times', '10 Times', '15 Times', '20 Times'];
+  final List<String> durationList = ['15 Mins', '30 Mins', '45 Mins', '60 Mins', '90 Mins', '120 Mins'];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAppLimit();
+  }
+
+  Future<void> _loadAppLimit() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final appLimitStorageService = Get.find<AppLimitStorageService>();
+      final appLimits = await appLimitStorageService.getAppLimits();
+
+      // Find the specific app limit to edit
+      final appLimit = appLimits.firstWhere(
+        (limit) => limit.packageName == widget.packageName,
+        orElse: () => AppLimitModel(
+          packageName: widget.packageName ?? 'unknown',
+          appName: widget.packageName ?? 'Unknown App', // Fallback to package name
+          maxDailyOpens: 5,
+          maxSessionDurationMinutes: 30,
+          activeDays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
+        ),
+      );
+
+      setState(() {
+        _appLimit = appLimit;
+        // Convert the values to the dropdown format
+        opensValue = '${appLimit.maxDailyOpens} Times';
+        durationValue = '${appLimit.maxSessionDurationMinutes} Mins';
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error loading app limit: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _saveAppLimit() async {
+    try {
+      // Parse the values from dropdowns
+      final maxDailyOpens = int.tryParse(opensValue.split(' ')[0]) ?? 5;
+      final maxSessionDurationMinutes = int.tryParse(durationValue.split(' ')[0]) ?? 30;
+
+      // Create updated app limit
+      final updatedAppLimit = _appLimit.copyWith(
+        maxDailyOpens: maxDailyOpens,
+        maxSessionDurationMinutes: maxSessionDurationMinutes,
+      );
+
+      // Save to storage
+      final appLimitStorageService = Get.find<AppLimitStorageService>();
+      final appLimits = await appLimitStorageService.getAppLimits();
+
+      // Replace the existing limit with the updated one
+      final updatedLimits = appLimits.map((limit) {
+        if (limit.packageName == widget.packageName) {
+          return updatedAppLimit;
+        }
+        return limit;
+      }).toList();
+
+      final success = await appLimitStorageService.saveAppLimits(updatedLimits);
+
+      if (success && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('App limit updated successfully!')),
+        );
+
+        // Go back to previous screen
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to update app limit')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving app limit: $e')),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +142,8 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
               onPressed: () => Navigator.pop(context),
             ),
             SizedBox(width: 12.w),
-            CustomText(text: context.l10n.editUsageLimit,
+            CustomText(
+              text: context.l10n.editUsageLimit,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -46,73 +154,69 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20.h),
+          child: _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 20.h),
 
-                CustomText(
-                  text: context.l10n.totalDailyScreenTime,
-                  fontsize: 20.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textColor3D3D3D,
-                ),
-                /// ==================================> Slider ==============================>
-                SizedBox(height: 20.h),
-                CustomSoundSlider(),
-                SizedBox(height: 20.h),
+                      CustomText(
+                        text: context.l10n.totalDailyScreenTime,
+                        fontsize: 20.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.textColor3D3D3D,
+                      ),
+                      /// ==================================> Slider ==============================>
+                      SizedBox(height: 20.h),
+                      CustomSoundSlider(),
+                      SizedBox(height: 20.h),
 
-                /// =================== Facebook Section ===================
-                _buildAppLimitSection(
-                  icon: Assets.icons.facebook.svg(width: 32.w, height: 32.h),
-                  appName: "Facebook",
-                  opensValue: facebookOpens,
-                  durationValue: facebookDuration,
-                  onOpensChanged: (value) {
-                    setState(() => facebookOpens = value!);
-                  },
-                  onDurationChanged: (value) {
-                    setState(() => facebookDuration = value!);
-                  },
+                      /// =================== App Section ===================
+                      _buildAppLimitSection(
+                        icon: _appLimit.appIcon != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: Image.memory(
+                                  _appLimit.appIcon!,
+                                  width: 32.w,
+                                  height: 32.h,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : Container(
+                                width: 32.w,
+                                height: 32.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                child: const Icon(Icons.apps, size: 20),
+                              ),
+                        appName: _appLimit.appName,
+                        opensValue: opensValue,
+                        durationValue: durationValue,
+                        onOpensChanged: (value) {
+                          setState(() => opensValue = value!);
+                        },
+                        onDurationChanged: (value) {
+                          setState(() => durationValue = value!);
+                        },
+                      ),
+                      SizedBox(height: 48.h),
+                      CustomButton(
+                        title: context.l10n.save,
+                        onpress: _saveAppLimit,
+                      ),
+                      SizedBox(height: 20.h),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 30.h),
-
-                /// =================== Netflix Section ===================
-                _buildAppLimitSection(
-                  icon: Assets.icons.netflix.svg(width: 32.w, height: 32.h),
-                  appName: "Netflix",
-                  opensValue: netflixOpens,
-                  durationValue: netflixDuration,
-                  onOpensChanged: (value) {
-                    setState(() => netflixOpens = value!);
-                  },
-                  onDurationChanged: (value) {
-                    setState(() => netflixDuration = value!);
-                  },
-                ),
-                SizedBox(height: 48.h),
-                CustomButton(
-                  title: context.l10n.next,
-                  onpress: () {
-                    context.pushNamed(AppRoutes.editTimerSettingsScreen);
-                  },),
-                SizedBox(height: 20.h),
-              ],
-            ),
-          ),
         ),
       ),
     );
   }
-  double totalScreenTime = 120;
-  String facebookOpens = '5 Times';
-  String facebookDuration = '30 Mins';
-  String netflixOpens = '5 Times';
-  String netflixDuration = '30 Mins';
-
-  final List<String> opensList = ['1 Time', '3 Times', '5 Times', '10 Times'];
-  final List<String> durationList = ['15 Mins', '30 Mins', '45 Mins', '60 Mins'];
 
   Widget _buildAppLimitSection({
     required Widget icon,
@@ -129,11 +233,13 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
           children: [
             icon,
             SizedBox(width: 12.w),
-            CustomText(
-              text: appName,
-              fontsize: 24.sp,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textColor3D3D3D,
+            Flexible(
+              child: CustomText(
+                text: appName,
+                fontsize: 24.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textColor3D3D3D,
+              ),
             ),
           ],
         ),
@@ -186,5 +292,4 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
       ),
     );
   }
-
 }

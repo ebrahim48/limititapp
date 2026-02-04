@@ -3,8 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
+import 'package:limit_it_app/core/models/timer_settings_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/core/services/timer_settings_service.dart';
 
 class EditTimerSettingsScreen extends StatefulWidget {
   const EditTimerSettingsScreen({super.key});
@@ -14,11 +16,102 @@ class EditTimerSettingsScreen extends StatefulWidget {
 }
 
 class _EditTimerSettingsScreenState extends State<EditTimerSettingsScreen> {
+  final RxString selectedDuration = '0 sec'.obs;
+  final RxBool showMoreDurations = false.obs;
+  final List<String> initialDurations = ['0 sec', '5 sec', '10 sec', '15 sec'];
+  final List<String> moreDurations = ['20 sec', '25 sec', '30 sec', '35 sec', '40 sec', '45 sec'];
 
+  late List<MotivationalQuote> quotes;
+  bool isLoading = true;
 
+  @override
+  void initState() {
+    super.initState();
+    _loadTimerSettings();
+  }
+
+  Future<void> _loadTimerSettings() async {
+    // Load existing timer settings if available
+    final timerSettingsService = Get.find<TimerSettingsService>();
+    final settings = await timerSettingsService.getTimerSettings();
+
+    if (settings != null) {
+      selectedDuration.value = settings.preOpeningCountdown;
+      quotes = settings.motivationalQuotes;
+    } else {
+      // Default quotes if no settings exist
+      quotes = [
+        MotivationalQuote(
+          text: 'Almost all good writing begins with terrible first efforts. You need to start somewhere',
+          author: 'Anne Lamott',
+          isHighlighted: false,
+        ),
+        MotivationalQuote(
+          text: 'God gives every bird its food, but He does not throw it into its nest',
+          author: 'J.G. Holland',
+          isHighlighted: true,
+        ),
+        MotivationalQuote(
+          text: 'An effort made for the happiness of others lifts above ourselves',
+          author: 'Lydia M. Child',
+          isHighlighted: false,
+        ),
+      ];
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<void> _saveTimerSettings() async {
+    // Create timer settings object with selected values
+    final timerSettings = TimerSettingsModel(
+      preOpeningCountdown: selectedDuration.value,
+      motivationalQuotes: quotes,
+    );
+
+    // Save to storage
+    final timerSettingsService = Get.find<TimerSettingsService>();
+    final success = await timerSettingsService.saveTimerSettings(timerSettings);
+
+    if (success) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Timer settings updated successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // Go back to previous screen
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
+      }
+    } else {
+      // Show error message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.l10n.errorSavingSettings),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -62,7 +155,6 @@ class _EditTimerSettingsScreenState extends State<EditTimerSettingsScreen> {
                 ),
 
                 SizedBox(height: 16.h),
-
 
                 // Duration chips - Initial + More (if expanded)
                 Obx(() {
@@ -146,16 +238,14 @@ class _EditTimerSettingsScreenState extends State<EditTimerSettingsScreen> {
                 SizedBox(height: 16.h),
 
                 // Quotes list
-                ...quotes.map((quote) => _buildQuoteCard(quote)),
+                ...quotes.map((quote) => _buildQuoteCard(quote)).toList(),
 
                 SizedBox(height: 35.h),
 
                 // Save button
                 CustomButton(
                   title: context.l10n.updateScreenTime,
-                  onpress: () {
-
-                  },
+                  onpress: _saveTimerSettings,
                 ),
 
                 SizedBox(height: 20.h),
@@ -202,40 +292,4 @@ class _EditTimerSettingsScreenState extends State<EditTimerSettingsScreen> {
       ),
     );
   }
-  final RxString selectedDuration = '0 sec'.obs;
-  final RxBool showMoreDurations = false.obs;
-  final List<String> initialDurations = ['0 sec', '5 sec', '10 sec', '15 sec'];
-  final List<String> moreDurations = ['20 sec', '25 sec', '30 sec', '35 sec', '40 sec', '45 sec'];
-
-
-  final List<MotivationalQuote> quotes = [
-    MotivationalQuote(
-      text: 'Almost all good writing begins with terrible first efforts. You need to start somewhere',
-      author: 'Anne Lamott',
-      isHighlighted: false,
-    ),
-    MotivationalQuote(
-      text: 'God gives every bird its food, but He does not throw it into its nest',
-      author: 'J.G. Holland',
-      isHighlighted: true,
-    ),
-    MotivationalQuote(
-      text: 'An effort made for the happiness of others lifts above ourselves',
-      author: 'Lydia M. Child',
-      isHighlighted: false,
-    ),
-  ];
-}
-
-// Model class for motivational quotes
-class MotivationalQuote {
-  final String text;
-  final String author;
-  final bool isHighlighted;
-
-  MotivationalQuote({
-    required this.text,
-    required this.author,
-    required this.isHighlighted,
-  });
 }

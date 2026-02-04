@@ -139,5 +139,6 @@
   "subscriptionConfirmMessage": "Abbonati al piano mensile Premium per €1/mese?",
   "subscribe": "Abbonati",
   "subscriptionSuccessful": "Abbonamento riuscito!",
-  "failed": "Fallito"
+  "failed": "Fallito",
+  "errorSavingSettings": "Errore durante il salvataggio delle impostazioni. Riprova."
 }

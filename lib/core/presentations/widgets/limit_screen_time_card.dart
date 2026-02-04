@@ -145,7 +145,10 @@ class LimitScreenTimeCard extends StatelessWidget {
             ),
             onSelected: (value) {
               if (value == 'edit') {
-                context.pushNamed(AppRoutes.editUsageLimitScreen);
+                context.pushNamed(
+                  AppRoutes.editUsageLimitScreen,
+                  extra: {'packageName': data.limit.packageName},
+                );
               } else if (value == 'delete') {
                 _showDeleteConfirmationDialog(context);
               }

@@ -925,6 +925,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed'**
   String get failed;
+
+  /// Error message when saving settings fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving settings. Please try again.'**
+  String get errorSavingSettings;
 }
 
 class _AppLocalizationsDelegate

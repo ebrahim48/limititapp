@@ -442,4 +442,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get failed => 'Fallito';
+
+  @override
+  String get errorSavingSettings => 'Errore durante il salvataggio delle impostazioni. Riprova.';
 }

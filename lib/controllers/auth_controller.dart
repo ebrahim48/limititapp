@@ -214,9 +214,9 @@ class AuthController extends GetxController {
           if (context.mounted) {
             context.go(AppRoutes.limitPrivacyProtectionScreen);
           }
-          ToastMessageHelper.showToastMessage(
-            message ?? "You are logged in",
-            title: 'Success');
+          // ToastMessageHelper.showToastMessage(
+          //   message ?? "You are logged in",
+          //   title: 'Success');
         }
       }
 
