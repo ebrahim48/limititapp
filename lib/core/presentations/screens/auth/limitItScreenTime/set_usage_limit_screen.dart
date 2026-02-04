@@ -9,7 +9,8 @@ import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
-import 'package:limit_it_app/core/presentations/screens/permissions/permissions_setup_screen.dart';
+import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
+import 'package:go_router/go_router.dart';
 
 class SetUsageLimitScreen extends StatefulWidget {
   final List<SelectedAppInfo>? selectedApps;
@@ -222,12 +223,8 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
           ),
         );
 
-        // Navigate to permissions setup screen
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const PermissionsSetupScreen(),
-          ),
-        );
+        // Navigate to timer settings screen with origin information
+        context.pushNamed(AppRoutes.timerSettingsScreen, extra: {'origin': 'setUsage'});
       } else {
         throw Exception('Failed to save app limits');
       }

@@ -5,22 +5,78 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
+import 'package:limit_it_app/core/models/timer_settings_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/core/services/timer_settings_service.dart';
 
 class TimerSettingsScreen extends StatefulWidget {
-  const TimerSettingsScreen({super.key});
+  final Map<String, dynamic>? arguments;
+  const TimerSettingsScreen({super.key, this.arguments});
 
   @override
   State<TimerSettingsScreen> createState() => _TimerSettingsScreenState();
 }
 
 class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
+  final RxString selectedDuration = '0 sec'.obs;
+  final RxBool showMoreDurations = false.obs;
+  final List<String> initialDurations = ['0 sec', '5 sec', '10 sec', '15 sec'];
+  final List<String> moreDurations = ['20 sec', '25 sec', '30 sec', '35 sec', '40 sec', '45 sec'];
 
+  late List<MotivationalQuote> quotes;
+  bool isLoading = true;
 
+  @override
+  void initState() {
+    super.initState();
+    _loadInitialData();
+  }
+
+  Future<void> _loadInitialData() async {
+    // Load existing timer settings if available
+    final timerSettingsService = Get.find<TimerSettingsService>();
+    final settings = await timerSettingsService.getTimerSettings();
+
+    if (settings != null) {
+      selectedDuration.value = settings.preOpeningCountdown;
+      quotes = settings.motivationalQuotes;
+    } else {
+      // Default quotes if no settings exist
+      quotes = [
+        MotivationalQuote(
+          text: 'Almost all good writing begins with terrible first efforts. You need to start somewhere',
+          author: 'Anne Lamott',
+          isHighlighted: false,
+        ),
+        MotivationalQuote(
+          text: 'God gives every bird its food, but He does not throw it into its nest',
+          author: 'J.G. Holland',
+          isHighlighted: true,
+        ),
+        MotivationalQuote(
+          text: 'An effort made for the happiness of others lifts above ourselves',
+          author: 'Lydia M. Child',
+          isHighlighted: false,
+        ),
+      ];
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return Scaffold(
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -64,7 +120,6 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
                 ),
 
                 SizedBox(height: 16.h),
-
 
                 // Duration chips - Initial + More (if expanded)
                 Obx(() {
@@ -148,16 +203,14 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
                 SizedBox(height: 16.h),
 
                 // Quotes list
-                ...quotes.map((quote) => _buildQuoteCard(quote)),
+                ...quotes.map((quote) => _buildQuoteCard(quote)).toList(),
 
                 SizedBox(height: 35.h),
 
                 // Save button
                 CustomButton(
                   title: context.l10n.save,
-                  onpress: () {
-                 context.pushNamed(AppRoutes.timerSuccessScreen);
-                  },
+                  onpress: _saveTimerSettings,
                 ),
 
                 SizedBox(height: 20.h),
@@ -204,40 +257,37 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
       ),
     );
   }
-  final RxString selectedDuration = '0 sec'.obs;
-  final RxBool showMoreDurations = false.obs;
-  final List<String> initialDurations = ['0 sec', '5 sec', '10 sec', '15 sec'];
-  final List<String> moreDurations = ['20 sec', '25 sec', '30 sec', '35 sec', '40 sec', '45 sec'];
 
+  Future<void> _saveTimerSettings() async {
+    // Create timer settings object with selected values
+    final timerSettings = TimerSettingsModel(
+      preOpeningCountdown: selectedDuration.value,
+      motivationalQuotes: quotes,
+    );
 
-  final List<MotivationalQuote> quotes = [
-    MotivationalQuote(
-      text: 'Almost all good writing begins with terrible first efforts. You need to start somewhere',
-      author: 'Anne Lamott',
-      isHighlighted: false,
-    ),
-    MotivationalQuote(
-      text: 'God gives every bird its food, but He does not throw it into its nest',
-      author: 'J.G. Holland',
-      isHighlighted: true,
-    ),
-    MotivationalQuote(
-      text: 'An effort made for the happiness of others lifts above ourselves',
-      author: 'Lydia M. Child',
-      isHighlighted: false,
-    ),
-  ];
-}
+    // Save to storage
+    final timerSettingsService = Get.find<TimerSettingsService>();
+    final success = await timerSettingsService.saveTimerSettings(timerSettings);
 
-// Model class for motivational quotes
-class MotivationalQuote {
-  final String text;
-  final String author;
-  final bool isHighlighted;
+    if (success) {
+      // Check origin to determine where to navigate
+      final origin = widget.arguments?['origin'];
 
-  MotivationalQuote({
-    required this.text,
-    required this.author,
-    required this.isHighlighted,
-  });
+      if (origin == 'setUsage') {
+        // If coming from SetUsageLimitScreen (Flow 2), go back to LimitScreenTime
+        context.pushNamed(AppRoutes.limitScreenTime);
+      } else {
+        // Otherwise, go to timer success screen (Flow 1)
+        context.pushNamed(AppRoutes.timerSuccessScreen);
+      }
+    } else {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.errorSavingSettings),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 }

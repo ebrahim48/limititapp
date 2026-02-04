@@ -296,10 +296,9 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
                     }
                   }
 
-                  // Navigate with selected apps and days
-                  context.pushNamed(
-                    AppRoutes.setUsageLimitScreen,
-                    extra: {
+                  /// ====================================>  Navigate with selected apps and days =======================================>
+
+                  context.pushNamed(AppRoutes.setUsageLimitScreen, extra: {
                       'selectedApps': selectedAppsData,
                       'selectedDays': selectedDays.toList(),
                     },

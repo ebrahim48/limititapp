@@ -292,9 +292,14 @@ class AppRoutes {
       GoRoute(
         path: editUsageLimitScreen,
         name: editUsageLimitScreen,
-        pageBuilder:
-            (context, state) =>
-                _customTransitionPage(EditUsageLimitScreen(), state),
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          final packageName = extra?['packageName']?.toString();
+          return _customTransitionPage(
+            EditUsageLimitScreen(packageName: packageName),
+            state,
+          );
+        },
       ),
 
       ///<<<=============>>> Schedules Limits Screen  <<<===============>>>

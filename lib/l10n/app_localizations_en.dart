@@ -433,4 +433,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failed => 'Failed';
+
+  @override
+  String get errorSavingSettings => 'Error saving settings. Please try again.';
 }

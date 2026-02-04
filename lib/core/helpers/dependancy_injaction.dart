@@ -9,6 +9,7 @@ import 'package:limit_it_app/core/services/app_blocker_service.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/core/services/blocked_apps_service.dart';
+import 'package:limit_it_app/core/services/timer_settings_service.dart';
 
 class DependencyInjection implements Bindings {
   DependencyInjection();
@@ -20,6 +21,7 @@ class DependencyInjection implements Bindings {
     Get.lazyPut<AppBlockerService>(() => AppBlockerService.instance, fenix: true);
     Get.lazyPut<BlockedAppsService>(() => BlockedAppsService.instance, fenix: true);
     Get.lazyPut<AppLimitStorageService>(() => AppLimitStorageService.instance, fenix: true);
+    Get.lazyPut<TimerSettingsService>(() => TimerSettingsService.instance, fenix: true);
 
     // Register all controllers as singletons (lazy load)
     Get.lazyPut<ThemeController>(() => ThemeController(), fenix: true);

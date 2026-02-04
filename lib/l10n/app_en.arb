@@ -564,5 +564,9 @@
   "failed": "Failed",
   "@failed": {
     "description": "Failed status"
+  },
+  "errorSavingSettings": "Error saving settings. Please try again.",
+  "@errorSavingSettings": {
+    "description": "Error message when saving settings fails"
   }
 }
