@@ -1,9 +1,11 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/models/app_bock_item.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
 class AppBlockCard extends StatelessWidget {
   final AppBlockItem app;
@@ -29,7 +31,7 @@ class AppBlockCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              app.icon.svg(width: 40.w, height: 40.h),
+              _buildAppIcon(),
               SizedBox(width: 12.w),
               Expanded(
                 child: Column(
@@ -87,6 +89,30 @@ class AppBlockCard extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildAppIcon() {
+    // Check if icon is Uint8List (from device) or SvgPath (from assets)
+    if (app.icon is Uint8List) {
+      // It's a real app icon from device
+      return Image.memory(
+        app.icon as Uint8List,
+        width: 40.w,
+        height: 40.h,
+        errorBuilder: (context, error, stackTrace) {
+          // Fallback to default icon if image fails to load
+          return Assets.icons.facebook.svg(width: 40.w, height: 40.h);
+        },
+      );
+    } else {
+      // It's an SVG icon from assets
+      try {
+        return app.icon.svg(width: 40.w, height: 40.h);
+      } catch (e) {
+        // Fallback to facebook icon if SVG fails
+        return Assets.icons.facebook.svg(width: 40.w, height: 40.h);
+      }
+    }
   }
 
   Widget _buildTimePicker(

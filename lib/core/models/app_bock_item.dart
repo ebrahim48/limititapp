@@ -7,6 +7,7 @@ class AppBlockItem {
   final RxBool isEnabled;
   final RxString startTime;
   final RxString endTime;
+  final String? packageName;
 
   AppBlockItem({
     required this.name,
@@ -15,5 +16,6 @@ class AppBlockItem {
     required this.isEnabled,
     required this.startTime,
     required this.endTime,
+    this.packageName,
   });
 }
