@@ -28,6 +28,27 @@ class LocaleController extends GetxController {
 
   // Get current language name
   String get currentLanguageName {
-    return locale.value.languageCode == 'it' ? 'Italian' : 'English';
+    switch (locale.value.languageCode) {
+      case 'en':
+        return 'English';
+      case 'es':
+        return 'Spanish';
+      case 'it':
+      default:
+        return 'Italian';
+    }
+  }
+
+  // Get language code from language name
+  String getLanguageCode(String languageName) {
+    switch (languageName) {
+      case 'English':
+        return 'en';
+      case 'Spanish':
+        return 'es';
+      case 'Italian':
+      default:
+        return 'it';
+    }
   }
 }

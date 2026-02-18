@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
               supportedLocales: const [
                 Locale('en', ''),
                 Locale('it', ''),
+                Locale('es', ''),
               ],
               // darkTheme: ThemeData.dark(),
               themeMode: Get.find<ThemeController>().themeMode.value,
