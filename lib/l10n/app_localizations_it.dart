@@ -66,15 +66,13 @@ class AppLocalizationsIt extends AppLocalizations {
   String get welcomeToLimitIt => 'Benvenuto su LimitIt';
 
   @override
-  String get startingToday =>
-      'A partire da oggi, concentriamoci meglio e\nrealizza i tuoi sogni';
+  String get startingToday => 'A partire da oggi, concentriamoci meglio e\nrealizza i tuoi sogni';
 
   @override
   String get signUpYourAccount => 'Registra il tuo account';
 
   @override
-  String get enterYourDetails =>
-      'Inserisci i tuoi dati qui sotto per continuare';
+  String get enterYourDetails => 'Inserisci i tuoi dati qui sotto per continuare';
 
   @override
   String get firstName => 'Nome';
@@ -104,7 +102,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get passwordMatched => 'Password corrispondente ✓';
 
   @override
-  String get privacyPolicy => 'Informativa sulla privacy';
+  String get privacyPolicy => 'Informativa sulla Privacy';
 
   @override
   String get alreadyHaveAccount => 'Hai già un account? ';
@@ -119,12 +117,10 @@ class AppLocalizationsIt extends AppLocalizations {
   String get logInYourAccount => 'Accedi al tuo account';
 
   @override
-  String get allSetPasswordUpdated =>
-      'Tutto pronto!\nPassword aggiornata con successo';
+  String get allSetPasswordUpdated => 'Tutto pronto!\nPassword aggiornata con successo';
 
   @override
-  String get logInSecurely =>
-      'Accedi in modo sicuro per accedere alla tua app completa';
+  String get logInSecurely => 'Accedi in modo sicuro per accedere alla tua app completa';
 
   @override
   String get forgetPassword => 'Password dimenticata?';
@@ -157,26 +153,22 @@ class AppLocalizationsIt extends AppLocalizations {
   String get backToHome => 'Torna alla home';
 
   @override
-  String get iAcceptPrivacy =>
-      'Accetto l\'informativa sulla privacy e i termini di servizio';
+  String get iAcceptPrivacy => 'Accetto l\'informativa sulla privacy e i termini di servizio';
 
   @override
   String get privacyDataProtection => 'Privacy e protezione dei dati';
 
   @override
-  String get usageDataStaysOnDevice =>
-      'I tuoi dati di utilizzo rimangono sul tuo dispositivo';
+  String get usageDataStaysOnDevice => 'I tuoi dati di utilizzo rimangono sul tuo dispositivo';
 
   @override
-  String get noPersonalInfoCollection =>
-      'Non raccogliamo informazioni personali';
+  String get noPersonalInfoCollection => 'Non raccogliamo informazioni personali';
 
   @override
   String get gdprCompliance => 'La conformità GDPR è la nostra priorità';
 
   @override
-  String get transparentPermissions =>
-      'Richieste di autorizzazione trasparenti';
+  String get transparentPermissions => 'Richieste di autorizzazione trasparenti';
 
   @override
   String get selectAppsToManage => 'Seleziona le app da gestire';
@@ -203,8 +195,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get motivationalPhrases => 'Frasi motivazionali';
 
   @override
-  String get allSetAppLimit =>
-      'Tutto pronto!\nHai impostato con successo il limite dell\'app';
+  String get allSetAppLimit => 'Tutto pronto!\nHai impostato con successo il limite dell\'app';
 
   @override
   String get reports => 'Rapporti';
@@ -216,11 +207,46 @@ class AppLocalizationsIt extends AppLocalizations {
   String get downloadReport => 'Scarica rapporto';
 
   @override
+  String get generatingReport => 'Generazione rapporto...';
+
+  @override
+  String get preparingYourReport => 'Preparazione del rapporto con dati in tempo reale';
+
+  @override
+  String get reportDownloaded => 'Rapporto scaricato';
+
+  @override
+  String get reportReadyToShare => 'Il tuo rapporto di utilizzo è pronto per la condivisione o la stampa';
+
+  @override
+  String get failedToDownloadReport => 'Impossibile scaricare il rapporto. Riprova';
+
+  @override
+  String get error => 'Errore';
+
+  @override
+  String get aboutUs => 'Chi siamo';
+
+  @override
+  String get termsConditions => 'Termini e Condizioni';
+
+  @override
+  String get loading => 'Caricamento...';
+
+  @override
+  String get retry => 'Riprova';
+
+  @override
+  String get failedToLoadData => 'Impossibile caricare i dati';
+
+  @override
+  String get networkError => 'Errore di rete. Controlla la tua connessione';
+
+  @override
   String get noNotificationsYet => 'Nessuna notifica ancora';
 
   @override
-  String get notifyWhenNewArrives =>
-      'Ti avviseremo quando arriva qualcosa di nuovo';
+  String get notifyWhenNewArrives => 'Ti avviseremo quando arriva qualcosa di nuovo';
 
   @override
   String get detoxMode => 'Modalità Detox';
@@ -238,22 +264,19 @@ class AppLocalizationsIt extends AppLocalizations {
   String get grantRequiredPermissions => 'Concedi permessi richiesti';
 
   @override
-  String get permissionsDescription =>
-      'LimitIt ha bisogno di questi permessi per monitorare e bloccare le app quando vengono raggiunti i limiti.';
+  String get permissionsDescription => 'LimitIt ha bisogno di questi permessi per monitorare e bloccare le app quando vengono raggiunti i limiti.';
 
   @override
   String get overlayPermission => 'Permesso sovrapposizione';
 
   @override
-  String get overlayPermissionDesc =>
-      'Consente a LimitIt di visualizzare la schermata di blocco sopra altre app';
+  String get overlayPermissionDesc => 'Consente a LimitIt di visualizzare la schermata di blocco sopra altre app';
 
   @override
   String get accessibilityService => 'Servizio di accessibilità';
 
   @override
-  String get accessibilityServiceDesc =>
-      'Monitora quali app apri per applicare i limiti';
+  String get accessibilityServiceDesc => 'Monitora quali app apri per applicare i limiti';
 
   @override
   String get startMonitoring => 'Avvia monitoraggio';
@@ -271,8 +294,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get next => 'Avanti';
 
   @override
-  String get takeControlScreenTime =>
-      'Prendi il controllo del tuo\ntempo di schermo';
+  String get takeControlScreenTime => 'Prendi il controllo del tuo\ntempo di schermo';
 
   @override
   String get regainControl => 'Riprendi il controllo della tua vita digitale';
@@ -284,8 +306,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get chooseAppsToLimit => 'Scegli quali app limitare';
 
   @override
-  String get smartScheduling =>
-      'Pianificazione intelligente &\nReset giornalieri';
+  String get smartScheduling => 'Pianificazione intelligente &\nReset giornalieri';
 
   @override
   String get createPerfectSchedule => 'Crea il tuo programma perfetto';
@@ -351,21 +372,16 @@ class AppLocalizationsIt extends AppLocalizations {
   String get savePinNumber => 'Salva numero PIN';
 
   @override
-  String get pleaseAcceptPrivacyPolicy =>
-      'Accetta l\'informativa sulla privacy';
+  String get pleaseAcceptPrivacyPolicy => 'Accetta l\'informativa sulla privacy';
 
   @override
   String get screenTime => 'Tempo di schermo';
 
   @override
-  String get noScreenTimeLimits =>
-      'Nessun limite di tempo di schermo impostato ancora';
+  String get noScreenTimeLimits => 'Nessun limite di tempo di schermo impostato ancora';
 
   @override
   String get addNewScreenTime => 'Aggiungi nuovo tempo di schermo';
-
-  @override
-  String get retry => 'Riprova';
 
   @override
   String get pleaseSelectAtLeastOneApp => 'Seleziona almeno un\'app';
@@ -385,9 +401,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get changePassword => 'Cambia password';
 
   @override
-  String get aboutUs => 'Chi siamo';
-
-  @override
   String get notification => 'Notifica';
 
   @override
@@ -397,8 +410,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get readyToLogOut => 'Pronto per uscire?';
 
   @override
-  String get noAppsSelected =>
-      'Nessuna app selezionata. Torna indietro e seleziona le app.';
+  String get noAppsSelected => 'Nessuna app selezionata. Torna indietro e seleziona le app.';
 
   @override
   String get saving => 'Salvataggio...';
@@ -431,8 +443,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get confirmSubscription => 'Conferma abbonamento';
 
   @override
-  String get subscriptionConfirmMessage =>
-      'Abbonati al piano mensile Premium per €1/mese?';
+  String get subscriptionConfirmMessage => 'Abbonati al piano mensile Premium per €1/mese?';
 
   @override
   String get subscribe => 'Abbonati';

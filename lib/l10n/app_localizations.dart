@@ -19,7 +19,7 @@ import 'app_localizations_it.dart';
 /// `supportedLocales` list. For example:
 ///
 /// ```dart
-/// import 'l10n/app_localizations.dart';
+/// import 'gen_l10n/app_localizations.dart';
 ///
 /// return MaterialApp(
 ///   localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -63,8 +63,7 @@ import 'app_localizations_it.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -72,8 +71,7 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -85,19 +83,18 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
-      <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('es'),
-    Locale('it'),
+    Locale('it')
   ];
 
   /// The title of the application
@@ -286,7 +283,7 @@ abstract class AppLocalizations {
   /// **'Password Matched ✓'**
   String get passwordMatched;
 
-  /// Privacy policy link
+  /// Privacy Policy screen title
   ///
   /// In en, this message translates to:
   /// **'Privacy Policy'**
@@ -495,6 +492,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download Report'**
   String get downloadReport;
+
+  /// Loading text when generating report
+  ///
+  /// In en, this message translates to:
+  /// **'Generating Report...'**
+  String get generatingReport;
+
+  /// Subtitle when generating report
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your report with real-time data'**
+  String get preparingYourReport;
+
+  /// Success title for report download
+  ///
+  /// In en, this message translates to:
+  /// **'Report Downloaded'**
+  String get reportDownloaded;
+
+  /// Success message for report download
+  ///
+  /// In en, this message translates to:
+  /// **'Your usage report is ready to share or print'**
+  String get reportReadyToShare;
+
+  /// Error message when report download fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to download report. Please try again'**
+  String get failedToDownloadReport;
+
+  /// Generic error title
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// About us menu item
+  ///
+  /// In en, this message translates to:
+  /// **'About Us'**
+  String get aboutUs;
+
+  /// Terms & Conditions screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get termsConditions;
+
+  /// Loading text
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// Retry button
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// Error message when data fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load data'**
+  String get failedToLoadData;
+
+  /// Network error message
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection'**
+  String get networkError;
 
   /// Empty notifications message
   ///
@@ -778,12 +847,6 @@ abstract class AppLocalizations {
   /// **'Add New ScreenTime'**
   String get addNewScreenTime;
 
-  /// Retry button
-  ///
-  /// In en, this message translates to:
-  /// **'Retry'**
-  String get retry;
-
   /// App selection error
   ///
   /// In en, this message translates to:
@@ -813,12 +876,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Change Password'**
   String get changePassword;
-
-  /// About us menu item
-  ///
-  /// In en, this message translates to:
-  /// **'About Us'**
-  String get aboutUs;
 
   /// Notification menu item
   ///
@@ -935,8 +992,7 @@ abstract class AppLocalizations {
   String get errorSavingSettings;
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -945,28 +1001,26 @@ class _AppLocalizationsDelegate
   }
 
   @override
-  bool isSupported(Locale locale) =>
-      <String>['en', 'es', 'it'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['en', 'es', 'it'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
+
+
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en':
-      return AppLocalizationsEn();
-    case 'es':
-      return AppLocalizationsEs();
-    case 'it':
-      return AppLocalizationsIt();
+    case 'en': return AppLocalizationsEn();
+    case 'es': return AppLocalizationsEs();
+    case 'it': return AppLocalizationsIt();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
+    'that was used.'
   );
 }

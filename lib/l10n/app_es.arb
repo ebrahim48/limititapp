@@ -264,6 +264,58 @@
   "@downloadReport": {
     "description": "Download report button"
   },
+  "generatingReport": "Generando Informe...",
+  "@generatingReport": {
+    "description": "Loading text when generating report"
+  },
+  "preparingYourReport": "Preparando tu informe con datos en tiempo real",
+  "@preparingYourReport": {
+    "description": "Subtitle when generating report"
+  },
+  "reportDownloaded": "Informe Descargado",
+  "@reportDownloaded": {
+    "description": "Success title for report download"
+  },
+  "reportReadyToShare": "Tu informe de uso está listo para compartir o imprimir",
+  "@reportReadyToShare": {
+    "description": "Success message for report download"
+  },
+  "failedToDownloadReport": "Error al descargar el informe. Por favor, inténtalo de nuevo",
+  "@failedToDownloadReport": {
+    "description": "Error message when report download fails"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Generic error title"
+  },
+  "aboutUs": "Sobre Nosotros",
+  "@aboutUs": {
+    "description": "About Us screen title"
+  },
+  "privacyPolicy": "Política de Privacidad",
+  "@privacyPolicy": {
+    "description": "Privacy Policy screen title"
+  },
+  "termsConditions": "Términos y Condiciones",
+  "@termsConditions": {
+    "description": "Terms & Conditions screen title"
+  },
+  "loading": "Cargando...",
+  "@loading": {
+    "description": "Loading text"
+  },
+  "retry": "Reintentar",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "failedToLoadData": "Error al cargar los datos",
+  "@failedToLoadData": {
+    "description": "Error message when data fails to load"
+  },
+  "networkError": "Error de red. Por favor, comprueba tu conexión",
+  "@networkError": {
+    "description": "Network error message"
+  },
   "notifications": "Notificaciones",
   "@notifications": {
     "description": "Notifications screen title"

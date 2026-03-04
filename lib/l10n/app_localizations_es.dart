@@ -4,7 +4,7 @@ import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
-/// The translations for Spanish (`es`).
+/// The translations for Spanish Castilian (`es`).
 class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
@@ -66,15 +66,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get welcomeToLimitIt => 'Bienvenido a LimitIt';
 
   @override
-  String get startingToday =>
-      'A partir de hoy, vamos a enfocarnos mejor y\nhacer realidad tus sueños';
+  String get startingToday => 'A partir de hoy, vamos a enfocarnos mejor y\nhacer realidad tus sueños';
 
   @override
   String get signUpYourAccount => 'Regístrate en tu cuenta';
 
   @override
-  String get enterYourDetails =>
-      'Ingresa tus datos a continuación para continuar';
+  String get enterYourDetails => 'Ingresa tus datos a continuación para continuar';
 
   @override
   String get firstName => 'Nombre';
@@ -119,12 +117,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get logInYourAccount => 'Inicia sesión en tu cuenta';
 
   @override
-  String get allSetPasswordUpdated =>
-      '¡Todo listo!\nContraseña Actualizada Exitosamente';
+  String get allSetPasswordUpdated => '¡Todo listo!\nContraseña Actualizada Exitosamente';
 
   @override
-  String get logInSecurely =>
-      'Inicia sesión de forma segura para acceder a tu aplicación completa';
+  String get logInSecurely => 'Inicia sesión de forma segura para acceder a tu aplicación completa';
 
   @override
   String get forgetPassword => '¿Olvidaste tu Contraseña?';
@@ -157,22 +153,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get backToHome => 'Volver al Inicio';
 
   @override
-  String get iAcceptPrivacy =>
-      'Acepto la política de privacidad y los términos de servicio';
+  String get iAcceptPrivacy => 'Acepto la política de privacidad y los términos de servicio';
 
   @override
   String get privacyDataProtection => 'Privacidad y Protección de Datos';
 
   @override
-  String get usageDataStaysOnDevice =>
-      'Tus datos de uso permanecen en tu dispositivo';
+  String get usageDataStaysOnDevice => 'Tus datos de uso permanecen en tu dispositivo';
 
   @override
   String get noPersonalInfoCollection => 'No recopilamos información personal';
 
   @override
-  String get gdprCompliance =>
-      'El cumplimiento del GDPR es nuestra prioridad';
+  String get gdprCompliance => 'El cumplimiento del GDPR es nuestra prioridad';
 
   @override
   String get transparentPermissions => 'Solicitudes de permisos transparentes';
@@ -196,15 +189,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get timerSettings => 'Configuración del Temporizador';
 
   @override
-  String get preOpeningCountdown =>
-      'Duración de la Cuenta Regresiva\nPre-Apertura';
+  String get preOpeningCountdown => 'Duración de la Cuenta Regresiva\nPre-Apertura';
 
   @override
   String get motivationalPhrases => 'Frases Motivacionales';
 
   @override
-  String get allSetAppLimit =>
-      '¡Todo listo!\nHas Establecido el Límite de la Aplicación Exitosamente';
+  String get allSetAppLimit => '¡Todo listo!\nHas Establecido el Límite de la Aplicación Exitosamente';
 
   @override
   String get reports => 'Informes';
@@ -216,11 +207,46 @@ class AppLocalizationsEs extends AppLocalizations {
   String get downloadReport => 'Descargar Informe';
 
   @override
+  String get generatingReport => 'Generando Informe...';
+
+  @override
+  String get preparingYourReport => 'Preparando tu informe con datos en tiempo real';
+
+  @override
+  String get reportDownloaded => 'Informe Descargado';
+
+  @override
+  String get reportReadyToShare => 'Tu informe de uso está listo para compartir o imprimir';
+
+  @override
+  String get failedToDownloadReport => 'Error al descargar el informe. Por favor, inténtalo de nuevo';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get aboutUs => 'Sobre Nosotros';
+
+  @override
+  String get termsConditions => 'Términos y Condiciones';
+
+  @override
+  String get loading => 'Cargando...';
+
+  @override
+  String get retry => 'Reintentar';
+
+  @override
+  String get failedToLoadData => 'Error al cargar los datos';
+
+  @override
+  String get networkError => 'Error de red. Por favor, comprueba tu conexión';
+
+  @override
   String get noNotificationsYet => 'Aún no hay notificaciones';
 
   @override
-  String get notifyWhenNewArrives =>
-      'Te notificaremos cuando llegue algo nuevo';
+  String get notifyWhenNewArrives => 'Te notificaremos cuando llegue algo nuevo';
 
   @override
   String get detoxMode => 'Modo Detox';
@@ -238,22 +264,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get grantRequiredPermissions => 'Otorgar Permisos Requeridos';
 
   @override
-  String get permissionsDescription =>
-      'LimitIt necesita estos permisos para monitorear y bloquear aplicaciones cuando se alcanzan los límites.';
+  String get permissionsDescription => 'LimitIt necesita estos permisos para monitorear y bloquear aplicaciones cuando se alcanzan los límites.';
 
   @override
   String get overlayPermission => 'Permiso de Superposición';
 
   @override
-  String get overlayPermissionDesc =>
-      'Permite a LimitIt mostrar pantalla de bloqueo sobre otras aplicaciones';
+  String get overlayPermissionDesc => 'Permite a LimitIt mostrar pantalla de bloqueo sobre otras aplicaciones';
 
   @override
   String get accessibilityService => 'Servicio de Accesibilidad';
 
   @override
-  String get accessibilityServiceDesc =>
-      'Monitorea qué aplicaciones abres para hacer cumplir los límites';
+  String get accessibilityServiceDesc => 'Monitorea qué aplicaciones abres para hacer cumplir los límites';
 
   @override
   String get startMonitoring => 'Comenzar Monitoreo';
@@ -292,8 +315,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get trackYourProgress => 'Rastrea Tu Progreso\ny Mejora';
 
   @override
-  String get stayMotivated =>
-      'Mantente Motivado con Informes Semanales';
+  String get stayMotivated => 'Mantente Motivado con Informes Semanales';
 
   @override
   String get editProfile => 'Editar Perfil';
@@ -350,32 +372,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get savePinNumber => 'Guardar Número PIN';
 
   @override
-  String get pleaseAcceptPrivacyPolicy =>
-      'Por favor acepta la Política de Privacidad';
+  String get pleaseAcceptPrivacyPolicy => 'Por favor acepta la Política de Privacidad';
 
   @override
   String get screenTime => 'Tiempo de Pantalla';
 
   @override
-  String get noScreenTimeLimits =>
-      'Aún no hay límites de tiempo de pantalla establecidos';
+  String get noScreenTimeLimits => 'Aún no hay límites de tiempo de pantalla establecidos';
 
   @override
   String get addNewScreenTime => 'Agregar Nuevo Tiempo de Pantalla';
 
   @override
-  String get retry => 'Reintentar';
-
-  @override
-  String get pleaseSelectAtLeastOneApp =>
-      'Por favor selecciona al menos una aplicación';
+  String get pleaseSelectAtLeastOneApp => 'Por favor selecciona al menos una aplicación';
 
   @override
   String get continueWithApps => 'Continuar';
 
   @override
   String continueWithAppsCount(int count) {
-    return 'Continuar (${count} aplicaciones Seleccionadas)';
+    return 'Continuar ($count aplicaciones Seleccionadas)';
   }
 
   @override
@@ -383,9 +399,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get changePassword => 'Cambiar Contraseña';
-
-  @override
-  String get aboutUs => 'Sobre Nosotros';
 
   @override
   String get notification => 'Notificación';
@@ -397,8 +410,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get readyToLogOut => '¿Listo para Cerrar Sesión?';
 
   @override
-  String get noAppsSelected =>
-      'No hay aplicaciones seleccionadas. Por favor regresa y selecciona aplicaciones.';
+  String get noAppsSelected => 'No hay aplicaciones seleccionadas. Por favor regresa y selecciona aplicaciones.';
 
   @override
   String get saving => 'Guardando...';
@@ -431,8 +443,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get confirmSubscription => 'Confirmar Suscripción';
 
   @override
-  String get subscriptionConfirmMessage =>
-      '¿Suscribirse al Plan Mensual Premium por €1/mes?';
+  String get subscriptionConfirmMessage => '¿Suscribirse al Plan Mensual Premium por €1/mes?';
 
   @override
   String get subscribe => 'Suscribirse';
@@ -444,6 +455,5 @@ class AppLocalizationsEs extends AppLocalizations {
   String get failed => 'Fallido';
 
   @override
-  String get errorSavingSettings =>
-      'Error al guardar la configuración. Por favor intenta de nuevo.';
+  String get errorSavingSettings => 'Error al guardar la configuración. Por favor intenta de nuevo.';
 }

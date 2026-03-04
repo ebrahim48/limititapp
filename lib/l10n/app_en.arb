@@ -264,6 +264,58 @@
   "@downloadReport": {
     "description": "Download report button"
   },
+  "generatingReport": "Generating Report...",
+  "@generatingReport": {
+    "description": "Loading text when generating report"
+  },
+  "preparingYourReport": "Preparing your report with real-time data",
+  "@preparingYourReport": {
+    "description": "Subtitle when generating report"
+  },
+  "reportDownloaded": "Report Downloaded",
+  "@reportDownloaded": {
+    "description": "Success title for report download"
+  },
+  "reportReadyToShare": "Your usage report is ready to share or print",
+  "@reportReadyToShare": {
+    "description": "Success message for report download"
+  },
+  "failedToDownloadReport": "Failed to download report. Please try again",
+  "@failedToDownloadReport": {
+    "description": "Error message when report download fails"
+  },
+  "error": "Error",
+  "@error": {
+    "description": "Generic error title"
+  },
+  "aboutUs": "About Us",
+  "@aboutUs": {
+    "description": "About Us screen title"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Privacy Policy screen title"
+  },
+  "termsConditions": "Terms & Conditions",
+  "@termsConditions": {
+    "description": "Terms & Conditions screen title"
+  },
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading text"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button text"
+  },
+  "failedToLoadData": "Failed to load data",
+  "@failedToLoadData": {
+    "description": "Error message when data fails to load"
+  },
+  "networkError": "Network error. Please check your connection",
+  "@networkError": {
+    "description": "Network error message"
+  },
   "notifications": "Notifications",
   "@notifications": {
     "description": "Notifications screen title"

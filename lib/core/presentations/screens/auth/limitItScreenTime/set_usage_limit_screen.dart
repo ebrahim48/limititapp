@@ -261,7 +261,7 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
             SizedBox(width: 12.w),
             CustomText(
               text: appName,
-              fontsize: 24.sp,
+              fontsize: 22.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
             ),
