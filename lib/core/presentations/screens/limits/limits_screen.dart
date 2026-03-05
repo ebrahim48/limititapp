@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/limit_data_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/limit_card.dart';
+import 'package:limit_it_app/controllers/ads_controller.dart';
+import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../constants/app_data_helper.dart';
 
@@ -23,6 +28,7 @@ class _LimitsScreenState extends State<LimitsScreen> {
   InterstitialAd? _interstitialAd;
   bool _isInterstitialAdReady = false;
   final apps = AppDataHelper.dailyApps;
+  final AdsController _adsController = Get.put(AdsController());
 
   @override
   void initState() {
@@ -248,6 +254,9 @@ class _LimitsScreenState extends State<LimitsScreen> {
                   ),
                 ),
               ),
+            SizedBox(height: 24.h),
+            // Announcement Section
+            Obx(() => _buildAnnouncementSection()),
             SizedBox(height: 60.h),
           ],
         ),
@@ -260,5 +269,84 @@ class _LimitsScreenState extends State<LimitsScreen> {
     _bannerAd?.dispose();
     _interstitialAd?.dispose();
     super.dispose();
+  }
+
+  Widget _buildAnnouncementSection() {
+    if (_adsController.isLoading.value && _adsController.ads.isEmpty) {
+      return SizedBox.shrink();
+    }
+
+    if (_adsController.ads.isEmpty) {
+      return SizedBox.shrink();
+    }
+
+    return Column(
+      children: _adsController.ads.map((ad) => Padding(
+        padding: EdgeInsets.only(bottom: 12.h),
+        child: _buildAnnouncementCard(ad),
+      )).toList(),
+    );
+  }
+
+  Widget _buildAnnouncementCard(dynamic ad) {
+    return Container(
+      width: 345.w,
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: Color(0xFFEDD69A),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.r),
+            child: Container(
+              width: 80.w,
+              height: 80.h,
+              color: Colors.white,
+              child: CachedNetworkImage(
+                imageUrl: ad.image,
+                width: 74.w,
+                height: 74.h,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => SpinKitFadingCircle(
+                  color: AppColors.primaryGreen,
+                  size: 30.r,
+                ),
+                errorWidget: (context, url, error) => Assets.images.banner.image(
+                  width: 74.w,
+                  height: 74.h,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  textAlign: TextAlign.start,
+                  text: ad.title,
+                  fontsize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textColor3D3D3D,
+                  maxline: 2,
+                ),
+                SizedBox(height: 4.h),
+                CustomText(
+                  textAlign: TextAlign.start,
+                  text: ad.description,
+                  fontsize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.textColor3D3D3D,
+                  maxline: 2,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
