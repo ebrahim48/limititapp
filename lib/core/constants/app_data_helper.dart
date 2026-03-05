@@ -100,5 +100,25 @@ class AppDataHelper {
     }).toList();
   }
 
+  /// Convert AppUsageData to AppInfo for display in YourAppCard
+  static AppInfo convertToYourApp(AppUsageData appUsage) {
+    // Calculate usage time in minutes
+    final usageMinutes = (appUsage.usageTimeMs / (1000 * 60)).round();
+    final opensCount = appUsage.openCount;
+    
+    // Format usage string: "45 mins • 4 Opens"
+    final usageString = '$usageMinutes mins • $opensCount Opens';
+    
+    // Calculate percentage (relative to total usage)
+    final percentage = appUsage.percentageString;
+
+    return AppInfo(
+      name: appUsage.name,
+      icon: '', // Will use real icon from memory
+      usage: usageString,
+      percentage: percentage,
+      appIconBytes: appUsage.icon, // Pass the actual app icon bitmap bytes
+    );
+  }
 
 }

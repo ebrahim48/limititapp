@@ -250,7 +250,8 @@ class _YourAppCardState extends State<YourAppCard> {
     // Build usage string with open count
     String usage;
     if (widget.appData != null) {
-      usage = "${widget.appData!.usageString} • ${widget.appData!.openCount} Opens";
+      final usageMinutes = (widget.appData!.usageTimeMs / (1000 * 60)).round();
+      usage = '$usageMinutes mins • ${widget.appData!.openCount} Opens';
     } else {
       usage = widget.app!.usage;
     }
@@ -389,8 +390,31 @@ class _YourAppCardState extends State<YourAppCard> {
       );
     }
 
+    // If we have appIconBytes from AppInfo (real app icon), show it
+    if (widget.app?.appIconBytes != null) {
+      return Container(
+        width: 48.w,
+        height: 48.h,
+        padding: EdgeInsets.all(4.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(color: Colors.grey.shade300),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8.r),
+          child: Image.memory(
+            widget.app!.appIconBytes!,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return _buildDefaultIcon();
+            },
+          ),
+        ),
+      );
+    }
+
     // Fallback to SVG icon if available
-    if (widget.app?.icon != null) {
+    if (widget.app?.icon != null && widget.app!.icon.isNotEmpty) {
       return Container(
         width: 48.w,
         height: 48.h,

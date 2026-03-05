@@ -12,6 +12,10 @@ import 'package:limit_it_app/core/presentations/widgets/daily_usage_card.dart';
 import 'package:limit_it_app/core/presentations/widgets/screen_time_slider.dart';
 import 'package:limit_it_app/core/presentations/widgets/your_appcard_widget.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
+import 'package:limit_it_app/controllers/ads_controller.dart';
+import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final AdsController _adsController = Get.put(AdsController());
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +96,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
+
+                SizedBox(height: 24.h),
+                // Announcement Section
+                Obx(() => _buildAnnouncementSection()),
 
                 SizedBox(height: 24.h),
                 Row(
@@ -421,5 +430,84 @@ class _HomeScreenState extends State<HomeScreen> {
         _errorMessage = 'Error loading app usage data: ${e.toString()}';
       });
     }
+  }
+
+  Widget _buildAnnouncementSection() {
+    if (_adsController.isLoading.value && _adsController.ads.isEmpty) {
+      return SizedBox.shrink();
+    }
+
+    if (_adsController.ads.isEmpty) {
+      return SizedBox.shrink();
+    }
+
+    return Column(
+      children: _adsController.ads.map((ad) => Padding(
+        padding: EdgeInsets.only(bottom: 12.h),
+        child: _buildAnnouncementCard(ad),
+      )).toList(),
+    );
+  }
+
+  Widget _buildAnnouncementCard(dynamic ad) {
+    return Container(
+      width: 345.w,
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: Color(0xFFEDD69A),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.r),
+            child: Container(
+              width: 80.w,
+              height: 80.h,
+              color: Colors.white,
+              child: CachedNetworkImage(
+                imageUrl: ad.image,
+                width: 74.w,
+                height: 74.h,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => SpinKitFadingCircle(
+                  color: AppColors.primaryGreen,
+                  size: 30.r,
+                ),
+                errorWidget: (context, url, error) => Assets.images.banner.image(
+                  width: 74.w,
+                  height: 74.h,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  textAlign: TextAlign.start,
+                  text: ad.title,
+                  fontsize: 14.sp,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textColor3D3D3D,
+                  maxline: 2,
+                ),
+                SizedBox(height: 4.h),
+                CustomText(
+                  textAlign: TextAlign.start,
+                  text: ad.description,
+                  fontsize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.textColor3D3D3D,
+                  maxline: 2,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
