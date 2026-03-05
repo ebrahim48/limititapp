@@ -340,32 +340,69 @@ class AuthController extends GetxController {
   //
   //
   //
-  // ///===============Change Password================<>
-  //
-  // RxBool changePasswordLoading = false.obs;
-  // changePassword(String currentPassword, password ,confirmPassword ) async {
-  //   changePasswordLoading(true);
-  //   var body = {
-  //     "currentPassword": "$currentPassword",
-  //     "password": "$password",
-  //     "confirmPassword" : "$confirmPassword"
-  //   };
-  //
-  //   var response =
-  //   await ApiClient.postData(ApiConstants.changePassword, jsonEncode(body));
-  //
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     ToastMessageHelper.showToastMessage('Password Changed Successful');
-  //     print("======>>> successful");
-  //     changePasswordLoading(false);
-  //   } else if(response.statusCode == 1){
-  //     changePasswordLoading(false);
-  //     ToastMessageHelper.showToastMessage("Server error! \n Please try later");
-  //   } else {
-  //     ToastMessageHelper.showToastMessage(response.body['message']);
-  //     changePasswordLoading(false);
-  //   }
-  // }
+  ///===============Change Password================<>
+
+  RxBool changePasswordLoading = false.obs;
+  
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmPassword,
+    required BuildContext context,
+  }) async {
+    try {
+      changePasswordLoading(true);
+
+      var body = {
+        "currentPassword": currentPassword,
+        "newPassword": newPassword,
+      };
+
+      debugPrint('=====> Changing password...');
+      debugPrint('=====> Body: $body');
+
+      final response = await ApiClient.postData(
+        ApiConstants.changePasswordEndPoint, 
+        jsonEncode(body),
+      );
+
+      debugPrint('=========> Response Status: ${response.statusCode}');
+      debugPrint('=========> Response Body: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final resBody = response.body;
+        
+        if (resBody['status'] == 'success') {
+          debugPrint('======>>> Password changed successful');
+          
+          // Navigate back to Settings screen
+          if (context.mounted) {
+            // Pop change password screen
+            Navigator.pop(context);
+            
+            // Show success message and navigate to settings
+            Future.delayed(const Duration(milliseconds: 500), () {
+              if (context.mounted) {
+                Navigator.pop(context); // Go back to Settings
+              }
+            });
+          }
+        } else {
+          ToastMessageHelper.showToastMessage(resBody['message'] ?? 'Failed to change password');
+        }
+        
+        changePasswordLoading(false);
+      } else {
+        final errorMessage = response.body?['message'] ?? 'Server error! Please try later';
+        ToastMessageHelper.showToastMessage(errorMessage);
+        changePasswordLoading(false);
+      }
+    } catch (e) {
+      debugPrint('❌ Change password error: $e');
+      ToastMessageHelper.showToastMessage('Server error! Please try later');
+      changePasswordLoading(false);
+    }
+  }
   //
   // ///=============== Delete Account ================<>
   //

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
@@ -9,6 +8,7 @@ import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
+import 'package:limit_it_app/controllers/auth_controller.dart';
 
 
 
@@ -20,10 +20,66 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  late final AuthController _authController;
+  final TextEditingController oldPassCtrl = TextEditingController();
+  final TextEditingController setNewPassCtrl = TextEditingController();
+  final TextEditingController reenterNewPassCtrl = TextEditingController();
+
+  bool isMatched = false;
+  bool isChecked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize AuthController if not already done
+    if (!Get.isRegistered<AuthController>()) {
+      Get.put(AuthController());
+    }
+    _authController = Get.find<AuthController>();
+  }
+
+  @override
+  void dispose() {
+    oldPassCtrl.dispose();
+    setNewPassCtrl.dispose();
+    reenterNewPassCtrl.dispose();
+    super.dispose();
+  }
+
+  void _handleChangePassword() {
+    // Validate passwords match
+    if (setNewPassCtrl.text != reenterNewPassCtrl.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('New passwords do not match'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Validate password strength
+    if (setNewPassCtrl.text.length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password must be at least 6 characters'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    // Call API
+    _authController.changePassword(
+      currentPassword: oldPassCtrl.text,
+      newPassword: setNewPassCtrl.text,
+      confirmPassword: reenterNewPassCtrl.text,
+      context: context,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -55,34 +111,73 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 SizedBox(height: 25.h),
 
-                CustomTextField(
+                Obx(() => CustomTextField(
                     hintextColor: AppColors.textColor5D5D5D,
                     controller: oldPassCtrl,
                     prefixIcon: Assets.icons.pass.svg(),
                     hintText: "Old Password",
-                    isPassword: true),
+                    isPassword: _authController.isObscure.value,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _authController.isObscure.value
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: AppColors.textColor5D5D5D,
+                      ),
+                      onPressed: () {
+                        _authController.toggleIsObscure();
+                      },
+                    ),
+                )),
 
-                CustomTextField(
+                SizedBox(height: 16.h),
+
+                Obx(() => CustomTextField(
                     hintextColor: AppColors.textColor5D5D5D,
                     controller: setNewPassCtrl,
                     prefixIcon: Assets.icons.pass.svg(),
                     hintText: "Set New Password",
-                    isPassword: true),
-                CustomTextField(
+                    isPassword: _authController.isObscureConfirmPassword.value,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _authController.isObscureConfirmPassword.value
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: AppColors.textColor5D5D5D,
+                      ),
+                      onPressed: () {
+                        _authController.toggleIsObscureConfirmPassword();
+                      },
+                    ),
+                )),
+
+                SizedBox(height: 16.h),
+
+                Obx(() => CustomTextField(
                   hintextColor: AppColors.textColor5D5D5D,
                   controller: reenterNewPassCtrl,
                   prefixIcon: Assets.icons.pass.svg(),
                   hintText: "Re-Enter New Password",
-                  isPassword: true,
+                  isPassword: _authController.isObscureConfirmPassword.value,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _authController.isObscureConfirmPassword.value
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: AppColors.textColor5D5D5D,
+                    ),
+                    onPressed: () {
+                      _authController.toggleIsObscureConfirmPassword();
+                    },
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       Future.delayed(Duration.zero, () => setState(() {
                         isMatched = false;
                       }));
-                      return 'Please enter your confirm password';
+                      return 'Please confirm your password';
                     } else if (setNewPassCtrl.text == value) {
                       Future.delayed(Duration.zero, () => setState(() {
                         isMatched = true;
@@ -100,7 +195,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       isMatched = setNewPassCtrl.text == value;
                     });
                   },
-                ),
+                )),
+
                 Align(
                     alignment: Alignment.centerLeft,
                     child: CustomText(
@@ -120,16 +216,23 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       text: 'Forget password?',
                       color: AppColors.primaryColor,
                       fontsize: 12.sp,
-
                     ),
                   ),
                 ),
-                SizedBox(height: 24.h),
-                CustomButton(
-                    title: "Update Password",
-                    onpress: () {
 
-                    }),
+                SizedBox(height: 24.h),
+
+                Obx(() => CustomButton(
+                    title: _authController.changePasswordLoading.value 
+                        ? 'Updating...' 
+                        : 'Update Password',
+                    onpress: () {
+                      if (!_authController.changePasswordLoading.value) {
+                        _handleChangePassword();
+                      }
+                    },
+                )),
+
                 SizedBox(height: 20.h),
               ],
             ),
@@ -138,26 +241,4 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       ),
     );
   }
-  final TextEditingController oldPassCtrl = TextEditingController();
-  final TextEditingController setNewPassCtrl = TextEditingController();
-  final TextEditingController reenterNewPassCtrl = TextEditingController();
-
-
-
-  bool isMatched = false;
-  bool isObscureConfirmPassword = true;
-  toggleIsObscureConfirmPassword() {
-    setState(() {
-      isObscureConfirmPassword = !isObscureConfirmPassword;
-    });
-  }
-
-  ismMatchedColor() {
-    setState(() {
-      isMatched = !isMatched;
-    });
-  }
-
-  bool isChecked = false;
-
 }
