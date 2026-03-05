@@ -98,10 +98,15 @@ class AppUsageService {
       // Create a set of launchable app package names
       Set<String> launchablePackages = installedApps.map((app) => app.packageName).toSet();
 
-      // Filter out system apps and apps with no usage
+      // Filter out system apps, apps with no usage, and our own app
       List<UsageInfo> filteredStats = usageStats.where((info) {
         int time = int.tryParse(info.totalTimeInForeground ?? '0') ?? 0;
         String packageName = info.packageName ?? '';
+
+        // Exclude our own app (limit_it_app)
+        if (packageName == 'com.example.limit_it_app') {
+          return false;
+        }
 
         // Only include apps that:
         // 1. Have usage time > 0
@@ -229,11 +234,17 @@ class AppUsageService {
         totalUsageTime += int.tryParse(usage.totalTimeInForeground ?? '0') ?? 0;
       }
 
-      // Convert all installed apps to AppUsageData
+      // Convert all installed apps to AppUsageData (excluding our own app)
       List<AppUsageData> appList = [];
       for (var appInfo in installedApps) {
         try {
           String packageName = appInfo.packageName;
+          
+          // Skip our own app (limit_it_app)
+          if (packageName == 'com.example.limit_it_app') {
+            continue;
+          }
+          
           int usageTimeMs = 0;
           int openCount = 0;
           double percentage = 0;
