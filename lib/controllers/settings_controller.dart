@@ -127,45 +127,24 @@ class SettingsController extends GetxController {
 
     String text = html;
 
-    // Add newlines for block elements before removing tags
-    text = text.replaceAll(RegExp(r'<h1[^>]*>'), '\n');
-    text = text.replaceAll(RegExp(r'</h1>'), '\n\n');
-    text = text.replaceAll(RegExp(r'<h2[^>]*>'), '\n');
-    text = text.replaceAll(RegExp(r'</h2>'), '\n\n');
-    text = text.replaceAll(RegExp(r'<h3[^>]*>'), '\n');
-    text = text.replaceAll(RegExp(r'</h3>'), '\n\n');
-    text = text.replaceAll(RegExp(r'<h4[^>]*>'), '\n');
-    text = text.replaceAll(RegExp(r'</h4>'), '\n\n');
-    text = text.replaceAll(RegExp(r'<p[^>]*>'), '');
-    text = text.replaceAll(RegExp(r'</p>'), '\n\n');
-    text = text.replaceAll(RegExp(r'<br[^>]*>'), '\n');
-    text = text.replaceAll(RegExp(r'<br/>'), '\n');
-    text = text.replaceAll(RegExp(r'<br />'), '\n');
-    text = text.replaceAll(RegExp(r'<li[^>]*>'), '• ');
-    text = text.replaceAll(RegExp(r'</li>'), '\n');
-    text = text.replaceAll(RegExp(r'<ul[^>]*>'), '');
-    text = text.replaceAll(RegExp(r'</ul>'), '\n');
-    text = text.replaceAll(RegExp(r'<ol[^>]*>'), '');
-    text = text.replaceAll(RegExp(r'</ol>'), '\n');
-    text = text.replaceAll(RegExp(r'<div[^>]*>'), '\n');
-    text = text.replaceAll(RegExp(r'</div>'), '\n');
-    text = text.replaceAll(RegExp(r'<span[^>]*>'), '');
-    text = text.replaceAll(RegExp(r'</span>'), '');
-    text = text.replaceAll(RegExp(r'<strong[^>]*>'), '');
-    text = text.replaceAll(RegExp(r'</strong>'), '');
-    text = text.replaceAll(RegExp(r'<b[^>]*>'), '');
-    text = text.replaceAll(RegExp(r'</b>'), '');
-    text = text.replaceAll(RegExp(r'<em[^>]*>'), '');
-    text = text.replaceAll(RegExp(r'</em>'), '');
-    text = text.replaceAll(RegExp(r'<i[^>]*>'), '');
-    text = text.replaceAll(RegExp(r'</i>'), '');
-    text = text.replaceAll(RegExp(r'<u[^>]*>'), '');
-    text = text.replaceAll(RegExp(r'</u>'), '');
-    text = text.replaceAll(RegExp(r'<a[^>]*>'), '');
-    text = text.replaceAll(RegExp(r'</a>'), '');
-
-    // Remove all remaining HTML tags
-    text = text.replaceAll(RegExp(r'<[^>]*>'), '');
+    // Remove script tags and their content
+    text = text.replaceAll(RegExp(r'<script[^>]*>[\s\S]*?</script>', caseSensitive: false), '');
+    
+    // Remove style tags and their content
+    text = text.replaceAll(RegExp(r'<style[^>]*>[\s\S]*?</style>', caseSensitive: false), '');
+    
+    // Remove HTML comments
+    text = text.replaceAll(RegExp(r'<!--[\s\S]*?-->'), '');
+    
+    // Remove link tags
+    text = text.replaceAll(RegExp(r'<link[^>]*>', caseSensitive: false), '');
+    
+    // Remove meta tags
+    text = text.replaceAll(RegExp(r'<meta[^>]*>', caseSensitive: false), '');
+    
+    // Remove title tags
+    text = text.replaceAll(RegExp(r'<title[^>]*>', caseSensitive: false), '');
+    text = text.replaceAll(RegExp(r'</title>', caseSensitive: false), '');
 
     // Decode HTML entities
     text = text.replaceAll(RegExp(r'&nbsp;'), ' ');
@@ -183,8 +162,7 @@ class SettingsController extends GetxController {
     text = text.replaceAll(RegExp(r'&ldquo;'), '"');
     text = text.replaceAll(RegExp(r'&rdquo;'), '"');
 
-    // Remove multiple newlines and trim
-    text = text.replaceAll(RegExp(r'\n\s*\n'), '\n\n');
+    // Clean up extra whitespace
     text = text.replaceAll(RegExp(r' +'), ' ');
     text = text.trim();
 

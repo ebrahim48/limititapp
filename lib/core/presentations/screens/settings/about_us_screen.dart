@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
@@ -135,14 +136,96 @@ class AboutUsScreen extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
 
-            // Display content from API
+            // Display HTML content from API
             if (controller.aboutUsContent.isNotEmpty)
-              CustomText(
-                maxline: 200,
-                textAlign: TextAlign.start,
-                text: controller.aboutUsContent.value,
-                fontsize: 14.sp,
-                color: AppColors.textColor3D3D3D,
+              Html(
+                data: controller.aboutUsContent.value,
+                style: {
+                  "body": Style(
+                    fontSize: FontSize(14.sp),
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.zero,
+                    padding: HtmlPaddings.zero,
+                  ),
+                  "h1": Style(
+                    fontSize: FontSize(24.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 16),
+                  ),
+                  "h2": Style(
+                    fontSize: FontSize(20.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 14),
+                  ),
+                  "h3": Style(
+                    fontSize: FontSize(18.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 12),
+                  ),
+                  "h4": Style(
+                    fontSize: FontSize(16.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 10),
+                  ),
+                  "h5": Style(
+                    fontSize: FontSize(14.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 8),
+                  ),
+                  "h6": Style(
+                    fontSize: FontSize(12.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 6),
+                  ),
+                  "p": Style(
+                    fontSize: FontSize(14.sp),
+                    color: AppColors.textColor3D3D3D,
+                    lineHeight: LineHeight(1.8),
+                    margin: Margins.symmetric(vertical: 8),
+                  ),
+                  "a": Style(
+                    color: AppColors.primaryGreen,
+                    textDecoration: TextDecoration.underline,
+                  ),
+                  "ul": Style(
+                    padding: HtmlPaddings.only(left: 20),
+                    margin: Margins.symmetric(vertical: 8),
+                  ),
+                  "ol": Style(
+                    padding: HtmlPaddings.only(left: 20),
+                    margin: Margins.symmetric(vertical: 8),
+                  ),
+                  "li": Style(
+                    fontSize: FontSize(14.sp),
+                    color: AppColors.textColor3D3D3D,
+                    lineHeight: LineHeight(1.8),
+                    margin: Margins.symmetric(vertical: 4),
+                  ),
+                  "strong": Style(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  "b": Style(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  "em": Style(
+                    fontStyle: FontStyle.italic,
+                  ),
+                  "i": Style(
+                    fontStyle: FontStyle.italic,
+                  ),
+                  "img": Style(
+                    margin: Margins.symmetric(vertical: 16),
+                  ),
+                  "hr": Style(
+                    margin: Margins.symmetric(vertical: 16),
+                  ),
+                },
               ),
 
             SizedBox(height: 32.h),

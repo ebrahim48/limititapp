@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/controllers/motivation_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
+import 'package:limit_it_app/core/models/motivation_model.dart';
 import 'package:limit_it_app/core/models/timer_settings_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
+import 'package:limit_it_app/core/presentations/widgets/custom_loader.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/timer_settings_service.dart';
 
@@ -24,7 +27,9 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
   final List<String> initialDurations = ['0 sec', '5 sec', '10 sec', '15 sec'];
   final List<String> moreDurations = ['20 sec', '25 sec', '30 sec', '35 sec', '40 sec', '45 sec'];
 
-  late List<MotivationalQuote> quotes;
+  final MotivationController motivationController = Get.put(MotivationController());
+  final TimerSettingsService timerSettingsService = Get.find<TimerSettingsService>();
+  
   bool isLoading = true;
 
   @override
@@ -35,31 +40,10 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
 
   Future<void> _loadInitialData() async {
     // Load existing timer settings if available
-    final timerSettingsService = Get.find<TimerSettingsService>();
     final settings = await timerSettingsService.getTimerSettings();
 
     if (settings != null) {
       selectedDuration.value = settings.preOpeningCountdown;
-      quotes = settings.motivationalQuotes;
-    } else {
-      // Default quotes if no settings exist
-      quotes = [
-        MotivationalQuote(
-          text: 'Almost all good writing begins with terrible first efforts. You need to start somewhere',
-          author: 'Anne Lamott',
-          isHighlighted: false,
-        ),
-        MotivationalQuote(
-          text: 'God gives every bird its food, but He does not throw it into its nest',
-          author: 'J.G. Holland',
-          isHighlighted: true,
-        ),
-        MotivationalQuote(
-          text: 'An effort made for the happiness of others lifts above ourselves',
-          author: 'Lydia M. Child',
-          isHighlighted: false,
-        ),
-      ];
     }
 
     setState(() {
@@ -202,8 +186,29 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
 
                 SizedBox(height: 16.h),
 
-                // Quotes list
-                ...quotes.map((quote) => _buildQuoteCard(quote)).toList(),
+                // Dynamic quotes from API
+                Obx(() {
+                  if (motivationController.isLoading.value && motivationController.motivations.isEmpty) {
+                    return const Center(child: CustomLoader());
+                  }
+
+                  if (motivationController.motivations.isEmpty) {
+                    return Center(
+                      child: CustomText(
+                        text: 'No motivational phrases available',
+                        fontsize: 14.sp,
+                        color: AppColors.textColor5D5D5D,
+                      ),
+                    );
+                  }
+
+                  return Column(
+                    children: motivationController.motivations
+                        .take(3)
+                        .map((quote) => _buildQuoteCard(quote))
+                        .toList(),
+                  );
+                }),
 
                 SizedBox(height: 35.h),
 
@@ -222,13 +227,13 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
     );
   }
 
-  Widget _buildQuoteCard(MotivationalQuote quote) {
+  Widget _buildQuoteCard(MotivationModel quote) {
     return Container(
       width: 345.w,
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: quote.isHighlighted ? Color(0xFFEDD69A) : AppColors.backGroundColor,
+        color: AppColors.backGroundColor,
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: Color(0xFFD1D1D1),
@@ -240,7 +245,7 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
         children: [
           CustomText(
             textAlign: TextAlign.start,
-            text: quote.text,
+            text: quote.content,
             fontsize: 14.sp,
             fontWeight: FontWeight.w400,
             color: AppColors.textColor3D3D3D,
@@ -248,7 +253,7 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
           ),
           SizedBox(height: 12.h),
           CustomText(
-            text: quote.author,
+            text: '- ${quote.author}',
             fontsize: 12.sp,
             fontWeight: FontWeight.w500,
             color: AppColors.primaryColor214432,
@@ -259,14 +264,22 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
   }
 
   Future<void> _saveTimerSettings() async {
+    // Convert MotivationModel to MotivationalQuote for saving
+    List<MotivationalQuote> quotesToSave = motivationController.motivations.map((motivation) {
+      return MotivationalQuote(
+        text: motivation.content,
+        author: motivation.author,
+        isHighlighted: false,
+      );
+    }).toList();
+
     // Create timer settings object with selected values
     final timerSettings = TimerSettingsModel(
       preOpeningCountdown: selectedDuration.value,
-      motivationalQuotes: quotes,
+      motivationalQuotes: quotesToSave,
     );
 
     // Save to storage
-    final timerSettingsService = Get.find<TimerSettingsService>();
     final success = await timerSettingsService.saveTimerSettings(timerSettings);
 
     if (success) {

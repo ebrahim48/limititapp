@@ -24,6 +24,7 @@ class ApiConstants{
 
   static const String getProfileEndPoint = "/settings/get-login-user";
   static const String updateProfileEndPoint = "/users/profile";
+  static const String motivationalPhrasesEndPoint = "/motivation?page=1&limit=10";
 
 
 
