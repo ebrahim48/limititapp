@@ -33,13 +33,18 @@ class _YourAppCardState extends State<YourAppCard> {
   /// Load the blocked state from storage
   Future<void> _loadBlockedState() async {
     final blockedAppsService = Get.find<BlockedAppsService>();
-    final String packageName = widget.appData?.packageName ?? widget.app!.name.toLowerCase();
-    final bool isBlocked = await blockedAppsService.isAppBlocked(packageName);
+    // Always use appData's package name if available (it has the real package name)
+    // If using app (dummy data), we can't block reliably without package name
+    final String packageName = widget.appData?.packageName ?? '';
+    
+    if (packageName.isNotEmpty) {
+      final bool isBlocked = await blockedAppsService.isAppBlocked(packageName);
 
-    if (mounted) {
-      setState(() {
-        _isBlocked = isBlocked;
-      });
+      if (mounted) {
+        setState(() {
+          _isBlocked = isBlocked;
+        });
+      }
     }
   }
 
@@ -137,7 +142,22 @@ class _YourAppCardState extends State<YourAppCard> {
   /// Toggle block state
   Future<void> _toggleBlock() async {
     final String appName = widget.appData?.name ?? widget.app!.name;
-    final String packageName = widget.appData?.packageName ?? widget.app!.name.toLowerCase();
+    // Always use appData's package name (it has the real package name)
+    // If appData is null, we can't block reliably
+    final String packageName = widget.appData?.packageName ?? '';
+    
+    // If no package name available (using dummy data), show message and return
+    if (packageName.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('This app cannot be blocked. Please use real app data.'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+      return;
+    }
 
     // If trying to block an app, ensure monitoring is active first
     if (!_isBlocked) {

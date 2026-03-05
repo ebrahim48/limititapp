@@ -15,114 +15,11 @@ import 'package:limit_it_app/core/services/app_usage_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  BannerAd? _bannerAd;
-  bool _isBannerAdReady = false;
-  final apps = AppDataHelper.dailyApps;
-
-  bool _isLoading = true;
-  bool _hasPermission = false;
-  List<AppUsageData> _appUsageList = [];
-  String? _errorMessage;
-  int _totalScreenTimeMinutes = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadBannerAd();
-    _loadAppUsageData();
-  }
-
-  // 1. Banner Ad
-  void _loadBannerAd() {
-    _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111', // Test Banner ID
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-    );
-    _bannerAd?.load();
-  }
-
-  /// Load app usage data
-  Future<void> _loadAppUsageData() async {
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    try {
-      // Check if platform supports app usage tracking
-      if (!Platform.isAndroid) {
-        setState(() {
-          _isLoading = false;
-          _hasPermission = false;
-          _errorMessage =
-              'App usage tracking is only available on Android devices';
-        });
-        return;
-      }
-
-      // Check permission
-      final appUsageService = Get.find<AppUsageService>();
-      bool hasPermission = await appUsageService.hasPermission();
-
-      if (!hasPermission) {
-        // Request permission
-        hasPermission = await appUsageService.requestPermission();
-      }
-
-      setState(() {
-        _hasPermission = hasPermission;
-      });
-
-      if (hasPermission) {
-        // Get ALL installed apps (with usage data merged)
-        List<AppUsageData> allApps = await appUsageService.getAllInstalledApps();
-
-        // Calculate total screen time in minutes
-        int totalTimeMs = 0;
-        for (var app in allApps) {
-          totalTimeMs += app.usageTimeMs;
-        }
-        int totalMinutes = (totalTimeMs / 1000 / 60).round();
-
-        setState(() {
-          _appUsageList = allApps;
-          _totalScreenTimeMinutes = totalMinutes;
-          _isLoading = false;
-          if (allApps.isEmpty) {
-            _errorMessage = 'No apps found on this device';
-          }
-        });
-      } else {
-        setState(() {
-          _isLoading = false;
-          _errorMessage =
-              'Permission denied. Please grant usage access permission in settings';
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-        _errorMessage = 'Error loading app usage data: ${e.toString()}';
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -419,5 +316,110 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     _bannerAd?.dispose();
     super.dispose();
+  }
+
+
+
+  BannerAd? _bannerAd;
+  bool _isBannerAdReady = false;
+  final apps = AppDataHelper.dailyApps;
+
+  bool _isLoading = true;
+  bool _hasPermission = false;
+  List<AppUsageData> _appUsageList = [];
+  String? _errorMessage;
+  int _totalScreenTimeMinutes = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadBannerAd();
+    _loadAppUsageData();
+  }
+
+  // 1. Banner Ad
+  void _loadBannerAd() {
+    _bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-3940256099942544/6300978111', // Test Banner ID
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    );
+    _bannerAd?.load();
+  }
+
+  /// Load app usage data
+  Future<void> _loadAppUsageData() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      // Check if platform supports app usage tracking
+      if (!Platform.isAndroid) {
+        setState(() {
+          _isLoading = false;
+          _hasPermission = false;
+          _errorMessage =
+          'App usage tracking is only available on Android devices';
+        });
+        return;
+      }
+
+      // Check permission
+      final appUsageService = Get.find<AppUsageService>();
+      bool hasPermission = await appUsageService.hasPermission();
+
+      if (!hasPermission) {
+        // Request permission
+        hasPermission = await appUsageService.requestPermission();
+      }
+
+      setState(() {
+        _hasPermission = hasPermission;
+      });
+
+      if (hasPermission) {
+        // Get ALL installed apps (with usage data merged)
+        List<AppUsageData> allApps = await appUsageService.getAllInstalledApps();
+
+        // Calculate total screen time in minutes
+        int totalTimeMs = 0;
+        for (var app in allApps) {
+          totalTimeMs += app.usageTimeMs;
+        }
+        int totalMinutes = (totalTimeMs / 1000 / 60).round();
+
+        setState(() {
+          _appUsageList = allApps;
+          _totalScreenTimeMinutes = totalMinutes;
+          _isLoading = false;
+          if (allApps.isEmpty) {
+            _errorMessage = 'No apps found on this device';
+          }
+        });
+      } else {
+        setState(() {
+          _isLoading = false;
+          _errorMessage =
+          'Permission denied. Please grant usage access permission in settings';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Error loading app usage data: ${e.toString()}';
+      });
+    }
   }
 }

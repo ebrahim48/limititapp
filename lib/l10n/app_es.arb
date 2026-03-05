@@ -1,38 +1,38 @@
 {
-  "@@locale": "en",
+  "@@locale": "es",
   "appTitle": "LimitIt",
   "@appTitle": {
     "description": "The title of the application"
   },
-  "welcome": "Welcome",
+  "welcome": "Bienvenido",
   "@welcome": {
     "description": "Welcome message"
   },
-  "home": "Home",
+  "home": "Inicio",
   "@home": {
     "description": "Home screen title"
   },
-  "settings": "Settings",
+  "settings": "Configuración",
   "@settings": {
     "description": "Settings screen title"
   },
-  "appUsage": "App Usage",
+  "appUsage": "Uso de Aplicaciones",
   "@appUsage": {
     "description": "App usage screen title"
   },
-  "dailyLimit": "Daily Limit",
+  "dailyLimit": "Límite Diario",
   "@dailyLimit": {
     "description": "Daily limit label"
   },
-  "timeSpent": "Time Spent",
+  "timeSpent": "Tiempo Dedicado",
   "@timeSpent": {
     "description": "Time spent label"
   },
-  "save": "Save",
+  "save": "Guardar",
   "@save": {
     "description": "Save button text"
   },
-  "cancel": "Cancel",
+  "cancel": "Cancelar",
   "@cancel": {
     "description": "Cancel button text"
   },
@@ -40,7 +40,7 @@
   "@ok": {
     "description": "OK button text"
   },
-  "yes": "Yes",
+  "yes": "Sí",
   "@yes": {
     "description": "Yes button text"
   },
@@ -48,239 +48,239 @@
   "@no": {
     "description": "No button text"
   },
-  "language": "Language",
+  "language": "Idioma",
   "@language": {
     "description": "Language setting label"
   },
-  "theme": "Theme",
+  "theme": "Tema",
   "@theme": {
     "description": "Theme setting label"
   },
-  "notifications": "Notifications",
+  "notifications": "Notificaciones",
   "@notifications": {
     "description": "Notifications setting label"
   },
-  "about": "About",
+  "about": "Acerca de",
   "@about": {
     "description": "About section label"
   },
-  "selectYourLanguage": "Select Your Language",
+  "selectYourLanguage": "Selecciona Tu Idioma",
   "@selectYourLanguage": {
     "description": "Select language prompt"
   },
-  "getStarted": "Get Started",
+  "getStarted": "Comenzar",
   "@getStarted": {
     "description": "Get started button"
   },
-  "welcomeToLimitIt": "Welcome to LimitIt",
+  "welcomeToLimitIt": "Bienvenido a LimitIt",
   "@welcomeToLimitIt": {
     "description": "Welcome message with app name"
   },
-  "startingToday": "Starting today, let's focus better and\naccomplish your dreams",
+  "startingToday": "A partir de hoy, vamos a enfocarnos mejor y\nhacer realidad tus sueños",
   "@startingToday": {
     "description": "Motivational message on start screen"
   },
-  "signUpYourAccount": "Sign up your account",
+  "signUpYourAccount": "Regístrate en tu cuenta",
   "@signUpYourAccount": {
     "description": "Sign up screen title"
   },
-  "enterYourDetails": "Enter your details below to continue",
+  "enterYourDetails": "Ingresa tus datos a continuación para continuar",
   "@enterYourDetails": {
     "description": "Sign up instruction"
   },
-  "firstName": "First Name",
+  "firstName": "Nombre",
   "@firstName": {
     "description": "First name field label"
   },
-  "email": "Email",
+  "email": "Correo Electrónico",
   "@email": {
     "description": "Email field label"
   },
-  "password": "Password",
+  "password": "Contraseña",
   "@password": {
     "description": "Password field label"
   },
-  "setNewPassword": "Set New Password",
+  "setNewPassword": "Establecer Nueva Contraseña",
   "@setNewPassword": {
     "description": "Set new password label"
   },
-  "confirmPassword": "Confirm Password",
+  "confirmPassword": "Confirmar Contraseña",
   "@confirmPassword": {
     "description": "Confirm password field label"
   },
-  "confirmNewPassword": "Confirm New Password",
+  "confirmNewPassword": "Confirmar Nueva Contraseña",
   "@confirmNewPassword": {
     "description": "Confirm new password field label"
   },
-  "byCreatingAccount": "By creating an account, I accept the ",
+  "byCreatingAccount": "Al crear una cuenta, acepto los ",
   "@byCreatingAccount": {
     "description": "Terms acceptance prefix"
   },
-  "termsAndConditions": "Terms & Conditions",
+  "termsAndConditions": "Términos y Condiciones",
   "@termsAndConditions": {
     "description": "Terms and conditions link"
   },
-  "passwordMatched": "Password Matched ✓",
+  "passwordMatched": "Contraseña Coincide ✓",
   "@passwordMatched": {
     "description": "Password match confirmation"
   },
-  "privacyPolicy": "Privacy Policy",
+  "privacyPolicy": "Política de Privacidad",
   "@privacyPolicy": {
     "description": "Privacy policy link"
   },
-  "alreadyHaveAccount": "Already have an account? ",
+  "alreadyHaveAccount": "¿Ya tienes una cuenta? ",
   "@alreadyHaveAccount": {
     "description": "Login prompt for existing users"
   },
-  "login": " Login",
+  "login": " Iniciar Sesión",
   "@login": {
     "description": "Login button text"
   },
-  "signUp": "Sign Up",
+  "signUp": "Registrarse",
   "@signUp": {
     "description": "Sign up button text"
   },
-  "logInYourAccount": "Log in your account",
+  "logInYourAccount": "Inicia sesión en tu cuenta",
   "@logInYourAccount": {
     "description": "Login screen title"
   },
-  "allSetPasswordUpdated": "All set !\nPassword Successfully Updated",
+  "allSetPasswordUpdated": "¡Todo listo!\nContraseña Actualizada Exitosamente",
   "@allSetPasswordUpdated": {
     "description": "Password update success message"
   },
-  "logInSecurely": "Log in Securely to access your full app",
+  "logInSecurely": "Inicia sesión de forma segura para acceder a tu aplicación completa",
   "@logInSecurely": {
     "description": "Login screen subtitle"
   },
-  "forgetPassword": "Forget Password?",
+  "forgetPassword": "¿Olvidaste tu Contraseña?",
   "@forgetPassword": {
     "description": "Forget password link"
   },
-  "forgetPasswordTitle": "Forget Password",
+  "forgetPasswordTitle": "Olvidé mi Contraseña",
   "@forgetPasswordTitle": {
     "description": "Forget password screen title"
   },
-  "resetPassword": "Reset Password",
+  "resetPassword": "Restablecer Contraseña",
   "@resetPassword": {
     "description": "Reset password button"
   },
-  "getOtp": "Get OTP",
+  "getOtp": "Obtener OTP",
   "@getOtp": {
     "description": "Get OTP button"
   },
-  "verifyOtp": "Verify OTP",
+  "verifyOtp": "Verificar OTP",
   "@verifyOtp": {
     "description": "Verify OTP screen title"
   },
-  "verify": "Verify",
+  "verify": "Verificar",
   "@verify": {
     "description": "Verify button"
   },
-  "didntGetCode": "Didn't get the code?",
+  "didntGetCode": "¿No recibiste el código?",
   "@didntGetCode": {
     "description": "Resend code prompt"
   },
-  "backToLogin": "Back to Log in",
+  "backToLogin": "Volver a Iniciar Sesión",
   "@backToLogin": {
     "description": "Back to login button"
   },
-  "takeControl": "Take Control of your digital habits",
+  "takeControl": "Toma el control de tus hábitos digitales",
   "@takeControl": {
     "description": "App tagline"
   },
-  "backToHome": "Back to Home",
+  "backToHome": "Volver al Inicio",
   "@backToHome": {
     "description": "Back to home button"
   },
-  "iAcceptPrivacy": "I accept the privacy policy and terms of Service",
+  "iAcceptPrivacy": "Acepto la política de privacidad y los términos de servicio",
   "@iAcceptPrivacy": {
     "description": "Privacy acceptance checkbox"
   },
-  "privacyDataProtection": "Privacy & Data Protection",
+  "privacyDataProtection": "Privacidad y Protección de Datos",
   "@privacyDataProtection": {
     "description": "Privacy section title"
   },
-  "usageDataStaysOnDevice": "Your usage data stays on your device",
+  "usageDataStaysOnDevice": "Tus datos de uso permanecen en tu dispositivo",
   "@usageDataStaysOnDevice": {
     "description": "Privacy point 1"
   },
-  "noPersonalInfoCollection": "We don't collect personal information",
+  "noPersonalInfoCollection": "No recopilamos información personal",
   "@noPersonalInfoCollection": {
     "description": "Privacy point 2"
   },
-  "gdprCompliance": "GDPR compliance is our priority",
+  "gdprCompliance": "El cumplimiento del GDPR es nuestra prioridad",
   "@gdprCompliance": {
     "description": "Privacy point 3"
   },
-  "transparentPermissions": "Transparent Permission requests",
+  "transparentPermissions": "Solicitudes de permisos transparentes",
   "@transparentPermissions": {
     "description": "Privacy point 4"
   },
-  "selectAppsToManage": "Select Apps to Manage",
+  "selectAppsToManage": "Selecciona Aplicaciones para Gestionar",
   "@selectAppsToManage": {
     "description": "App selection screen title"
   },
-  "setUsageLimit": "Set Usage Limit",
+  "setUsageLimit": "Establecer Límite de Uso",
   "@setUsageLimit": {
     "description": "Usage limit screen title"
   },
-  "totalDailyScreenTime": "Total Daily Screen Time",
+  "totalDailyScreenTime": "Tiempo de Pantalla Diario Total",
   "@totalDailyScreenTime": {
     "description": "Daily screen time label"
   },
-  "all": "All",
+  "all": "Todo",
   "@all": {
     "description": "All items filter"
   },
-  "saveContinue": "Save & Continue",
+  "saveContinue": "Guardar y Continuar",
   "@saveContinue": {
     "description": "Save and continue button"
   },
-  "timerSettings": "Timer Settings",
+  "timerSettings": "Configuración del Temporizador",
   "@timerSettings": {
     "description": "Timer settings title"
   },
-  "preOpeningCountdown": "Pre - Opening Countdown\nDuration",
+  "preOpeningCountdown": "Duración de la Cuenta Regresiva\nPre-Apertura",
   "@preOpeningCountdown": {
     "description": "Countdown duration label"
   },
-  "motivationalPhrases": "Motivational Phrases",
+  "motivationalPhrases": "Frases Motivacionales",
   "@motivationalPhrases": {
     "description": "Motivational phrases section"
   },
-  "allSetAppLimit": "All set !\nYou have Successfully Set App Limit",
+  "allSetAppLimit": "¡Todo listo!\nHas Establecido el Límite de la Aplicación Exitosamente",
   "@allSetAppLimit": {
     "description": "App limit success message"
   },
-  "reports": "Reports",
+  "reports": "Informes",
   "@reports": {
     "description": "Reports screen title"
   },
-  "mostUsedApps": "Most Used Apps",
+  "mostUsedApps": "Aplicaciones Más Usadas",
   "@mostUsedApps": {
     "description": "Most used apps section"
   },
-  "downloadReport": "Download Report",
+  "downloadReport": "Descargar Informe",
   "@downloadReport": {
     "description": "Download report button"
   },
-  "generatingReport": "Generating Report...",
+  "generatingReport": "Generando Informe...",
   "@generatingReport": {
     "description": "Loading text when generating report"
   },
-  "preparingYourReport": "Preparing your report with real-time data",
+  "preparingYourReport": "Preparando tu informe con datos en tiempo real",
   "@preparingYourReport": {
     "description": "Subtitle when generating report"
   },
-  "reportDownloaded": "Report Downloaded",
+  "reportDownloaded": "Informe Descargado",
   "@reportDownloaded": {
     "description": "Success title for report download"
   },
-  "reportReadyToShare": "Your usage report is ready to share or print",
+  "reportReadyToShare": "Tu informe de uso está listo para compartir o imprimir",
   "@reportReadyToShare": {
     "description": "Success message for report download"
   },
-  "failedToDownloadReport": "Failed to download report. Please try again",
+  "failedToDownloadReport": "Error al descargar el informe. Por favor, inténtalo de nuevo",
   "@failedToDownloadReport": {
     "description": "Error message when report download fails"
   },
@@ -288,239 +288,239 @@
   "@error": {
     "description": "Generic error title"
   },
-  "aboutUs": "About Us",
+  "aboutUs": "Sobre Nosotros",
   "@aboutUs": {
     "description": "About Us screen title"
   },
-  "privacyPolicy": "Privacy Policy",
+  "privacyPolicy": "Política de Privacidad",
   "@privacyPolicy": {
     "description": "Privacy Policy screen title"
   },
-  "termsConditions": "Terms & Conditions",
+  "termsConditions": "Términos y Condiciones",
   "@termsConditions": {
     "description": "Terms & Conditions screen title"
   },
-  "loading": "Loading...",
+  "loading": "Cargando...",
   "@loading": {
     "description": "Loading text"
   },
-  "retry": "Retry",
+  "retry": "Reintentar",
   "@retry": {
     "description": "Retry button text"
   },
-  "failedToLoadData": "Failed to load data",
+  "failedToLoadData": "Error al cargar los datos",
   "@failedToLoadData": {
     "description": "Error message when data fails to load"
   },
-  "networkError": "Network error. Please check your connection",
+  "networkError": "Error de red. Por favor, comprueba tu conexión",
   "@networkError": {
     "description": "Network error message"
   },
-  "notifications": "Notifications",
+  "notifications": "Notificaciones",
   "@notifications": {
     "description": "Notifications screen title"
   },
-  "noNotificationsYet": "No notifications yet",
+  "noNotificationsYet": "Aún no hay notificaciones",
   "@noNotificationsYet": {
     "description": "Empty notifications message"
   },
-  "notifyWhenNewArrives": "We'll notify you when something new arrives",
+  "notifyWhenNewArrives": "Te notificaremos cuando llegue algo nuevo",
   "@notifyWhenNewArrives": {
     "description": "Empty notifications description"
   },
-  "detoxMode": "Detox Mode",
+  "detoxMode": "Modo Detox",
   "@detoxMode": {
     "description": "Detox mode screen title"
   },
-  "selectAll": "Select All",
+  "selectAll": "Seleccionar Todo",
   "@selectAll": {
     "description": "Select all checkbox"
   },
-  "saveDetoxMode": "Save Detox Mode",
+  "saveDetoxMode": "Guardar Modo Detox",
   "@saveDetoxMode": {
     "description": "Save detox mode button"
   },
-  "setupPermissions": "Setup Permissions",
+  "setupPermissions": "Configurar Permisos",
   "@setupPermissions": {
     "description": "Setup permissions screen title"
   },
-  "grantRequiredPermissions": "Grant Required Permissions",
+  "grantRequiredPermissions": "Otorgar Permisos Requeridos",
   "@grantRequiredPermissions": {
     "description": "Grant permissions header"
   },
-  "permissionsDescription": "LimitIt needs these permissions to monitor and block apps when limits are reached.",
+  "permissionsDescription": "LimitIt necesita estos permisos para monitorear y bloquear aplicaciones cuando se alcanzan los límites.",
   "@permissionsDescription": {
     "description": "Permissions explanation"
   },
-  "overlayPermission": "Overlay Permission",
+  "overlayPermission": "Permiso de Superposición",
   "@overlayPermission": {
     "description": "Overlay permission title"
   },
-  "overlayPermissionDesc": "Allows LimitIt to display blocking screen over other apps",
+  "overlayPermissionDesc": "Permite a LimitIt mostrar pantalla de bloqueo sobre otras aplicaciones",
   "@overlayPermissionDesc": {
     "description": "Overlay permission description"
   },
-  "accessibilityService": "Accessibility Service",
+  "accessibilityService": "Servicio de Accesibilidad",
   "@accessibilityService": {
     "description": "Accessibility service title"
   },
-  "accessibilityServiceDesc": "Monitors which apps you open to enforce limits",
+  "accessibilityServiceDesc": "Monitorea qué aplicaciones abres para hacer cumplir los límites",
   "@accessibilityServiceDesc": {
     "description": "Accessibility service description"
   },
-  "startMonitoring": "Start Monitoring",
+  "startMonitoring": "Comenzar Monitoreo",
   "@startMonitoring": {
     "description": "Start monitoring button"
   },
-  "grantAllPermissionsFirst": "Grant All Permissions First",
+  "grantAllPermissionsFirst": "Otorga Todos los Permisos Primero",
   "@grantAllPermissionsFirst": {
     "description": "Grant permissions prompt"
   },
-  "grant": "Grant",
+  "grant": "Otorgar",
   "@grant": {
     "description": "Grant button"
   },
-  "signUpNow": "Sign Up Now",
+  "signUpNow": "Regístrate Ahora",
   "@signUpNow": {
     "description": "Sign up now button"
   },
-  "next": "Next",
+  "next": "Siguiente",
   "@next": {
     "description": "Next button"
   },
-  "takeControlScreenTime": "Take Control of Your\nScreen Time",
+  "takeControlScreenTime": "Toma el Control de Tu\nTiempo de Pantalla",
   "@takeControlScreenTime": {
     "description": "Onboarding page 1 title"
   },
-  "regainControl": "Regain Control of Your Digital Life",
+  "regainControl": "Recupera el Control de Tu Vida Digital",
   "@regainControl": {
     "description": "Onboarding page 1 subtitle"
   },
-  "limitDistractingApps": "Limit the Apps That\nDistract You",
+  "limitDistractingApps": "Limita las Aplicaciones Que\nTe Distraen",
   "@limitDistractingApps": {
     "description": "Onboarding page 2 title"
   },
-  "chooseAppsToLimit": "Choose Which Apps to Limit",
+  "chooseAppsToLimit": "Elige Qué Aplicaciones Limitar",
   "@chooseAppsToLimit": {
     "description": "Onboarding page 2 subtitle"
   },
-  "smartScheduling": "Smart Scheduling &\nDaily Resets",
+  "smartScheduling": "Programación Inteligente y\nReinicios Diarios",
   "@smartScheduling": {
     "description": "Onboarding page 3 title"
   },
-  "createPerfectSchedule": "Create Your Perfect Schedule",
+  "createPerfectSchedule": "Crea Tu Horario Perfecto",
   "@createPerfectSchedule": {
     "description": "Onboarding page 3 subtitle"
   },
-  "trackYourProgress": "Track Your Progress\n& Improve",
+  "trackYourProgress": "Rastrea Tu Progreso\ny Mejora",
   "@trackYourProgress": {
     "description": "Onboarding page 4 title"
   },
-  "stayMotivated": "Stay Motivated with Weekly Reports",
+  "stayMotivated": "Mantente Motivado con Informes Semanales",
   "@stayMotivated": {
     "description": "Onboarding page 4 subtitle"
   },
-  "editProfile": "Edit Profile",
+  "editProfile": "Editar Perfil",
   "@editProfile": {
     "description": "Edit profile screen title"
   },
-  "updateProfile": "Update Profile",
+  "updateProfile": "Actualizar Perfil",
   "@updateProfile": {
     "description": "Update profile button"
   },
-  "takePhoto": "Take a Photo",
+  "takePhoto": "Tomar una Foto",
   "@takePhoto": {
     "description": "Take photo option"
   },
-  "chooseFromGallery": "Choose from Gallery",
+  "chooseFromGallery": "Elegir de la Galería",
   "@chooseFromGallery": {
     "description": "Choose from gallery option"
   },
-  "editTimerSettings": "Edit Timer Settings",
+  "editTimerSettings": "Editar Configuración del Temporizador",
   "@editTimerSettings": {
     "description": "Edit timer settings screen title"
   },
-  "less": "Less",
+  "less": "Menos",
   "@less": {
     "description": "Less button"
   },
-  "more": "More",
+  "more": "Más",
   "@more": {
     "description": "More button"
   },
-  "updateScreenTime": "Update ScreenTime",
+  "updateScreenTime": "Actualizar Tiempo de Pantalla",
   "@updateScreenTime": {
     "description": "Update screen time button"
   },
-  "pinLock": "PinLock",
+  "pinLock": "Bloqueo PIN",
   "@pinLock": {
     "description": "Pin lock screen title"
   },
-  "editUsageLimit": "Edit Usage Limit",
+  "editUsageLimit": "Editar Límite de Uso",
   "@editUsageLimit": {
     "description": "Edit usage limit screen title"
   },
-  "dailyOpensLimit": "Daily Opens Limit",
+  "dailyOpensLimit": "Límite de Aperturas Diarias",
   "@dailyOpensLimit": {
     "description": "Daily opens limit label"
   },
-  "sessionDuration": "Session Duration",
+  "sessionDuration": "Duración de la Sesión",
   "@sessionDuration": {
     "description": "Session duration label"
   },
-  "enterMotivationQuotes": "Enter Motivation Quotes",
+  "enterMotivationQuotes": "Ingresa Frases Motivacionales",
   "@enterMotivationQuotes": {
     "description": "Motivation quotes hint"
   },
-  "enterAuthorName": "Enter author name",
+  "enterAuthorName": "Ingresa nombre del autor",
   "@enterAuthorName": {
     "description": "Author name hint"
   },
-  "saveMotivation": "Save Motivation",
+  "saveMotivation": "Guardar Motivación",
   "@saveMotivation": {
     "description": "Save motivation button"
   },
-  "setPinNumber": "Set Pin Number",
+  "setPinNumber": "Establecer Número PIN",
   "@setPinNumber": {
     "description": "Set pin number screen title"
   },
-  "enterPinNumber": "Enter the Pin Number",
+  "enterPinNumber": "Ingresa el Número PIN",
   "@enterPinNumber": {
     "description": "Enter pin number hint"
   },
-  "savePinNumber": "Save Pin Number",
+  "savePinNumber": "Guardar Número PIN",
   "@savePinNumber": {
     "description": "Save pin number button"
   },
-  "pleaseAcceptPrivacyPolicy": "Please accept Privacy Policy",
+  "pleaseAcceptPrivacyPolicy": "Por favor acepta la Política de Privacidad",
   "@pleaseAcceptPrivacyPolicy": {
     "description": "Privacy policy acceptance error"
   },
-  "screenTime": "Screen Time",
+  "screenTime": "Tiempo de Pantalla",
   "@screenTime": {
     "description": "Screen time screen title"
   },
-  "noScreenTimeLimits": "No screen time limits set yet",
+  "noScreenTimeLimits": "Aún no hay límites de tiempo de pantalla establecidos",
   "@noScreenTimeLimits": {
     "description": "Empty screen time message"
   },
-  "addNewScreenTime": "Add New ScreenTime",
+  "addNewScreenTime": "Agregar Nuevo Tiempo de Pantalla",
   "@addNewScreenTime": {
     "description": "Add new screen time button"
   },
-  "retry": "Retry",
+  "retry": "Reintentar",
   "@retry": {
     "description": "Retry button"
   },
-  "pleaseSelectAtLeastOneApp": "Please select at least one app",
+  "pleaseSelectAtLeastOneApp": "Por favor selecciona al menos una aplicación",
   "@pleaseSelectAtLeastOneApp": {
     "description": "App selection error"
   },
-  "continueWithApps": "Continue",
+  "continueWithApps": "Continuar",
   "@continueWithApps": {
     "description": "Continue button with count"
   },
-  "continueWithAppsCount": "Continue ({count} apps Selected)",
+  "continueWithAppsCount": "Continuar ({count} aplicaciones Seleccionadas)",
   "@continueWithAppsCount": {
     "description": "Continue button with app count",
     "placeholders": {
@@ -529,95 +529,91 @@
       }
     }
   },
-  "settings": "Settings",
-  "@settings": {
-    "description": "Settings screen title"
-  },
-  "subscription": "Subscription",
+  "subscription": "Suscripción",
   "@subscription": {
     "description": "Subscription menu item"
   },
-  "changePassword": "Change Password",
+  "changePassword": "Cambiar Contraseña",
   "@changePassword": {
     "description": "Change password menu item"
   },
-  "aboutUs": "About Us",
+  "aboutUs": "Sobre Nosotros",
   "@aboutUs": {
     "description": "About us menu item"
   },
-  "notification": "Notification",
+  "notification": "Notificación",
   "@notification": {
     "description": "Notification menu item"
   },
-  "logOut": "Log out",
+  "logOut": "Cerrar Sesión",
   "@logOut": {
     "description": "Log out button"
   },
-  "readyToLogOut": "Ready to Log out ?",
+  "readyToLogOut": "¿Listo para Cerrar Sesión?",
   "@readyToLogOut": {
     "description": "Log out dialog title"
   },
-  "noAppsSelected": "No apps selected. Please go back and select apps.",
+  "noAppsSelected": "No hay aplicaciones seleccionadas. Por favor regresa y selecciona aplicaciones.",
   "@noAppsSelected": {
     "description": "No apps selected message"
   },
-  "saving": "Saving...",
+  "saving": "Guardando...",
   "@saving": {
     "description": "Saving button text"
   },
-  "schedules": "Schedules",
+  "schedules": "Horarios",
   "@schedules": {
     "description": "Schedules screen title"
   },
-  "appBlockLists": "App Block Lists",
+  "appBlockLists": "Listas de Bloqueo de Aplicaciones",
   "@appBlockLists": {
     "description": "App block lists section"
   },
-  "saveAppBlock": "Save App Block",
+  "saveAppBlock": "Guardar Bloqueo de Aplicación",
   "@saveAppBlock": {
     "description": "Save app block button"
   },
-  "addMotivation": "Add Motivation",
+  "addMotivation": "Agregar Motivación",
   "@addMotivation": {
     "description": "Add motivation button"
   },
-  "upgradeToPremium": "Upgrade to premium",
+  "upgradeToPremium": "Actualizar a Premium",
   "@upgradeToPremium": {
     "description": "Upgrade to premium screen title"
   },
-  "premiumMonthlyPlan": "Premium Monthly Plan",
+  "premiumMonthlyPlan": "Plan Mensual Premium",
   "@premiumMonthlyPlan": {
     "description": "Premium plan title"
   },
-  "pricePerMonth": "€1/month",
+  "pricePerMonth": "€1/mes",
   "@pricePerMonth": {
     "description": "Price per month"
   },
-  "subscribeNow": "Subscribe Now",
+  "subscribeNow": "Suscribirse Ahora",
   "@subscribeNow": {
     "description": "Subscribe now button"
   },
-  "confirmSubscription": "Confirm Subscription",
+  "confirmSubscription": "Confirmar Suscripción",
   "@confirmSubscription": {
     "description": "Confirm subscription dialog title"
   },
-  "subscriptionConfirmMessage": "Subscribe to Premium Monthly Plan for €1/month?",
+  "subscriptionConfirmMessage": "¿Suscribirse al Plan Mensual Premium por €1/mes?",
   "@subscriptionConfirmMessage": {
     "description": "Subscription confirmation message"
   },
-  "subscribe": "Subscribe",
+  "subscribe": "Suscribirse",
   "@subscribe": {
     "description": "Subscribe button"
   },
-  "subscriptionSuccessful": "Subscription successful!",
+  "subscriptionSuccessful": "¡Suscripción exitosa!",
   "@subscriptionSuccessful": {
     "description": "Subscription success message"
   },
-  "failed": "Failed",
+  "failed": "Fallido",
   "@failed": {
     "description": "Failed status"
   },
-  "errorSavingSettings": "Error saving settings. Please try again.",
+  "errorSavingSettings": "Error al guardar la configuración. Por favor intenta de nuevo.",
   "@errorSavingSettings": {
     "description": "Error message when saving settings fails"
   }

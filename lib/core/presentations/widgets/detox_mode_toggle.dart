@@ -3,15 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'custom_text.dart';
 
-class PinLockToggle extends StatelessWidget {
-  final RxBool isPinLockEnabled;
-  final Function(bool enabled)? onToggle;
-
-  const PinLockToggle({
-    super.key,
-    required this.isPinLockEnabled,
-    this.onToggle,
-  });
+class DetoxModeToggle extends StatelessWidget {
+  final RxBool isDetoxModeEnabled;
+  const DetoxModeToggle({super.key, required this.isDetoxModeEnabled});
 
   @override
   Widget build(BuildContext context) {
@@ -26,28 +20,26 @@ class PinLockToggle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomText(
-            text: 'Pin Lock',
+            text: 'Detox Mode',
             fontsize: 16.sp,
             fontWeight: FontWeight.w600,
             color: Colors.black,
           ),
           Obx(
-            () => GestureDetector(
-              onTap: () {
-                final newValue = !isPinLockEnabled.value;
-                isPinLockEnabled.value = newValue;
-                onToggle?.call(newValue);
-              },
+                () => GestureDetector(
+              onTap: () => isDetoxModeEnabled.value = !isDetoxModeEnabled.value,
               child: Container(
                 width: 48.w,
                 height: 24.h,
                 decoration: BoxDecoration(
-                  color: isPinLockEnabled.value
+                  color:
+                  isDetoxModeEnabled.value
                       ? const Color(0xFF3D3D3D)
                       : Colors.grey.shade400,
                   borderRadius: BorderRadius.circular(100.r),
                 ),
-                alignment: isPinLockEnabled.value
+                alignment:
+                isDetoxModeEnabled.value
                     ? Alignment.centerRight
                     : Alignment.centerLeft,
                 padding: EdgeInsets.symmetric(horizontal: 2.w),
@@ -55,7 +47,8 @@ class PinLockToggle extends StatelessWidget {
                   width: 20.w,
                   height: 20.h,
                   decoration: BoxDecoration(
-                    color: isPinLockEnabled.value
+                    color:
+                    isDetoxModeEnabled.value
                         ? const Color(0xFFDDA742)
                         : Colors.white,
                     shape: BoxShape.circle,

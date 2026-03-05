@@ -23,7 +23,7 @@ class _LanguageScreenState extends State<LanguageScreen>
   late LocaleController localeController;
   String selectedLanguage = 'Italian';
 
-  final List<String> languages = ['Italian', 'English'];
+  final List<String> languages = ['Italian', 'English', 'Spanish'];
 
   @override
   void initState() {
@@ -138,7 +138,7 @@ class _LanguageScreenState extends State<LanguageScreen>
           selectedLanguage = language;
         });
         // Change locale immediately
-        final languageCode = language == 'Italian' ? 'it' : 'en';
+        final languageCode = localeController.getLanguageCode(language);
         localeController.changeLocale(languageCode);
       },
       child: Container(

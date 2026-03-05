@@ -66,8 +66,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welcomeToLimitIt => 'Welcome to LimitIt';
 
   @override
-  String get startingToday =>
-      'Starting today, let\'s focus better and\naccomplish your dreams';
+  String get startingToday => 'Starting today, let\'s focus better and\naccomplish your dreams';
 
   @override
   String get signUpYourAccount => 'Sign up your account';
@@ -118,8 +117,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logInYourAccount => 'Log in your account';
 
   @override
-  String get allSetPasswordUpdated =>
-      'All set !\nPassword Successfully Updated';
+  String get allSetPasswordUpdated => 'All set !\nPassword Successfully Updated';
 
   @override
   String get logInSecurely => 'Log in Securely to access your full app';
@@ -155,8 +153,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backToHome => 'Back to Home';
 
   @override
-  String get iAcceptPrivacy =>
-      'I accept the privacy policy and terms of Service';
+  String get iAcceptPrivacy => 'I accept the privacy policy and terms of Service';
 
   @override
   String get privacyDataProtection => 'Privacy & Data Protection';
@@ -165,8 +162,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usageDataStaysOnDevice => 'Your usage data stays on your device';
 
   @override
-  String get noPersonalInfoCollection =>
-      'We don\'t collect personal information';
+  String get noPersonalInfoCollection => 'We don\'t collect personal information';
 
   @override
   String get gdprCompliance => 'GDPR compliance is our priority';
@@ -211,11 +207,46 @@ class AppLocalizationsEn extends AppLocalizations {
   String get downloadReport => 'Download Report';
 
   @override
+  String get generatingReport => 'Generating Report...';
+
+  @override
+  String get preparingYourReport => 'Preparing your report with real-time data';
+
+  @override
+  String get reportDownloaded => 'Report Downloaded';
+
+  @override
+  String get reportReadyToShare => 'Your usage report is ready to share or print';
+
+  @override
+  String get failedToDownloadReport => 'Failed to download report. Please try again';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get aboutUs => 'About Us';
+
+  @override
+  String get termsConditions => 'Terms & Conditions';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get failedToLoadData => 'Failed to load data';
+
+  @override
+  String get networkError => 'Network error. Please check your connection';
+
+  @override
   String get noNotificationsYet => 'No notifications yet';
 
   @override
-  String get notifyWhenNewArrives =>
-      'We\'ll notify you when something new arrives';
+  String get notifyWhenNewArrives => 'We\'ll notify you when something new arrives';
 
   @override
   String get detoxMode => 'Detox Mode';
@@ -233,22 +264,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get grantRequiredPermissions => 'Grant Required Permissions';
 
   @override
-  String get permissionsDescription =>
-      'LimitIt needs these permissions to monitor and block apps when limits are reached.';
+  String get permissionsDescription => 'LimitIt needs these permissions to monitor and block apps when limits are reached.';
 
   @override
   String get overlayPermission => 'Overlay Permission';
 
   @override
-  String get overlayPermissionDesc =>
-      'Allows LimitIt to display blocking screen over other apps';
+  String get overlayPermissionDesc => 'Allows LimitIt to display blocking screen over other apps';
 
   @override
   String get accessibilityService => 'Accessibility Service';
 
   @override
-  String get accessibilityServiceDesc =>
-      'Monitors which apps you open to enforce limits';
+  String get accessibilityServiceDesc => 'Monitors which apps you open to enforce limits';
 
   @override
   String get startMonitoring => 'Start Monitoring';
@@ -356,9 +384,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addNewScreenTime => 'Add New ScreenTime';
 
   @override
-  String get retry => 'Retry';
-
-  @override
   String get pleaseSelectAtLeastOneApp => 'Please select at least one app';
 
   @override
@@ -376,9 +401,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changePassword => 'Change Password';
 
   @override
-  String get aboutUs => 'About Us';
-
-  @override
   String get notification => 'Notification';
 
   @override
@@ -388,8 +410,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get readyToLogOut => 'Ready to Log out ?';
 
   @override
-  String get noAppsSelected =>
-      'No apps selected. Please go back and select apps.';
+  String get noAppsSelected => 'No apps selected. Please go back and select apps.';
 
   @override
   String get saving => 'Saving...';
@@ -422,8 +443,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmSubscription => 'Confirm Subscription';
 
   @override
-  String get subscriptionConfirmMessage =>
-      'Subscribe to Premium Monthly Plan for €1/month?';
+  String get subscriptionConfirmMessage => 'Subscribe to Premium Monthly Plan for €1/month?';
 
   @override
   String get subscribe => 'Subscribe';

@@ -132,6 +132,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/banner.png
   AssetGenImage get banner => const AssetGenImage('assets/images/banner.png');
 
+  /// File path: assets/images/camera.png
+  AssetGenImage get camera => const AssetGenImage('assets/images/camera.png');
+
   /// File path: assets/images/instagram.png
   AssetGenImage get instagram =>
       const AssetGenImage('assets/images/instagram.png');
@@ -174,6 +177,7 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [
     aboutus,
     banner,
+    camera,
     instagram,
     limit,
     onboarding,

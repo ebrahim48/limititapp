@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
+import 'package:limit_it_app/controllers/profile_controller.dart';
 import 'package:limit_it_app/controllers/schedules_limits_controller.dart';
 import 'package:limit_it_app/controllers/upgrade_premium_controller.dart';
 import 'package:limit_it_app/core/presentations/controller/theme_controller.dart';
@@ -9,6 +10,7 @@ import 'package:limit_it_app/core/services/app_blocker_service.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/core/services/blocked_apps_service.dart';
+import 'package:limit_it_app/core/services/pin_lock_storage_service.dart';
 import 'package:limit_it_app/core/services/timer_settings_service.dart';
 
 class DependencyInjection implements Bindings {
@@ -22,11 +24,12 @@ class DependencyInjection implements Bindings {
     Get.lazyPut<BlockedAppsService>(() => BlockedAppsService.instance, fenix: true);
     Get.lazyPut<AppLimitStorageService>(() => AppLimitStorageService.instance, fenix: true);
     Get.lazyPut<TimerSettingsService>(() => TimerSettingsService.instance, fenix: true);
+    Get.lazyPut<PinLockStorageService>(() => PinLockStorageService.instance, fenix: true);
 
-    // Register all controllers as singletons (lazy load)
     Get.lazyPut<ThemeController>(() => ThemeController(), fenix: true);
     Get.lazyPut<LocaleController>(() => LocaleController(), fenix: true);
     Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
+    Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
     Get.lazyPut<SchedulesLimitsController>(() => SchedulesLimitsController(), fenix: true);
     Get.lazyPut<UpgradePremiumController>(() => UpgradePremiumController(), fenix: true);
   }

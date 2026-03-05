@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:get/get.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
-import '../../widgets/custom_text.dart';
-
-
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
+import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/controllers/settings_controller.dart';
 
 class TermsServicesScreen extends StatelessWidget {
   const TermsServicesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SettingsController());
+    controller.fetchTermsAndConditions();
 
     return Scaffold(
       appBar: AppBar(
@@ -27,64 +32,206 @@ class TermsServicesScreen extends StatelessWidget {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: "Terms & Conditions",
+              text: context.l10n.termsConditions,
               color: AppColors.textColor3D3D3D,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
             ),
           ],
         ),
-
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+      body: Obx(() {
+        if (controller.isLoadingTerms.value) {
+          return _buildLoadingView(context);
+        }
 
-              SizedBox(height: 24.h),
+        if (controller.hasErrorTerms.value) {
+          return _buildErrorView(context, controller);
+        }
 
-              Container(
-                width: 348.w,
-                height: 172.h,
-                decoration: BoxDecoration(
-                  color:  Color(0xFFEDD69A),
-                  borderRadius: BorderRadius.circular(12.r),
-                ),
-                child: Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(40.r),
-                    child: Image.asset(
-                      "assets/images/policy.png",
-                      width: 205.w,
-                      height: 149.h,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 24.h),
+        return _buildContent(context, controller);
+      }),
+    );
+  }
 
-              CustomText(
-                maxline: 40,
-                textAlign: TextAlign.start,
-                text: 'Lorem ipsum dolor sit amet consectetur. Lacus at venenatis gravida vivamus mauris. Quisque mi est vel dis. Donec rhoncus laoreet odio orci sed risus elit accumsan. Mattis ut est tristique amet vitae at aliquet. Ac vel porttitor egestas scelerisque enim quisque senectus. Euismod ultricies vulputate id cras bibendum sollicitudin proin odio bibendum. Velit velit in scelerisque erat etiam rutrum phasellus nunc. Sed lectus sed a at et eget. Nunc purus sed quis at risus. Consectetur nibh justo proin placerat condimentum id at adipiscing.Vel blandit mi nulla sodales consectetur. Egestas tristique ultrices gravida duis nisl odio. Posuere curabitur eu platea pellentesque ut. Facilisi elementum neque mauris facilisis in. Cursus condimentum ipsum pretium consequat turpis at porttitor nisi.Scelerisque tellus praesent condimentum euismod a faucibus. Auctor at ultricies at urna aliquam massa pellentesque. Vitae vulputate nullam diam placerat at magna egestas. Lectus lectus consequat porta lectus purus. Nulla duis sem sit at imperdiet lobortis dui. Nunc tellus cursus maecenas phasellus sollicitudin donec dictum. Sodales in faucibus libero augue vestibulum urna mattis curabitur. Leo ac pretium elit egestas mi commodo odio neque. Ac quis vulputate vel sagittis. Tortor magna erat ultrices lacus urna sed sit egestas in. Suspendisse lacus diam pretium adipiscing ultrices penatibus ullamcorper in felis. Sed nullam consectetur euismod a laoreet dui. Nulla porttitor urna id blandit.Pretium pulvinar morbi suspendisse mattis.',
-                fontsize: 14.sp,
-                color: AppColors.textColor3D3D3D,
-              ),
-
-
-
-              SizedBox(height: 60.h),
-
-
-            ],
+  Widget _buildLoadingView(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SpinKitFadingCircle(
+            color: AppColors.primaryGreen,
+            size: 50.r,
           ),
-        ),
+          SizedBox(height: 16.h),
+          CustomText(
+            text: context.l10n.loading,
+            fontsize: 16.sp,
+            color: AppColors.textColor3D3D3D,
+          ),
+        ],
       ),
     );
   }
 
+  Widget _buildErrorView(BuildContext context, SettingsController controller) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.error_outline,
+            size: 64.r,
+            color: Colors.red,
+          ),
+          SizedBox(height: 16.h),
+          CustomText(
+            text: context.l10n.failedToLoadData,
+            fontsize: 16.sp,
+            color: AppColors.textColor3D3D3D,
+          ),
+          SizedBox(height: 24.h),
+          TextButton(
+            onPressed: () {
+              controller.fetchTermsAndConditions();
+            },
+            child: CustomText(
+              text: context.l10n.retry,
+              fontsize: 16.sp,
+              color: AppColors.primaryGreen,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
+  Widget _buildContent(BuildContext context, SettingsController controller) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 24.h),
+
+            Container(
+              width: 348.w,
+              height: 172.h,
+              decoration: BoxDecoration(
+                color: const Color(0xFFEDD69A),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(40.r),
+                  child: Image.asset(
+                    "assets/images/policy.png",
+                    width: 205.w,
+                    height: 149.h,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 24.h),
+
+            // Display HTML content from API
+            if (controller.termsContent.isNotEmpty)
+              Html(
+                data: controller.termsContent.value,
+                style: {
+                  "body": Style(
+                    fontSize: FontSize(14.sp),
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.zero,
+                    padding: HtmlPaddings.zero,
+                  ),
+                  "h1": Style(
+                    fontSize: FontSize(24.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 16),
+                  ),
+                  "h2": Style(
+                    fontSize: FontSize(20.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 14),
+                  ),
+                  "h3": Style(
+                    fontSize: FontSize(18.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 12),
+                  ),
+                  "h4": Style(
+                    fontSize: FontSize(16.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 10),
+                  ),
+                  "h5": Style(
+                    fontSize: FontSize(14.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 8),
+                  ),
+                  "h6": Style(
+                    fontSize: FontSize(12.sp),
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textColor3D3D3D,
+                    margin: Margins.symmetric(vertical: 6),
+                  ),
+                  "p": Style(
+                    fontSize: FontSize(14.sp),
+                    color: AppColors.textColor3D3D3D,
+                    lineHeight: LineHeight(1.8),
+                    margin: Margins.symmetric(vertical: 8),
+                  ),
+                  "a": Style(
+                    color: AppColors.primaryGreen,
+                    textDecoration: TextDecoration.underline,
+                  ),
+                  "ul": Style(
+                    padding: HtmlPaddings.only(left: 20),
+                    margin: Margins.symmetric(vertical: 8),
+                  ),
+                  "ol": Style(
+                    padding: HtmlPaddings.only(left: 20),
+                    margin: Margins.symmetric(vertical: 8),
+                  ),
+                  "li": Style(
+                    fontSize: FontSize(14.sp),
+                    color: AppColors.textColor3D3D3D,
+                    lineHeight: LineHeight(1.8),
+                    margin: Margins.symmetric(vertical: 4),
+                  ),
+                  "strong": Style(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  "b": Style(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  "em": Style(
+                    fontStyle: FontStyle.italic,
+                  ),
+                  "i": Style(
+                    fontStyle: FontStyle.italic,
+                  ),
+                  "img": Style(
+                    margin: Margins.symmetric(vertical: 16),
+                  ),
+                  "hr": Style(
+                    margin: Margins.symmetric(vertical: 16),
+                  ),
+                },
+              ),
+
+            SizedBox(height: 60.h),
+          ],
+        ),
+      ),
+    );
+  }
 }

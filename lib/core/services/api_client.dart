@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -22,39 +23,57 @@ class ApiClient extends GetxService {
 //==========================================> Get Data <======================================
   static Future<Response> getData(String uri,
       {Map<String, dynamic>? query, Map<String, String>? headers}) async {
-    bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+    bearerToken = await PrefsHelper.getStringNullable(AppConstants.bearerToken) ?? '';
 
     var mainHeaders = {
       'Content-Type': 'application/json',
-      'Authorization': bearerToken
+      if (bearerToken.isNotEmpty) 'Authorization': 'Bearer $bearerToken'
     };
     try {
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint('====> API Call: $uri');
+      debugPrint('====> Full URL: ${ApiConstants.baseUrl + uri}');
+      debugPrint('====> Header: ${headers ?? mainHeaders}');
+      debugPrint('====> Token from prefs: ${bearerToken.isEmpty ? "EMPTY" : "${bearerToken.substring(0, 20)}..."}');
 
       http.Response response = await client
           .get(
         Uri.parse(ApiConstants.baseUrl + uri),
         headers: headers ?? mainHeaders,
       ).timeout(const Duration(seconds: timeoutInSeconds));
+      
+      debugPrint('====> Response Status: ${response.statusCode}');
+      debugPrint('====> Response Body: ${response.body}');
+      
       return handleResponse(response, uri);
+    } on SocketException catch (e) {
+      debugPrint('------------SocketException: ${e.toString()}');
+      debugPrint('------------Check internet permission and connectivity');
+      return const Response(statusCode: 1, statusText: "No internet connection");
+    } on HttpException catch (e) {
+      debugPrint('------------HttpException: ${e.toString()}');
+      return const Response(statusCode: 1, statusText: "Server error");
+    } on TimeoutException catch (e) {
+      debugPrint('------------TimeoutException: ${e.toString()}');
+      return const Response(statusCode: 1, statusText: "Request timeout");
     } catch (e) {
-      debugPrint('------------${e.toString()}');
-      return const Response(statusCode: 1, statusText: noInternetMessage);
+      debugPrint('------------Exception: ${e.toString()}');
+      return const Response(statusCode: 1, statusText: "Can't connect to the internet!");
     }
   }
 
 //==========================================> Post Data <======================================
   static Future<Response> postData(String uri, dynamic body,
       {Map<String, String>? headers}) async {
-    String bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+    String bearerToken = await PrefsHelper.getStringNullable(AppConstants.bearerToken) ?? '';
 
     var mainHeaders = {
       'Content-Type': 'application/json',
-      'Authorization': bearerToken
+      if (bearerToken.isNotEmpty) 'Authorization': 'Bearer $bearerToken'
     };
 
     try {
-      debugPrint('====> API Call: $uri\nHeader: $mainHeaders');
+      debugPrint('====> API Call: $uri');
+      debugPrint('====> Header: $mainHeaders');
       debugPrint('====> API Body: $body');
 
       http.Response response = await client.post(
@@ -80,14 +99,15 @@ class ApiClient extends GetxService {
       String uri,
       var body,
       {Map<String, String>? headers}) async {
-    bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+    bearerToken = await PrefsHelper.getStringNullable(AppConstants.bearerToken) ?? '';
 
     var mainHeaders = {
       'Content-Type': 'application/json',
-      'Authorization': bearerToken
+      if (bearerToken.isNotEmpty) 'Authorization': 'Bearer $bearerToken'
     };
     try {
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint('====> API Call: $uri');
+      debugPrint('====> Header: ${headers ?? mainHeaders}');
       debugPrint('====> API Body: $body');
 
       http.Response response = await client
@@ -117,13 +137,14 @@ class ApiClient extends GetxService {
         Map<String, String>? headers,
       }) async {
     try {
-      bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+      bearerToken = await PrefsHelper.getStringNullable(AppConstants.bearerToken) ?? '';
 
       var mainHeaders = {
-        'Authorization': bearerToken,
+        if (bearerToken.isNotEmpty) 'Authorization': 'Bearer $bearerToken',
       };
 
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint('====> API Call: $uri');
+      debugPrint('====> Header: ${headers ?? mainHeaders}');
       debugPrint('====> API Body: $body with ${multipartBody.length} files');
 
       var request = http.MultipartRequest(
@@ -195,9 +216,11 @@ class ApiClient extends GetxService {
       String url, {
         Map<String, dynamic>? body,
       }) async {
+    bearerToken = await PrefsHelper.getStringNullable(AppConstants.bearerToken) ?? '';
+    
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': bearerToken,
+      if (bearerToken.isNotEmpty) 'Authorization': 'Bearer $bearerToken',
     };
 
     final response = await http.patch(
@@ -217,14 +240,15 @@ class ApiClient extends GetxService {
 //==========================================> Put Data <======================================
   static Future<Response> putData(String uri, dynamic body,
       {Map<String, String>? headers}) async {
-    bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+    bearerToken = await PrefsHelper.getStringNullable(AppConstants.bearerToken) ?? '';
 
     var mainHeaders = {
       'Content-Type': 'application/json',
-      'Authorization': bearerToken
+      if (bearerToken.isNotEmpty) 'Authorization': 'Bearer $bearerToken'
     };
     try {
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint('====> API Call: $uri');
+      debugPrint('====> Header: ${headers ?? mainHeaders}');
       debugPrint('====> API Body: $body');
 
       http.Response response = await http
@@ -246,14 +270,14 @@ class ApiClient extends GetxService {
         List<MultipartListBody>? multipartListBody,
         Map<String, String>? headers}) async {
     try {
-      bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+      bearerToken = await PrefsHelper.getStringNullable(AppConstants.bearerToken) ?? '';
 
       var mainHeaders = {
-        'Content-Type': 'application/json',
-        'Authorization': bearerToken
+        if (bearerToken.isNotEmpty) 'Authorization': 'Bearer $bearerToken',
       };
 
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint('====> API Call: $uri');
+      debugPrint('====> Header: ${headers ?? mainHeaders}');
       debugPrint('====> API Body: $body with ${multipartBody?.length} picture');
 
       var request =
@@ -295,15 +319,15 @@ class ApiClient extends GetxService {
         List<MultipartListBody>? multipartListBody,
         Map<String, String>? headers}) async {
     try {
-      bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+      bearerToken = await PrefsHelper.getStringNullable(AppConstants.bearerToken) ?? '';
       // bearerToken = PrefsHelper.token;
 
       var mainHeaders = {
-        // 'Content-Type': 'application/json',
-        'Authorization': bearerToken
+        if (bearerToken.isNotEmpty) 'Authorization': 'Bearer $bearerToken',
       };
 
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
+      debugPrint('====> API Call: $uri');
+      debugPrint('====> Header: ${headers ?? mainHeaders}');
       debugPrint('====> API Body: $body with ${multipartBody?.length} picture');
       var request =
       http.MultipartRequest('PATCH', Uri.parse(ApiConstants.baseUrl + uri));
@@ -341,15 +365,16 @@ class ApiClient extends GetxService {
   //==========================================> Delete Data <======================================
   static Future<Response> deleteData(String uri,
       {Map<String, String>? headers, dynamic body}) async {
-    bearerToken = await PrefsHelper.getString(AppConstants.bearerToken);
+    bearerToken = await PrefsHelper.getStringNullable(AppConstants.bearerToken) ?? '';
 
     var mainHeaders = {
       'Content-Type': 'application/json',
-      'Authorization': bearerToken
+      if (bearerToken.isNotEmpty) 'Authorization': 'Bearer $bearerToken'
     };
     try {
-      debugPrint('====> API Call: $uri\nHeader: ${headers ?? mainHeaders}');
-      debugPrint('====> API Call: $uri\n Body: ${body}');
+      debugPrint('====> API Call: $uri');
+      debugPrint('====> Header: ${headers ?? mainHeaders}');
+      debugPrint('====> API Body: $body');
 
       http.Response response = await http
           .delete(Uri.parse(ApiConstants.baseUrl + uri),

@@ -121,7 +121,7 @@ class AuthController extends GetxController {
 
         await PrefsHelper.setString(AppConstants.bearerToken, token);
 
-        ToastMessageHelper.showToastMessage(res["message"] ?? "Verification successful");
+        // ToastMessageHelper.showToastMessage(res["message"] ?? "Verification successful");
 
 
         if (screenType == 'signup') {
@@ -179,12 +179,17 @@ class AuthController extends GetxController {
     if (response.statusCode == 200 || response.statusCode == 201) {
       var data = response.body['data'];
 
+      debugPrint("=====> Login Response Data: $data");
 
+      /// Access token save - try multiple possible field names
+      var token = data["token"]?.toString() 
+               ?? data["accessToken"]?.toString() 
+               ?? data["refreshToken"]?.toString() 
+               ?? "";
+      
+      debugPrint("=====> Token extracted: ${token.isEmpty ? "EMPTY" : token.substring(0, 20)}...");
 
-      /// Access token save
-      var token = data["token"].toString();
-
-      await PrefsHelper.setString(AppConstants.bearerToken, token,);
+      await PrefsHelper.setString(AppConstants.bearerToken, token);
       await PrefsHelper.setString(AppConstants.role, data['role'].toString());
 
       /// Save user details
@@ -199,7 +204,7 @@ class AuthController extends GetxController {
         if (context.mounted) {
           context.go(AppRoutes.limitPrivacyProtectionScreen);
         }
-        ToastMessageHelper.showToastMessage("You are logged in",title: 'Success');
+        // ToastMessageHelper.showToastMessage("You are logged in",title: 'Success');
       } else {
         final message = response.body["message"];
 

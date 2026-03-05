@@ -7,6 +7,12 @@ class PrefsHelper {
     return preferences.getString(key) ?? "";
   }
 
+  static Future<String?> getStringNullable(String key) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    return preferences.getString(key);
+  }
+
   static Future<bool> getBool(String key) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
