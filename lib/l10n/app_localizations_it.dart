@@ -21,6 +21,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settings => 'Impostazioni';
 
   @override
+  String get delete => 'Delete';
+  @override
+  String get pinSettings => 'PinSettings';
+
+  @override
   String get appUsage => 'Utilizzo app';
 
   @override

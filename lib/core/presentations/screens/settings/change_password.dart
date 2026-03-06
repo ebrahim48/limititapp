@@ -197,13 +197,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   },
                 )),
 
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomText(
-                      text: isMatched ? 'Password Matched' : "",
-                      color: Colors.green,
-                      fontsize: 14.sp,
-                    )),
+                // Align(
+                //     alignment: Alignment.centerLeft,
+                //     child: CustomText(
+                //       text: isMatched ? 'Password Matched' : "",
+                //       color: Colors.green,
+                //       fontsize: 14.sp,
+                //     )),
 
                 GestureDetector(
                   onTap: () {

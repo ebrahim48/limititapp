@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:limit_it_app/controllers/notifications_controller.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -8,90 +10,205 @@ import 'package:limit_it_app/core/presentations/widgets/notification_widget.dart
 class NotificationsScreen extends StatelessWidget {
   NotificationsScreen({super.key});
 
-  final List<NotificationModel> notifications = [
-    NotificationModel(
-      title: 'Your booking is confirmed!',
-      message: 'Thank you for choosing us. We look forward to serving you.',
-      time: '2m ago',
-      avatarText: 'Tm',
-      avatarColor: Color(0xFFE5E5E5),
-    ),
-    NotificationModel(
-      title: 'New Feature Available',
-      message: 'Check out our new advanced scheduling feature for better time management.',
-      time: '1h ago',
-      avatarText: 'LI',
-      avatarColor: Color(0xFFDCFCE7),
-    ),
-    NotificationModel(
-      title: 'Weekly Report Ready',
-      message: 'Your weekly screen time report is now available. You\'ve reduced usage by 25%!',
-      time: '3h ago',
-      avatarText: 'WR',
-      avatarColor: Color(0xFFEDD69A),
-    ),
-    NotificationModel(
-      title: 'Goal Achievement',
-      message: 'Congratulations! You\'ve met your daily screen time goal for 7 days in a row.',
-      time: '1d ago',
-      avatarText: 'GA',
-      avatarColor: Color(0xFFDCFCE7),
-    ),
-    NotificationModel(
-      title: 'Premium Offer',
-      message: 'Upgrade to Premium and get 50% off for the first month. Limited time offer!',
-      time: '2d ago',
-      avatarText: 'PO',
-      avatarColor: Color(0xFFEDD69A),
-    ),
-  ];
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        titleSpacing: 0,
-        title: Row(
-          children: [
-            IconButton(
-              padding: EdgeInsets.zero,
-              icon: Icon(Icons.arrow_back, color: Colors.black, size: 24.r),
-              onPressed: () => Navigator.pop(context),
-            ),
-            SizedBox(width: 12.w),
-            CustomText(
-              text: context.l10n.notifications,
-              color: AppColors.textColor3D3D3D,
-              fontsize: 24.sp,
-              fontWeight: FontWeight.w500,
-            ),
-          ],
-        ),
+    final controller = Get.find<NotificationsController>();
 
-      ),
-      body: notifications.isEmpty
-          ? _buildEmptyState(context)
-          : ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-        itemCount: notifications.length,
-        itemBuilder: (context, index) {
-          final notification = notifications[index];
-          return NotificationItemWidget(
-            title: notification.title,
-            message: notification.message,
-            time: notification.time,
-            avatarText: notification.avatarText,
-            avatarColor: notification.avatarColor,
-          );
-        },
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.addListener(() {
+          if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent - 200) {
+            controller.loadMoreNotifications();
+          }
+        });
+      }
+    });
+
+    return Scaffold(
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
+          // ===================== AppBar =====================
+          SliverAppBar(
+            forceMaterialTransparency: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            floating: true,
+            snap: true,
+            titleSpacing: 0,
+            title: Row(
+              children: [
+                IconButton(
+                  padding: EdgeInsets.zero,
+                  icon:
+                  Icon(Icons.arrow_back, color: Colors.black, size: 24.r),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                SizedBox(width: 12.w),
+                CustomText(
+                  text: context.l10n.notifications,
+                  color: AppColors.textColor3D3D3D,
+                  fontsize: 24.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ],
+            ),
+            actions: [
+              Obx(() {
+                if (controller.notifications.isEmpty) return const SizedBox();
+                return Row(
+                  children: [
+                    // Mark all as read
+                    IconButton(
+                      icon: Icon(
+                        Icons.done_all,
+                        color: AppColors.primaryColor,
+                        size: 22.r,
+                      ),
+                      tooltip: 'Mark all as read',
+                      onPressed: () => _showMarkAllReadDialog(context, controller),
+                    ),
+                    // Clear all
+                    IconButton(
+                      icon: Icon(
+                        Icons.delete_sweep_outlined,
+                        color: AppColors.textColorA70D0D,
+                        size: 22.r,
+                      ),
+                      tooltip: 'Clear all',
+                      onPressed: () =>
+                          _showClearAllDialog(context, controller),
+                    ),
+                    SizedBox(width: 4.w),
+                  ],
+                );
+              }),
+            ],
+          ),
+
+          // ===================== Body =====================
+          Obx(() {
+            // Initial loading
+            if (controller.isLoading.value &&
+                controller.notifications.isEmpty) {
+              return SliverFillRemaining(
+                child: _buildLoadingState(context),
+              );
+            }
+
+            // Empty state
+            if (controller.notifications.isEmpty) {
+              return SliverFillRemaining(
+                child: _buildEmptyState(context),
+              );
+            }
+
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                  // Loading more indicator at bottom
+                  if (index == controller.notifications.length) {
+                    if (controller.isLoadingMore.value) {
+                      return _buildLoadingMoreIndicator();
+                    }
+                    if (!controller.hasMore.value) {
+                      return _buildNoMoreItemsIndicator();
+                    }
+                    return _buildLoadingMoreIndicator();
+                  }
+
+                  final notification = controller.notifications[index];
+
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 24.w, vertical: 6.h),
+                    child: Dismissible(
+                      key: Key(notification.id),
+                      direction: DismissDirection.endToStart,
+                      background: _buildDismissBackground(),
+                      confirmDismiss: (_) async {
+                        return await _showDeleteConfirmDialog(context);
+                      },
+                      onDismissed: (_) {
+                        controller.deleteSingleNotification(notification.id);
+                      },
+                      child: GestureDetector(
+                        onTap: () {
+                          if (!notification.read) {
+                            controller.markAsRead(notification.id);
+                          }
+                        },
+                        child: NotificationItemWidget(
+                          title: notification.title,
+                          message: notification.message,
+                          time: notification.timeAgo,
+                          avatarText: notification.avatarText,
+                          avatarColor: _hexToColor(notification.avatarColor),
+                          isRead: notification.read,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                childCount: controller.notifications.length +
+                    (controller.hasMore.value ? 1 : 0),
+              ),
+            );
+          }),
+        ],
       ),
     );
   }
 
+  // ===================== Dismiss Background =====================
+  Widget _buildDismissBackground() {
+    return Container(
+      alignment: Alignment.centerRight,
+      padding: EdgeInsets.only(right: 20.w),
+      decoration: BoxDecoration(
+        color: AppColors.textColorA70D0D,
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Icon(
+        Icons.delete_outline,
+        color: Colors.white,
+        size: 26.r,
+      ),
+    );
+  }
+
+  // ===================== Loading State =====================
+  Widget _buildLoadingState(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 40.w,
+            height: 40.h,
+            child: CircularProgressIndicator(
+              strokeWidth: 3.w,
+              valueColor:
+              AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
+            ),
+          ),
+          SizedBox(height: 16.h),
+          CustomText(
+            text: context.l10n.loading,
+            fontsize: 16.sp,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textColor5D5D5D,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ===================== Empty State =====================
   Widget _buildEmptyState(BuildContext context) {
     return Center(
       child: Column(
@@ -121,21 +238,181 @@ class NotificationsScreen extends StatelessWidget {
       ),
     );
   }
-}
 
+  // ===================== Loading More =====================
+  Widget _buildLoadingMoreIndicator() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.h),
+      child: Center(
+        child: SizedBox(
+          width: 30.w,
+          height: 30.h,
+          child: CircularProgressIndicator(
+            strokeWidth: 2.w,
+            valueColor:
+            AlwaysStoppedAnimation<Color>(AppColors.primaryColor),
+          ),
+        ),
+      ),
+    );
+  }
 
-class NotificationModel {
-  final String title;
-  final String message;
-  final String time;
-  final String? avatarText;
-  final Color? avatarColor;
+  // ===================== No More Items =====================
+  Widget _buildNoMoreItemsIndicator() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.h),
+      child: Center(
+        child: CustomText(
+          text: 'No more notifications',
+          fontsize: 14.sp,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textColor888888,
+        ),
+      ),
+    );
+  }
 
-  NotificationModel({
-    required this.title,
-    required this.message,
-    required this.time,
-    this.avatarText,
-    this.avatarColor,
-  });
+  // ===================== Dialogs =====================
+  Future<bool?> _showDeleteConfirmDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+        backgroundColor: AppColors.textColorFFFFFF,
+        title: CustomText(
+          text: 'Delete Notification',
+          fontsize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textColor3D3D3D,
+        ),
+        content: CustomText(
+          text: 'Are you sure you want to delete this notification?',
+          fontsize: 14.sp,
+          color: AppColors.textColor5D5D5D,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: CustomText(
+              text: 'Cancel',
+              fontsize: 14.sp,
+              color: AppColors.textColor5D5D5D,
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: CustomText(
+              text: 'Delete',
+              fontsize: 14.sp,
+              color: AppColors.textColorA70D0D,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showMarkAllReadDialog(
+      BuildContext context, NotificationsController controller) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+        backgroundColor: AppColors.textColorFFFFFF,
+        title: CustomText(
+          text: 'Mark All as Read',
+          fontsize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textColor3D3D3D,
+        ),
+        content: CustomText(
+          text: 'Mark all notifications as read?',
+          fontsize: 14.sp,
+          color: AppColors.textColor5D5D5D,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: CustomText(
+              text: 'Cancel',
+              fontsize: 14.sp,
+              color: AppColors.textColor5D5D5D,
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              controller.markAllAsRead();
+            },
+            child: CustomText(
+              text: 'Confirm',
+              fontsize: 14.sp,
+              color: AppColors.primaryColor,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showClearAllDialog(
+      BuildContext context, NotificationsController controller) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+        backgroundColor: AppColors.textColorFFFFFF,
+        title: CustomText(
+          text: 'Clear All Notifications',
+          fontsize: 16.sp,
+          fontWeight: FontWeight.w600,
+          color: AppColors.textColor3D3D3D,
+        ),
+        content: CustomText(
+          text: 'This will permanently delete all notifications.',
+          fontsize: 14.sp,
+          color: AppColors.textColor5D5D5D,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: CustomText(
+              text: 'Cancel',
+              fontsize: 14.sp,
+              color: AppColors.textColor5D5D5D,
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              controller.clearAllNotifications();
+            },
+            child: CustomText(
+              text: 'Clear All',
+              fontsize: 14.sp,
+              color: AppColors.textColorA70D0D,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ===================== Helper =====================
+  Color? _hexToColor(String? hexColor) {
+    if (hexColor == null) return null;
+    hexColor = hexColor.replaceAll('#', '');
+    if (hexColor.length == 6) hexColor = 'FF$hexColor';
+    try {
+      return Color(int.parse(hexColor, radix: 16));
+    } catch (e) {
+      return null;
+    }
+  }
 }

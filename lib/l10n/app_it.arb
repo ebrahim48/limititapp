@@ -153,5 +153,10 @@
   "subscribe": "Abbonati",
   "subscriptionSuccessful": "Abbonamento riuscito!",
   "failed": "Fallito",
-  "errorSavingSettings": "Errore durante il salvataggio delle impostazioni. Riprova."
+  "errorSavingSettings": "Errore durante il salvataggio delle impostazioni. Riprova.",
+  "delete": "Elimina",
+  "deleteAccount": "Elimina account",
+  "deleteAccountWarning": "Sei sicuro di voler eliminare il tuo account? Questa azione non può essere annullata e tutti i tuoi dati verranno rimossi permanentemente.",
+  "enterPassword": "Inserisci la tua password",
+  "passwordRequired": "La password è obbligatoria"
 }

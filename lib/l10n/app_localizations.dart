@@ -534,7 +534,8 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'About Us'**
   String get aboutUs;
-
+  String get delete;
+  String get pinSettings;
   /// Terms & Conditions screen title
   ///
   /// In en, this message translates to:

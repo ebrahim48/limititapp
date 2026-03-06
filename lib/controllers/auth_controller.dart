@@ -83,7 +83,6 @@ class AuthController extends GetxController {
         }
       } else {
         final msg = response.body["message"] ?? "Attention";
-        ToastMessageHelper.showToastMessage(msg);
       }
     } catch (e) {
       ToastMessageHelper.showToastMessage("Signup failed: $e");
@@ -121,7 +120,6 @@ class AuthController extends GetxController {
 
         await PrefsHelper.setString(AppConstants.bearerToken, token);
 
-        // ToastMessageHelper.showToastMessage(res["message"] ?? "Verification successful");
 
 
         if (screenType == 'signup') {
@@ -166,65 +164,82 @@ class AuthController extends GetxController {
       "password": password,
     };
 
-    var response = await ApiClient.postData(
-      ApiConstants.loginEndPoint,
-      jsonEncode(body),
-      headers: headers,
-    );
+    try {
+      var response = await ApiClient.postData(
+        ApiConstants.loginEndPoint,
+        jsonEncode(body),
+        headers: headers,
+      );
 
-    loginLoading.value = false;
+      debugPrint("========================${response.statusCode} \n ${response.body}");
 
-    debugPrint("========================${response.statusCode} \n ${response.body}");
+      // Handle timeout or connection errors
+      if (response.statusCode == 1) {
+        loginLoading.value = false;
+        ToastMessageHelper.showToastMessage(
+          response.statusText ?? "Connection error. Please check your internet and try again.",
+        );
+        return;
+      }
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      var data = response.body['data'];
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = response.body['data'];
 
-      debugPrint("=====> Login Response Data: $data");
+        debugPrint("=====> Login Response Data: $data");
 
-      /// Access token save - try multiple possible field names
-      var token = data["token"]?.toString() 
-               ?? data["accessToken"]?.toString() 
-               ?? data["refreshToken"]?.toString() 
-               ?? "";
-      
-      debugPrint("=====> Token extracted: ${token.isEmpty ? "EMPTY" : token.substring(0, 20)}...");
+        /// Access token save - try multiple possible field names
+        var token = data["token"]?.toString()
+                 ?? data["accessToken"]?.toString()
+                 ?? data["refreshToken"]?.toString()
+                 ?? "";
 
-      await PrefsHelper.setString(AppConstants.bearerToken, token);
-      await PrefsHelper.setString(AppConstants.role, data['role'].toString());
+        debugPrint("=====> Token extracted: ${token.isEmpty ? "EMPTY" : token.substring(0, 20)}...");
 
-      /// Save user details
-      await PrefsHelper.setString(AppConstants.email, email);
-      await PrefsHelper.setString(AppConstants.userId, data['_id'].toString());
+        await PrefsHelper.setString(AppConstants.bearerToken, token);
+        await PrefsHelper.setString(AppConstants.role, data['role'].toString());
 
-      var role = data['role'].toString().toLowerCase();
-      debugPrint("========================================= role : $role");
+        /// Save user details
+        await PrefsHelper.setString(AppConstants.email, email);
+        await PrefsHelper.setString(AppConstants.userId, data['_id'].toString());
 
-      if (role == "user" || role == "usr") {
-        await PrefsHelper.setBool(AppConstants.isLogged, true);
-        if (context.mounted) {
-          context.go(AppRoutes.limitPrivacyProtectionScreen);
-        }
-        // ToastMessageHelper.showToastMessage("You are logged in",title: 'Success');
-      } else {
-        final message = response.body["message"];
+        var role = data['role'].toString().toLowerCase();
+        debugPrint("========================================= role : $role");
 
-        if (message == "Email not verified. Please verify your email.") {
-          ToastMessageHelper.showToastMessage(
-            "We've sent an OTP to your email. Please verify your email.",
-          );
-        } else if (message == "⛔ Wrong password! ⛔") {
-          ToastMessageHelper.showToastMessage(message);
-        } else {
+        if (role == "user" || role == "usr") {
           await PrefsHelper.setBool(AppConstants.isLogged, true);
           if (context.mounted) {
             context.go(AppRoutes.limitPrivacyProtectionScreen);
           }
-          // ToastMessageHelper.showToastMessage(
-          //   message ?? "You are logged in",
-          //   title: 'Success');
-        }
-      }
+          ToastMessageHelper.showToastMessage("You are logged in", title: 'Success');
+        } else {
+          final message = response.body["message"];
 
+          if (message == "Email not verified. Please verify your email.") {
+            ToastMessageHelper.showToastMessage(
+              "We've sent an OTP to your email. Please verify your email.",
+            );
+          } else if (message == "⛔ Wrong password! ⛔") {
+            ToastMessageHelper.showToastMessage(message);
+          } else {
+            await PrefsHelper.setBool(AppConstants.isLogged, true);
+            if (context.mounted) {
+              context.go(AppRoutes.limitPrivacyProtectionScreen);
+            }
+            ToastMessageHelper.showToastMessage(
+              message ?? "You are logged in",
+              title: 'Success');
+          }
+        }
+      } else {
+        final errorMessage = response.body?["message"] ?? "Login failed. Please try again.";
+        ToastMessageHelper.showToastMessage(errorMessage);
+      }
+    } catch (e) {
+      debugPrint("=====> Login error: $e");
+      loginLoading.value = false;
+      ToastMessageHelper.showToastMessage(
+        "Network error. Please check your connection and try again.",
+      );
     }
   }
 
@@ -404,22 +419,81 @@ class AuthController extends GetxController {
     }
   }
   //
-  // ///=============== Delete Account ================<>
-  //
-  //
-  // var deleteLoading = false.obs;
-  // userDelete(BuildContext context) async {
-  //
-  //   deleteLoading(true);
-  //   var response = await ApiClient.deleteData(
-  //       ApiConstants.deleteEndPoint);
-  //   if (response.statusCode == 200) {
-  //     ToastMessageHelper.showToastMessage('Account Delete Successfully');
-  //     context.pushNamed(AppRoutes.logInScreen);
-  //   } else {
-  //     deleteLoading(false);
-  //   }
-  //
-  // }
+  ///=============== Delete Account ================<>
 
+  RxBool deleteLoading = false.obs;
+
+  Future<void> deleteAccount({
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      deleteLoading(true);
+
+      final body = {
+        "password": password,
+      };
+
+      debugPrint('=====> Deleting account...');
+      debugPrint('=====> Body: $body');
+
+      final response = await ApiClient.postData(
+        ApiConstants.deleteEndPoint,
+        jsonEncode(body),
+      );
+
+      debugPrint('========> Response Status: ${response.statusCode}');
+      debugPrint('========> Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final resBody = response.body;
+
+        if (resBody['status'] == 'success') {
+          debugPrint('======>>> Account deleted successfully');
+
+          // Clear all stored data
+          await PrefsHelper.remove(AppConstants.bearerToken);
+          await PrefsHelper.remove(AppConstants.userId);
+          await PrefsHelper.remove(AppConstants.email);
+          await PrefsHelper.remove(AppConstants.role);
+          await PrefsHelper.setBool(AppConstants.isLogged, false);
+
+          if (context.mounted) {
+            Get.offAllNamed(AppRoutes.logInScreen);
+          }
+        } else {
+          // No toast - just navigate to login
+          if (context.mounted) {
+            Get.offAllNamed(AppRoutes.logInScreen);
+          }
+        }
+      } else if (response.statusCode == 401) {
+        // Handle already deleted account or unauthorized
+        final resBody = response.body;
+        final message = resBody?['message'] ?? 'Unauthorized';
+        
+        if (message.contains('deleted')) {
+          // Account was already deleted, clear local data
+          await PrefsHelper.remove(AppConstants.bearerToken);
+          await PrefsHelper.remove(AppConstants.userId);
+          await PrefsHelper.remove(AppConstants.email);
+          await PrefsHelper.remove(AppConstants.role);
+          await PrefsHelper.setBool(AppConstants.isLogged, false);
+          
+          if (context.mounted) {
+            Get.offAllNamed(AppRoutes.logInScreen);
+          }
+        } else {
+
+        }
+      } else {
+
+      }
+    } catch (e) {
+      debugPrint('❌ Delete account error: $e');
+
+    } finally {
+      deleteLoading(false);
+    }
+  }
 }
