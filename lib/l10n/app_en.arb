@@ -620,5 +620,25 @@
   "errorSavingSettings": "Error saving settings. Please try again.",
   "@errorSavingSettings": {
     "description": "Error message when saving settings fails"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button text"
+  },
+  "deleteAccount": "Delete Account",
+  "@deleteAccount": {
+    "description": "Delete account dialog title"
+  },
+  "deleteAccountWarning": "Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.",
+  "@deleteAccountWarning": {
+    "description": "Delete account warning message"
+  },
+  "enterPassword": "Enter your password",
+  "@enterPassword": {
+    "description": "Password field hint"
+  },
+  "passwordRequired": "Password is required",
+  "@passwordRequired": {
+    "description": "Password required error message"
   }
 }

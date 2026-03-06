@@ -36,6 +36,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cancel => 'Cancelar';
 
   @override
+  String get delete => 'Delete';
+
+  @override
+  String get pinSettings => 'PinSettings';
+
+  @override
   String get ok => 'OK';
 
   @override

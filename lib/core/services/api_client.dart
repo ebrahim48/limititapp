@@ -17,7 +17,8 @@ import 'error_response.dart';
 class ApiClient extends GetxService {
   static var client = http.Client();
   static const String noInternetMessage = "Can't connect to the internet!";
-  static const int timeoutInSeconds = 20;
+  static const int timeoutInSeconds = 60; // Increased from 20s to 60s for better reliability
+  static const int maxRetries = 2; // Retry failed requests up to 2 times
   static String bearerToken = "";
 
 //==========================================> Get Data <======================================
@@ -39,11 +40,11 @@ class ApiClient extends GetxService {
           .get(
         Uri.parse(ApiConstants.baseUrl + uri),
         headers: headers ?? mainHeaders,
-      ).timeout(const Duration(seconds: timeoutInSeconds));
-      
+      ).timeout(Duration(seconds: timeoutInSeconds));
+
       debugPrint('====> Response Status: ${response.statusCode}');
       debugPrint('====> Response Body: ${response.body}');
-      
+
       return handleResponse(response, uri);
     } on SocketException catch (e) {
       debugPrint('------------SocketException: ${e.toString()}');
@@ -54,7 +55,7 @@ class ApiClient extends GetxService {
       return const Response(statusCode: 1, statusText: "Server error");
     } on TimeoutException catch (e) {
       debugPrint('------------TimeoutException: ${e.toString()}');
-      return const Response(statusCode: 1, statusText: "Request timeout");
+      return const Response(statusCode: 1, statusText: "Request timeout. Please try again.");
     } catch (e) {
       debugPrint('------------Exception: ${e.toString()}');
       return const Response(statusCode: 1, statusText: "Can't connect to the internet!");
@@ -76,19 +77,70 @@ class ApiClient extends GetxService {
       debugPrint('====> Header: $mainHeaders');
       debugPrint('====> API Body: $body');
 
-      http.Response response = await client.post(
+      http.Response response = await _postWithRetry(
         Uri.parse(ApiConstants.baseUrl + uri),
-        body: body,
-        headers: headers ?? mainHeaders,
-      ).timeout(const Duration(seconds: timeoutInSeconds));
+        body,
+        headers ?? mainHeaders,
+      );
 
       debugPrint("==========> Response Post Method : ${response.statusCode} \n*********${response.body}");
       return handleResponse(response, uri);
+    } on TimeoutException catch (e) {
+      debugPrint("===> TimeoutException in postData: $e");
+      debugPrint("===> Request timed out after $timeoutInSeconds seconds");
+      return const Response(statusCode: 1, statusText: "Request timed out. Please try again.");
+    } on SocketException catch (e) {
+      debugPrint("===> SocketException in postData: $e");
+      return const Response(statusCode: 1, statusText: "No internet connection");
     } catch (e, s) {
       debugPrint("===> Error in postData: e$e");
       debugPrint("===> Error in postData: s$s");
       return const Response(statusCode: 1, statusText: noInternetMessage);
     }
+  }
+
+  /// Helper method to POST with retry logic
+  static Future<http.Response> _postWithRetry(
+    Uri uri,
+    dynamic body,
+    Map<String, String> headers,
+  ) async {
+    http.Response? lastResponse;
+    Object? lastException;
+
+    for (int attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        if (attempt > 0) {
+          debugPrint('===> Retry attempt ${attempt}/$maxRetries for $uri');
+          // Add delay before retry (exponential backoff)
+          await Future.delayed(Duration(milliseconds: 500 * attempt));
+        }
+
+        lastResponse = await client.post(
+          uri,
+          body: body,
+          headers: headers,
+        ).timeout(Duration(seconds: timeoutInSeconds));
+
+        // If successful, return immediately
+        return lastResponse;
+      } on TimeoutException catch (e) {
+        lastException = e;
+        debugPrint('===> Timeout attempt ${attempt + 1}/$maxRetries: $e');
+        if (attempt == maxRetries) rethrow;
+      } on SocketException catch (e) {
+        lastException = e;
+        debugPrint('===> SocketException attempt ${attempt + 1}/$maxRetries: $e');
+        if (attempt == maxRetries) rethrow;
+      } catch (e) {
+        lastException = e;
+        debugPrint('===> Exception attempt ${attempt + 1}/$maxRetries: $e');
+        if (attempt == maxRetries) rethrow;
+      }
+    }
+
+    // This should never be reached due to rethrow, but added for safety
+    throw lastException ?? Exception('Unknown error');
   }
 
 

@@ -16,6 +16,7 @@ class CustomButton extends StatelessWidget {
   final FontWeight? fontWeight;
   final bool loading;
   final bool loaderIgnore;
+  final Color? borderColor;
 
   const CustomButton({
     super.key,
@@ -28,6 +29,7 @@ class CustomButton extends StatelessWidget {
     this.titlecolor,
     this.loading=false,
     this.loaderIgnore = false, this.fontWeight, this.borderRadius,
+    this.borderColor,
   });
 
   @override
@@ -40,35 +42,35 @@ class CustomButton extends StatelessWidget {
         padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
         decoration: BoxDecoration(
           borderRadius:BorderRadius.circular(borderRadius ?? 100.r),
-          border: Border.all(color: AppColors.primaryColor),
+          border: Border.all(color: borderColor ?? AppColors.primaryColor),
           color: color ?? AppColors.primaryColor,
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x33000000),
-              offset: Offset(0, 1.13),
-              blurRadius: 3.3,
-            ),
-            BoxShadow(
-              color: Color(0x44000000),
-              offset: Offset(0, 2.87),
-              blurRadius: 8.34,
-            ),
-            BoxShadow(
-              color: Color(0x47000000),
-              offset: Offset(0, 5.85),
-              blurRadius: 17.01,
-            ),
-            BoxShadow(
-              color: Color(0x4A000000),
-              offset: Offset(0, 12.05),
-              blurRadius: 35.04,
-            ),
-            BoxShadow(
-              color: Color(0x60000000),
-              offset: Offset(0, 33),
-              blurRadius: 96,
-            ),
-          ],
+          // boxShadow: const [
+          //   BoxShadow(
+          //     color: Color(0x33000000),
+          //     offset: Offset(0, 1.13),
+          //     blurRadius: 3.3,
+          //   ),
+          //   BoxShadow(
+          //     color: Color(0x44000000),
+          //     offset: Offset(0, 2.87),
+          //     blurRadius: 8.34,
+          //   ),
+          //   BoxShadow(
+          //     color: Color(0x47000000),
+          //     offset: Offset(0, 5.85),
+          //     blurRadius: 17.01,
+          //   ),
+          //   BoxShadow(
+          //     color: Color(0x4A000000),
+          //     offset: Offset(0, 12.05),
+          //     blurRadius: 35.04,
+          //   ),
+          //   BoxShadow(
+          //     color: Color(0x60000000),
+          //     offset: Offset(0, 33),
+          //     blurRadius: 56,
+          //   ),
+          // ],
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
