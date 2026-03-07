@@ -27,12 +27,14 @@ class CustomCircleThumb extends SliderComponentShape {
       }) {
     final Canvas canvas = context.canvas;
 
-    // Outer Orange Circle
-    final Paint outerPaint = Paint()..color = AppColors.primaryColor4C956C;
-    canvas.drawCircle(center, 12, outerPaint);
+    // // Outer Orange Circle
+    // final Paint outerPaint = Paint()..color = AppColors.primaryColor4C956C;
+    // canvas.drawCircle(center, 12, outerPaint);
+    //
+    // // Inner Blue Circle
+    // final Paint innerPaint = Paint()..color = AppColors.primaryColor4C956C;
+    // canvas.drawCircle(center, 8, innerPaint);
 
-    // Inner Blue Circle
-    final Paint innerPaint = Paint()..color = AppColors.primaryColor4C956C;
-    canvas.drawCircle(center, 8, innerPaint);
+
   }
 }
