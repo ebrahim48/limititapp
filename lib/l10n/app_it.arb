@@ -123,6 +123,54 @@
   "setPinNumber": "Imposta numero PIN",
   "enterPinNumber": "Inserisci il numero PIN",
   "savePinNumber": "Salva numero PIN",
+  "provider": "Provider",
+  "@provider": {
+    "description": "App provider label"
+  },
+  "pinSettings": "Impostazioni PIN",
+  "@pinSettings": {
+    "description": "PIN settings screen title"
+  },
+  "noPinsCreated": "Nessun PIN creato",
+  "@noPinsCreated": {
+    "description": "Empty PIN list message"
+  },
+  "createYourFirstPin": "Crea il tuo primo PIN per proteggere le app",
+  "@createYourFirstPin": {
+    "description": "Create first PIN hint"
+  },
+  "createPin": "Crea PIN",
+  "@createPin": {
+    "description": "Create PIN button"
+  },
+  "updatePin": "Aggiorna PIN",
+  "@updatePin": {
+    "description": "Update PIN button"
+  },
+  "updatePinNumber": "Aggiorna numero PIN",
+  "@updatePinNumber": {
+    "description": "Update pin number title"
+  },
+  "enterNewPinNumber": "Inserisci nuovo numero PIN",
+  "@enterNewPinNumber": {
+    "description": "Enter new PIN hint"
+  },
+  "updating": "Aggiornamento...",
+  "@updating": {
+    "description": "Updating button text"
+  },
+  "deletePin": "Elimina PIN",
+  "@deletePin": {
+    "description": "Delete PIN dialog title"
+  },
+  "deletePinConfirmation": "Sei sicuro di voler eliminare questo PIN? Questa azione non può essere annullata.",
+  "@deletePinConfirmation": {
+    "description": "Delete PIN confirmation message"
+  },
+  "close": "Chiudi",
+  "@close": {
+    "description": "Close button"
+  },
   "pleaseAcceptPrivacyPolicy": "Accetta l'informativa sulla privacy",
   "screenTime": "Tempo di schermo",
   "noScreenTimeLimits": "Nessun limite di tempo di schermo impostato ancora",

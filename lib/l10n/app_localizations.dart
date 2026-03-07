@@ -534,8 +534,7 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'About Us'**
   String get aboutUs;
-  String get delete;
-  String get pinSettings;
+
   /// Terms & Conditions screen title
   ///
   /// In en, this message translates to:
@@ -824,6 +823,78 @@ abstract class AppLocalizations {
   /// **'Save Pin Number'**
   String get savePinNumber;
 
+  /// App provider label
+  ///
+  /// In en, this message translates to:
+  /// **'Provider'**
+  String get provider;
+
+  /// PIN settings screen title
+  ///
+  /// In en, this message translates to:
+  /// **'PIN Settings'**
+  String get pinSettings;
+
+  /// Empty PIN list message
+  ///
+  /// In en, this message translates to:
+  /// **'No PINs Created'**
+  String get noPinsCreated;
+
+  /// Create first PIN hint
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first PIN to protect apps'**
+  String get createYourFirstPin;
+
+  /// Create PIN button
+  ///
+  /// In en, this message translates to:
+  /// **'Create PIN'**
+  String get createPin;
+
+  /// Update PIN button
+  ///
+  /// In en, this message translates to:
+  /// **'Update PIN'**
+  String get updatePin;
+
+  /// Update pin number title
+  ///
+  /// In en, this message translates to:
+  /// **'Update Pin Number'**
+  String get updatePinNumber;
+
+  /// Enter new PIN hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter new PIN number'**
+  String get enterNewPinNumber;
+
+  /// Updating button text
+  ///
+  /// In en, this message translates to:
+  /// **'Updating...'**
+  String get updating;
+
+  /// Delete PIN dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Delete PIN'**
+  String get deletePin;
+
+  /// Delete PIN confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this PIN? This action cannot be undone.'**
+  String get deletePinConfirmation;
+
+  /// Close button
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
   /// Privacy policy acceptance error
   ///
   /// In en, this message translates to:
@@ -991,6 +1062,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error saving settings. Please try again.'**
   String get errorSavingSettings;
+
+  /// Delete button text
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Delete account dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccount;
+
+  /// Delete account warning message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.'**
+  String get deleteAccountWarning;
+
+  /// Password field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get enterPassword;
+
+  /// Password required error message
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

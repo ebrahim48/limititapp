@@ -76,6 +76,7 @@ class ApiClient extends GetxService {
       debugPrint('====> API Call: $uri');
       debugPrint('====> Header: $mainHeaders');
       debugPrint('====> API Body: $body');
+      debugPrint('====> Bearer Token: ${bearerToken.isEmpty ? "NOT SET" : "${bearerToken.substring(0, 20)}..."}');
 
       http.Response response = await _postWithRetry(
         Uri.parse(ApiConstants.baseUrl + uri),

@@ -492,6 +492,54 @@
   "@savePinNumber": {
     "description": "Save pin number button"
   },
+  "provider": "Proveedor",
+  "@provider": {
+    "description": "App provider label"
+  },
+  "pinSettings": "Configuración de PIN",
+  "@pinSettings": {
+    "description": "PIN settings screen title"
+  },
+  "noPinsCreated": "No hay PINs creados",
+  "@noPinsCreated": {
+    "description": "Empty PIN list message"
+  },
+  "createYourFirstPin": "Crea tu primer PIN para proteger aplicaciones",
+  "@createYourFirstPin": {
+    "description": "Create first PIN hint"
+  },
+  "createPin": "Crear PIN",
+  "@createPin": {
+    "description": "Create PIN button"
+  },
+  "updatePin": "Actualizar PIN",
+  "@updatePin": {
+    "description": "Update PIN button"
+  },
+  "updatePinNumber": "Actualizar Número de PIN",
+  "@updatePinNumber": {
+    "description": "Update pin number title"
+  },
+  "enterNewPinNumber": "Ingresa nuevo número de PIN",
+  "@enterNewPinNumber": {
+    "description": "Enter new PIN hint"
+  },
+  "updating": "Actualizando...",
+  "@updating": {
+    "description": "Updating button text"
+  },
+  "deletePin": "Eliminar PIN",
+  "@deletePin": {
+    "description": "Delete PIN dialog title"
+  },
+  "deletePinConfirmation": "¿Estás seguro de que quieres eliminar este PIN? Esta acción no se puede deshacer.",
+  "@deletePinConfirmation": {
+    "description": "Delete PIN confirmation message"
+  },
+  "close": "Cerrar",
+  "@close": {
+    "description": "Close button"
+  },
   "pleaseAcceptPrivacyPolicy": "Por favor acepta la Política de Privacidad",
   "@pleaseAcceptPrivacyPolicy": {
     "description": "Privacy policy acceptance error"
