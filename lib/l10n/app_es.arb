@@ -664,5 +664,17 @@
   "errorSavingSettings": "Error al guardar la configuración. Por favor intenta de nuevo.",
   "@errorSavingSettings": {
     "description": "Error message when saving settings fails"
+  },
+  "app": "aplicación",
+  "@app": {
+    "description": "Label for app count (singular)"
+  },
+  "apps": "aplicaciones",
+  "@apps": {
+    "description": "Label for apps count (plural)"
+  },
+  "failedToLoadPlans": "Error al cargar los planes",
+  "@failedToLoadPlans": {
+    "description": "Error message when plans fail to load"
   }
 }

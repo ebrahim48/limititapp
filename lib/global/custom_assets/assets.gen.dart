@@ -45,6 +45,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/limit.svg
   SvgGenImage get limit => const SvgGenImage('assets/icons/limit.svg');
 
+  /// File path: assets/icons/logo.svg
+  SvgGenImage get logo => const SvgGenImage('assets/icons/logo.svg');
+
   /// File path: assets/icons/more_vert.svg
   SvgGenImage get moreVert => const SvgGenImage('assets/icons/more_vert.svg');
 
@@ -105,6 +108,7 @@ class $AssetsIconsGen {
     facebook,
     instagram,
     limit,
+    logo,
     moreVert,
     nameProfile,
     netflix,
@@ -141,6 +145,9 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/limit.png
   AssetGenImage get limit => const AssetGenImage('assets/images/limit.png');
+
+  /// File path: assets/images/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
 
   /// File path: assets/images/onboarding.png
   AssetGenImage get onboarding =>
@@ -180,6 +187,7 @@ class $AssetsImagesGen {
     camera,
     instagram,
     limit,
+    logo,
     onboarding,
     policy,
     privacy,

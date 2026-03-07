@@ -37,6 +37,8 @@ class ApiConstants{
   static const String notificationSingleDeleteEndPoint = "/notification/{{notificationId}}";
   static const String notificationAllClearEndPoint = "/notification/clear";
   static const String pinLockCreateEndPoint = "/pins";
+  static const String getPlansEndPoint = "/plans";
+  static const String subscribeEndPoint = "/subscriptions/subscribe";
 
   static String pinUpdateEndPoint(String pinId) => "/pins/$pinId";
   static String pinDeleteEndPoint(String pinId) => "/pins/$pinId";
