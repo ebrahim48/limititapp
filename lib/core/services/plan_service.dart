@@ -4,30 +4,27 @@ import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
 
 class PlanService {
-  /// Fetch all plans with optional query parameters
-  /// [type] - Filter by plan type (e.g., 'monthly', 'yearly')
-  /// [isActive] - Filter by active status (true/false)
-  static Future<List<PlanModel>> getAllPlans({String? type, bool? isActive}) async {
+  /// Fetch all plans
+  static Future<List<PlanModel>> getAllPlans() async {
     try {
-      final endpoint = ApiConstants.getPlansWithQueryEndPoint(type: type, isActive: isActive);
-      debugPrint('====> Fetching plans from API: $endpoint');
-      
-      final response = await ApiClient.getData(endpoint);
-      
+      debugPrint('====> Fetching plans from API: ${ApiConstants.getPlansEndPoint}');
+
+      final response = await ApiClient.getData(ApiConstants.getPlansEndPoint);
+
       if (response.statusCode == 200 && response.body != null) {
         final data = response.body;
-        
+
         if (data is Map<String, dynamic>) {
           final status = data['status'];
           final statusCode = data['statusCode'];
-          
+
           if (status == 'success' && statusCode == 200) {
             final plansData = data['data'] as List;
-            
+
             final plans = plansData
                 .map((planJson) => PlanModel.fromJson(planJson))
                 .toList();
-            
+
             debugPrint('====> Successfully fetched ${plans.length} plans');
             return plans;
           } else {

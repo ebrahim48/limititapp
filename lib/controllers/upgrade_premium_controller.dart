@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/core/models/plan_model.dart';
-import 'package:limit_it_app/core/services/plan_service.dart';
+import 'package:limit_it_app/core/services/api_client.dart';
+import 'package:limit_it_app/core/services/api_constants.dart';
 
 class UpgradePremiumController extends GetxController {
   final selectedPlan = ''.obs;
@@ -19,26 +21,68 @@ class UpgradePremiumController extends GetxController {
     fetchPlans();
   }
 
+  /// Build endpoint with query parameters
+  String getPlansWithQueryEndPoint({String? type, bool? isActive}) {
+    final queryParams = <String, String>{};
+    if (type != null && type.isNotEmpty) {
+      queryParams['type'] = type;
+    }
+    if (isActive != null) {
+      queryParams['isActive'] = isActive.toString();
+    }
+    
+    if (queryParams.isEmpty) {
+      return ApiConstants.getPlansEndPoint;
+    }
+    
+    final queryString = queryParams.entries.map((e) => '${e.key}=${e.value}').join('&');
+    return '${ApiConstants.getPlansEndPoint}?$queryString';
+  }
+
   Future<void> fetchPlans() async {
     try {
       isLoading.value = true;
       isError.value = false;
       
-      // Pass query parameters to filter plans
-      final fetchedPlans = await PlanService.getAllPlans(
+      // Build endpoint with query parameters
+      final endpoint = getPlansWithQueryEndPoint(
         type: planType.value.isEmpty ? null : planType.value,
         isActive: filterActive.value,
       );
       
-      if (fetchedPlans.isNotEmpty) {
-        plans.assignAll(fetchedPlans);
-        // Select first plan by default
-        if (plans.isNotEmpty) {
-          selectedPlan.value = plans.first.id;
+      debugPrint('====> Fetching plans: $endpoint');
+      
+      final response = await ApiClient.getData(endpoint);
+      
+      if (response.statusCode == 200 && response.body != null) {
+        final data = response.body;
+        
+        if (data is Map<String, dynamic>) {
+          final status = data['status'];
+          final statusCode = data['statusCode'];
+          
+          if (status == 'success' && statusCode == 200) {
+            final plansData = data['data'] as List;
+            final fetchedPlans = plansData.map((planJson) => PlanModel.fromJson(planJson)).toList();
+            
+            if (fetchedPlans.isNotEmpty) {
+              plans.assignAll(fetchedPlans);
+              selectedPlan.value = plans.first.id;
+            } else {
+              isError.value = true;
+              errorMessage.value = 'No plans available';
+            }
+          } else {
+            isError.value = true;
+            errorMessage.value = data['message'] ?? 'Failed to fetch plans';
+          }
+        } else {
+          isError.value = true;
+          errorMessage.value = 'Invalid response format';
         }
       } else {
         isError.value = true;
-        errorMessage.value = 'No plans available';
+        errorMessage.value = 'Failed to fetch plans: ${response.statusText}';
       }
     } catch (e) {
       isError.value = true;
