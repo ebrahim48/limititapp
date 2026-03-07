@@ -37,6 +37,24 @@ class ApiConstants{
   static const String notificationSingleDeleteEndPoint = "/notification/{{notificationId}}";
   static const String notificationAllClearEndPoint = "/notification/clear";
   static const String pinLockCreateEndPoint = "/pins";
+  static const String getPlansEndPoint = "/plans";
+
+  static String getPlansWithQueryEndPoint({String? type, bool? isActive}) {
+    final queryParams = <String, String>{};
+    if (type != null && type.isNotEmpty) {
+      queryParams['type'] = type;
+    }
+    if (isActive != null) {
+      queryParams['isActive'] = isActive.toString();
+    }
+    
+    if (queryParams.isEmpty) {
+      return getPlansEndPoint;
+    }
+    
+    final queryString = queryParams.entries.map((e) => '${e.key}=${e.value}').join('&');
+    return '$getPlansEndPoint?$queryString';
+  }
 
   static String pinUpdateEndPoint(String pinId) => "/pins/$pinId";
   static String pinDeleteEndPoint(String pinId) => "/pins/$pinId";

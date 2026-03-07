@@ -688,5 +688,17 @@
   "passwordRequired": "Password is required",
   "@passwordRequired": {
     "description": "Password required error message"
+  },
+  "app": "app",
+  "@app": {
+    "description": "Label for app count (singular)"
+  },
+  "apps": "apps",
+  "@apps": {
+    "description": "Label for apps count (plural)"
+  },
+  "failedToLoadPlans": "Failed to load plans",
+  "@failedToLoadPlans": {
+    "description": "Error message when plans fail to load"
   }
 }
