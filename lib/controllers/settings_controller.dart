@@ -104,7 +104,6 @@ class SettingsController extends GetxController {
         final data = response.body;
         if (data['status'] == 'success' && data['data'] != null) {
           termsContent.value = _stripHtmlTags(data['data']['content'] ?? '');
-          debugPrint('Terms & Conditions loaded successfully');
         } else {
           hasErrorTerms.value = true;
           debugPrint('Terms & Conditions: Invalid response format');

@@ -17,6 +17,7 @@ import 'package:limit_it_app/controllers/ads_controller.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shimmer/shimmer.dart';
 
 
 
@@ -213,6 +214,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                               padding: EdgeInsets.only(bottom: 12.h),
                               child: YourAppCard(
                                 app: AppDataHelper.convertToYourApp(app),
+                                showBlockButton: false, // Hide block button in Reports screen
                               ),
                             ))
                         .toList(),
@@ -285,9 +287,14 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 width: 74.w,
                 height: 74.h,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => SpinKitFadingCircle(
-                  color: AppColors.primaryGreen,
-                  size: 30.r,
+                placeholder: (context, url) => Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: 74.w,
+                    height: 74.h,
+                    color: Colors.white,
+                  ),
                 ),
                 errorWidget: (context, url, error) => Assets.images.banner.image(
                   width: 74.w,

@@ -13,9 +13,14 @@ import 'package:limit_it_app/core/presentations/screens/permissions/permissions_
 class YourAppCard extends StatefulWidget {
   final AppInfo? app;
   final AppUsageData? appData;
+  final bool showBlockButton; // New parameter to control block button visibility
 
-  const YourAppCard({super.key, this.app, this.appData})
-      : assert(app != null || appData != null, 'Either app or appData must be provided');
+  const YourAppCard({
+    super.key,
+    this.app,
+    this.appData,
+    this.showBlockButton = true, // Default to true for backward compatibility
+  }) : assert(app != null || appData != null, 'Either app or appData must be provided');
 
   @override
   State<YourAppCard> createState() => _YourAppCardState();
@@ -331,35 +336,36 @@ class _YourAppCardState extends State<YourAppCard> {
 
           SizedBox(width: 8.w),
 
-          // Block button
-          GestureDetector(
-            onTap: _toggleBlock,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              width: 36.w,
-              height: 36.h,
-              decoration: BoxDecoration(
-                color: _isBlocked ? const Color(0xFFFF5252) : const Color(0xFF214432),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: AnimatedSwitcher(
+          // Block button (only show if showBlockButton is true)
+          if (widget.showBlockButton)
+            GestureDetector(
+              onTap: _toggleBlock,
+              child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                transitionBuilder: (child, animation) {
-                  return ScaleTransition(
-                    scale: animation,
-                    child: child,
-                  );
-                },
-                child: Icon(
-                  _isBlocked ? Icons.lock_open : Icons.block,
-                  key: ValueKey(_isBlocked),
-                  color: Colors.white,
-                  size: 18.sp,
+                curve: Curves.easeInOut,
+                width: 36.w,
+                height: 36.h,
+                decoration: BoxDecoration(
+                  color: _isBlocked ? const Color(0xFFFF5252) : const Color(0xFF214432),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, animation) {
+                    return ScaleTransition(
+                      scale: animation,
+                      child: child,
+                    );
+                  },
+                  child: Icon(
+                    _isBlocked ? Icons.lock_open : Icons.block,
+                    key: ValueKey(_isBlocked),
+                    color: Colors.white,
+                    size: 18.sp,
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

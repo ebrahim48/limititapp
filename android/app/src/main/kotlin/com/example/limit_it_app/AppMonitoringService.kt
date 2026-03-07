@@ -160,7 +160,7 @@ class AppMonitoringService : AccessibilityService() {
         if (blockedApps.contains(packageName)) {
             Log.d(TAG, "Blocking $packageName - app is in instant block list")
             blockApp(packageName, "App Blocked",
-                "This app has been blocked. You can unblock it from the app list.")
+                "You've reached your screen time limit.\nHead back and manage your apps in LimitIt.")
             return
         }
 
@@ -172,6 +172,8 @@ class AppMonitoringService : AccessibilityService() {
         val today = getDayOfWeek()
         if (!limit.activeDays.contains(today)) {
             Log.d(TAG, "Today ($today) is not an active day for $packageName")
+            blockApp(packageName, "App Blocked",
+                "You've reached your screen time limit.\nHead back and manage your apps in LimitIt.")
             return
         }
 
@@ -179,8 +181,8 @@ class AppMonitoringService : AccessibilityService() {
         val opensToday = appOpenCountsToday.getOrDefault(packageName, 0)
         if (opensToday > limit.maxDailyOpens) {
             Log.d(TAG, "Blocking $packageName - exceeded open limit ($opensToday > ${limit.maxDailyOpens})")
-            blockApp(packageName, "Daily open limit reached",
-                "You've opened ${limit.appName} $opensToday times today. Limit: ${limit.maxDailyOpens}")
+            blockApp(packageName, "Daily Limit Reached",
+                "You've reached your screen time limit.\nHead back and manage your apps in LimitIt.")
             return
         }
     }
@@ -191,8 +193,8 @@ class AppMonitoringService : AccessibilityService() {
 
         if (durationMinutes >= limit.maxSessionDurationMinutes) {
             Log.d(TAG, "Blocking $packageName - exceeded session duration ($durationMinutes >= ${limit.maxSessionDurationMinutes})")
-            blockApp(packageName, "Session time limit reached",
-                "You've used ${limit.appName} for $durationMinutes minutes. Limit: ${limit.maxSessionDurationMinutes} minutes")
+            blockApp(packageName, "Time Limit Reached",
+                "You've reached your screen time limit.\nHead back and manage your apps in LimitIt.")
         }
     }
 
