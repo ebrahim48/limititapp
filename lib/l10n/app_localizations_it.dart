@@ -21,11 +21,6 @@ class AppLocalizationsIt extends AppLocalizations {
   String get settings => 'Impostazioni';
 
   @override
-  String get delete => 'Delete';
-  @override
-  String get pinSettings => 'PinSettings';
-
-  @override
   String get appUsage => 'Utilizzo app';
 
   @override
@@ -377,6 +372,42 @@ class AppLocalizationsIt extends AppLocalizations {
   String get savePinNumber => 'Salva numero PIN';
 
   @override
+  String get provider => 'Provider';
+
+  @override
+  String get pinSettings => 'Impostazioni PIN';
+
+  @override
+  String get noPinsCreated => 'Nessun PIN creato';
+
+  @override
+  String get createYourFirstPin => 'Crea il tuo primo PIN per proteggere le app';
+
+  @override
+  String get createPin => 'Crea PIN';
+
+  @override
+  String get updatePin => 'Aggiorna PIN';
+
+  @override
+  String get updatePinNumber => 'Aggiorna numero PIN';
+
+  @override
+  String get enterNewPinNumber => 'Inserisci nuovo numero PIN';
+
+  @override
+  String get updating => 'Aggiornamento...';
+
+  @override
+  String get deletePin => 'Elimina PIN';
+
+  @override
+  String get deletePinConfirmation => 'Sei sicuro di voler eliminare questo PIN? Questa azione non può essere annullata.';
+
+  @override
+  String get close => 'Chiudi';
+
+  @override
   String get pleaseAcceptPrivacyPolicy => 'Accetta l\'informativa sulla privacy';
 
   @override
@@ -461,4 +492,19 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get errorSavingSettings => 'Errore durante il salvataggio delle impostazioni. Riprova.';
+
+  @override
+  String get delete => 'Elimina';
+
+  @override
+  String get deleteAccount => 'Elimina account';
+
+  @override
+  String get deleteAccountWarning => 'Sei sicuro di voler eliminare il tuo account? Questa azione non può essere annullata e tutti i tuoi dati verranno rimossi permanentemente.';
+
+  @override
+  String get enterPassword => 'Inserisci la tua password';
+
+  @override
+  String get passwordRequired => 'La password è obbligatoria';
 }

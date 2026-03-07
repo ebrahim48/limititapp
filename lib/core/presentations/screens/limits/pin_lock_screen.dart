@@ -177,8 +177,27 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
     // Save settings before navigating
     await _savePinLockSettings();
 
-    if (mounted) {
-      context.pushNamed(AppRoutes.setPinNumberScreen);
+    // Get the first selected app's name to use as providerName
+    if (selectedApps.isNotEmpty && apps.isNotEmpty) {
+      // Extract app name from the first selected app key
+      // Format is "appName_index", so we need to extract the app name
+      final firstSelectedKey = selectedApps.first;
+      final providerName = firstSelectedKey.split('_').first;
+
+      debugPrint('====> Selected provider: $providerName');
+      debugPrint('====> Selected app key: $firstSelectedKey');
+
+      if (mounted) {
+        context.pushNamed(
+          AppRoutes.setPinNumberScreen,
+          extra: {"providerName": providerName},
+        );
+      }
+    } else {
+      ToastMessageHelper.showToastMessage(
+        'No app selected',
+        title: 'Warning',
+      );
     }
   }
 
@@ -338,6 +357,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
                       return Padding(
                         padding: EdgeInsets.only(bottom: 12.h),
                         child: CustomText(
+                          textAlign: TextAlign.start,
                           text: '$selectedCount ${selectedCount == 1 ? 'app' : 'apps'} selected',
                           fontsize: 14.sp,
                           fontWeight: FontWeight.w500,

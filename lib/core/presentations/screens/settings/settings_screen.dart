@@ -97,7 +97,9 @@ class SettingsScreen extends StatelessWidget {
                   _buildMenuItem(
                     context: context,
                     label: context.l10n.pinSettings,
-                    onTap: () {},
+                    onTap: () {
+                      context.pushNamed(AppRoutes.pinSettingsScreen);
+                    },
                   ),
                   SizedBox(height: 16.h),
 

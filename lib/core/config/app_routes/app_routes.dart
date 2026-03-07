@@ -31,8 +31,10 @@ import 'package:limit_it_app/core/presentations/screens/reports/reports_screen.d
 import 'package:limit_it_app/core/presentations/screens/settings/about_us_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/change_password.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/motivation_phrases.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/pin_settings_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/privacy_policy_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/save_motivation_phrases.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/set_new_pin_number_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/settings_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/subscription_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/terms_screen.dart';
@@ -73,6 +75,8 @@ class AppRoutes {
   static const String schedulesLimitsScreen = "/schedulesLimitsScreen";
   static const String pinLockLimitsScreen = "/pinLockLimitsScreen";
   static const String setPinNumberScreen = "/setPinNumberScreen";
+  static const String pinSettingsScreen = "/pinSettingsScreen";
+  static const String setNewPinNumberScreen = "/setNewPinNumberScreen";
   static const String detoxModeScreen = "/detoxModeScreen";
   static const String reportsScreen = "/reportsScreen";
   static const String settingsScreen = "/settingsScreen";
@@ -327,8 +331,46 @@ class AppRoutes {
         path: setPinNumberScreen,
         name: setPinNumberScreen,
         pageBuilder:
+            (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          final providerName = extra?['providerName'] as String? ?? '';
+          return _customTransitionPage(
+            SetPinNumberScreen(providerName: providerName),
+            state,
+          );
+        },
+      ),
+
+      ///<<<=============>>> Pin Settings Screen  <<<===============>>>
+
+      GoRoute(
+        path: pinSettingsScreen,
+        name: pinSettingsScreen,
+        pageBuilder:
             (context, state) =>
-                _customTransitionPage(SetPinNumberScreen(), state),
+                _customTransitionPage(PinSettingsScreen(), state),
+      ),
+
+      ///<<<=============>>> Set New Pin Number Screen  <<<===============>>>
+
+      GoRoute(
+        path: setNewPinNumberScreen,
+        name: setNewPinNumberScreen,
+        pageBuilder:
+            (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          final pinId = extra?['pinId'] as String? ?? '';
+          final providerName = extra?['providerName'] as String? ?? '';
+          final mode = extra?['mode'] as String? ?? 'update';
+          return _customTransitionPage(
+            SetNewPinNumberScreen(
+              pinId: pinId,
+              providerName: providerName,
+              mode: mode,
+            ),
+            state,
+          );
+        },
       ),
 
       ///<<<=============>>> Detox Mode Screen  <<<===============>>>

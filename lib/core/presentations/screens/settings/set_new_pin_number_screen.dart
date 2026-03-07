@@ -8,20 +8,23 @@ import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
 
-
-class SetPinNumberScreen extends StatefulWidget {
+class SetNewPinNumberScreen extends StatefulWidget {
+  final String pinId;
   final String providerName;
+  final String mode; // 'create' or 'update'
   
-  const SetPinNumberScreen({
+  const SetNewPinNumberScreen({
     super.key,
+    required this.pinId,
     required this.providerName,
+    this.mode = 'update',
   });
 
   @override
-  State<SetPinNumberScreen> createState() => _SetPinNumberScreenState();
+  State<SetNewPinNumberScreen> createState() => _SetNewPinNumberScreenState();
 }
 
-class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
+class _SetNewPinNumberScreenState extends State<SetNewPinNumberScreen> {
   late final PinLockController controller;
 
   @override
@@ -32,6 +35,8 @@ class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isUpdateMode = widget.mode == 'update';
+    
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
@@ -48,7 +53,9 @@ class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: context.l10n.setPinNumber,
+              text: isUpdateMode 
+                  ? context.l10n.updatePinNumber 
+                  : context.l10n.setPinNumber,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -64,7 +71,7 @@ class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
             SizedBox(height: 20.h),
 
             CustomText(
-              text: 'Provider: ${widget.providerName}',
+              text: '${context.l10n.provider}: ${widget.providerName}',
               fontsize: 16.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.primaryColor,
@@ -74,7 +81,7 @@ class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
             CustomTextField(
               hintextColor: AppColors.textColor5D5D5D,
               controller: pinNumberController,
-              hintText: context.l10n.enterPinNumber,
+              hintText: context.l10n.enterNewPinNumber,
               isPassword: true,
               keyboardType: TextInputType.number,
               maxLength: 4,
@@ -82,25 +89,22 @@ class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
             ),
             SizedBox(height: 24.h),
 
-            Obx(() => CustomButton(
-              title: controller.isLoading.value
-                  ? context.l10n.saving
-                  : context.l10n.savePinNumber,
-              onpress: controller.isLoading.value
-                  ? () {}
-                  : () => _handleSave(),
-              loading: controller.isLoading.value,
-            )),
-
-            // Obx(() => CustomButton(
-            //   title: controller.isLoading.value
-            //       ? context.l10n.saving
-            //       : context.l10n.savePinNumber,
-            //   onpress: controller.isLoading.value
-            //       ? null
-            //       : () => _handleSave(),
-            //   isLoading: controller.isLoading.value,
-            // )),
+            Obx(() {
+              final isUpdating = controller.isUpdating.value;
+              return CustomButton(
+                title: isUpdating
+                    ? context.l10n.updating
+                    : (isUpdateMode
+                        ? context.l10n.updatePinNumber
+                        : context.l10n.savePinNumber),
+                onpress: () {
+                  if (!isUpdating) {
+                    _handleSave();
+                  }
+                },
+                loading: isUpdating,
+              );
+            }),
             SizedBox(height: 60.h),
           ],
         ),
@@ -132,12 +136,22 @@ class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
       return;
     }
 
-    // Call controller to create PIN lock
-    controller.createPinLock(
-      providerName: widget.providerName,
-      pinCode: pinCode,
-      context: context,
-    );
+    if (widget.mode == 'update') {
+      // Call controller to update PIN lock
+      controller.updatePinLock(
+        pinId: widget.pinId,
+        providerName: widget.providerName,
+        pinCode: pinCode,
+        context: context,
+      );
+    } else {
+      // Create new PIN (shouldn't happen from PinSettingsScreen, but for completeness)
+      controller.createPinLock(
+        providerName: widget.providerName,
+        pinCode: pinCode,
+        context: context,
+      );
+    }
   }
 
   @override

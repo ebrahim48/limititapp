@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/controllers/notifications_controller.dart';
+import 'package:limit_it_app/controllers/pin_lock_controller.dart';
 import 'package:limit_it_app/controllers/profile_controller.dart';
 import 'package:limit_it_app/controllers/schedules_limits_controller.dart';
 import 'package:limit_it_app/controllers/upgrade_premium_controller.dart';
@@ -31,6 +32,7 @@ class DependencyInjection implements Bindings {
     Get.lazyPut<LocaleController>(() => LocaleController(), fenix: true);
     Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
     Get.lazyPut<NotificationsController>(() => NotificationsController(), fenix: true);
+    Get.lazyPut<PinLockController>(() => PinLockController(), fenix: true);
     Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
     Get.lazyPut<SchedulesLimitsController>(() => SchedulesLimitsController(), fenix: true);
     Get.lazyPut<UpgradePremiumController>(() => UpgradePremiumController(), fenix: true);
