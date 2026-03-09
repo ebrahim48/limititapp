@@ -700,5 +700,13 @@
   "failedToLoadPlans": "Failed to load plans",
   "@failedToLoadPlans": {
     "description": "Error message when plans fail to load"
+  },
+  "monitoringStartedSuccess": "App monitoring started successfully!",
+  "@monitoringStartedSuccess": {
+    "description": "Success message when monitoring starts"
+  },
+  "failedToStartMonitoring": "Failed to start monitoring. Please try again.",
+  "@failedToStartMonitoring": {
+    "description": "Error message when monitoring fails to start"
   }
 }

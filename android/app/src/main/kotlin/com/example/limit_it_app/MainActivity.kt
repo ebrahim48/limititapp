@@ -92,11 +92,13 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun hasOverlayPermission(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Settings.canDrawOverlays(this)
         } else {
             true
         }
+        android.util.Log.d("PermissionCheck", "Overlay permission: $hasPermission")
+        return hasPermission
     }
 
     private fun requestOverlayPermission() {
@@ -119,15 +121,17 @@ class MainActivity : FlutterActivity() {
             0
         }
 
+        var isEnabled = false
         if (accessibilityEnabled == 1) {
             val services = Settings.Secure.getString(
                 contentResolver,
                 Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
             )
-            return services?.contains(packageName) == true
+            isEnabled = services?.contains(packageName) == true
         }
-
-        return false
+        
+        android.util.Log.d("PermissionCheck", "Accessibility permission: $isEnabled")
+        return isEnabled
     }
 
     private fun requestAccessibilityPermission() {

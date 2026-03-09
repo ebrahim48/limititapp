@@ -184,9 +184,9 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed:
-                      allPermissionsGranted && !_isStartingMonitoring
-                          ? _startMonitoringAndFinish
-                          : null,
+                  allPermissionsGranted && !_isStartingMonitoring
+                      ? _startMonitoringAndFinish
+                      : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF214432),
                     disabledBackgroundColor: Colors.grey.shade300,
@@ -195,20 +195,20 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
                     ),
                   ),
                   child:
-                      _isStartingMonitoring
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : CustomText(
-                            text:
-                                allPermissionsGranted
-                                    ? context.l10n.startMonitoring
-                                    : context.l10n.grantAllPermissionsFirst,
-                            fontsize: 16,
-                            fontWeight: FontWeight.w500,
-                            color:
-                                allPermissionsGranted
-                                    ? Colors.white
-                                    : Colors.grey.shade600,
-                          ),
+                  _isStartingMonitoring
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : CustomText(
+                    text:
+                    allPermissionsGranted
+                        ? context.l10n.startMonitoring
+                        : context.l10n.grantAllPermissionsFirst,
+                    fontsize: 16,
+                    fontWeight: FontWeight.w500,
+                    color:
+                    allPermissionsGranted
+                        ? Colors.white
+                        : Colors.grey.shade600,
+                  ),
                 ),
               ),
               SizedBox(height: 16.h),
