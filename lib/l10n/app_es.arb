@@ -676,5 +676,13 @@
   "failedToLoadPlans": "Error al cargar los planes",
   "@failedToLoadPlans": {
     "description": "Error message when plans fail to load"
+  },
+  "monitoringStartedSuccess": "¡El monitoreo de aplicaciones comenzó exitosamente!",
+  "@monitoringStartedSuccess": {
+    "description": "Success message when monitoring starts"
+  },
+  "failedToStartMonitoring": "Error al iniciar el monitoreo. Por favor intenta de nuevo.",
+  "@failedToStartMonitoring": {
+    "description": "Error message when monitoring fails to start"
   }
 }

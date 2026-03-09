@@ -209,5 +209,7 @@
   "passwordRequired": "La password è obbligatoria",
   "app": "app",
   "apps": "app",
-  "failedToLoadPlans": "Impossibile caricare i piani"
+  "failedToLoadPlans": "Impossibile caricare i piani",
+  "monitoringStartedSuccess": "Monitoraggio app avviato con successo!",
+  "failedToStartMonitoring": "Impossibile avviare il monitoraggio. Riprova."
 }
