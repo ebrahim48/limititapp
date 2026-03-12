@@ -279,6 +279,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accessibilityServiceDesc => 'Monitors which apps you open to enforce limits';
 
   @override
+  String get notificationPermission => 'Notification Permission';
+
+  @override
+  String get notificationPermissionDesc => 'Allows LimitIt to send notifications about app limits';
+
+  @override
   String get startMonitoring => 'Start Monitoring';
 
   @override

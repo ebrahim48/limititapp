@@ -93,7 +93,11 @@ class AppUsageService {
       }
 
       // Get installed apps info for filtering system apps
-      List<installed.AppInfo> installedApps = await InstalledApps.getInstalledApps(true, true);
+      List<installed.AppInfo> installedApps = await InstalledApps.getInstalledApps(
+        excludeSystemApps: false,
+        excludeNonLaunchableApps: false,
+        withIcon: true,
+      );
 
       // Create a set of launchable app package names
       Set<String> launchablePackages = installedApps.map((app) => app.packageName).toSet();
@@ -195,7 +199,11 @@ class AppUsageService {
       }
 
       // Get all installed apps (excluding system apps)
-      List<installed.AppInfo> installedApps = await InstalledApps.getInstalledApps(true, true);
+      List<installed.AppInfo> installedApps = await InstalledApps.getInstalledApps(
+        excludeSystemApps: false,
+        excludeNonLaunchableApps: false,
+        withIcon: true,
+      );
 
       // Get today's usage data to merge
       Map<String, UsageInfo> usageMap = {};

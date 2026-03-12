@@ -18,6 +18,7 @@ class AuthController extends GetxController {
   bool isCheckboxError = false;
   RxBool isObscure = true.obs;
   RxBool isObscureConfirmPassword = true.obs;
+  RxString loginErrorMessage = ''.obs;
 
   toggleIsObscure() {
     isObscure.value = !isObscure.value;
@@ -157,6 +158,7 @@ class AuthController extends GetxController {
       String email, String password,
       {required BuildContext context}) async {
     loginLoading.value = true;
+    loginErrorMessage.value = '';
 
     var headers = {'Content-Type': 'application/json'};
     var body = {
@@ -176,9 +178,7 @@ class AuthController extends GetxController {
       // Handle timeout or connection errors
       if (response.statusCode == 1) {
         loginLoading.value = false;
-        ToastMessageHelper.showToastMessage(
-          response.statusText ?? "Connection error. Please check your internet and try again.",
-        );
+        loginErrorMessage.value = "Connection error. Please check your internet and try again.";
         return;
       }
 
@@ -205,6 +205,9 @@ class AuthController extends GetxController {
         var role = data['role'].toString().toLowerCase();
         debugPrint("========================================= role : $role");
 
+        loginLoading.value = false;
+        loginErrorMessage.value = '';
+
         if (role == "user" || role == "usr") {
           await PrefsHelper.setBool(AppConstants.isLogged, true);
           if (context.mounted) {
@@ -214,31 +217,25 @@ class AuthController extends GetxController {
           final message = response.body["message"];
 
           if (message == "Email not verified. Please verify your email.") {
-            ToastMessageHelper.showToastMessage(
-              "We've sent an OTP to your email. Please verify your email.",
-            );
+            loginErrorMessage.value = "We've sent an OTP to your email. Please verify your email.";
           } else if (message == "⛔ Wrong password! ⛔") {
-            ToastMessageHelper.showToastMessage(message);
+            loginErrorMessage.value = message;
           } else {
             await PrefsHelper.setBool(AppConstants.isLogged, true);
             if (context.mounted) {
               context.go(AppRoutes.limitPrivacyProtectionScreen);
             }
-            ToastMessageHelper.showToastMessage(
-              message ?? "You are logged in",
-              title: 'Success');
           }
         }
       } else {
         final errorMessage = response.body?["message"] ?? "Login failed. Please try again.";
-        ToastMessageHelper.showToastMessage(errorMessage);
+        loginLoading.value = false;
+        loginErrorMessage.value = errorMessage;
       }
     } catch (e) {
       debugPrint("=====> Login error: $e");
       loginLoading.value = false;
-      ToastMessageHelper.showToastMessage(
-        "Network error. Please check your connection and try again.",
-      );
+      loginErrorMessage.value = "Network error. Please check your connection and try again.";
     }
   }
 

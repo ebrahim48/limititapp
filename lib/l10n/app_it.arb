@@ -92,6 +92,8 @@
   "overlayPermissionDesc": "Consente a LimitIt di visualizzare la schermata di blocco sopra altre app",
   "accessibilityService": "Servizio di accessibilità",
   "accessibilityServiceDesc": "Monitora quali app apri per applicare i limiti",
+  "notificationPermission": "Permesso Notifiche",
+  "notificationPermissionDesc": "Consente a LimitIt di inviare notifiche sui limiti delle app",
   "startMonitoring": "Avvia monitoraggio",
   "grantAllPermissionsFirst": "Concedi prima tutti i permessi",
   "grant": "Concedi",

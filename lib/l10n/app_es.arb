@@ -368,6 +368,14 @@
   "@accessibilityServiceDesc": {
     "description": "Accessibility service description"
   },
+  "notificationPermission": "Permiso de Notificación",
+  "@notificationPermission": {
+    "description": "Notification permission title"
+  },
+  "notificationPermissionDesc": "Permite que LimitIt envíe notificaciones sobre límites de aplicaciones",
+  "@notificationPermissionDesc": {
+    "description": "Notification permission description"
+  },
   "startMonitoring": "Comenzar Monitoreo",
   "@startMonitoring": {
     "description": "Start monitoring button"

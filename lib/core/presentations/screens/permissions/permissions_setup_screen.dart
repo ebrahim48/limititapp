@@ -9,6 +9,7 @@ import 'package:limit_it_app/core/presentations/screens/Home/home_screen.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_blocker_service.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
+import 'package:limit_it_app/core/services/notification_permission_service.dart';
 
 class PermissionsSetupScreen extends StatefulWidget {
   const PermissionsSetupScreen({super.key});
@@ -21,6 +22,7 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
     with WidgetsBindingObserver {
   bool _hasOverlayPermission = false;
   bool _hasAccessibilityPermission = false;
+  bool _hasNotificationPermission = true;
   bool _isChecking = true;
   bool _isStartingMonitoring = false;
 
@@ -40,7 +42,7 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      // Re-check permissions when user returns to app
+      // Re-check permissions when user returns from settings
       _checkPermissions();
     }
   }
@@ -51,9 +53,14 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
     final appBlockerService = Get.find<AppBlockerService>();
     final permissions = await appBlockerService.checkAllPermissions();
 
+    // Check notification permission for Android 13+
+    final notificationPermissionService = NotificationPermissionService.instance;
+    final hasNotificationPermission = await notificationPermissionService.hasNotificationPermission();
+
     setState(() {
       _hasOverlayPermission = permissions['overlay'] ?? false;
       _hasAccessibilityPermission = permissions['accessibility'] ?? false;
+      _hasNotificationPermission = hasNotificationPermission;
       _isChecking = false;
     });
   }
@@ -70,26 +77,18 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
     // Permission check will happen automatically when user returns
   }
 
+  Future<void> _requestNotificationPermission() async {
+    final notificationPermissionService = NotificationPermissionService.instance;
+    final granted = await notificationPermissionService.requestNotificationPermission();
+    if (granted) {
+      setState(() {
+        _hasNotificationPermission = true;
+      });
+    }
+  }
+
   Future<void> _startMonitoringAndFinish() async {
     setState(() => _isStartingMonitoring = true);
-
-    // Check if we have saved app limits
-    final appLimitStorageService = Get.find<AppLimitStorageService>();
-    final appLimits = await appLimitStorageService.getAppLimits();
-
-    if (appLimits.isEmpty) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'No app limits configured. Please set up app limits first.',
-          ),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      setState(() => _isStartingMonitoring = false);
-      return;
-    }
 
     // Start monitoring service
     final appBlockerService = Get.find<AppBlockerService>();
@@ -105,8 +104,20 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
         ),
       );
 
-      // Navigate to timer settings screen
-      context.pushNamed(AppRoutes.timerSettingsScreen);
+      // Check if we have saved app limits to determine if user completed onboarding
+      final appLimitStorageService = Get.find<AppLimitStorageService>();
+      final appLimits = await appLimitStorageService.getAppLimits();
+
+      if (appLimits.isEmpty) {
+        // No app limits configured, user is in onboarding flow
+        // Navigate to timer settings screen
+        if (!mounted) return;
+        context.pushNamed(AppRoutes.timerSettingsScreen);
+      } else {
+        // User already completed onboarding, just go back
+        if (!mounted) return;
+        Navigator.of(context).pop();
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -121,7 +132,7 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
   @override
   Widget build(BuildContext context) {
     final bool allPermissionsGranted =
-        _hasOverlayPermission && _hasAccessibilityPermission;
+        _hasOverlayPermission && _hasAccessibilityPermission && _hasNotificationPermission;
 
     return Scaffold(
       appBar: AppBar(
@@ -174,6 +185,14 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
                   description: context.l10n.accessibilityServiceDesc,
                   isGranted: _hasAccessibilityPermission,
                   onRequest: _requestAccessibilityPermission,
+                ),
+                SizedBox(height: 16.h),
+                _buildPermissionCard(
+                  icon: Icons.notifications_active,
+                  title: context.l10n.notificationPermission,
+                  description: context.l10n.notificationPermissionDesc,
+                  isGranted: _hasNotificationPermission,
+                  onRequest: _requestNotificationPermission,
                 ),
               ],
 
