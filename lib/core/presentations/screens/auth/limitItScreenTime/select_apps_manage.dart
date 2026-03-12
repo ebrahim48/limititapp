@@ -18,7 +18,8 @@ class SelectAppsManageScreen extends StatefulWidget {
   State<SelectAppsManageScreen> createState() => _SelectAppsManageScreenState();
 }
 
-class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
+class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
+    with WidgetsBindingObserver {
   // Real app usage data
   bool _isLoading = true;
   bool _hasPermission = false;
@@ -28,7 +29,22 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _loadAppUsageData();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Re-load apps when user returns from settings
+      _loadAppUsageData();
+    }
   }
 
   /// Load app usage data

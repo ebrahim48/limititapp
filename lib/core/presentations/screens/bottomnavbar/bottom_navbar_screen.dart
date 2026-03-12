@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:limit_it_app/core/presentations/screens/limits/limits_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/reports/reports_screen.dart';
+import 'package:limit_it_app/core/services/app_blocker_service.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../home/home_screen.dart';
@@ -21,6 +23,31 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   ];
 
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _autoStartMonitoringIfPermissionsGranted();
+  }
+
+  /// Automatically start monitoring service if permissions are already granted
+  Future<void> _autoStartMonitoringIfPermissionsGranted() async {
+    final appBlockerService = Get.find<AppBlockerService>();
+
+    // Check if monitoring is already active
+    final isMonitoring = await appBlockerService.isMonitoringActive();
+    if (isMonitoring) {
+      // Monitoring already running, nothing to do
+      return;
+    }
+
+    // Check if all permissions are granted
+    final hasAllPermissions = await appBlockerService.hasAllPermissions();
+    if (hasAllPermissions) {
+      // Permissions are granted but service isn't running, start it automatically
+      await appBlockerService.startMonitoring();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

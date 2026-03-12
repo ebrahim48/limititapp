@@ -97,17 +97,22 @@ class MainActivity : FlutterActivity() {
         } else {
             true
         }
-        android.util.Log.d("PermissionCheck", "Overlay permission: $hasPermission")
+        android.util.Log.d("PermissionCheck", "Overlay permission status: $hasPermission (SDK: ${Build.VERSION.SDK_INT})")
         return hasPermission
     }
 
     private fun requestOverlayPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:$packageName")
-            )
-            startActivityForResult(intent, REQUEST_OVERLAY_PERMISSION)
+            if (!Settings.canDrawOverlays(this)) {
+                val intent = Intent(
+                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:$packageName")
+                )
+                startActivityForResult(intent, REQUEST_OVERLAY_PERMISSION)
+                android.util.Log.d("PermissionCheck", "Requesting overlay permission")
+            } else {
+                android.util.Log.d("PermissionCheck", "Overlay permission already granted")
+            }
         }
     }
 
@@ -127,15 +132,47 @@ class MainActivity : FlutterActivity() {
                 contentResolver,
                 Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
             )
-            isEnabled = services?.contains(packageName) == true
+            // Check if our service is in the enabled services list
+            // Services can be comma-separated or colon-separated depending on Android version
+            if (!services.isNullOrEmpty()) {
+                val fullServiceName = "$packageName/.AppMonitoringService"
+                android.util.Log.d("PermissionCheck", "Checking for service: $fullServiceName")
+                android.util.Log.d("PermissionCheck", "Enabled services string: $services")
+                
+                // Split by both comma and colon to handle different Android versions
+                val serviceList = services.split(",", ":")
+                isEnabled = serviceList.any { 
+                    it.trim() == fullServiceName || it.trim().contains(packageName) 
+                }
+                
+                android.util.Log.d("PermissionCheck", "Service list: $serviceList")
+                android.util.Log.d("PermissionCheck", "Is enabled: $isEnabled")
+            }
         }
-        
-        android.util.Log.d("PermissionCheck", "Accessibility permission: $isEnabled")
+
+        android.util.Log.d("PermissionCheck", "Final accessibility permission status: $isEnabled")
         return isEnabled
     }
 
     private fun requestAccessibilityPermission() {
         val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
         startActivityForResult(intent, REQUEST_ACCESSIBILITY_PERMISSION)
+        android.util.Log.d("PermissionCheck", "Requesting accessibility permission")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        android.util.Log.d("PermissionCheck", "onActivityResult: requestCode=$requestCode, resultCode=$resultCode")
+        
+        when (requestCode) {
+            REQUEST_OVERLAY_PERMISSION -> {
+                val hasPermission = hasOverlayPermission()
+                android.util.Log.d("PermissionCheck", "Overlay permission result: $hasPermission")
+            }
+            REQUEST_ACCESSIBILITY_PERMISSION -> {
+                val hasPermission = isAccessibilityServiceEnabled()
+                android.util.Log.d("PermissionCheck", "Accessibility permission result: $hasPermission")
+            }
+        }
     }
 }

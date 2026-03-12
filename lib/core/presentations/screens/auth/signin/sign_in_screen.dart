@@ -7,7 +7,6 @@ import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
-import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
@@ -126,16 +125,30 @@ class LoginInScreen extends StatelessWidget {
                         isPassword: true,
                       ),
 
+                      /// ====================================> Error Message Below Password Field ========================>
+                      Obx(() {
+                        if (authController.loginErrorMessage.value.isNotEmpty) {
+                          return Padding(
+                            padding: EdgeInsets.only(bottom: 4.h, top: 4.h),
+                            child: CustomText(
+                              text: authController.loginErrorMessage.value,
+                              color: Colors.red.shade700,
+                              fontsize: 11.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          );
+                        }
+                        return SizedBox.shrink();
+                      }),
+
                       SizedBox(height: 5.h),
 
                       /// ====================================> Forget password ========================>
 
-
-
                       GestureDetector(
                         onTap: (){
                           if(emailCtrl.text.isEmpty){
-                            ToastMessageHelper.showToastMessage("Please enter your email",title: 'Attention');
+                            authController.loginErrorMessage.value = "Please enter your email";
                           }else{
                             context.pushNamed(AppRoutes.forgetPasswordScreen, extra: emailCtrl.text);
                           }
@@ -148,17 +161,7 @@ class LoginInScreen extends StatelessWidget {
                         ),
                       ),
 
-
-
-
-
-
                       SizedBox(height: 32.h),
-
-
-
-
-
 
                       Obx(()=>
                       CustomButton(

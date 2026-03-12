@@ -637,6 +637,18 @@ abstract class AppLocalizations {
   /// **'Monitors which apps you open to enforce limits'**
   String get accessibilityServiceDesc;
 
+  /// Notification permission title
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Permission'**
+  String get notificationPermission;
+
+  /// Notification permission description
+  ///
+  /// In en, this message translates to:
+  /// **'Allows LimitIt to send notifications about app limits'**
+  String get notificationPermissionDesc;
+
   /// Start monitoring button
   ///
   /// In en, this message translates to:
