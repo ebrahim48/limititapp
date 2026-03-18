@@ -1,4 +1,4 @@
-package com.example.limit_it_app
+package com.limitit.digitalbalance 
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo

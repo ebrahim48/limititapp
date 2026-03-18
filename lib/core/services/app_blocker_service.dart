@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 /// Service to communicate with native Android app blocking functionality
 class AppBlockerService {
-  static const MethodChannel _channel = MethodChannel('com.example.limit_it_app/app_blocker');
+  static const MethodChannel _channel = MethodChannel('com.limitit.digitalbalance /app_blocker');
 
   // Singleton pattern
   static AppBlockerService? _instance;

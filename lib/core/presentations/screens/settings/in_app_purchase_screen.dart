@@ -18,9 +18,9 @@ class _InAppPurchaseSubscriptionScreenState extends State<InAppPurchaseSubscript
   String? _error;
 
   final Set<String> _productIds = {
-    'subscription_monthly',
-    'subscription_yearly',
-    'subscription_weekly',
+    'limitit_monthly',
+    'limitit_yearly',
+    'limitit_weekly',
   };
 
   @override

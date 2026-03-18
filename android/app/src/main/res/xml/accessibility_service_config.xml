@@ -7,4 +7,4 @@
     android:description="@string/accessibility_service_description"
     android:notificationTimeout="100"
     android:packageNames=""
-    android:settingsActivity="com.example.limit_it_app.MainActivity" />
+    android:settingsActivity="com.limitit.digitalbalance .MainActivity" />
