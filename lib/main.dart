@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
           builder: (context, child) {
             return Obx(() => MaterialApp.router(
               debugShowCheckedModeBanner: false,
-              title: 'LimitIt App',
+              title: 'LimitIt',
               theme: Themes().lightTheme,
               darkTheme: Themes().lightTheme,
               builder: DevicePreview.appBuilder,

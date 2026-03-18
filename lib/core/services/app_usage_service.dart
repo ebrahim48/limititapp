@@ -108,7 +108,7 @@ class AppUsageService {
         String packageName = info.packageName ?? '';
 
         // Exclude our own app (limit_it_app)
-        if (packageName == 'com.example.limit_it_app') {
+        if (packageName == 'com.limitit.digitalbalance ') {
           return false;
         }
 
@@ -249,7 +249,7 @@ class AppUsageService {
           String packageName = appInfo.packageName;
           
           // Skip our own app (limit_it_app)
-          if (packageName == 'com.example.limit_it_app') {
+          if (packageName == 'com.limitit.digitalbalance ') {
             continue;
           }
           

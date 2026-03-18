@@ -1,13 +1,13 @@
 class ApiConstants{
 
 
-  static const String baseUrl = "https://jakuan5000.syedbipul.me/api/v1";
-  static const String imageBaseUrl = "https://jakuan5000.syedbipul.me";
+  // static const String baseUrl = "https://jakuan5000.syedbipul.me/api/v1";
+  // static const String imageBaseUrl = "https://jakuan5000.syedbipul.me";
 
 
 
-  // static const String baseUrl = "https://api.limitit.eu/api/v1";
-  // static const String imageBaseUrl = "https://api.limitit.eu";
+  static const String baseUrl = "https://api.limitit.eu/api/v1";
+  static const String imageBaseUrl = "https://api.limitit.eu";
 
 
 

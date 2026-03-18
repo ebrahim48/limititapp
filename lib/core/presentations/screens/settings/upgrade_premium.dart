@@ -9,14 +9,53 @@ import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/controllers/upgrade_premium_controller.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Map your backend plan IDs → Google Play product IDs
-// Change these to match what you create in Google Play Console
+// Helper function to dynamically generate Google Play product ID from plan data
+// This creates product IDs based on plan name and type (monthly/yearly)
 // ─────────────────────────────────────────────────────────────────────────────
-const Map<String, String> _planIdToProductId = {
-  // 'backendPlanId' : 'google_play_product_id'
-  // Example — replace with your actual IDs:
-  // '69a92a2866f3941cccdb939a' : 'limitit_monthly',
-};
+String _generateProductId(PlanModel plan) {
+  // Clean the plan name (remove spaces, convert to lowercase)
+  final cleanName = plan.name
+      .toLowerCase()
+      .replaceAll(' ', '_')
+      .replaceAll('plan', '')
+      .trim()
+      .replaceAll(RegExp(r'_+'), '_')
+      .replaceAll(RegExp(r'^_|_$'), '');
+
+  // Determine billing period
+  String period;
+  if (plan.type == 'yearly' || plan.duration >= 365) {
+    period = 'yearly';
+  } else if (plan.type == 'monthly' || plan.duration >= 28) {
+    period = 'monthly';
+  } else if (plan.duration >= 7) {
+    period = 'weekly';
+  } else {
+    period = 'monthly'; // default
+  }
+
+  // Generate product ID: limitit_{name}_{period}
+  // Examples:
+  // - "Basic Plan" + monthly → "limitit_basic_monthly"
+  // - "Pro Plan" + monthly → "limitit_pro_monthly"
+  // - "Premium Plan" + yearly → "limitit_premium_yearly"
+
+  String productId = 'limitit';
+  if (cleanName.isNotEmpty) {
+    productId += '_$cleanName';
+  }
+  productId += '_$period';
+
+  debugPrint('====> Generated Product ID: $productId for plan: ${plan.name}');
+  return productId;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Note: Make sure to create these product IDs in Google Play Console:
+// - limitit_basic_monthly (Basic Plan - monthly)
+// - limitit_pro_monthly (Pro Plan - monthly)
+// - limitit_premium_yearly (Premium Plan - yearly)
+// ─────────────────────────────────────────────────────────────────────────────
 
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
@@ -45,6 +84,13 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
     super.initState();
     _controller = Get.find<UpgradePremiumController>();
     _initIAP();
+
+    // Listen to plans changes and reload IAP products when plans are loaded
+    ever(_controller.plans, (_) {
+      if (_controller.plans.isNotEmpty && _iapAvailable) {
+        _loadIAPProducts();
+      }
+    });
   }
 
   // ── IAP Initialization ───────────────────────────────────────────────────
@@ -77,11 +123,18 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
   }
 
   Future<void> _loadIAPProducts() async {
-    final productIds = _planIdToProductId.values.toSet();
+    // Generate product IDs dynamically from available plans
+    final productIds = <String>{};
+    for (var plan in _controller.plans) {
+      productIds.add(_generateProductId(plan));
+    }
+
     if (productIds.isEmpty) {
-      debugPrint('====> No product IDs mapped yet — skipping IAP query');
+      debugPrint('====> No plans available — skipping IAP query');
       return;
     }
+
+    debugPrint('====> Querying IAP products: $productIds');
 
     final response = await _iap.queryProductDetails(productIds);
 
@@ -113,11 +166,12 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
       return;
     }
 
-    final productId = _planIdToProductId[plan.id];
+    // Generate product ID dynamically from plan data
+    final productId = _generateProductId(plan);
 
-    if (productId == null || !_iapProducts.containsKey(productId)) {
-      // Product not mapped yet — fall back to mock
-      debugPrint('====> No IAP product mapped for planId: ${plan.id}');
+    if (!_iapProducts.containsKey(productId)) {
+      // Product not found in Play Store — fall back to mock payment
+      debugPrint('====> IAP product not found: $productId (falling back to mock)');
       await _callBackendSubscribe(
         plan: plan,
         paymentId: 'pay_mock_${DateTime.now().millisecondsSinceEpoch}',
@@ -134,6 +188,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
     );
 
     try {
+      // Note: For subscriptions, use buyNonConsumable (Google Play Billing handles it as subscription)
       await _iap.buyNonConsumable(purchaseParam: purchaseParam);
       // Result comes via _onPurchaseUpdate stream
     } catch (e) {

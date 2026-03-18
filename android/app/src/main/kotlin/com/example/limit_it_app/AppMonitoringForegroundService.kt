@@ -1,4 +1,4 @@
-package com.example.limit_it_app
+package com.limitit.digitalbalance 
 
 import android.app.*
 import android.content.Context

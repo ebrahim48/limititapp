@@ -1,4 +1,4 @@
-package com.example.limit_it_app
+package com.limitit.digitalbalance 
 
 import android.content.Intent
 import android.net.Uri
@@ -10,7 +10,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "com.example.limit_it_app/app_blocker"
+    private val CHANNEL = "com.limitit.digitalbalance /app_blocker"
     private val REQUEST_OVERLAY_PERMISSION = 1234
     private val REQUEST_ACCESSIBILITY_PERMISSION = 1235
 

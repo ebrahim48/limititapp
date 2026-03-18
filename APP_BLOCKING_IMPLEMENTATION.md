@@ -270,8 +270,8 @@ adb shell dumpsys activity services AppMonitoringForegroundService
 ### View SharedPreferences
 ```bash
 # Pull shared preferences file
-adb shell run-as com.example.limit_it_app cat \
-  /data/data/com.example.limit_it_app/shared_prefs/flutter.app_limits.xml
+adb shell run-as com.limitit.digitalbalance  cat \
+  /data/data/com.limitit.digitalbalance /shared_prefs/flutter.app_limits.xml
 ```
 
 ## Known Limitations

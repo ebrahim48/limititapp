@@ -156,24 +156,24 @@ adb logcat | grep -E "AppMonitoring|MonitoringFg"
 ### Check if accessibility service is running
 ```bash
 adb shell settings get secure enabled_accessibility_services
-# Should include: com.example.limit_it_app
+# Should include: com.limitit.digitalbalance 
 ```
 
 ### View SharedPreferences
 ```bash
-adb shell run-as com.example.limit_it_app cat \
-  /data/data/com.example.limit_it_app/shared_prefs/flutter.app_limits.xml
+adb shell run-as com.limitit.digitalbalance  cat \
+  /data/data/com.limitit.digitalbalance /shared_prefs/flutter.app_limits.xml
 ```
 
 ### Force stop and restart
 ```bash
-adb shell am force-stop com.example.limit_it_app
-adb shell am start -n com.example.limit_it_app/.MainActivity
+adb shell am force-stop com.limitit.digitalbalance 
+adb shell am start -n com.limitit.digitalbalance /.MainActivity
 ```
 
 ### Clear app data (reset everything)
 ```bash
-adb shell pm clear com.example.limit_it_app
+adb shell pm clear com.limitit.digitalbalance 
 ```
 
 ## Expected Behavior Summary
@@ -215,14 +215,14 @@ adb shell pm clear com.example.limit_it_app
 2. Use device normally for 1 hour
 3. Check battery stats:
    ```bash
-   adb shell dumpsys batterystats --charged com.example.limit_it_app
+   adb shell dumpsys batterystats --charged com.limitit.digitalbalance 
    ```
 
 **Expected**: <5% battery usage per hour
 
 ### Memory Usage
 ```bash
-adb shell dumpsys meminfo com.example.limit_it_app
+adb shell dumpsys meminfo com.limitit.digitalbalance 
 ```
 
 **Expected**: <50 MB
