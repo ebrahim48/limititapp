@@ -93,7 +93,7 @@ class TimerSuccessScreen extends StatelessWidget {
                     CustomButton(
                       title: context.l10n.backToHome,
                       onpress: () {
-                        context.pushNamed(AppRoutes.bottomNavBarScreen);
+                        context.goNamed(AppRoutes.bottomNavBarScreen);
                       },
                     ),
 

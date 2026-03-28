@@ -44,16 +44,18 @@ class _ReportsScreenState extends State<ReportsScreen> {
     try {
       // Get today's usage data
       final usageData = await AppUsageService.instance.getTodayAppUsage();
-      
+
       // Get ALL installed apps
       final allApps = await AppUsageService.instance.getAllInstalledApps();
-      
+
+      if (!mounted) return;
       setState(() {
         _appUsageData = usageData;
         _allAppsData = allApps;
         _isLoading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
       });

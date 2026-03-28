@@ -165,7 +165,7 @@ class _LimitPrivacyProtectionScreenState extends State<LimitPrivacyProtectionScr
                         ),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.only(top: 15.h),
+                            padding: EdgeInsets.only(top: 20.h),
                             child: RichText(
                               text: TextSpan(
                                 style: TextStyle(

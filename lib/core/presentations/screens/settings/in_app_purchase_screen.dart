@@ -1,415 +1,805 @@
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:limit_it_app/controllers/upgrade_premium_controller.dart';
+import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/models/plan_model.dart';
+import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
+import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/core/services/api_client.dart';
+import 'package:limit_it_app/core/services/api_constants.dart';
+
+// ─── Product ID generator ─────────────────────────────────────────────────────
+// Same logic as upgrade_premium.dart — must stay in sync with Play Console IDs
+// Examples: limitit_basic_monthly, limitit_pro_yearly
+String _generateProductId(PlanModel plan) {
+  if (plan.duration >= 365) return 'limitit_yearly';
+  if (plan.duration >= 28) return 'limitit_monthly';
+  return 'limitit_weekly';
+}
+
+// ─── Screen ───────────────────────────────────────────────────────────────────
 
 class InAppPurchaseSubscriptionScreen extends StatefulWidget {
   const InAppPurchaseSubscriptionScreen({super.key});
 
   @override
-  State<InAppPurchaseSubscriptionScreen> createState() => _InAppPurchaseSubscriptionScreenState();
+  State<InAppPurchaseSubscriptionScreen> createState() =>
+      _InAppPurchaseSubscriptionScreenState();
 }
 
-class _InAppPurchaseSubscriptionScreenState extends State<InAppPurchaseSubscriptionScreen> {
-  final InAppPurchase _iap = InAppPurchase.instance;
-  bool _available = false;
-  bool _loading = true;
-  List<ProductDetails> _products = [];
-  StreamSubscription<List<PurchaseDetails>>? _subscription;
-  String? _error;
+class _InAppPurchaseSubscriptionScreenState
+    extends State<InAppPurchaseSubscriptionScreen> {
+  // ── Controllers ────────────────────────────────────────────────────────────
+  late final UpgradePremiumController _planController;
 
-  final Set<String> _productIds = {
-    'limitit_monthly',
-    'limitit_yearly',
-    'limitit_weekly',
-  };
+  // ── IAP ────────────────────────────────────────────────────────────────────
+  final InAppPurchase _iap = InAppPurchase.instance;
+  StreamSubscription<List<PurchaseDetails>>? _purchaseSub;
+  bool _iapAvailable = false;
+  Map<String, ProductDetails> _iapProducts = {};
+
+  // ── Local state ────────────────────────────────────────────────────────────
+  PlanModel? _pendingPlan;
+  bool _isPurchasing = false;
+
+  // ── Lifecycle ──────────────────────────────────────────────────────────────
 
   @override
   void initState() {
     super.initState();
-    _initialize();
+    _planController = Get.find<UpgradePremiumController>();
+    _initIAP();
+
+    // When plans load from API, query the matching Play Store products
+    ever(_planController.plans, (_) {
+      if (_planController.plans.isNotEmpty && _iapAvailable) {
+        _queryIAPProducts();
+      }
+    });
   }
 
-  Future<void> _initialize() async {
-    // Check if in-app purchase is available
+  @override
+  void dispose() {
+    _purchaseSub?.cancel();
+    super.dispose();
+  }
+
+  // ── IAP Initialization ─────────────────────────────────────────────────────
+
+  Future<void> _initIAP() async {
     final available = await _iap.isAvailable();
+    if (!mounted) return;
+
+    setState(() => _iapAvailable = available);
 
     if (!available) {
-      setState(() {
-        _available = false;
-        _loading = false;
-        _error = 'In-app purchases not available';
-      });
+      debugPrint('====> [IAP] Store not available on this device');
       return;
     }
 
-    // Listen to purchase updates
-    _subscription = _iap.purchaseStream.listen(
+    // Listen to purchase updates from Google Play
+    _purchaseSub = _iap.purchaseStream.listen(
       _onPurchaseUpdate,
-      onDone: () => _subscription?.cancel(),
-      onError: (error) {
-        setState(() {
-          _error = error.toString();
-        });
+      onDone: () => _purchaseSub?.cancel(),
+      onError: (e) {
+        debugPrint('====> [IAP] Stream error: $e');
+        _showError('Purchase stream error: $e');
       },
     );
 
-    setState(() {
-      _available = available;
-    });
+    // Silently restore any existing purchases on launch
+    await _iap.restorePurchases();
 
-    // Load products
-    await _loadProducts();
-
-    // Restore past purchases
-    await _restorePurchases();
+    // If plans are already loaded, query Play Store products now
+    if (_planController.plans.isNotEmpty) {
+      await _queryIAPProducts();
+    }
   }
 
-  Future<void> _loadProducts() async {
+  Future<void> _queryIAPProducts() async {
+    final ids = <String>{};
+    for (final plan in _planController.plans) {
+      ids.add(_generateProductId(plan));
+    }
+    if (ids.isEmpty) return;
+
+    debugPrint('====> [IAP] Querying Play Store products: $ids');
+    final response = await _iap.queryProductDetails(ids);
+
+    if (!mounted) return;
+
+    if (response.error != null) {
+      debugPrint('====> [IAP] Query error: ${response.error!.message}');
+      return;
+    }
+
     setState(() {
-      _loading = true;
-      _error = null;
+      _iapProducts = {for (final p in response.productDetails) p.id: p};
+    });
+    debugPrint('====> [IAP] Products loaded: ${_iapProducts.keys.toList()}');
+  }
+
+  // ── Purchase Flow ──────────────────────────────────────────────────────────
+
+  Future<void> _subscribe(PlanModel plan) async {
+    if (_isPurchasing) return;
+
+    // If Play Store is not available (emulator / dev build), use mock payment
+    if (!_iapAvailable) {
+      debugPrint('====> [IAP] Store unavailable — using mock payment');
+      await _callBackend(
+        plan: plan,
+        paymentId: 'pay_mock_${DateTime.now().millisecondsSinceEpoch}',
+      );
+      return;
+    }
+
+    final productId = _generateProductId(plan);
+
+    // Product not found in Play Store — fall back to mock
+    if (!_iapProducts.containsKey(productId)) {
+      debugPrint('====> [IAP] Product "$productId" not found — using mock payment');
+      await _callBackend(
+        plan: plan,
+        paymentId: 'pay_mock_${DateTime.now().millisecondsSinceEpoch}',
+      );
+      return;
+    }
+
+    setState(() {
+      _pendingPlan = plan;
+      _isPurchasing = true;
     });
 
     try {
-      final ProductDetailsResponse response =
-      await _iap.queryProductDetails(_productIds);
-
-      if (response.error != null) {
-        setState(() {
-          _error = response.error!.message;
-          _loading = false;
-        });
-        return;
-      }
-
-      if (response.productDetails.isEmpty) {
-        setState(() {
-          _error = 'No products found. Check your product IDs.';
-          _loading = false;
-        });
-        return;
-      }
-
-      setState(() {
-        _products = response.productDetails;
-        _loading = false;
-      });
+      await _iap.buyNonConsumable(
+        purchaseParam: PurchaseParam(
+          productDetails: _iapProducts[productId]!,
+        ),
+      );
+      // Result comes back asynchronously via _onPurchaseUpdate
     } catch (e) {
       setState(() {
-        _error = e.toString();
-        _loading = false;
+        _pendingPlan = null;
+        _isPurchasing = false;
       });
+      debugPrint('====> [IAP] Buy error: $e');
+      _showError('Could not start purchase. Please try again.');
     }
+  }
+
+  void _onPurchaseUpdate(List<PurchaseDetails> updates) {
+    for (final purchase in updates) {
+      debugPrint(
+          '====> [IAP] Update: ${purchase.productID} — ${purchase.status}');
+
+      switch (purchase.status) {
+        case PurchaseStatus.pending:
+          // Loading spinner is already shown; nothing else needed
+          break;
+
+        case PurchaseStatus.purchased:
+        case PurchaseStatus.restored:
+          _handleSuccessfulPurchase(purchase);
+          break;
+
+        case PurchaseStatus.error:
+          setState(() {
+            _pendingPlan = null;
+            _isPurchasing = false;
+          });
+          _showError(
+              'Purchase failed: ${purchase.error?.message ?? 'Unknown error'}');
+          break;
+
+        case PurchaseStatus.canceled:
+          setState(() {
+            _pendingPlan = null;
+            _isPurchasing = false;
+          });
+          break;
+      }
+
+      // Always acknowledge the purchase to prevent re-delivery
+      if (purchase.pendingCompletePurchase) {
+        _iap.completePurchase(purchase);
+      }
+    }
+  }
+
+  Future<void> _handleSuccessfulPurchase(PurchaseDetails purchase) async {
+    final plan = _pendingPlan;
+    setState(() {
+      _pendingPlan = null;
+      _isPurchasing = false;
+    });
+
+    if (plan == null) {
+      debugPrint('====> [IAP] Purchase received but no pending plan stored');
+      return;
+    }
+
+    final paymentId = purchase.purchaseID ??
+        'iap_${purchase.productID}_${DateTime.now().millisecondsSinceEpoch}';
+
+    debugPrint(
+        '====> [IAP] Purchase successful — calling backend with paymentId: $paymentId');
+    await _callBackend(plan: plan, paymentId: paymentId);
+  }
+
+  // ── Backend Call ───────────────────────────────────────────────────────────
+
+  Future<void> _callBackend({
+    required PlanModel plan,
+    required String paymentId,
+  }) async {
+    if (!mounted) return;
+
+    // Show activating dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 28.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SpinKitFadingCircle(
+                  color: AppColors.primaryGreen, size: 48.r),
+              SizedBox(height: 16.h),
+              CustomText(
+                text: 'Activating your subscription...',
+                fontsize: 15.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textColor2C2C2C,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    try {
+      final response = await ApiClient.postData(
+        ApiConstants.subscribeEndPoint,
+        jsonEncode({'planId': plan.id, 'paymentId': paymentId}),
+      );
+
+      if (mounted) Navigator.of(context).pop(); // close loading dialog
+
+      if (response.statusCode == 201 && response.body != null) {
+        final data = response.body as Map<String, dynamic>;
+        if (data['status'] == 'success' && data['statusCode'] == 201) {
+          _showSuccessDialog(plan);
+        } else {
+          _showError(data['message'] ?? 'Subscription activation failed');
+        }
+      } else {
+        _showError('Server error: ${response.statusText}');
+      }
+    } catch (e) {
+      if (mounted) Navigator.of(context).pop();
+      _showError(e.toString());
+    }
+  }
+
+  // ── Dialogs & Feedback ─────────────────────────────────────────────────────
+
+  void _showSuccessDialog(PlanModel plan) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 32.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 72.r,
+                height: 72.r,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryGreen.withValues(alpha: 0.12),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.check_rounded,
+                  color: AppColors.primaryGreen,
+                  size: 40.r,
+                ),
+              ),
+              SizedBox(height: 20.h),
+              CustomText(
+                text: 'Subscription Activated!',
+                fontsize: 20.sp,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textColor2C2C2C,
+              ),
+              SizedBox(height: 8.h),
+              CustomText(
+                text: 'You are now subscribed to\n${plan.name}',
+                fontsize: 14.sp,
+                fontWeight: FontWeight.w400,
+                color: AppColors.textColor5D5D5D,
+                maxline: 2,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 28.h),
+              CustomButton(
+                title: 'Continue',
+                height: 50.h,
+                onpress: () {
+                  Navigator.of(context).pop(); // close dialog
+                  Navigator.of(context).pop(); // go back to previous screen
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showError(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red.shade600,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.r)),
+        margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+      ),
+    );
   }
 
   Future<void> _restorePurchases() async {
     try {
       await _iap.restorePurchases();
-    } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error restoring purchases: $e'),
-            backgroundColor: Colors.red,
+            content: const Text('Checking for existing purchases...'),
+            backgroundColor: AppColors.primaryGreen,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.r)),
+            margin:
+                EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           ),
         );
       }
-      debugPrint('Error restoring purchases: $e');
-    }
-  }
-
-  void _onPurchaseUpdate(List<PurchaseDetails> purchaseDetailsList) {
-    for (var purchaseDetails in purchaseDetailsList) {
-      if (purchaseDetails.status == PurchaseStatus.pending) {
-        _showPendingUI();
-      } else {
-        if (purchaseDetails.status == PurchaseStatus.error) {
-          _handleError(purchaseDetails.error!);
-        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
-            purchaseDetails.status == PurchaseStatus.restored) {
-          _verifyAndDeliverProduct(purchaseDetails);
-        }
-
-        if (purchaseDetails.pendingCompletePurchase) {
-          _iap.completePurchase(purchaseDetails);
-        }
-      }
-    }
-  }
-
-  void _showPendingUI() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Purchase pending...')),
-    );
-  }
-
-  void _handleError(IAPError error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Purchase failed: ${error.message}'),
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
-
-  Future<void> _verifyAndDeliverProduct(PurchaseDetails purchaseDetails) async {
-    // TODO: Verify the purchase on your server
-    // For now, we'll just show a success message
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          purchaseDetails.status == PurchaseStatus.restored
-              ? 'Subscription restored!'
-              : 'Subscription activated!',
-        ),
-        backgroundColor: Colors.green,
-      ),
-    );
-
-    // TODO: Update your app's subscription state
-    // e.g., unlock premium features, save to database, etc.
-  }
-
-  Future<void> _buyProduct(ProductDetails product) async {
-    final PurchaseParam purchaseParam = PurchaseParam(
-      productDetails: product,
-    );
-
-    try {
-      await _iap.buyNonConsumable(purchaseParam: purchaseParam);
     } catch (e) {
-      setState(() {
-        _error = e.toString();
-      });
+      _showError('Restore failed: $e');
     }
   }
 
-  String _formatPrice(ProductDetails product) {
-    return '${product.price} / ${_getSubscriptionPeriod(product.id)}';
-  }
-
-  String _getSubscriptionPeriod(String productId) {
-    if (productId.contains('weekly')) return 'week';
-    if (productId.contains('monthly')) return 'month';
-    if (productId.contains('yearly')) return 'year';
-    return 'period';
-  }
-
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
-  }
+  // ── Build ──────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Choose Your Plan'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.restore),
-            onPressed: _restorePurchases,
-            tooltip: 'Restore Purchases',
-          ),
-        ],
-      ),
-      body: _buildBody(),
+      backgroundColor: AppColors.backGroundColor,
+      appBar: _buildAppBar(),
+      body: Obx(() => _buildBody()),
     );
   }
+
+  AppBar _buildAppBar() => AppBar(
+        forceMaterialTransparency: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        titleSpacing: 0,
+        title: Row(
+          children: [
+            IconButton(
+              padding: EdgeInsets.only(left: 12.w),
+              icon: Icon(Icons.arrow_back,
+                  color: AppColors.textColor2C2C2C, size: 22.r),
+              onPressed: () => Navigator.pop(context),
+            ),
+            SizedBox(width: 6.w),
+            CustomText(
+              text: 'Choose Your Plan',
+              fontsize: 20.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textColor2C2C2C,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: _restorePurchases,
+            child: CustomText(
+              text: 'Restore',
+              fontsize: 13.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.primaryGreen,
+            ),
+          ),
+        ],
+      );
 
   Widget _buildBody() {
-    if (!_available) {
+    // Loading
+    if (_planController.isLoading.value) {
       return Center(
+        child: SpinKitFadingCircle(
+            color: AppColors.primaryGreen, size: 48.r),
+      );
+    }
+
+    // Error
+    if (_planController.isError.value) {
+      return _buildErrorState();
+    }
+
+    // Empty
+    if (_planController.plans.isEmpty) {
+      return Center(
+        child: CustomText(
+          text: 'No subscription plans available',
+          fontsize: 15.sp,
+          color: AppColors.textColor5D5D5D,
+        ),
+      );
+    }
+
+    // Plans list
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, size: 64, color: Colors.red),
-            const SizedBox(height: 16),
-            Text(
-              _error ?? 'In-app purchases not available',
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16),
-            ),
+            SizedBox(height: 16.h),
+            _buildHeader(),
+            SizedBox(height: 24.h),
+            ..._planController.plans
+                .map((plan) => _buildPlanCard(plan))
+                .toList(),
+            SizedBox(height: 12.h),
+            _buildFooter(),
+            SizedBox(height: 36.h),
           ],
         ),
-      );
-    }
+      ),
+    );
+  }
 
-    if (_loading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+  // ── Header banner ──────────────────────────────────────────────────────────
 
-    if (_error != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline, size: 64, color: Colors.orange),
-            const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                _error!,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
-              ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _loadProducts,
-              child: const Text('Retry'),
-            ),
-          ],
-        ),
-      );
-    }
-
-    if (_products.isEmpty) {
-      return const Center(
-        child: Text(
-          'No subscription plans available',
-          style: TextStyle(fontSize: 16),
-        ),
-      );
-    }
-
-    return RefreshIndicator(
-      onRefresh: _loadProducts,
-      child: ListView(
-        padding: const EdgeInsets.all(16),
+  Widget _buildHeader() {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 20.w),
+      decoration: BoxDecoration(
+        color: AppColors.primaryColor,
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+      child: Column(
         children: [
-          const Text(
-            'Choose your subscription plan',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+          Container(
+            width: 56.r,
+            height: 56.r,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.15),
+              shape: BoxShape.circle,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Subscribe to unlock premium features',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
+            child: Icon(
+              Icons.workspace_premium_rounded,
+              color: const Color(0xFFEDD69A),
+              size: 32.r,
             ),
-            textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
-          ..._products.map((product) => _buildProductCard(product)),
+          SizedBox(height: 12.h),
+          CustomText(
+            text: 'Upgrade to Premium',
+            fontsize: 20.sp,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
+          SizedBox(height: 6.h),
+          CustomText(
+            text: 'Take full control of your screen time',
+            fontsize: 13.sp,
+            fontWeight: FontWeight.w400,
+            color: Colors.white.withValues(alpha: 0.75),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildProductCard(ProductDetails product) {
-    final bool isPopular = product.id.contains('monthly');
+  // ── Plan Card ──────────────────────────────────────────────────────────────
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      elevation: isPopular ? 8 : 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: isPopular
-            ? const BorderSide(color: Colors.blue, width: 2)
-            : BorderSide.none,
-      ),
-      child: Container(
-        decoration: isPopular
-            ? BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.blue.withValues(alpha: 0.1),
-              Colors.transparent,
-            ],
+  Widget _buildPlanCard(PlanModel plan) {
+    final isSelected = _planController.selectedPlan.value == plan.id;
+    final productId = _generateProductId(plan);
+    final iapProduct = _iapProducts[productId];
+
+    // Use Play Store price if available, else fall back to API price
+    final priceLabel =
+        iapProduct?.price ?? '\$${plan.price.toStringAsFixed(2)}';
+
+    final periodLabel = _getPeriodLabel(plan);
+    final isPopular =
+        plan.type == 'monthly' || (plan.duration >= 28 && plan.duration < 90);
+    final isThisPurchasing = _isPurchasing && _pendingPlan?.id == plan.id;
+
+    return GestureDetector(
+      onTap: () => _planController.changePlan(plan.id),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        margin: EdgeInsets.only(bottom: 16.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.r),
+          border: Border.all(
+            color: isSelected
+                ? AppColors.primaryColor
+                : AppColors.borderColorD1D1D1,
+            width: isSelected ? 2 : 1,
           ),
-        )
-            : null,
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (isPopular)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Text(
-                    'MOST POPULAR',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // "Most Popular" badge
+            if (isPopular)
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(14.r),
+                    topRight: Radius.circular(14.r),
                   ),
                 ),
-              if (isPopular) const SizedBox(height: 12),
-              Text(
-                product.title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                child: CustomText(
+                  text: 'MOST POPULAR',
+                  fontsize: 11.sp,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 8),
-              Text(
-                product.description,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+            Padding(
+              padding: EdgeInsets.all(18.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    _formatPrice(product),
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
-                    ),
+                  // Title row + radio
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            textAlign: TextAlign.start,
+                            text: plan.name,
+                            fontsize: 17.sp,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textColor2C2C2C,
+                          ),
+                          SizedBox(height: 4.h),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.w, vertical: 3.h),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryGreen
+                                  .withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: CustomText(
+                              text: periodLabel,
+                              fontsize: 11.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.primaryGreen,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      // Radio indicator
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        width: 22.r,
+                        height: 22.r,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: isSelected
+                                ? AppColors.primaryColor
+                                : AppColors.borderColorD1D1D1,
+                            width: 2,
+                          ),
+                        ),
+                        child: isSelected
+                            ? Center(
+                                child: Container(
+                                  width: 11.r,
+                                  height: 11.r,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                ),
+                              )
+                            : null,
+                      ),
+                    ],
                   ),
-                  ElevatedButton(
-                    onPressed: () => _buyProduct(product),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: isPopular ? Colors.blue : null,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32,
-                        vertical: 12,
+
+                  SizedBox(height: 16.h),
+
+                  // Price
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      CustomText(
+                        textAlign: TextAlign.start,
+                        text: priceLabel,
+                        fontsize: 26.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primaryColor,
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                      SizedBox(width: 4.w),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 3.h),
+                        child: CustomText(
+                          textAlign: TextAlign.start,
+                          text: '/ ${periodLabel.toLowerCase()}',
+                          fontsize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.textColor5D5D5D,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 14.h),
+                  Divider(color: AppColors.borderColorD1D1D1, height: 1),
+                  SizedBox(height: 14.h),
+
+                  // Benefits from API
+                  if (plan.benefits.isNotEmpty)
+                    ...plan.benefits.map(
+                      (benefit) => Padding(
+                        padding: EdgeInsets.only(bottom: 8.h),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.check_circle_rounded,
+                              color: AppColors.primaryGreen,
+                              size: 17.r,
+                            ),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: CustomText(
+                                textAlign: TextAlign.start,
+                                text: benefit,
+                                fontsize: 13.sp,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.textColor3D3D3D,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    child: const Text(
-                      'Subscribe',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+
+                  SizedBox(height: 18.h),
+
+                  // Subscribe button
+                  CustomButton(
+                    title:
+                        isThisPurchasing ? 'Processing...' : 'Subscribe Now',
+                    onpress: () => _subscribe(plan),
+                    loading: isThisPurchasing,
+                    height: 50.h,
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  // ── Footer ─────────────────────────────────────────────────────────────────
+
+  Widget _buildFooter() {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: _restorePurchases,
+          child: CustomText(
+            text: 'Restore Purchases',
+            fontsize: 13.sp,
+            fontWeight: FontWeight.w500,
+            color: AppColors.primaryGreen,
+          ),
+        ),
+        SizedBox(height: 10.h),
+        CustomText(
+          text:
+              'Subscriptions auto-renew unless cancelled at least 24 hours\nbefore the end of the current period.',
+          fontsize: 11.sp,
+          fontWeight: FontWeight.w400,
+          color: AppColors.textColor888888,
+          maxline: 3,
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+
+  // ── Error State ────────────────────────────────────────────────────────────
+
+  Widget _buildErrorState() {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 28.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline_rounded,
+                color: Colors.red.shade400, size: 56.r),
+            SizedBox(height: 16.h),
+            CustomText(
+              text: _planController.errorMessage.value,
+              fontsize: 14.sp,
+              color: AppColors.textColor5D5D5D,
+              maxline: 3,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 24.h),
+            CustomButton(
+              title: 'Retry',
+              onpress: _planController.fetchPlans,
+              width: 140.w,
+              height: 48.h,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+
+  String _getPeriodLabel(PlanModel plan) {
+    if (plan.type == 'yearly' || plan.duration >= 365) return 'Yearly';
+    if (plan.type == 'monthly' || plan.duration >= 28) return 'Monthly';
+    if (plan.duration >= 7) return 'Weekly';
+    return 'Monthly';
   }
 }

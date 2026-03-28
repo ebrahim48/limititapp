@@ -7,6 +7,7 @@ import 'package:limit_it_app/core/presentations/screens/limits/limit_screen_time
 import 'package:limit_it_app/core/presentations/widgets/custom_delete_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
+import 'package:limit_it_app/core/presentations/widgets/app_icon_widget.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
 class LimitScreenTimeCard extends StatelessWidget {
@@ -69,27 +70,11 @@ class LimitScreenTimeCard extends StatelessWidget {
       child: Row(
         children: [
           // App Icon
-          Container(
-            width: 48.w,
-            height: 48.h,
-            padding: EdgeInsets.all(4.w),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12.r),
-              border: Border.all(color: Colors.grey.shade300),
-            ),
-            child: data.usageData?.icon != null
-                ? ClipRRect(
-                    borderRadius: BorderRadius.circular(8.r),
-                    child: Image.memory(
-                      data.usageData!.icon!,
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : Icon(
-                    Icons.apps,
-                    size: 32.w,
-                    color: Colors.grey,
-                  ),
+          AppIconWidget(
+            packageName: data.usageData?.packageName ?? '',
+            preloadedIcon: data.usageData?.icon,
+            size: 48,
+            borderRadius: 12,
           ),
 
           SizedBox(width: 12.w),

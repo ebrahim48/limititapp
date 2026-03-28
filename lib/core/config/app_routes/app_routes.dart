@@ -38,6 +38,7 @@ import 'package:limit_it_app/core/presentations/screens/settings/set_new_pin_num
 import 'package:limit_it_app/core/presentations/screens/settings/settings_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/subscription_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/terms_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/in_app_purchase_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/upgrade_premium.dart';
 import 'package:limit_it_app/core/presentations/screens/splash/splash_screen.dart';
 
@@ -84,6 +85,7 @@ class AppRoutes {
   static const String saveMotivationPhrasesScreen = "/saveMotivationPhrasesScreen";
   static const String subscriptionScreen = "/subscriptionScreen";
   static const String upgradePremiumScreen = "/upgradePremiumScreen";
+  static const String inAppPurchaseSubscriptionScreen = "/inAppPurchaseSubscriptionScreen";
   static const String changePasswordScreen = "/changePasswordScreen";
   static const String aboutUsScreen = "/aboutUsScreen";
   static const String viewProfileScreen = "/viewProfileScreen";
@@ -234,9 +236,21 @@ class AppRoutes {
       GoRoute(
         path: timerSettingsScreen,
         name: timerSettingsScreen,
-        pageBuilder:
-            (context, state) =>
-                _customTransitionPage(TimerSettingsScreen(), state),
+        pageBuilder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>?;
+          return _customTransitionPage(
+            TimerSettingsScreen(
+              arguments: extra,
+              initialDurations: extra?['initialDurations'] != null
+                  ? List<String>.from(extra!['initialDurations'])
+                  : null,
+              moreDurations: extra?['moreDurations'] != null
+                  ? List<String>.from(extra!['moreDurations'])
+                  : null,
+            ),
+            state,
+          );
+        },
       ),
 
       ///<<<=============>>>Timer Success Screen <<<===============>>>
@@ -435,13 +449,22 @@ class AppRoutes {
 
       ///<<<=============>>> Upgrade Premium Screen  <<<===============>>>
 
-
       GoRoute(
         path: upgradePremiumScreen,
         name: upgradePremiumScreen,
         pageBuilder:
             (context, state) =>
                 _customTransitionPage(UpgradePremiumScreen(), state),
+      ),
+
+      ///<<<=============>>> In-App Purchase Subscription Screen  <<<===============>>>
+
+      GoRoute(
+        path: inAppPurchaseSubscriptionScreen,
+        name: inAppPurchaseSubscriptionScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(const InAppPurchaseSubscriptionScreen(), state),
       ),
 
       ///<<<=============>>> Change Password Screen  <<<===============>>>

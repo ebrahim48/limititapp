@@ -15,17 +15,26 @@ import 'package:limit_it_app/core/services/timer_settings_service.dart';
 
 class TimerSettingsScreen extends StatefulWidget {
   final Map<String, dynamic>? arguments;
-  const TimerSettingsScreen({super.key, this.arguments});
+  final List<String>? initialDurations;
+  final List<String>? moreDurations;
+
+  const TimerSettingsScreen({
+    super.key,
+    this.arguments,
+    this.initialDurations,
+    this.moreDurations,
+  });
 
   @override
   State<TimerSettingsScreen> createState() => _TimerSettingsScreenState();
 }
 
 class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
-  final RxString selectedDuration = '0 sec'.obs;
+  late final RxString selectedDuration;
   final RxBool showMoreDurations = false.obs;
-  final List<String> initialDurations = ['0 sec', '5 sec', '10 sec', '15 sec'];
-  final List<String> moreDurations = ['20 sec', '25 sec', '30 sec', '35 sec', '40 sec', '45 sec'];
+
+  late final List<String> initialDurations;
+  late final List<String> moreDurations;
 
   final MotivationController motivationController = Get.put(MotivationController());
   final TimerSettingsService timerSettingsService = Get.find<TimerSettingsService>();
@@ -35,6 +44,9 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
   @override
   void initState() {
     super.initState();
+    initialDurations = widget.initialDurations ?? ['0 sec', '5 sec', '10 sec', '15 sec'];
+    moreDurations = widget.moreDurations ?? ['20 sec', '25 sec', '30 sec', '35 sec', '40 sec', '45 sec'];
+    selectedDuration = (initialDurations.first).obs;
     _loadInitialData();
   }
 
@@ -283,16 +295,7 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
     final success = await timerSettingsService.saveTimerSettings(timerSettings);
 
     if (success) {
-      // Check origin to determine where to navigate
-      final origin = widget.arguments?['origin'];
-
-      if (origin == 'setUsage') {
-        // If coming from SetUsageLimitScreen (Flow 2), go back to LimitScreenTime
-        context.pushNamed(AppRoutes.limitScreenTime);
-      } else {
-        // Otherwise, go to timer success screen (Flow 1)
-        context.pushNamed(AppRoutes.timerSuccessScreen);
-      }
+      context.pushNamed(AppRoutes.timerSuccessScreen);
     } else {
       // Show error message
       ScaffoldMessenger.of(context).showSnackBar(

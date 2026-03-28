@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:limit_it_app/core/models/app_model_pin.dart';
+import 'package:limit_it_app/core/presentations/widgets/app_icon_widget.dart';
 import 'package:limit_it_app/core/presentations/widgets/check_box.dart';
 import 'custom_text.dart';
 import '../../../core/constants/app_colors.dart';
@@ -66,58 +66,12 @@ class AppCardItem extends StatelessWidget {
   }
 
   Widget _buildAppIcon() {
-    // Try to display real app icon first
-    if (app.appIcon != null) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(12.r),
-        child: Image.memory(
-          app.appIcon!,
-          width: 48.w,
-          height: 48.h,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return _buildFallbackIcon();
-          },
-        ),
-      );
-    }
-    
-    // Fallback to SVG icon
-    if (app.icon.isNotEmpty) {
-      try {
-        return Container(
-          width: 48.w,
-          height: 48.h,
-          padding: EdgeInsets.all(8.w),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: SvgPicture.asset(app.icon, fit: BoxFit.contain),
-        );
-      } catch (e) {
-        return _buildFallbackIcon();
-      }
-    }
-    
-    // Final fallback
-    return _buildFallbackIcon();
-  }
-
-  Widget _buildFallbackIcon() {
-    return Container(
-      width: 48.w,
-      height: 48.h,
-      decoration: BoxDecoration(
-        color: AppColors.primaryColor,
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      alignment: Alignment.center,
-      child: CustomText(
-        text: app.name.isNotEmpty ? app.name[0].toUpperCase() : '?',
-        fontsize: 20.sp,
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
-      ),
+    return AppIconWidget(
+      packageName: app.packageName ?? '',
+      preloadedIcon: app.appIcon,
+      size: 48,
+      borderRadius: 12,
     );
   }
+
 }

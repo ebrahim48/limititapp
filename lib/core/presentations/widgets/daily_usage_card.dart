@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/models/daily_usage.dart';
+import 'package:limit_it_app/core/presentations/widgets/app_icon_widget.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/dash_line_painter.dart';
 import 'package:limit_it_app/core/presentations/widgets/time_range_widget.dart';
@@ -224,10 +225,10 @@ class DailyUsageCard extends StatelessWidget {
               final index = entry.key;
               final app = entry.value;
 
-              // Get real app icon if available
-              Uint8List? realIcon;
+              // Get real app usage data for icon
+              AppUsageData? usageEntry;
               if (appUsageData != null && index < appUsageData!.length) {
-                realIcon = appUsageData![index].icon;
+                usageEntry = appUsageData![index];
               }
 
               // Calculate bar height based on actual usage and dynamic max
@@ -264,7 +265,7 @@ class DailyUsageCard extends StatelessWidget {
                     ),
                     SizedBox(height: 8.h),
                     // Display real icon or fallback to placeholder
-                    _buildAppIcon(realIcon, app.icon, app.name),
+                    _buildAppIcon(usageEntry, app.icon, app.name),
                   ],
                 ),
               );
@@ -273,26 +274,18 @@ class DailyUsageCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAppIcon(Uint8List? realIcon, String svgPath, String appName) {
-    if (realIcon != null) {
-      // Display real app icon from bytes
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(6.r),
-        child: Image.memory(
-          realIcon,
-          width: 24.w,
-          height: 24.h,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) {
-            return _buildPlaceholderIcon(appName);
-          },
-        ),
+  Widget _buildAppIcon(AppUsageData? usageEntry, String svgPath, String appName) {
+    if (usageEntry != null) {
+      return AppIconWidget(
+        packageName: usageEntry.packageName,
+        preloadedIcon: usageEntry.icon,
+        size: 24,
+        borderRadius: 6,
+        padding: 2,
       );
     } else if (svgPath.isNotEmpty) {
-      // Display SVG icon
       return SvgPicture.asset(svgPath, width: 24.w, height: 24.h);
     } else {
-      // Display placeholder
       return _buildPlaceholderIcon(appName);
     }
   }
