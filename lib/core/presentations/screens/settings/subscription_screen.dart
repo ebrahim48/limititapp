@@ -76,7 +76,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
                       GestureDetector(
                         onTap: () {
-                          context.pushNamed(AppRoutes.upgradePremiumScreen);
+                          context.pushNamed(AppRoutes.inAppPurchaseSubscriptionScreen);
                         },
                         child: Container(
                           width: 206.w,

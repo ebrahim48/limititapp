@@ -13,41 +13,9 @@ import 'package:limit_it_app/controllers/upgrade_premium_controller.dart';
 // This creates product IDs based on plan name and type (monthly/yearly)
 // ─────────────────────────────────────────────────────────────────────────────
 String _generateProductId(PlanModel plan) {
-  // Clean the plan name (remove spaces, convert to lowercase)
-  final cleanName = plan.name
-      .toLowerCase()
-      .replaceAll(' ', '_')
-      .replaceAll('plan', '')
-      .trim()
-      .replaceAll(RegExp(r'_+'), '_')
-      .replaceAll(RegExp(r'^_|_$'), '');
-
-  // Determine billing period
-  String period;
-  if (plan.type == 'yearly' || plan.duration >= 365) {
-    period = 'yearly';
-  } else if (plan.type == 'monthly' || plan.duration >= 28) {
-    period = 'monthly';
-  } else if (plan.duration >= 7) {
-    period = 'weekly';
-  } else {
-    period = 'monthly'; // default
-  }
-
-  // Generate product ID: limitit_{name}_{period}
-  // Examples:
-  // - "Basic Plan" + monthly → "limitit_basic_monthly"
-  // - "Pro Plan" + monthly → "limitit_pro_monthly"
-  // - "Premium Plan" + yearly → "limitit_premium_yearly"
-
-  String productId = 'limitit';
-  if (cleanName.isNotEmpty) {
-    productId += '_$cleanName';
-  }
-  productId += '_$period';
-
-  debugPrint('====> Generated Product ID: $productId for plan: ${plan.name}');
-  return productId;
+  if (plan.duration >= 365) return 'limitit_yearly';
+  if (plan.duration >= 28) return 'limitit_monthly';
+  return 'limitit_weekly';
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -188,7 +156,6 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
     );
 
     try {
-      // Note: For subscriptions, use buyNonConsumable (Google Play Billing handles it as subscription)
       await _iap.buyNonConsumable(purchaseParam: purchaseParam);
       // Result comes via _onPurchaseUpdate stream
     } catch (e) {

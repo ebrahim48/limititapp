@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
+import 'package:limit_it_app/core/presentations/widgets/app_icon_widget.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
@@ -475,25 +476,12 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
             child: Row(
               children: [
                 // Display real app icon or placeholder
-                Container(
-                  width: 32.w,
-                  height: 32.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child:
-                      appData.icon != null
-                          ? ClipRRect(
-                            borderRadius: BorderRadius.circular(8.r),
-                            child: Image.memory(
-                              appData.icon!,
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return _buildPlaceholderIcon(appData.name);
-                              },
-                            ),
-                          )
-                          : _buildPlaceholderIcon(appData.name),
+                AppIconWidget(
+                  packageName: appData.packageName,
+                  preloadedIcon: appData.icon,
+                  size: 32,
+                  borderRadius: 8,
+                  padding: 2,
                 ),
                 SizedBox(width: 12.w),
                 Expanded(

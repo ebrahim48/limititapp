@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/models/appinfo_model.dart';
+import 'package:limit_it_app/core/presentations/widgets/app_icon_widget.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/core/services/blocked_apps_service.dart';
@@ -373,53 +374,24 @@ class _YourAppCardState extends State<YourAppCard> {
 
   /// Build app icon widget
   Widget _buildAppIcon() {
-    // If we have actual app data with icon bytes, show it
-    if (widget.appData?.icon != null) {
-      return Container(
-        width: 48.w,
-        height: 48.h,
-        padding: EdgeInsets.all(4.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: Colors.grey.shade300),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8.r),
-          child: Image.memory(
-            widget.appData!.icon!,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return _buildDefaultIcon();
-            },
-          ),
-        ),
+    if (widget.appData != null) {
+      return AppIconWidget(
+        packageName: widget.appData!.packageName,
+        preloadedIcon: widget.appData!.icon,
+        size: 48,
+        borderRadius: 12,
       );
     }
 
-    // If we have appIconBytes from AppInfo (real app icon), show it
     if (widget.app?.appIconBytes != null) {
-      return Container(
-        width: 48.w,
-        height: 48.h,
-        padding: EdgeInsets.all(4.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: Colors.grey.shade300),
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8.r),
-          child: Image.memory(
-            widget.app!.appIconBytes!,
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) {
-              return _buildDefaultIcon();
-            },
-          ),
-        ),
+      return AppIconWidget(
+        packageName: '',
+        preloadedIcon: widget.app!.appIconBytes,
+        size: 48,
+        borderRadius: 12,
       );
     }
 
-    // Fallback to SVG icon if available
     if (widget.app?.icon != null && widget.app!.icon.isNotEmpty) {
       return Container(
         width: 48.w,
@@ -433,26 +405,6 @@ class _YourAppCardState extends State<YourAppCard> {
       );
     }
 
-    // Default icon
-    return _buildDefaultIcon();
-  }
-
-  /// Build default icon for apps without icons
-  Widget _buildDefaultIcon() {
-    return Container(
-      width: 48.w,
-      height: 48.h,
-      padding: EdgeInsets.all(8.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Colors.grey.shade300),
-        color: Colors.grey.shade200,
-      ),
-      child: Icon(
-        Icons.apps,
-        color: Colors.grey.shade600,
-        size: 24.sp,
-      ),
-    );
+    return AppIconWidget(packageName: '', size: 48, borderRadius: 12);
   }
 }

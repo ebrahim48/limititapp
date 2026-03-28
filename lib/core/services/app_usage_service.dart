@@ -94,8 +94,8 @@ class AppUsageService {
 
       // Get installed apps info for filtering system apps
       List<installed.AppInfo> installedApps = await InstalledApps.getInstalledApps(
-        excludeSystemApps: false,
-        excludeNonLaunchableApps: false,
+        excludeSystemApps: true,
+        excludeNonLaunchableApps: true,
         withIcon: true,
       );
 
@@ -200,8 +200,8 @@ class AppUsageService {
 
       // Get all installed apps (excluding system apps)
       List<installed.AppInfo> installedApps = await InstalledApps.getInstalledApps(
-        excludeSystemApps: false,
-        excludeNonLaunchableApps: false,
+        excludeSystemApps: true,
+        excludeNonLaunchableApps: true,
         withIcon: true,
       );
 

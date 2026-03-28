@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(keytool:*)"
+      "Bash(keytool:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(/c/Users/ebu/AppData/Local/Programs/Microsoft VS Code/resources/app/extensions/flutter/bin/flutter analyze lib/core/presentations/widgets/app_icon_widget.dart)",
+      "Bash(dart analyze:*)"
     ],
     "deny": [],
     "ask": []
