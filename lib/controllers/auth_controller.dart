@@ -31,6 +31,7 @@ class AuthController extends GetxController {
 
 
   RxBool signUpLoading = false.obs;
+  RxString signUpError = ''.obs;
 
   ///========================================== Sing up ==================================<>
 
@@ -45,6 +46,7 @@ class AuthController extends GetxController {
   }) async {
     try {
       signUpLoading(true);
+      signUpError('');
 
       final body = {
         "name": name,
@@ -67,9 +69,9 @@ class AuthController extends GetxController {
 
         await PrefsHelper.setString(AppConstants.bearerToken, token);
 
-        ToastMessageHelper.showToastMessage(
-          "A verification email has been sent to $email",
-        );
+        // ToastMessageHelper.showToastMessage(
+        //   "A verification email has been sent to $email",
+        // );
 
         // Check if context is still mounted before navigation
         if (context.mounted) {
@@ -83,10 +85,10 @@ class AuthController extends GetxController {
           );
         }
       } else {
-        final msg = response.body["message"] ?? "Attention";
+        signUpError(response.body["message"] ?? "Something went wrong. Please try again.");
       }
     } catch (e) {
-      ToastMessageHelper.showToastMessage("Signup failed: $e");
+      signUpError("Signup failed. Please check your connection.");
     } finally {
       signUpLoading(false);
     }
@@ -299,7 +301,7 @@ class AuthController extends GetxController {
       if (context.mounted) {
         context.pushNamed(AppRoutes.logInScreen);
       }
-      ToastMessageHelper.showToastMessage('${response.body["message"]}');
+      // ToastMessageHelper.showToastMessage('${response.body["message"]}');
       debugPrint("======>>> successful");
       setPasswordLoading(false);
     } else if(response.statusCode == 1){

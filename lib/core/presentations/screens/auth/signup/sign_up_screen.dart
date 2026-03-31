@@ -131,7 +131,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         hintText: context.l10n.email,
                         prefixIcon: Assets.icons.email.svg(),
                         isEmail: true,
+                        onChanged: (_) => authController.signUpError(''),
                       ),
+
+                      Obx(() {
+                        if (authController.signUpError.value.isEmpty) return const SizedBox.shrink();
+                        return Padding(
+                          padding: EdgeInsets.only(left: 16.w, bottom: 8.h),
+                          child: Text(
+                            authController.signUpError.value,
+                            style: TextStyle(color: Colors.red, fontSize: 12.sp),
+                          ),
+                        );
+                      }),
 
                       SizedBox(height: 16.h),
 
