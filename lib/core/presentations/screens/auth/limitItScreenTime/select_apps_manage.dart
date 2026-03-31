@@ -435,14 +435,16 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
 
   /// Build list with real app usage data
   Widget _buildRealAppsList() {
-    // Remove duplicates by package name
+    // Remove duplicates by package name and hide this app itself
+    const String ownPackageName = 'com.limitit.digitalbalance';
     final seen = <String>{};
     final uniqueApps =
         _appUsageList.where((appData) {
-          if (seen.contains(appData.packageName)) {
+          if (appData.packageName.trim() == ownPackageName) return false;
+          if (seen.contains(appData.packageName.trim())) {
             return false;
           }
-          seen.add(appData.packageName);
+          seen.add(appData.packageName.trim());
           return true;
         }).toList();
 
