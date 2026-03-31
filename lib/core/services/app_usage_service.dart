@@ -5,6 +5,8 @@ import 'package:installed_apps/app_info.dart' as installed;
 import 'package:flutter/foundation.dart';
 
 class AppUsageService {
+  static const String _ownPackageName = 'com.limitit.digitalbalance';
+
   // Singleton pattern
   static AppUsageService? _instance;
 
@@ -107,8 +109,8 @@ class AppUsageService {
         int time = int.tryParse(info.totalTimeInForeground ?? '0') ?? 0;
         String packageName = info.packageName ?? '';
 
-        // Exclude our own app (limit_it_app)
-        if (packageName == 'com.limitit.digitalbalance ') {
+        // Exclude our own app
+        if (packageName.trim() == _ownPackageName) {
           return false;
         }
 
@@ -248,8 +250,8 @@ class AppUsageService {
         try {
           String packageName = appInfo.packageName;
           
-          // Skip our own app (limit_it_app)
-          if (packageName == 'com.limitit.digitalbalance ') {
+          // Skip our own app
+          if (packageName.trim() == _ownPackageName) {
             continue;
           }
           
