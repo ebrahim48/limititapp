@@ -13,4 +13,7 @@ class FontFamily {
 
   /// Font family: General Sans
   static const String generalSans = 'General Sans';
+
+  /// Font family: Inter
+  static const String inter = 'Inter';
 }

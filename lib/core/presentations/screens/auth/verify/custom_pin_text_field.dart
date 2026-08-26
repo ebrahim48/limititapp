@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
-import '../../../../../core/constants/app_colors.dart';
+import '../../../widgets/ui/ui.dart';
 
 class CustomPinCodeTextField extends StatelessWidget {
   final TextEditingController? textEditingController;
@@ -15,30 +14,27 @@ class CustomPinCodeTextField extends StatelessWidget {
       appContext: context,
       length: 6,
       controller: textEditingController,
-      cursorColor: AppColors.textColor1A1A1A,
-      textStyle: const TextStyle(color: AppColors.textColor1A1A1A),
+      cursorColor: AppColors.forestGreen,
+      textStyle: AppTextStyles.h3(color: AppColors.ink),
       autoFocus: false,
       obscureText: false,
       keyboardType: TextInputType.number,
-
       enableActiveFill: true,
-
+      animationType: AnimationType.scale,
+      animationDuration: const Duration(milliseconds: 160),
       pinTheme: PinTheme(
         shape: PinCodeFieldShape.box,
-        borderRadius: BorderRadius.circular(8.r),
-        fieldHeight: 57.h,
-        fieldWidth: 44.w,
-
-        // Box background
-        activeFillColor: AppColors.textColorF6F6F6,
-        inactiveFillColor: AppColors.backGroundColor,
-        selectedFillColor: AppColors.textColorF6F6F6,
-
-        activeColor: AppColors.primaryColor,
-        inactiveColor: AppColors.primaryColor,
-        selectedColor: AppColors.primaryColor,
+        borderRadius: BorderRadius.circular(12.r),
+        fieldHeight: 56.h,
+        fieldWidth: 48.w,
+        borderWidth: 1.4,
+        activeFillColor: AppColors.mint,
+        inactiveFillColor: AppColors.white,
+        selectedFillColor: AppColors.white,
+        activeColor: AppColors.leafGreen,
+        inactiveColor: AppColors.haze,
+        selectedColor: AppColors.leafGreen,
       ),
-
       onChanged: (value) {},
       onCompleted: (value) {
         textEditingController?.text = value;

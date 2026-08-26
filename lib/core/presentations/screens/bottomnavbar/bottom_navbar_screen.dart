@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:limit_it_app/core/presentations/screens/limits/limits_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/Home/app_protection_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/reports/reports_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/settings_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings/upgrade_premium.dart';
 import 'package:limit_it_app/core/services/app_blocker_service.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../global/custom_assets/assets.gen.dart';
-import '../home/home_screen.dart';
+import '../../widgets/ui/ui.dart';
 
+/// Root shell — Home · Statistics · Premium · Settings.
 class BottomNavBarScreen extends StatefulWidget {
-  const BottomNavBarScreen({super.key});
+  const BottomNavBarScreen({super.key, this.initialIndex = 0});
+
+  final int initialIndex;
 
   @override
   State<BottomNavBarScreen> createState() => _BottomNavBarScreenState();
 }
 
 class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
-  final List<Widget> screens = [
-     HomeScreen(),
-     LimitsScreen(),
-     ReportsScreen(),
-  ];
+  late int currentIndex = widget.initialIndex;
 
-  int currentIndex = 0;
+  final List<Widget> screens = [
+    const AppProtectionScreen(),
+    ReportsScreen(),
+    const UpgradePremiumScreen(),
+    SettingsScreen(),
+  ];
 
   @override
   void initState() {
@@ -52,86 +55,11 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screens[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
+      backgroundColor: AppColors.scaffoldBg,
+      body: IndexedStack(index: currentIndex, children: screens),
+      bottomNavigationBar: AppBottomNav(
         currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-        backgroundColor: AppColors.primaryColor,
-        type: BottomNavigationBarType.fixed,
-        elevation: 1,
-        selectedItemColor: AppColors.textColorFFFFFF,
-        unselectedItemColor: AppColors.borderColor,
-        selectedLabelStyle: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w500,
-        ),
-        unselectedLabelStyle: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w400,
-        ),
-        items: [
-          BottomNavigationBarItem(
-            icon: Assets.icons.home.svg(
-              width: 22.w,
-              height: 22.h,
-              colorFilter: ColorFilter.mode(
-                AppColors.borderColor,
-                BlendMode.srcIn,
-              ),
-            ),
-            activeIcon: Assets.icons.home.svg(
-              width: 22.w,
-              height: 22.h,
-              colorFilter: ColorFilter.mode(
-                AppColors.textColorFFFFFF,
-                BlendMode.srcIn,
-              ),
-            ),
-            label: "Homepage",
-          ),
-          BottomNavigationBarItem(
-            icon: Assets.icons.limit.svg(
-              width: 22.w,
-              height: 22.h,
-              colorFilter: ColorFilter.mode(
-                AppColors.borderColor,
-                BlendMode.srcIn,
-              ),
-            ),
-            activeIcon: Assets.icons.limit.svg(
-              width: 22.w,
-              height: 22.h,
-              colorFilter: ColorFilter.mode(
-                AppColors.textColorFFFFFF,
-                BlendMode.srcIn,
-              ),
-            ),
-            label: "Limits",
-          ),
-          BottomNavigationBarItem(
-            icon: Assets.icons.reports.svg(
-              width: 22.w,
-              height: 22.h,
-              colorFilter: ColorFilter.mode(
-                AppColors.borderColor,
-                BlendMode.srcIn,
-              ),
-            ),
-            activeIcon: Assets.icons.reports.svg(
-              width: 22.w,
-              height: 22.h,
-              colorFilter: ColorFilter.mode(
-                AppColors.textColorFFFFFF,
-                BlendMode.srcIn,
-              ),
-            ),
-            label: "Reports",
-          ),
-        ],
+        onTap: (index) => setState(() => currentIndex = index),
       ),
     );
   }

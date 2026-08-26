@@ -66,7 +66,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welcomeToLimitIt => 'Welcome to LimitIt';
 
   @override
-  String get startingToday => 'Starting today, let\'s focus better and\naccomplish your dreams';
+  String get startingToday =>
+      'Starting today, let\'s focus better and\naccomplish your dreams';
 
   @override
   String get signUpYourAccount => 'Sign up your account';
@@ -117,7 +118,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logInYourAccount => 'Log in your account';
 
   @override
-  String get allSetPasswordUpdated => 'All set !\nPassword Successfully Updated';
+  String get allSetPasswordUpdated =>
+      'All set !\nPassword Successfully Updated';
 
   @override
   String get logInSecurely => 'Log in Securely to access your full app';
@@ -153,7 +155,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get backToHome => 'Back to Home';
 
   @override
-  String get iAcceptPrivacy => 'I accept the privacy policy and terms of Service';
+  String get iAcceptPrivacy =>
+      'I accept the privacy policy and terms of Service';
 
   @override
   String get privacyDataProtection => 'Privacy & Data Protection';
@@ -162,7 +165,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get usageDataStaysOnDevice => 'Your usage data stays on your device';
 
   @override
-  String get noPersonalInfoCollection => 'We don\'t collect personal information';
+  String get noPersonalInfoCollection =>
+      'We don\'t collect personal information';
 
   @override
   String get gdprCompliance => 'GDPR compliance is our priority';
@@ -216,10 +220,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportDownloaded => 'Report Downloaded';
 
   @override
-  String get reportReadyToShare => 'Your usage report is ready to share or print';
+  String get reportReadyToShare =>
+      'Your usage report is ready to share or print';
 
   @override
-  String get failedToDownloadReport => 'Failed to download report. Please try again';
+  String get failedToDownloadReport =>
+      'Failed to download report. Please try again';
 
   @override
   String get error => 'Error';
@@ -246,7 +252,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noNotificationsYet => 'No notifications yet';
 
   @override
-  String get notifyWhenNewArrives => 'We\'ll notify you when something new arrives';
+  String get notifyWhenNewArrives =>
+      'We\'ll notify you when something new arrives';
 
   @override
   String get detoxMode => 'Detox Mode';
@@ -264,25 +271,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get grantRequiredPermissions => 'Grant Required Permissions';
 
   @override
-  String get permissionsDescription => 'LimitIt needs these permissions to monitor and block apps when limits are reached.';
+  String get permissionsDescription =>
+      'LimitIt needs these permissions to monitor and block apps when limits are reached.';
 
   @override
   String get overlayPermission => 'Overlay Permission';
 
   @override
-  String get overlayPermissionDesc => 'Allows LimitIt to display blocking screen over other apps';
+  String get overlayPermissionDesc =>
+      'Allows LimitIt to display blocking screen over other apps';
 
   @override
   String get accessibilityService => 'Accessibility Service';
 
   @override
-  String get accessibilityServiceDesc => 'Monitors which apps you open to enforce limits';
+  String get accessibilityServiceDesc =>
+      'Monitors which apps you open to enforce limits';
 
   @override
   String get notificationPermission => 'Notification Permission';
 
   @override
-  String get notificationPermissionDesc => 'Allows LimitIt to send notifications about app limits';
+  String get notificationPermissionDesc =>
+      'Allows LimitIt to send notifications about app limits';
 
   @override
   String get startMonitoring => 'Start Monitoring';
@@ -408,7 +419,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deletePin => 'Delete PIN';
 
   @override
-  String get deletePinConfirmation => 'Are you sure you want to delete this PIN? This action cannot be undone.';
+  String get deletePinConfirmation =>
+      'Are you sure you want to delete this PIN? This action cannot be undone.';
 
   @override
   String get close => 'Close';
@@ -452,7 +464,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get readyToLogOut => 'Ready to Log out ?';
 
   @override
-  String get noAppsSelected => 'No apps selected. Please go back and select apps.';
+  String get noAppsSelected =>
+      'No apps selected. Please go back and select apps.';
 
   @override
   String get saving => 'Saving...';
@@ -485,7 +498,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmSubscription => 'Confirm Subscription';
 
   @override
-  String get subscriptionConfirmMessage => 'Subscribe to Premium Monthly Plan for €1/month?';
+  String get subscriptionConfirmMessage =>
+      'Subscribe to Premium Monthly Plan for €1/month?';
 
   @override
   String get subscribe => 'Subscribe';
@@ -506,11 +520,257 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteAccount => 'Delete Account';
 
   @override
-  String get deleteAccountWarning => 'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.';
+  String get deleteAccountWarning =>
+      'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.';
 
   @override
   String get enterPassword => 'Enter your password';
 
   @override
   String get passwordRequired => 'Password is required';
+
+  @override
+  String get app => 'app';
+
+  @override
+  String get apps => 'apps';
+
+  @override
+  String get failedToLoadPlans => 'Failed to load plans';
+
+  @override
+  String get monitoringStartedSuccess => 'App monitoring started successfully!';
+
+  @override
+  String get failedToStartMonitoring =>
+      'Failed to start monitoring. Please try again.';
+
+  @override
+  String get takeBackYourTime => 'Take back your time';
+
+  @override
+  String get getStartedSubtitle =>
+      'Protect the apps that distract you and build better digital habits.';
+
+  @override
+  String get featureProtectTitle => 'Protect your apps';
+
+  @override
+  String get featureProtectSubtitle =>
+      'Set limits, time blocks and mindful pauses.';
+
+  @override
+  String get featureInsightTitle => 'See real insights';
+
+  @override
+  String get featureInsightSubtitle =>
+      'Track screen time and how much you saved.';
+
+  @override
+  String get featureGoalTitle => 'Hit your goals';
+
+  @override
+  String get featureGoalSubtitle =>
+      'Build streaks and stay motivated every day.';
+
+  @override
+  String get continueWithApple => 'Continue with Apple';
+
+  @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get continueWithEmail => 'Continue with Email';
+
+  @override
+  String get socialLoginComingSoon => 'Social sign-in is not available yet.';
+
+  @override
+  String get passwordRule =>
+      'Password: 8 characters min, letters & digits required';
+
+  @override
+  String get emailInvalid => 'Please check your email';
+
+  @override
+  String get welcomeBack => 'Welcome back';
+
+  @override
+  String get forgetPasswordSubtitle =>
+      'Enter your email and we\'ll send you a verification code.';
+
+  @override
+  String get verifyOtpSubtitle => 'We sent a 6-digit code to';
+
+  @override
+  String get resendIn => 'Resend in';
+
+  @override
+  String get resend => 'Resend';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'Choose a new password to secure your account.';
+
+  @override
+  String get resetSuccessSubtitle =>
+      'You can now log in with your new password.';
+
+  @override
+  String get appProtection => 'App protection';
+
+  @override
+  String get yourProtectedApps => 'Your protected apps';
+
+  @override
+  String get todayYouveAvoided => 'Today you\'ve avoided';
+
+  @override
+  String get impulsiveOpenings => 'impulsive openings';
+
+  @override
+  String get blocked => 'Blocked';
+
+  @override
+  String get maxOpenings => 'Max';
+
+  @override
+  String get day => 'day';
+
+  @override
+  String get noProtectionsYet => 'No protections yet';
+
+  @override
+  String get noProtectionsSubtitle =>
+      'Add your first app and start taking back your time.';
+
+  @override
+  String get addProtection => 'Add protection';
+
+  @override
+  String get statistics => 'Statistics';
+
+  @override
+  String get premium => 'Premium';
+
+  @override
+  String get searchApp => 'Search app';
+
+  @override
+  String get searchForAnApp => 'Search for an app…';
+
+  @override
+  String get suggestions => 'Suggestions';
+
+  @override
+  String get results => 'Results';
+
+  @override
+  String get noAppsFound => 'No apps found';
+
+  @override
+  String get usageAccessNeeded => 'Usage access is needed to list your apps.';
+
+  @override
+  String get editProtection => 'Edit protection';
+
+  @override
+  String get newProtection => 'New protection';
+
+  @override
+  String get protection => 'Protection';
+
+  @override
+  String get dailyTimeLimit => 'Daily time limit';
+
+  @override
+  String get dailyTimeLimitHint => 'Allow a set amount of time each day';
+
+  @override
+  String get maxOpeningsLabel => 'Max openings';
+
+  @override
+  String get maxOpeningsHint => 'Limit how many times you can open it';
+
+  @override
+  String get timeBlock => 'Time block';
+
+  @override
+  String get timeBlockHint => 'Block the app during a time range';
+
+  @override
+  String get from => 'From';
+
+  @override
+  String get to => 'To';
+
+  @override
+  String get moreOptions => 'More options';
+
+  @override
+  String get customizeMessage => 'Customize message';
+
+  @override
+  String get customizeDays => 'Customize days';
+
+  @override
+  String get previewPause => 'Preview pause';
+
+  @override
+  String get defaultLabel => 'Default';
+
+  @override
+  String get deleteProtection => 'Delete protection';
+
+  @override
+  String get deleteProtectionQuestion => 'Delete protection?';
+
+  @override
+  String get saveChanges => 'Save changes';
+
+  @override
+  String get activateProtection => 'Activate protection';
+
+  @override
+  String get editMessage => 'Edit message';
+
+  @override
+  String get message => 'Message';
+
+  @override
+  String get messageHint => 'Focus on what matters.';
+
+  @override
+  String get selectDaysToApply => 'Select days to apply this protection.';
+
+  @override
+  String get everyDay => 'Every day';
+
+  @override
+  String get weekdays => 'Weekdays';
+
+  @override
+  String get weekends => 'Weekends';
+
+  @override
+  String get custom => 'Custom';
+
+  @override
+  String get pauseActive => 'Pause active';
+
+  @override
+  String get remainingTime => 'Remaining time';
+
+  @override
+  String get openNow => 'Open now';
+
+  @override
+  String deleteProtectionMessage(String appName) {
+    return 'This protection for $appName will be permanently removed.';
+  }
+
+  @override
+  String appIsCurrentlyPaused(String appName) {
+    return '$appName is currently paused.';
+  }
 }

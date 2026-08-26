@@ -58,7 +58,7 @@
   },
   "notifications": "Notifications",
   "@notifications": {
-    "description": "Notifications setting label"
+    "description": "Notifications screen title"
   },
   "about": "About",
   "@about": {
@@ -126,7 +126,7 @@
   },
   "privacyPolicy": "Privacy Policy",
   "@privacyPolicy": {
-    "description": "Privacy policy link"
+    "description": "Privacy Policy screen title"
   },
   "alreadyHaveAccount": "Already have an account? ",
   "@alreadyHaveAccount": {
@@ -290,11 +290,7 @@
   },
   "aboutUs": "About Us",
   "@aboutUs": {
-    "description": "About Us screen title"
-  },
-  "privacyPolicy": "Privacy Policy",
-  "@privacyPolicy": {
-    "description": "Privacy Policy screen title"
+    "description": "About us menu item"
   },
   "termsConditions": "Terms & Conditions",
   "@termsConditions": {
@@ -306,7 +302,7 @@
   },
   "retry": "Retry",
   "@retry": {
-    "description": "Retry button text"
+    "description": "Retry button"
   },
   "failedToLoadData": "Failed to load data",
   "@failedToLoadData": {
@@ -315,10 +311,6 @@
   "networkError": "Network error. Please check your connection",
   "@networkError": {
     "description": "Network error message"
-  },
-  "notifications": "Notifications",
-  "@notifications": {
-    "description": "Notifications screen title"
   },
   "noNotificationsYet": "No notifications yet",
   "@noNotificationsYet": {
@@ -564,10 +556,6 @@
   "@addNewScreenTime": {
     "description": "Add new screen time button"
   },
-  "retry": "Retry",
-  "@retry": {
-    "description": "Retry button"
-  },
   "pleaseSelectAtLeastOneApp": "Please select at least one app",
   "@pleaseSelectAtLeastOneApp": {
     "description": "App selection error"
@@ -585,10 +573,6 @@
       }
     }
   },
-  "settings": "Settings",
-  "@settings": {
-    "description": "Settings screen title"
-  },
   "subscription": "Subscription",
   "@subscription": {
     "description": "Subscription menu item"
@@ -596,10 +580,6 @@
   "changePassword": "Change Password",
   "@changePassword": {
     "description": "Change password menu item"
-  },
-  "aboutUs": "About Us",
-  "@aboutUs": {
-    "description": "About us menu item"
   },
   "notification": "Notification",
   "@notification": {
@@ -716,5 +696,303 @@
   "failedToStartMonitoring": "Failed to start monitoring. Please try again.",
   "@failedToStartMonitoring": {
     "description": "Error message when monitoring fails to start"
+  },
+  "takeBackYourTime": "Take back your time",
+  "@takeBackYourTime": {
+    "description": "takeBackYourTime"
+  },
+  "getStartedSubtitle": "Protect the apps that distract you and build better digital habits.",
+  "@getStartedSubtitle": {
+    "description": "getStartedSubtitle"
+  },
+  "featureProtectTitle": "Protect your apps",
+  "@featureProtectTitle": {
+    "description": "featureProtectTitle"
+  },
+  "featureProtectSubtitle": "Set limits, time blocks and mindful pauses.",
+  "@featureProtectSubtitle": {
+    "description": "featureProtectSubtitle"
+  },
+  "featureInsightTitle": "See real insights",
+  "@featureInsightTitle": {
+    "description": "featureInsightTitle"
+  },
+  "featureInsightSubtitle": "Track screen time and how much you saved.",
+  "@featureInsightSubtitle": {
+    "description": "featureInsightSubtitle"
+  },
+  "featureGoalTitle": "Hit your goals",
+  "@featureGoalTitle": {
+    "description": "featureGoalTitle"
+  },
+  "featureGoalSubtitle": "Build streaks and stay motivated every day.",
+  "@featureGoalSubtitle": {
+    "description": "featureGoalSubtitle"
+  },
+  "continueWithApple": "Continue with Apple",
+  "@continueWithApple": {
+    "description": "continueWithApple"
+  },
+  "continueWithGoogle": "Continue with Google",
+  "@continueWithGoogle": {
+    "description": "continueWithGoogle"
+  },
+  "continueWithEmail": "Continue with Email",
+  "@continueWithEmail": {
+    "description": "continueWithEmail"
+  },
+  "socialLoginComingSoon": "Social sign-in is not available yet.",
+  "@socialLoginComingSoon": {
+    "description": "socialLoginComingSoon"
+  },
+  "passwordRule": "Password: 8 characters min, letters & digits required",
+  "@passwordRule": {
+    "description": "passwordRule"
+  },
+  "emailInvalid": "Please check your email",
+  "@emailInvalid": {
+    "description": "emailInvalid"
+  },
+  "welcomeBack": "Welcome back",
+  "@welcomeBack": {
+    "description": "welcomeBack"
+  },
+  "forgetPasswordSubtitle": "Enter your email and we'll send you a verification code.",
+  "@forgetPasswordSubtitle": {
+    "description": "forgetPasswordSubtitle"
+  },
+  "verifyOtpSubtitle": "We sent a 6-digit code to",
+  "@verifyOtpSubtitle": {
+    "description": "verifyOtpSubtitle"
+  },
+  "resendIn": "Resend in",
+  "@resendIn": {
+    "description": "resendIn"
+  },
+  "resend": "Resend",
+  "@resend": {
+    "description": "resend"
+  },
+  "resetPasswordSubtitle": "Choose a new password to secure your account.",
+  "@resetPasswordSubtitle": {
+    "description": "resetPasswordSubtitle"
+  },
+  "resetSuccessSubtitle": "You can now log in with your new password.",
+  "@resetSuccessSubtitle": {
+    "description": "resetSuccessSubtitle"
+  },
+  "appProtection": "App protection",
+  "@appProtection": {
+    "description": "appProtection"
+  },
+  "yourProtectedApps": "Your protected apps",
+  "@yourProtectedApps": {
+    "description": "yourProtectedApps"
+  },
+  "todayYouveAvoided": "Today you've avoided",
+  "@todayYouveAvoided": {
+    "description": "todayYouveAvoided"
+  },
+  "impulsiveOpenings": "impulsive openings",
+  "@impulsiveOpenings": {
+    "description": "impulsiveOpenings"
+  },
+  "blocked": "Blocked",
+  "@blocked": {
+    "description": "blocked"
+  },
+  "maxOpenings": "Max",
+  "@maxOpenings": {
+    "description": "maxOpenings"
+  },
+  "day": "day",
+  "@day": {
+    "description": "day"
+  },
+  "noProtectionsYet": "No protections yet",
+  "@noProtectionsYet": {
+    "description": "noProtectionsYet"
+  },
+  "noProtectionsSubtitle": "Add your first app and start taking back your time.",
+  "@noProtectionsSubtitle": {
+    "description": "noProtectionsSubtitle"
+  },
+  "addProtection": "Add protection",
+  "@addProtection": {
+    "description": "addProtection"
+  },
+  "statistics": "Statistics",
+  "@statistics": {
+    "description": "statistics"
+  },
+  "premium": "Premium",
+  "@premium": {
+    "description": "premium"
+  },
+  "searchApp": "Search app",
+  "@searchApp": {
+    "description": "searchApp"
+  },
+  "searchForAnApp": "Search for an app…",
+  "@searchForAnApp": {
+    "description": "searchForAnApp"
+  },
+  "suggestions": "Suggestions",
+  "@suggestions": {
+    "description": "suggestions"
+  },
+  "results": "Results",
+  "@results": {
+    "description": "results"
+  },
+  "noAppsFound": "No apps found",
+  "@noAppsFound": {
+    "description": "noAppsFound"
+  },
+  "usageAccessNeeded": "Usage access is needed to list your apps.",
+  "@usageAccessNeeded": {
+    "description": "usageAccessNeeded"
+  },
+  "editProtection": "Edit protection",
+  "@editProtection": {
+    "description": "editProtection"
+  },
+  "newProtection": "New protection",
+  "@newProtection": {
+    "description": "newProtection"
+  },
+  "protection": "Protection",
+  "@protection": {
+    "description": "protection"
+  },
+  "dailyTimeLimit": "Daily time limit",
+  "@dailyTimeLimit": {
+    "description": "dailyTimeLimit"
+  },
+  "dailyTimeLimitHint": "Allow a set amount of time each day",
+  "@dailyTimeLimitHint": {
+    "description": "dailyTimeLimitHint"
+  },
+  "maxOpeningsLabel": "Max openings",
+  "@maxOpeningsLabel": {
+    "description": "maxOpeningsLabel"
+  },
+  "maxOpeningsHint": "Limit how many times you can open it",
+  "@maxOpeningsHint": {
+    "description": "maxOpeningsHint"
+  },
+  "timeBlock": "Time block",
+  "@timeBlock": {
+    "description": "timeBlock"
+  },
+  "timeBlockHint": "Block the app during a time range",
+  "@timeBlockHint": {
+    "description": "timeBlockHint"
+  },
+  "from": "From",
+  "@from": {
+    "description": "from"
+  },
+  "to": "To",
+  "@to": {
+    "description": "to"
+  },
+  "moreOptions": "More options",
+  "@moreOptions": {
+    "description": "moreOptions"
+  },
+  "customizeMessage": "Customize message",
+  "@customizeMessage": {
+    "description": "customizeMessage"
+  },
+  "customizeDays": "Customize days",
+  "@customizeDays": {
+    "description": "customizeDays"
+  },
+  "previewPause": "Preview pause",
+  "@previewPause": {
+    "description": "previewPause"
+  },
+  "defaultLabel": "Default",
+  "@defaultLabel": {
+    "description": "defaultLabel"
+  },
+  "deleteProtection": "Delete protection",
+  "@deleteProtection": {
+    "description": "deleteProtection"
+  },
+  "deleteProtectionQuestion": "Delete protection?",
+  "@deleteProtectionQuestion": {
+    "description": "deleteProtectionQuestion"
+  },
+  "saveChanges": "Save changes",
+  "@saveChanges": {
+    "description": "saveChanges"
+  },
+  "activateProtection": "Activate protection",
+  "@activateProtection": {
+    "description": "activateProtection"
+  },
+  "editMessage": "Edit message",
+  "@editMessage": {
+    "description": "editMessage"
+  },
+  "message": "Message",
+  "@message": {
+    "description": "message"
+  },
+  "messageHint": "Focus on what matters.",
+  "@messageHint": {
+    "description": "messageHint"
+  },
+  "selectDaysToApply": "Select days to apply this protection.",
+  "@selectDaysToApply": {
+    "description": "selectDaysToApply"
+  },
+  "everyDay": "Every day",
+  "@everyDay": {
+    "description": "everyDay"
+  },
+  "weekdays": "Weekdays",
+  "@weekdays": {
+    "description": "weekdays"
+  },
+  "weekends": "Weekends",
+  "@weekends": {
+    "description": "weekends"
+  },
+  "custom": "Custom",
+  "@custom": {
+    "description": "custom"
+  },
+  "pauseActive": "Pause active",
+  "@pauseActive": {
+    "description": "pauseActive"
+  },
+  "remainingTime": "Remaining time",
+  "@remainingTime": {
+    "description": "remainingTime"
+  },
+  "openNow": "Open now",
+  "@openNow": {
+    "description": "openNow"
+  },
+  "deleteProtectionMessage": "This protection for {appName} will be permanently removed.",
+  "@deleteProtectionMessage": {
+    "description": "deleteProtectionMessage",
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "appIsCurrentlyPaused": "{appName} is currently paused.",
+  "@appIsCurrentlyPaused": {
+    "description": "appIsCurrentlyPaused",
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
   }
 }

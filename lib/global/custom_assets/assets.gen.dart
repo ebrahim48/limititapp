@@ -21,6 +21,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Home.svg
   SvgGenImage get home => const SvgGenImage('assets/icons/Home.svg');
 
+  /// File path: assets/icons/appLogo.png
+  AssetGenImage get appLogo => const AssetGenImage('assets/icons/appLogo.png');
+
+  /// Directory path: assets/icons/apps
+  $AssetsIconsAppsGen get apps => const $AssetsIconsAppsGen();
+
   /// File path: assets/icons/chevron.svg
   SvgGenImage get chevron => const SvgGenImage('assets/icons/chevron.svg');
 
@@ -94,12 +100,16 @@ class $AssetsIconsGen {
   /// File path: assets/icons/twitter.svg
   SvgGenImage get twitter => const SvgGenImage('assets/icons/twitter.svg');
 
+  /// Directory path: assets/icons/ui
+  $AssetsIconsUiGen get ui => const $AssetsIconsUiGen();
+
   /// File path: assets/icons/youtube.svg
   SvgGenImage get youtube => const SvgGenImage('assets/icons/youtube.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [
+  List<dynamic> get values => [
     home,
+    appLogo,
     chevron,
     detoxmode,
     edit,
@@ -124,6 +134,64 @@ class $AssetsIconsGen {
     tiktalk,
     twitter,
     youtube,
+  ];
+}
+
+class $AssetsIllustrationsGen {
+  const $AssetsIllustrationsGen();
+
+  /// File path: assets/illustrations/alert_circle.svg
+  SvgGenImage get alertCircle =>
+      const SvgGenImage('assets/illustrations/alert_circle.svg');
+
+  /// File path: assets/illustrations/check_circle.svg
+  SvgGenImage get checkCircle =>
+      const SvgGenImage('assets/illustrations/check_circle.svg');
+
+  /// File path: assets/illustrations/leaf_badge.svg
+  SvgGenImage get leafBadge =>
+      const SvgGenImage('assets/illustrations/leaf_badge.svg');
+
+  /// File path: assets/illustrations/leaf_logo.svg
+  SvgGenImage get leafLogo =>
+      const SvgGenImage('assets/illustrations/leaf_logo.svg');
+
+  /// File path: assets/illustrations/logout_circle.svg
+  SvgGenImage get logoutCircle =>
+      const SvgGenImage('assets/illustrations/logout_circle.svg');
+
+  /// File path: assets/illustrations/mail_circle.svg
+  SvgGenImage get mailCircle =>
+      const SvgGenImage('assets/illustrations/mail_circle.svg');
+
+  /// File path: assets/illustrations/mountain_scene.svg
+  SvgGenImage get mountainScene =>
+      const SvgGenImage('assets/illustrations/mountain_scene.svg');
+
+  /// File path: assets/illustrations/pause_drop.svg
+  SvgGenImage get pauseDrop =>
+      const SvgGenImage('assets/illustrations/pause_drop.svg');
+
+  /// File path: assets/illustrations/shield_check.svg
+  SvgGenImage get shieldCheck =>
+      const SvgGenImage('assets/illustrations/shield_check.svg');
+
+  /// File path: assets/illustrations/stats_locked.svg
+  SvgGenImage get statsLocked =>
+      const SvgGenImage('assets/illustrations/stats_locked.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [
+    alertCircle,
+    checkCircle,
+    leafBadge,
+    leafLogo,
+    logoutCircle,
+    mailCircle,
+    mountainScene,
+    pauseDrop,
+    shieldCheck,
+    statsLocked,
   ];
 }
 
@@ -233,10 +301,183 @@ class $AssetsLottieGen {
   ];
 }
 
+class $AssetsIconsAppsGen {
+  const $AssetsIconsAppsGen();
+
+  /// File path: assets/icons/apps/facebook.svg
+  SvgGenImage get facebook =>
+      const SvgGenImage('assets/icons/apps/facebook.svg');
+
+  /// File path: assets/icons/apps/instagram.svg
+  SvgGenImage get instagram =>
+      const SvgGenImage('assets/icons/apps/instagram.svg');
+
+  /// File path: assets/icons/apps/snapchat.svg
+  SvgGenImage get snapchat =>
+      const SvgGenImage('assets/icons/apps/snapchat.svg');
+
+  /// File path: assets/icons/apps/tiktok.svg
+  SvgGenImage get tiktok => const SvgGenImage('assets/icons/apps/tiktok.svg');
+
+  /// File path: assets/icons/apps/whatsapp.svg
+  SvgGenImage get whatsapp =>
+      const SvgGenImage('assets/icons/apps/whatsapp.svg');
+
+  /// File path: assets/icons/apps/x.svg
+  SvgGenImage get x => const SvgGenImage('assets/icons/apps/x.svg');
+
+  /// File path: assets/icons/apps/youtube.svg
+  SvgGenImage get youtube => const SvgGenImage('assets/icons/apps/youtube.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [
+    facebook,
+    instagram,
+    snapchat,
+    tiktok,
+    whatsapp,
+    x,
+    youtube,
+  ];
+}
+
+class $AssetsIconsUiGen {
+  const $AssetsIconsUiGen();
+
+  /// File path: assets/icons/ui/apple.svg
+  SvgGenImage get apple => const SvgGenImage('assets/icons/ui/apple.svg');
+
+  /// File path: assets/icons/ui/bar_chart.svg
+  SvgGenImage get barChart =>
+      const SvgGenImage('assets/icons/ui/bar_chart.svg');
+
+  /// File path: assets/icons/ui/bell.svg
+  SvgGenImage get bell => const SvgGenImage('assets/icons/ui/bell.svg');
+
+  /// File path: assets/icons/ui/calendar.svg
+  SvgGenImage get calendar => const SvgGenImage('assets/icons/ui/calendar.svg');
+
+  /// File path: assets/icons/ui/check_circle.svg
+  SvgGenImage get checkCircle =>
+      const SvgGenImage('assets/icons/ui/check_circle.svg');
+
+  /// File path: assets/icons/ui/chevron_left.svg
+  SvgGenImage get chevronLeft =>
+      const SvgGenImage('assets/icons/ui/chevron_left.svg');
+
+  /// File path: assets/icons/ui/chevron_right.svg
+  SvgGenImage get chevronRight =>
+      const SvgGenImage('assets/icons/ui/chevron_right.svg');
+
+  /// File path: assets/icons/ui/clock.svg
+  SvgGenImage get clock => const SvgGenImage('assets/icons/ui/clock.svg');
+
+  /// File path: assets/icons/ui/cloud_upload.svg
+  SvgGenImage get cloudUpload =>
+      const SvgGenImage('assets/icons/ui/cloud_upload.svg');
+
+  /// File path: assets/icons/ui/crown.svg
+  SvgGenImage get crown => const SvgGenImage('assets/icons/ui/crown.svg');
+
+  /// File path: assets/icons/ui/device.svg
+  SvgGenImage get device => const SvgGenImage('assets/icons/ui/device.svg');
+
+  /// File path: assets/icons/ui/gear.svg
+  SvgGenImage get gear => const SvgGenImage('assets/icons/ui/gear.svg');
+
+  /// File path: assets/icons/ui/google.svg
+  SvgGenImage get google => const SvgGenImage('assets/icons/ui/google.svg');
+
+  /// File path: assets/icons/ui/help.svg
+  SvgGenImage get help => const SvgGenImage('assets/icons/ui/help.svg');
+
+  /// File path: assets/icons/ui/home.svg
+  SvgGenImage get home => const SvgGenImage('assets/icons/ui/home.svg');
+
+  /// File path: assets/icons/ui/info.svg
+  SvgGenImage get info => const SvgGenImage('assets/icons/ui/info.svg');
+
+  /// File path: assets/icons/ui/leaf.svg
+  SvgGenImage get leaf => const SvgGenImage('assets/icons/ui/leaf.svg');
+
+  /// File path: assets/icons/ui/lock.svg
+  SvgGenImage get lock => const SvgGenImage('assets/icons/ui/lock.svg');
+
+  /// File path: assets/icons/ui/logout.svg
+  SvgGenImage get logout => const SvgGenImage('assets/icons/ui/logout.svg');
+
+  /// File path: assets/icons/ui/mail.svg
+  SvgGenImage get mail => const SvgGenImage('assets/icons/ui/mail.svg');
+
+  /// File path: assets/icons/ui/moon.svg
+  SvgGenImage get moon => const SvgGenImage('assets/icons/ui/moon.svg');
+
+  /// File path: assets/icons/ui/plus.svg
+  SvgGenImage get plus => const SvgGenImage('assets/icons/ui/plus.svg');
+
+  /// File path: assets/icons/ui/restore.svg
+  SvgGenImage get restore => const SvgGenImage('assets/icons/ui/restore.svg');
+
+  /// File path: assets/icons/ui/search.svg
+  SvgGenImage get search => const SvgGenImage('assets/icons/ui/search.svg');
+
+  /// File path: assets/icons/ui/shield_lock.svg
+  SvgGenImage get shieldLock =>
+      const SvgGenImage('assets/icons/ui/shield_lock.svg');
+
+  /// File path: assets/icons/ui/sun.svg
+  SvgGenImage get sun => const SvgGenImage('assets/icons/ui/sun.svg');
+
+  /// File path: assets/icons/ui/target.svg
+  SvgGenImage get target => const SvgGenImage('assets/icons/ui/target.svg');
+
+  /// File path: assets/icons/ui/x_circle.svg
+  SvgGenImage get xCircle => const SvgGenImage('assets/icons/ui/x_circle.svg');
+
+  /// File path: assets/icons/ui/x_circle_outline.svg
+  SvgGenImage get xCircleOutline =>
+      const SvgGenImage('assets/icons/ui/x_circle_outline.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [
+    apple,
+    barChart,
+    bell,
+    calendar,
+    checkCircle,
+    chevronLeft,
+    chevronRight,
+    clock,
+    cloudUpload,
+    crown,
+    device,
+    gear,
+    google,
+    help,
+    home,
+    info,
+    leaf,
+    lock,
+    logout,
+    mail,
+    moon,
+    plus,
+    restore,
+    search,
+    shieldLock,
+    sun,
+    target,
+    xCircle,
+    xCircleOutline,
+  ];
+}
+
 class Assets {
   const Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsIllustrationsGen illustrations =
+      $AssetsIllustrationsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
   static const $AssetsLottieGen lottie = $AssetsLottieGen();
 }

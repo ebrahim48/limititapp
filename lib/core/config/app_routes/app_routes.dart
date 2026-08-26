@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:limit_it_app/core/models/app_limit_model.dart';
 import 'package:limit_it_app/core/presentations/screens/Home/home_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/Home/profile/view_profile_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/Home/profile/view_update_profile_screen.dart';
@@ -26,7 +27,13 @@ import 'package:limit_it_app/core/presentations/screens/limits/set_pin_number_sc
 import 'package:limit_it_app/core/presentations/screens/notifications/notifications_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/language_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/onboarding/get_started_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_start_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/customize_days_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/customize_message_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/preview_pause_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/protection_editor_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/search_app_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/reports/reports_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/about_us_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/change_password.dart';
@@ -48,6 +55,7 @@ class AppRoutes {
   static const String onBoardingScreen = "/onBoardingScreen";
   static const String languageScreen = "/languageScreen";
   static const String onBoardingStartScreen = "/onBoardingStartScreen";
+  static const String getStartedScreen = "/getStartedScreen";
 
   /// =============================> Auth ================================>
 
@@ -92,6 +100,14 @@ class AppRoutes {
   static const String editProfileScreen = "/editProfileScreen";
   static const String notificationsScreen = "/notificationsScreen";
 
+  /// ========================> Protection flow ==========================>
+
+  static const String searchAppScreen = "/searchAppScreen";
+  static const String protectionEditorScreen = "/protectionEditorScreen";
+  static const String customizeMessageScreen = "/customizeMessageScreen";
+  static const String customizeDaysScreen = "/customizeDaysScreen";
+  static const String previewPauseScreen = "/previewPauseScreen";
+
 
 
 
@@ -111,6 +127,83 @@ class AppRoutes {
         pageBuilder:
             (context, state) =>
                 _customTransitionPage(OnboardingScreen(), state),
+      ),
+
+      ///<<<=============>>> PROTECTION FLOW <<<===============>>>
+      GoRoute(
+        path: searchAppScreen,
+        name: searchAppScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const SearchAppScreen(), state),
+      ),
+
+      GoRoute(
+        path: protectionEditorScreen,
+        name: protectionEditorScreen,
+        pageBuilder: (context, state) {
+          final extra = (state.extra as Map<String, dynamic>?) ?? const {};
+          return _customTransitionPage(
+            ProtectionEditorScreen(
+              selectedApp: extra['selectedApp'] as SelectedAppInfo?,
+              packageName: extra['packageName'] as String?,
+            ),
+            state,
+          );
+        },
+      ),
+
+      GoRoute(
+        path: customizeMessageScreen,
+        name: customizeMessageScreen,
+        pageBuilder: (context, state) {
+          final extra = (state.extra as Map<String, dynamic>?) ?? const {};
+          return _customTransitionPage(
+            CustomizeMessageScreen(
+              initialMessage: extra['message'] as String?,
+            ),
+            state,
+          );
+        },
+      ),
+
+      GoRoute(
+        path: customizeDaysScreen,
+        name: customizeDaysScreen,
+        pageBuilder: (context, state) {
+          final extra = (state.extra as Map<String, dynamic>?) ?? const {};
+          final days = extra['days'];
+          return _customTransitionPage(
+            CustomizeDaysScreen(
+              initialDays: days is List ? List<String>.from(days) : null,
+            ),
+            state,
+          );
+        },
+      ),
+
+      GoRoute(
+        path: previewPauseScreen,
+        name: previewPauseScreen,
+        pageBuilder: (context, state) {
+          final extra = (state.extra as Map<String, dynamic>?) ?? const {};
+          return _customTransitionPage(
+            PreviewPauseScreen(
+              packageName: extra['packageName'] as String?,
+              appName: extra['appName'] as String?,
+              message: extra['message'] as String?,
+            ),
+            state,
+          );
+        },
+      ),
+
+      ///<<<=============>>> GET STARTED SCREEN <<<===============>>>
+      GoRoute(
+        path: getStartedScreen,
+        name: getStartedScreen,
+        pageBuilder:
+            (context, state) =>
+                _customTransitionPage(const GetStartedScreen(), state),
       ),
 
       ///<<<=============>>> Language SCREEN <<<===============>>>
@@ -155,7 +248,7 @@ class AppRoutes {
         path: forgetPasswordScreen,
         name: forgetPasswordScreen,
         builder: (context, state) {
-          String email = state.extra as String;
+          final String email = (state.extra as String?) ?? '';
           return ForgetPasswordScreen(email: email);
         },
 
@@ -166,7 +259,7 @@ class AppRoutes {
         path: verifyScreen,
         name: verifyScreen,
         builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>;
+          final extra = (state.extra as Map<String, dynamic>?) ?? const {};
           final screenType = extra['screenType']?.toString() ?? '';
           final email = extra['email']?.toString() ?? '';
           final token = extra['token']?.toString() ?? '';

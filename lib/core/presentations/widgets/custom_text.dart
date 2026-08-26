@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../constants/app_colors.dart';
+import '../../constants/app_text_styles.dart';
 
 
 
@@ -50,7 +51,7 @@ class CustomText extends StatelessWidget {
         overflow: textOverflow??TextOverflow.ellipsis,
         style: TextStyle(
             fontSize: fontsize ?? 14.sp,
-            fontFamily: fontName?? "General Sans",
+            fontFamily: fontName ?? AppFont.family,
             fontWeight:fontWeight == null ? FontWeight.w400 : fontWeight ,
             color: color ?? AppColors.textColor5D5D5D
         ),

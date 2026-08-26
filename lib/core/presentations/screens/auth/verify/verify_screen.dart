@@ -1,192 +1,116 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
-import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
-import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/verify/custom_pin_text_field.dart';
-import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
-import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
-
+import 'package:limit_it_app/core/presentations/widgets/ui/ui.dart';
+import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
 class VerifyScreen extends StatelessWidget {
-
   final String screenType;
   final String email;
   final String token;
-  VerifyScreen({super.key,required this.screenType, required this.email,required this.token});
+
+  VerifyScreen({
+    super.key,
+    required this.screenType,
+    required this.email,
+    required this.token,
+  });
 
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthController>();
+    final l10n = context.l10n;
 
-    return Scaffold(
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        titleSpacing: 0,
-        title: Row(
-          children: [
-            IconButton(
-              padding: EdgeInsets.zero,
-              icon: Icon(Icons.arrow_back, color: Colors.black, size: 20.r),
-              onPressed: () => Navigator.pop(context),
-            ),
-            SizedBox(width: 12.w),
-            CustomText(
-              text: context.l10n.verifyOtp,
-              color: AppColors.textColor3D3D3D,
-              fontsize: 24.sp,
-              fontWeight: FontWeight.w500,
-            ),
-          ],
-        ),
-      ),
-      body: Stack(
+    return AppScaffold(
+      appBar: AppTopBar(title: l10n.verifyOtp),
+      scrollable: true,
+      resizeToAvoidBottomInset: true,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          SizedBox(height: 12.h),
+          Center(
+            child: Assets.illustrations.mailCircle.svg(
+              width: 88.w,
+              height: 88.w,
+            ),
+          ),
+          SizedBox(height: 24.h),
+          Text(
+            l10n.verifyOtpSubtitle,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.body(color: AppColors.slateGreen),
+          ),
+          SizedBox(height: 6.h),
+          Text(
+            email,
+            textAlign: TextAlign.center,
+            style: AppTextStyles.bodyMedium(color: AppColors.forestGreen),
+          ),
 
-          Positioned(
-            top: 18.h,
-            right: 20.w,
-            child: Container(
-              width: 259.w,
-              height: 195.h,
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor.withValues(alpha: 0.5),
-                shape: BoxShape.circle,
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
+          SizedBox(height: 28.h),
+
+          CustomPinCodeTextField(textEditingController: otpTEController),
+
+          SizedBox(height: 8.h),
+
+          Obx(
+            () => Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  l10n.didntGetCode,
+                  style: AppTextStyles.small(color: AppColors.slateGreen),
+                ),
+                SizedBox(width: 4.w),
+                GestureDetector(
+                  onTap: isCountingDown.value ? null : startCountdown,
+                  child: Text(
+                    isCountingDown.value
+                        ? '${l10n.resendIn} ${countdown.value}s'
+                        : l10n.resend,
+                    style: AppTextStyles.small(
+                      color: isCountingDown.value
+                          ? AppColors.mist
+                          : AppColors.forestGreen,
+                    ).copyWith(fontWeight: AppFont.semiBold),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
 
+          SizedBox(height: 28.h),
 
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Container(
-              width: 158.w,
-              height: 219.h,
-              decoration: BoxDecoration(
-                color: AppColors.textColor803D20.withValues(alpha: 0.3),
-                shape: BoxShape.circle,
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                ),
-              ),
+          Obx(
+            () => AppButton(
+              label: l10n.verify,
+              loading: authController.verfyLoading.value,
+              onPressed: () {
+                if (otpTEController.text.isEmpty) {
+                  ToastMessageHelper.showToastMessage("Please enter OTP");
+                  return;
+                }
+
+                authController.verfyEmail(
+                  otpTEController.text.trim(),
+                  email.trim(),
+                  screenType: screenType,
+                  context: context,
+                );
+              },
             ),
           ),
-
-
-          SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    SizedBox(height: 32.h),
-
-                    /// <<< ============><>>> OTP  << < ==============>>>
-
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomPinCodeTextField(textEditingController: otpTEController),
-                        SizedBox(height: 12.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                              textAlign: TextAlign.center,
-                              text: context.l10n.didntGetCode,
-                              color: AppColors.textColor3D3D3D,
-                              fontWeight: FontWeight.w400,
-                              fontsize: 12.sp,
-
-                            ),
-                            GestureDetector(
-                              onTap: isCountingDown.value
-                                  ? null
-                                  : () {
-                                startCountdown();
-                              },
-                              child: CustomText(
-                                fontWeight: FontWeight.w600,
-                                text: isCountingDown.value
-                                    ? '${'Resend in'} ${countdown.value}s'
-                                    : ' Resend',
-                                color: isCountingDown.value
-                                    ? AppColors.textColor3D3D3D
-                                    : AppColors.primaryColor,
-                                fontsize: 14.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                      ],
-                    ),
-
-
-
-
-
-
-
-                    SizedBox(height: 32.h),
-
-
-                    Obx(() => CustomButton(
-                      loading: authController.verfyLoading.value,
-                      title: context.l10n.verify,
-                      onpress: () {
-                        if (otpTEController.text.isEmpty) {
-                          ToastMessageHelper.showToastMessage("Please enter OTP");
-                          return;
-                        }
-
-                        authController.verfyEmail(
-                          otpTEController.text.trim(),
-                          email.trim(),
-                          screenType: screenType,
-                          context: context,
-                        );
-                      },
-                    )),
-
-                    SizedBox(height: 12.h),
-
-                    SizedBox(height: 40.h),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          SizedBox(height: 24.h),
         ],
       ),
     );
   }
-
 
   final TextEditingController otpTEController = TextEditingController();
 

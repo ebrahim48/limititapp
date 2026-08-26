@@ -66,13 +66,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get welcomeToLimitIt => 'Bienvenido a LimitIt';
 
   @override
-  String get startingToday => 'A partir de hoy, vamos a enfocarnos mejor y\nhacer realidad tus sueños';
+  String get startingToday =>
+      'A partir de hoy, vamos a enfocarnos mejor y\nhacer realidad tus sueños';
 
   @override
   String get signUpYourAccount => 'Regístrate en tu cuenta';
 
   @override
-  String get enterYourDetails => 'Ingresa tus datos a continuación para continuar';
+  String get enterYourDetails =>
+      'Ingresa tus datos a continuación para continuar';
 
   @override
   String get firstName => 'Nombre';
@@ -117,10 +119,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get logInYourAccount => 'Inicia sesión en tu cuenta';
 
   @override
-  String get allSetPasswordUpdated => '¡Todo listo!\nContraseña Actualizada Exitosamente';
+  String get allSetPasswordUpdated =>
+      '¡Todo listo!\nContraseña Actualizada Exitosamente';
 
   @override
-  String get logInSecurely => 'Inicia sesión de forma segura para acceder a tu aplicación completa';
+  String get logInSecurely =>
+      'Inicia sesión de forma segura para acceder a tu aplicación completa';
 
   @override
   String get forgetPassword => '¿Olvidaste tu Contraseña?';
@@ -153,13 +157,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get backToHome => 'Volver al Inicio';
 
   @override
-  String get iAcceptPrivacy => 'Acepto la política de privacidad y los términos de servicio';
+  String get iAcceptPrivacy =>
+      'Acepto la política de privacidad y los términos de servicio';
 
   @override
   String get privacyDataProtection => 'Privacidad y Protección de Datos';
 
   @override
-  String get usageDataStaysOnDevice => 'Tus datos de uso permanecen en tu dispositivo';
+  String get usageDataStaysOnDevice =>
+      'Tus datos de uso permanecen en tu dispositivo';
 
   @override
   String get noPersonalInfoCollection => 'No recopilamos información personal';
@@ -189,13 +195,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get timerSettings => 'Configuración del Temporizador';
 
   @override
-  String get preOpeningCountdown => 'Duración de la Cuenta Regresiva\nPre-Apertura';
+  String get preOpeningCountdown =>
+      'Duración de la Cuenta Regresiva\nPre-Apertura';
 
   @override
   String get motivationalPhrases => 'Frases Motivacionales';
 
   @override
-  String get allSetAppLimit => '¡Todo listo!\nHas Establecido el Límite de la Aplicación Exitosamente';
+  String get allSetAppLimit =>
+      '¡Todo listo!\nHas Establecido el Límite de la Aplicación Exitosamente';
 
   @override
   String get reports => 'Informes';
@@ -210,16 +218,19 @@ class AppLocalizationsEs extends AppLocalizations {
   String get generatingReport => 'Generando Informe...';
 
   @override
-  String get preparingYourReport => 'Preparando tu informe con datos en tiempo real';
+  String get preparingYourReport =>
+      'Preparando tu informe con datos en tiempo real';
 
   @override
   String get reportDownloaded => 'Informe Descargado';
 
   @override
-  String get reportReadyToShare => 'Tu informe de uso está listo para compartir o imprimir';
+  String get reportReadyToShare =>
+      'Tu informe de uso está listo para compartir o imprimir';
 
   @override
-  String get failedToDownloadReport => 'Error al descargar el informe. Por favor, inténtalo de nuevo';
+  String get failedToDownloadReport =>
+      'Error al descargar el informe. Por favor, inténtalo de nuevo';
 
   @override
   String get error => 'Error';
@@ -246,7 +257,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noNotificationsYet => 'Aún no hay notificaciones';
 
   @override
-  String get notifyWhenNewArrives => 'Te notificaremos cuando llegue algo nuevo';
+  String get notifyWhenNewArrives =>
+      'Te notificaremos cuando llegue algo nuevo';
 
   @override
   String get detoxMode => 'Modo Detox';
@@ -264,25 +276,29 @@ class AppLocalizationsEs extends AppLocalizations {
   String get grantRequiredPermissions => 'Otorgar Permisos Requeridos';
 
   @override
-  String get permissionsDescription => 'LimitIt necesita estos permisos para monitorear y bloquear aplicaciones cuando se alcanzan los límites.';
+  String get permissionsDescription =>
+      'LimitIt necesita estos permisos para monitorear y bloquear aplicaciones cuando se alcanzan los límites.';
 
   @override
   String get overlayPermission => 'Permiso de Superposición';
 
   @override
-  String get overlayPermissionDesc => 'Permite a LimitIt mostrar pantalla de bloqueo sobre otras aplicaciones';
+  String get overlayPermissionDesc =>
+      'Permite a LimitIt mostrar pantalla de bloqueo sobre otras aplicaciones';
 
   @override
   String get accessibilityService => 'Servicio de Accesibilidad';
 
   @override
-  String get accessibilityServiceDesc => 'Monitorea qué aplicaciones abres para hacer cumplir los límites';
+  String get accessibilityServiceDesc =>
+      'Monitorea qué aplicaciones abres para hacer cumplir los límites';
 
   @override
   String get notificationPermission => 'Permiso de Notificación';
 
   @override
-  String get notificationPermissionDesc => 'Permite que LimitIt envíe notificaciones sobre límites de aplicaciones';
+  String get notificationPermissionDesc =>
+      'Permite que LimitIt envíe notificaciones sobre límites de aplicaciones';
 
   @override
   String get startMonitoring => 'Comenzar Monitoreo';
@@ -300,7 +316,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get next => 'Siguiente';
 
   @override
-  String get takeControlScreenTime => 'Toma el Control de Tu\nTiempo de Pantalla';
+  String get takeControlScreenTime =>
+      'Toma el Control de Tu\nTiempo de Pantalla';
 
   @override
   String get regainControl => 'Recupera el Control de Tu Vida Digital';
@@ -387,7 +404,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noPinsCreated => 'No hay PINs creados';
 
   @override
-  String get createYourFirstPin => 'Crea tu primer PIN para proteger aplicaciones';
+  String get createYourFirstPin =>
+      'Crea tu primer PIN para proteger aplicaciones';
 
   @override
   String get createPin => 'Crear PIN';
@@ -408,25 +426,29 @@ class AppLocalizationsEs extends AppLocalizations {
   String get deletePin => 'Eliminar PIN';
 
   @override
-  String get deletePinConfirmation => '¿Estás seguro de que quieres eliminar este PIN? Esta acción no se puede deshacer.';
+  String get deletePinConfirmation =>
+      '¿Estás seguro de que quieres eliminar este PIN? Esta acción no se puede deshacer.';
 
   @override
   String get close => 'Cerrar';
 
   @override
-  String get pleaseAcceptPrivacyPolicy => 'Por favor acepta la Política de Privacidad';
+  String get pleaseAcceptPrivacyPolicy =>
+      'Por favor acepta la Política de Privacidad';
 
   @override
   String get screenTime => 'Tiempo de Pantalla';
 
   @override
-  String get noScreenTimeLimits => 'Aún no hay límites de tiempo de pantalla establecidos';
+  String get noScreenTimeLimits =>
+      'Aún no hay límites de tiempo de pantalla establecidos';
 
   @override
   String get addNewScreenTime => 'Agregar Nuevo Tiempo de Pantalla';
 
   @override
-  String get pleaseSelectAtLeastOneApp => 'Por favor selecciona al menos una aplicación';
+  String get pleaseSelectAtLeastOneApp =>
+      'Por favor selecciona al menos una aplicación';
 
   @override
   String get continueWithApps => 'Continuar';
@@ -452,7 +474,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get readyToLogOut => '¿Listo para Cerrar Sesión?';
 
   @override
-  String get noAppsSelected => 'No hay aplicaciones seleccionadas. Por favor regresa y selecciona aplicaciones.';
+  String get noAppsSelected =>
+      'No hay aplicaciones seleccionadas. Por favor regresa y selecciona aplicaciones.';
 
   @override
   String get saving => 'Guardando...';
@@ -485,7 +508,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get confirmSubscription => 'Confirmar Suscripción';
 
   @override
-  String get subscriptionConfirmMessage => '¿Suscribirse al Plan Mensual Premium por €1/mes?';
+  String get subscriptionConfirmMessage =>
+      '¿Suscribirse al Plan Mensual Premium por €1/mes?';
 
   @override
   String get subscribe => 'Suscribirse';
@@ -497,7 +521,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get failed => 'Fallido';
 
   @override
-  String get errorSavingSettings => 'Error al guardar la configuración. Por favor intenta de nuevo.';
+  String get errorSavingSettings =>
+      'Error al guardar la configuración. Por favor intenta de nuevo.';
 
   @override
   String get delete => 'Delete';
@@ -506,11 +531,260 @@ class AppLocalizationsEs extends AppLocalizations {
   String get deleteAccount => 'Delete Account';
 
   @override
-  String get deleteAccountWarning => 'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.';
+  String get deleteAccountWarning =>
+      'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.';
 
   @override
   String get enterPassword => 'Enter your password';
 
   @override
   String get passwordRequired => 'Password is required';
+
+  @override
+  String get app => 'aplicación';
+
+  @override
+  String get apps => 'aplicaciones';
+
+  @override
+  String get failedToLoadPlans => 'Error al cargar los planes';
+
+  @override
+  String get monitoringStartedSuccess =>
+      '¡El monitoreo de aplicaciones comenzó exitosamente!';
+
+  @override
+  String get failedToStartMonitoring =>
+      'Error al iniciar el monitoreo. Por favor intenta de nuevo.';
+
+  @override
+  String get takeBackYourTime => 'Recupera tu tiempo';
+
+  @override
+  String get getStartedSubtitle =>
+      'Protege las apps que te distraen y crea mejores hábitos digitales.';
+
+  @override
+  String get featureProtectTitle => 'Protege tus apps';
+
+  @override
+  String get featureProtectSubtitle =>
+      'Define límites, bloqueos horarios y pausas conscientes.';
+
+  @override
+  String get featureInsightTitle => 'Estadísticas reales';
+
+  @override
+  String get featureInsightSubtitle =>
+      'Controla tu tiempo de pantalla y cuánto has ahorrado.';
+
+  @override
+  String get featureGoalTitle => 'Cumple tus objetivos';
+
+  @override
+  String get featureGoalSubtitle => 'Crea rachas y mantente motivado cada día.';
+
+  @override
+  String get continueWithApple => 'Continuar con Apple';
+
+  @override
+  String get continueWithGoogle => 'Continuar con Google';
+
+  @override
+  String get continueWithEmail => 'Continuar con Email';
+
+  @override
+  String get socialLoginComingSoon =>
+      'El inicio de sesión social aún no está disponible.';
+
+  @override
+  String get passwordRule =>
+      'Contraseña: mínimo 8 caracteres, letras y números obligatorios';
+
+  @override
+  String get emailInvalid => 'Revisa tu correo';
+
+  @override
+  String get welcomeBack => 'Bienvenido de nuevo';
+
+  @override
+  String get forgetPasswordSubtitle =>
+      'Introduce tu correo y te enviaremos un código de verificación.';
+
+  @override
+  String get verifyOtpSubtitle => 'Enviamos un código de 6 dígitos a';
+
+  @override
+  String get resendIn => 'Reenviar en';
+
+  @override
+  String get resend => 'Reenviar';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'Elige una nueva contraseña para proteger tu cuenta.';
+
+  @override
+  String get resetSuccessSubtitle =>
+      'Ya puedes iniciar sesión con tu nueva contraseña.';
+
+  @override
+  String get appProtection => 'Protección de apps';
+
+  @override
+  String get yourProtectedApps => 'Tus apps protegidas';
+
+  @override
+  String get todayYouveAvoided => 'Hoy has evitado';
+
+  @override
+  String get impulsiveOpenings => 'aperturas impulsivas';
+
+  @override
+  String get blocked => 'Bloqueada';
+
+  @override
+  String get maxOpenings => 'Máx';
+
+  @override
+  String get day => 'día';
+
+  @override
+  String get noProtectionsYet => 'Sin protecciones';
+
+  @override
+  String get noProtectionsSubtitle =>
+      'Añade tu primera app y empieza a recuperar tu tiempo.';
+
+  @override
+  String get addProtection => 'Añadir protección';
+
+  @override
+  String get statistics => 'Estadísticas';
+
+  @override
+  String get premium => 'Premium';
+
+  @override
+  String get searchApp => 'Buscar app';
+
+  @override
+  String get searchForAnApp => 'Busca una app…';
+
+  @override
+  String get suggestions => 'Sugerencias';
+
+  @override
+  String get results => 'Resultados';
+
+  @override
+  String get noAppsFound => 'No se encontraron apps';
+
+  @override
+  String get usageAccessNeeded =>
+      'Se necesita acceso de uso para listar tus apps.';
+
+  @override
+  String get editProtection => 'Editar protección';
+
+  @override
+  String get newProtection => 'Nueva protección';
+
+  @override
+  String get protection => 'Protección';
+
+  @override
+  String get dailyTimeLimit => 'Límite diario';
+
+  @override
+  String get dailyTimeLimitHint => 'Permite un tiempo fijo cada día';
+
+  @override
+  String get maxOpeningsLabel => 'Aperturas máximas';
+
+  @override
+  String get maxOpeningsHint => 'Limita cuántas veces puedes abrirla';
+
+  @override
+  String get timeBlock => 'Bloqueo horario';
+
+  @override
+  String get timeBlockHint => 'Bloquea la app en un rango horario';
+
+  @override
+  String get from => 'Desde';
+
+  @override
+  String get to => 'Hasta';
+
+  @override
+  String get moreOptions => 'Más opciones';
+
+  @override
+  String get customizeMessage => 'Personalizar mensaje';
+
+  @override
+  String get customizeDays => 'Personalizar días';
+
+  @override
+  String get previewPause => 'Vista previa de pausa';
+
+  @override
+  String get defaultLabel => 'Predeterminado';
+
+  @override
+  String get deleteProtection => 'Eliminar protección';
+
+  @override
+  String get deleteProtectionQuestion => '¿Eliminar protección?';
+
+  @override
+  String get saveChanges => 'Guardar cambios';
+
+  @override
+  String get activateProtection => 'Activar protección';
+
+  @override
+  String get editMessage => 'Editar mensaje';
+
+  @override
+  String get message => 'Mensaje';
+
+  @override
+  String get messageHint => 'Céntrate en lo que importa.';
+
+  @override
+  String get selectDaysToApply =>
+      'Selecciona los días para aplicar esta protección.';
+
+  @override
+  String get everyDay => 'Todos los días';
+
+  @override
+  String get weekdays => 'Días laborables';
+
+  @override
+  String get weekends => 'Fines de semana';
+
+  @override
+  String get custom => 'Personalizado';
+
+  @override
+  String get pauseActive => 'Pausa activa';
+
+  @override
+  String get remainingTime => 'Tiempo restante';
+
+  @override
+  String get openNow => 'Abrir ahora';
+
+  @override
+  String deleteProtectionMessage(String appName) {
+    return 'Esta protección para $appName se eliminará permanentemente.';
+  }
+
+  @override
+  String appIsCurrentlyPaused(String appName) {
+    return '$appName está pausada actualmente.';
+  }
 }

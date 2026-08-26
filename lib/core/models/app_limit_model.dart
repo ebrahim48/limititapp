@@ -2,6 +2,25 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:get/get.dart';
 
+/// How an app is protected. Drives the badge and the editor controls.
+enum ProtectionType {
+  /// "Daily limit: 0h 30m"
+  dailyLimit,
+
+  /// "Max 4 openings/day"
+  maxOpens,
+
+  /// "Blocked 23:00–08:05"
+  timeBlock;
+
+  static ProtectionType fromName(String? name) {
+    return ProtectionType.values.firstWhere(
+      (t) => t.name == name,
+      orElse: () => ProtectionType.dailyLimit,
+    );
+  }
+}
+
 /// Model to hold app limit configuration
 class AppLimitModel {
   final String packageName;
@@ -13,6 +32,13 @@ class AppLimitModel {
   final RxString? scheduleStartTime; // Schedule start time (24h format: "22:00")
   final RxString? scheduleEndTime; // Schedule end time (24h format: "06:00")
   final RxBool? isActive; // Whether the schedule is currently active
+
+  /// Which control the user configured for this app.
+  final ProtectionType protectionType;
+
+  /// Message shown on the pause screen; null falls back to the default.
+  final String? customMessage;
+
   final DateTime createdAt;
 
   AppLimitModel({
@@ -25,6 +51,8 @@ class AppLimitModel {
     this.scheduleStartTime,
     this.scheduleEndTime,
     this.isActive,
+    this.protectionType = ProtectionType.dailyLimit,
+    this.customMessage,
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
 
@@ -39,6 +67,8 @@ class AppLimitModel {
       'scheduleStartTime': scheduleStartTime?.value,
       'scheduleEndTime': scheduleEndTime?.value,
       'isActive': isActive?.value,
+      'protectionType': protectionType.name,
+      'customMessage': customMessage,
       'createdAt': createdAt.toIso8601String(),
     };
   }
@@ -60,6 +90,8 @@ class AppLimitModel {
       isActive: json['isActive'] != null 
           ? RxBool(json['isActive']) 
           : null,
+      protectionType: ProtectionType.fromName(json['protectionType'] as String?),
+      customMessage: json['customMessage'] as String?,
       createdAt: DateTime.parse(json['createdAt']),
     );
   }
@@ -83,6 +115,8 @@ class AppLimitModel {
     String? scheduleStartTime,
     String? scheduleEndTime,
     bool? isActive,
+    ProtectionType? protectionType,
+    String? customMessage,
     DateTime? createdAt,
   }) {
     return AppLimitModel(
@@ -101,6 +135,8 @@ class AppLimitModel {
       isActive: isActive != null 
           ? RxBool(isActive) 
           : this.isActive,
+      protectionType: protectionType ?? this.protectionType,
+      customMessage: customMessage ?? this.customMessage,
       createdAt: createdAt ?? this.createdAt,
     );
   }

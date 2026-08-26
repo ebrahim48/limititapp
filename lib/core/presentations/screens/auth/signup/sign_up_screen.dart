@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,13 +5,9 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
-import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
-import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
-import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
-import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
-import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
+import 'package:limit_it_app/core/presentations/widgets/ui/ui.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -22,7 +17,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final RxBool isChecked = false.obs;
@@ -34,254 +28,222 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthController>();
+    final l10n = context.l10n;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-
-          Positioned(
-            top: 18.h,
-            right: 20.w,
-            child: Container(
-              width: 259.w,
-              height: 195.h,
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor.withValues(alpha: 0.5),
-                shape: BoxShape.circle,
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                ),
-              ),
+    return AppScaffold(
+      appBar: const AppTopBar(),
+      scrollable: true,
+      resizeToAvoidBottomInset: true,
+      body: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(height: 8.h),
+            Text(l10n.signUpYourAccount, style: AppTextStyles.h1()),
+            SizedBox(height: 8.h),
+            Text(
+              l10n.enterYourDetails,
+              style: AppTextStyles.body(color: AppColors.slateGreen),
             ),
-          ),
 
+            SizedBox(height: 28.h),
 
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Container(
-              width: 158.w,
-              height: 219.h,
-              decoration: BoxDecoration(
-                color: AppColors.textColor803D20.withValues(alpha: 0.3),
-                shape: BoxShape.circle,
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                ),
-              ),
+            AppTextField(
+              controller: nameCtrl,
+              label: l10n.firstName,
+              hintText: l10n.firstName,
+              textInputAction: TextInputAction.next,
+              validator: (value) => (value == null || value.trim().isEmpty)
+                  ? '${l10n.firstName} ${l10n.passwordRequired}'
+                  : null,
             ),
-          ),
+            SizedBox(height: 16.h),
 
+            AppTextField(
+              controller: emailCtrl,
+              label: l10n.email,
+              hintText: 'you@example.com',
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              onChanged: (_) => authController.signUpError(''),
+              validator: _emailValidator,
+            ),
 
-          SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Form(
-                  key: formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 40.h),
+            Obx(() {
+              if (authController.signUpError.value.isEmpty) {
+                return const SizedBox.shrink();
+              }
+              return Padding(
+                padding: EdgeInsets.only(top: 6.h, left: 2.w),
+                child: Text(
+                  authController.signUpError.value,
+                  style: AppTextStyles.caption(color: AppColors.alertRed),
+                ),
+              );
+            }),
 
-                      // Title
-                      CustomText(
-                        text: context.l10n.signUpYourAccount,
-                        fontsize: 24.sp,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textColor3D3D3D,
-                      ),
+            SizedBox(height: 16.h),
 
-                      SizedBox(height: 8.h),
+            AppTextField(
+              controller: passWordCtrl,
+              label: l10n.password,
+              hintText: '••••••••',
+              isPassword: true,
+              validator: _passwordValidator,
+            ),
 
-                      // Subtitle
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: context.l10n.enterYourDetails,
-                        fontsize: 14.sp,
-                        color: AppColors.textColor5D5D5D,
-                        maxline: 2,
-                      ),
+            SizedBox(height: 20.h),
 
-                      SizedBox(height: 32.h),
-
-                      // Form fields
-                      CustomTextField(
-                        hintextColor: AppColors.textColor5D5D5D,
-                        controller: nameCtrl,
-                        hintText: context.l10n.firstName,
-                        prefixIcon: Assets.icons.nameProfile.svg(),
-                      ),
-
-                      SizedBox(height: 16.h),
-
-                      CustomTextField(
-                        hintextColor: AppColors.textColor5D5D5D,
-                        controller: emailCtrl,
-                        hintText: context.l10n.email,
-                        prefixIcon: Assets.icons.email.svg(),
-                        isEmail: true,
-                        onChanged: (_) => authController.signUpError(''),
-                      ),
-
-                      Obx(() {
-                        if (authController.signUpError.value.isEmpty) return const SizedBox.shrink();
-                        return Padding(
-                          padding: EdgeInsets.only(left: 16.w, bottom: 8.h),
-                          child: Text(
-                            authController.signUpError.value,
-                            style: TextStyle(color: Colors.red, fontSize: 12.sp),
+            /// ---------------- Terms checkbox ----------------
+            Obx(
+              () => GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => isChecked.value = !isChecked.value,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _CheckBox(value: isChecked.value),
+                    SizedBox(width: 10.w),
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          style: AppTextStyles.small(
+                            color: AppColors.slateGreen,
                           ),
-                        );
-                      }),
-
-                      SizedBox(height: 16.h),
-
-                      CustomTextField(
-                        hintextColor: AppColors.textColor5D5D5D,
-                        controller: passWordCtrl,
-                        prefixIcon: Assets.icons.pass.svg(),
-                        hintText: context.l10n.password,
-                        isPassword: true,
-                      ),
-
-                      SizedBox(height: 16.h),
-
-
-                      ///================================ Terms checkbox ================================
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Obx(
-                                () => Checkbox(
-                              activeColor: AppColors.primaryColor,
-                              checkColor: Colors.white,
-                              value: isChecked.value,
-                              onChanged: (value) {
-                                isChecked.value = value ?? false;
-                              },
-                            ),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 12.h),
-                              child: RichText(
-                                text: TextSpan(
-                                  style: TextStyle(
-                                    color: AppColors.textColor3D3D3D,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: context.l10n.byCreatingAccount,
-                                    ),
-                                    TextSpan(
-                                      text: context.l10n.termsAndConditions,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12.sp,
-                                        color: AppColors.primaryColor,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          // Open Terms
-                                        },
-                                    ),
-                                    TextSpan(text: ' & '),
-                                    TextSpan(
-                                      text: context.l10n.privacyPolicy,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12.sp,
-                                        color: AppColors.primaryColor,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          // Open Privacy Policy
-                                        },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: 32.h),
-
-                      /// ====================> Sign Up button =========================================
-                      Obx(() => CustomButton(
-                        loading: authController.signUpLoading.value,
-                        title: context.l10n.signUp,
-                        onpress: () {
-                          if ((formKey.currentState?.validate() ?? false) && isChecked.value) {
-                            authController.handleSignUp(
-                              name: nameCtrl.text.trim(),
-                              email: emailCtrl.text.trim(),
-                              password: passWordCtrl.text.trim(),
-                              isPrivacy: isChecked.value,
-                              role: "USER",
-                              context: context,
-                              screenType: "signup",
-                            );
-                          } else if (!isChecked.value) {
-                            ToastMessageHelper.showToastMessage(context.l10n.pleaseAcceptPrivacyPolicy,title: context.l10n.failed);
-                          }
-                        },
-                      )),
-
-
-                      SizedBox(height: 24.h),
-
-                      // Login link
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            CustomText(
-                              text: context.l10n.alreadyHaveAccount,
-                              color: AppColors.textColor1A1A1A,
-                              fontsize: 14.sp,
-                              fontWeight: FontWeight.w400,
+                            TextSpan(text: l10n.byCreatingAccount),
+                            TextSpan(
+                              text: l10n.termsAndConditions,
+                              style: AppTextStyles.small(
+                                color: AppColors.forestGreen,
+                              ).copyWith(fontWeight: AppFont.semiBold),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => context
+                                    .pushNamed(AppRoutes.termsServicesScreen),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                context.pushNamed(AppRoutes.logInScreen);
-                              },
-                              child: CustomText(
-                                text: context.l10n.login,
-                                color: AppColors.primaryColor,
-                                fontsize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            const TextSpan(text: ' & '),
+                            TextSpan(
+                              text: l10n.privacyPolicy,
+                              style: AppTextStyles.small(
+                                color: AppColors.forestGreen,
+                              ).copyWith(fontWeight: AppFont.semiBold),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => context
+                                    .pushNamed(AppRoutes.privacyPolicyScreen),
                             ),
                           ],
                         ),
                       ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
 
-                      SizedBox(height: 40.h),
+            SizedBox(height: 28.h),
+
+            /// ---------------- Sign up ----------------
+            Obx(
+              () => AppButton(
+                label: l10n.signUp,
+                loading: authController.signUpLoading.value,
+                onPressed: () {
+                  if ((formKey.currentState?.validate() ?? false) &&
+                      isChecked.value) {
+                    authController.handleSignUp(
+                      name: nameCtrl.text.trim(),
+                      email: emailCtrl.text.trim(),
+                      password: passWordCtrl.text.trim(),
+                      isPrivacy: isChecked.value,
+                      role: "USER",
+                      context: context,
+                      screenType: "signup",
+                    );
+                  } else if (!isChecked.value) {
+                    ToastMessageHelper.showToastMessage(
+                      l10n.pleaseAcceptPrivacyPolicy,
+                      title: l10n.failed,
+                    );
+                  }
+                },
+              ),
+            ),
+
+            SizedBox(height: 20.h),
+
+            Center(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => context.pushNamed(AppRoutes.logInScreen),
+                child: RichText(
+                  text: TextSpan(
+                    text: '${l10n.alreadyHaveAccount} ',
+                    style: AppTextStyles.small(color: AppColors.slateGreen),
+                    children: [
+                      TextSpan(
+                        text: l10n.login,
+                        style: AppTextStyles.small(color: AppColors.forestGreen)
+                            .copyWith(fontWeight: AppFont.semiBold),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+            SizedBox(height: 24.h),
+          ],
+        ),
       ),
+    );
+  }
+
+  String? _emailValidator(String? value) {
+    final l10n = context.l10n;
+    if (value == null || value.trim().isEmpty) {
+      return '${l10n.email} ${l10n.passwordRequired}';
+    }
+    final ok = RegExp(r'^[\w\.\-\+]+@([\w\-]+\.)+[\w\-]{2,}$')
+        .hasMatch(value.trim());
+    return ok ? null : l10n.emailInvalid;
+  }
+
+  String? _passwordValidator(String? value) {
+    final l10n = context.l10n;
+    if (value == null || value.isEmpty) return l10n.passwordRequired;
+    final hasLetter = RegExp(r'[A-Za-z]').hasMatch(value);
+    final hasDigit = RegExp(r'\d').hasMatch(value);
+    if (value.length < 8 || !hasLetter || !hasDigit) {
+      return l10n.passwordRule;
+    }
+    return null;
+  }
+}
+
+/// Rounded checkbox matching the design system.
+class _CheckBox extends StatelessWidget {
+  const _CheckBox({required this.value});
+
+  final bool value;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 140),
+      width: 20.w,
+      height: 20.w,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: value ? AppColors.leafGreen : AppColors.white,
+        borderRadius: BorderRadius.circular(6.r),
+        border: Border.all(
+          color: value ? AppColors.leafGreen : AppColors.haze,
+          width: 1.5,
+        ),
+      ),
+      child: value
+          ? Icon(Icons.check_rounded, size: 14.sp, color: AppColors.white)
+          : null,
     );
   }
 }

@@ -19,7 +19,7 @@ import 'app_localizations_it.dart';
 /// `supportedLocales` list. For example:
 ///
 /// ```dart
-/// import 'gen_l10n/app_localizations.dart';
+/// import 'l10n/app_localizations.dart';
 ///
 /// return MaterialApp(
 ///   localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -63,7 +63,8 @@ import 'app_localizations_it.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -71,7 +72,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -83,18 +85,19 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('es'),
-    Locale('it')
+    Locale('it'),
   ];
 
   /// The title of the application
@@ -1104,9 +1107,472 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password is required'**
   String get passwordRequired;
+
+  /// Label for app count (singular)
+  ///
+  /// In en, this message translates to:
+  /// **'app'**
+  String get app;
+
+  /// Label for apps count (plural)
+  ///
+  /// In en, this message translates to:
+  /// **'apps'**
+  String get apps;
+
+  /// Error message when plans fail to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load plans'**
+  String get failedToLoadPlans;
+
+  /// Success message when monitoring starts
+  ///
+  /// In en, this message translates to:
+  /// **'App monitoring started successfully!'**
+  String get monitoringStartedSuccess;
+
+  /// Error message when monitoring fails to start
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start monitoring. Please try again.'**
+  String get failedToStartMonitoring;
+
+  /// takeBackYourTime
+  ///
+  /// In en, this message translates to:
+  /// **'Take back your time'**
+  String get takeBackYourTime;
+
+  /// getStartedSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Protect the apps that distract you and build better digital habits.'**
+  String get getStartedSubtitle;
+
+  /// featureProtectTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Protect your apps'**
+  String get featureProtectTitle;
+
+  /// featureProtectSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Set limits, time blocks and mindful pauses.'**
+  String get featureProtectSubtitle;
+
+  /// featureInsightTitle
+  ///
+  /// In en, this message translates to:
+  /// **'See real insights'**
+  String get featureInsightTitle;
+
+  /// featureInsightSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Track screen time and how much you saved.'**
+  String get featureInsightSubtitle;
+
+  /// featureGoalTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Hit your goals'**
+  String get featureGoalTitle;
+
+  /// featureGoalSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Build streaks and stay motivated every day.'**
+  String get featureGoalSubtitle;
+
+  /// continueWithApple
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get continueWithApple;
+
+  /// continueWithGoogle
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
+
+  /// continueWithEmail
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Email'**
+  String get continueWithEmail;
+
+  /// socialLoginComingSoon
+  ///
+  /// In en, this message translates to:
+  /// **'Social sign-in is not available yet.'**
+  String get socialLoginComingSoon;
+
+  /// passwordRule
+  ///
+  /// In en, this message translates to:
+  /// **'Password: 8 characters min, letters & digits required'**
+  String get passwordRule;
+
+  /// emailInvalid
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your email'**
+  String get emailInvalid;
+
+  /// welcomeBack
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get welcomeBack;
+
+  /// forgetPasswordSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email and we\'ll send you a verification code.'**
+  String get forgetPasswordSubtitle;
+
+  /// verifyOtpSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'We sent a 6-digit code to'**
+  String get verifyOtpSubtitle;
+
+  /// resendIn
+  ///
+  /// In en, this message translates to:
+  /// **'Resend in'**
+  String get resendIn;
+
+  /// resend
+  ///
+  /// In en, this message translates to:
+  /// **'Resend'**
+  String get resend;
+
+  /// resetPasswordSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a new password to secure your account.'**
+  String get resetPasswordSubtitle;
+
+  /// resetSuccessSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'You can now log in with your new password.'**
+  String get resetSuccessSubtitle;
+
+  /// appProtection
+  ///
+  /// In en, this message translates to:
+  /// **'App protection'**
+  String get appProtection;
+
+  /// yourProtectedApps
+  ///
+  /// In en, this message translates to:
+  /// **'Your protected apps'**
+  String get yourProtectedApps;
+
+  /// todayYouveAvoided
+  ///
+  /// In en, this message translates to:
+  /// **'Today you\'ve avoided'**
+  String get todayYouveAvoided;
+
+  /// impulsiveOpenings
+  ///
+  /// In en, this message translates to:
+  /// **'impulsive openings'**
+  String get impulsiveOpenings;
+
+  /// blocked
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked'**
+  String get blocked;
+
+  /// maxOpenings
+  ///
+  /// In en, this message translates to:
+  /// **'Max'**
+  String get maxOpenings;
+
+  /// day
+  ///
+  /// In en, this message translates to:
+  /// **'day'**
+  String get day;
+
+  /// noProtectionsYet
+  ///
+  /// In en, this message translates to:
+  /// **'No protections yet'**
+  String get noProtectionsYet;
+
+  /// noProtectionsSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Add your first app and start taking back your time.'**
+  String get noProtectionsSubtitle;
+
+  /// addProtection
+  ///
+  /// In en, this message translates to:
+  /// **'Add protection'**
+  String get addProtection;
+
+  /// statistics
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statistics;
+
+  /// premium
+  ///
+  /// In en, this message translates to:
+  /// **'Premium'**
+  String get premium;
+
+  /// searchApp
+  ///
+  /// In en, this message translates to:
+  /// **'Search app'**
+  String get searchApp;
+
+  /// searchForAnApp
+  ///
+  /// In en, this message translates to:
+  /// **'Search for an app…'**
+  String get searchForAnApp;
+
+  /// suggestions
+  ///
+  /// In en, this message translates to:
+  /// **'Suggestions'**
+  String get suggestions;
+
+  /// results
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get results;
+
+  /// noAppsFound
+  ///
+  /// In en, this message translates to:
+  /// **'No apps found'**
+  String get noAppsFound;
+
+  /// usageAccessNeeded
+  ///
+  /// In en, this message translates to:
+  /// **'Usage access is needed to list your apps.'**
+  String get usageAccessNeeded;
+
+  /// editProtection
+  ///
+  /// In en, this message translates to:
+  /// **'Edit protection'**
+  String get editProtection;
+
+  /// newProtection
+  ///
+  /// In en, this message translates to:
+  /// **'New protection'**
+  String get newProtection;
+
+  /// protection
+  ///
+  /// In en, this message translates to:
+  /// **'Protection'**
+  String get protection;
+
+  /// dailyTimeLimit
+  ///
+  /// In en, this message translates to:
+  /// **'Daily time limit'**
+  String get dailyTimeLimit;
+
+  /// dailyTimeLimitHint
+  ///
+  /// In en, this message translates to:
+  /// **'Allow a set amount of time each day'**
+  String get dailyTimeLimitHint;
+
+  /// maxOpeningsLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Max openings'**
+  String get maxOpeningsLabel;
+
+  /// maxOpeningsHint
+  ///
+  /// In en, this message translates to:
+  /// **'Limit how many times you can open it'**
+  String get maxOpeningsHint;
+
+  /// timeBlock
+  ///
+  /// In en, this message translates to:
+  /// **'Time block'**
+  String get timeBlock;
+
+  /// timeBlockHint
+  ///
+  /// In en, this message translates to:
+  /// **'Block the app during a time range'**
+  String get timeBlockHint;
+
+  /// from
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get from;
+
+  /// to
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get to;
+
+  /// moreOptions
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get moreOptions;
+
+  /// customizeMessage
+  ///
+  /// In en, this message translates to:
+  /// **'Customize message'**
+  String get customizeMessage;
+
+  /// customizeDays
+  ///
+  /// In en, this message translates to:
+  /// **'Customize days'**
+  String get customizeDays;
+
+  /// previewPause
+  ///
+  /// In en, this message translates to:
+  /// **'Preview pause'**
+  String get previewPause;
+
+  /// defaultLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get defaultLabel;
+
+  /// deleteProtection
+  ///
+  /// In en, this message translates to:
+  /// **'Delete protection'**
+  String get deleteProtection;
+
+  /// deleteProtectionQuestion
+  ///
+  /// In en, this message translates to:
+  /// **'Delete protection?'**
+  String get deleteProtectionQuestion;
+
+  /// saveChanges
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get saveChanges;
+
+  /// activateProtection
+  ///
+  /// In en, this message translates to:
+  /// **'Activate protection'**
+  String get activateProtection;
+
+  /// editMessage
+  ///
+  /// In en, this message translates to:
+  /// **'Edit message'**
+  String get editMessage;
+
+  /// message
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get message;
+
+  /// messageHint
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on what matters.'**
+  String get messageHint;
+
+  /// selectDaysToApply
+  ///
+  /// In en, this message translates to:
+  /// **'Select days to apply this protection.'**
+  String get selectDaysToApply;
+
+  /// everyDay
+  ///
+  /// In en, this message translates to:
+  /// **'Every day'**
+  String get everyDay;
+
+  /// weekdays
+  ///
+  /// In en, this message translates to:
+  /// **'Weekdays'**
+  String get weekdays;
+
+  /// weekends
+  ///
+  /// In en, this message translates to:
+  /// **'Weekends'**
+  String get weekends;
+
+  /// custom
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get custom;
+
+  /// pauseActive
+  ///
+  /// In en, this message translates to:
+  /// **'Pause active'**
+  String get pauseActive;
+
+  /// remainingTime
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining time'**
+  String get remainingTime;
+
+  /// openNow
+  ///
+  /// In en, this message translates to:
+  /// **'Open now'**
+  String get openNow;
+
+  /// deleteProtectionMessage
+  ///
+  /// In en, this message translates to:
+  /// **'This protection for {appName} will be permanently removed.'**
+  String deleteProtectionMessage(String appName);
+
+  /// appIsCurrentlyPaused
+  ///
+  /// In en, this message translates to:
+  /// **'{appName} is currently paused.'**
+  String appIsCurrentlyPaused(String appName);
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -1115,26 +1581,28 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'es', 'it'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en', 'es', 'it'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en': return AppLocalizationsEn();
-    case 'es': return AppLocalizationsEs();
-    case 'it': return AppLocalizationsIt();
+    case 'en':
+      return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
+    case 'it':
+      return AppLocalizationsIt();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

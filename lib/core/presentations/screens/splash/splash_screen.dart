@@ -3,12 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/app_constants/app_constants.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
-import 'dart:ui';
 import 'package:limit_it_app/core/helpers/prefs_helper.dart';
-import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../config/app_routes/app_routes.dart';
-import '../../../constants/app_colors.dart';
+import '../../widgets/ui/ui.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,18 +17,28 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+  late final AnimationController _controller;
+  late final Animation<double> _fade;
+  late final Animation<double> _scale;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 10),
+      duration: const Duration(milliseconds: 900),
       vsync: this,
-    )..repeat();
+    )..forward();
+
+    _fade = CurvedAnimation(parent: _controller, curve: Curves.easeOut);
+    _scale = Tween<double>(begin: 0.88, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
+    );
+
     _checkAuthAndNavigate();
   }
 
+  /// Unchanged auth gate — a saved bearer token goes straight to the app,
+  /// otherwise the user lands on Get started.
   Future<void> _checkAuthAndNavigate() async {
     await Future.delayed(const Duration(seconds: 3));
 
@@ -41,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen>
     if (bearerToken.isNotEmpty) {
       context.goNamed(AppRoutes.bottomNavBarScreen);
     } else {
-      context.goNamed(AppRoutes.onBoardingScreen);
+      context.goNamed(AppRoutes.getStartedScreen);
     }
   }
 
@@ -54,69 +62,27 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: 18.h,
-            left: 109.w,
-            child: Container(
-              width: 259.w,
-              height: 195.h,
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor.withValues(alpha: 0.5),
-                shape: BoxShape.circle,
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                ),
-              ),
-            ),
-          ),
-
-          Container(
-            width: 158.w,
-            height: 219.h,
-            decoration: BoxDecoration(
-              color: AppColors.textColor803D20.withValues(alpha: 0.3),
-              shape: BoxShape.circle,
-            ),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                ),
-              ),
-            ),
-          ),
-          Center(
+      backgroundColor: AppColors.scaffoldBg,
+      body: Center(
+        child: FadeTransition(
+          opacity: _fade,
+          child: ScaleTransition(
+            scale: _scale,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Assets.images.splash.image(
-                      width: 63.w,
-                      height: 63.h,
-                    ),
-                    SizedBox(width: 4.w),
-                    CustomText(
-                      text: context.l10n.appTitle,
-                      fontsize: 48.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.primaryColor,
-                    ),
-                  ],
+                Assets.illustrations.leafLogo.svg(width: 96.w, height: 96.w),
+                SizedBox(height: 20.h),
+                Text(context.l10n.appTitle, style: AppTextStyles.h1()),
+                SizedBox(height: 8.h),
+                Text(
+                  context.l10n.takeBackYourTime,
+                  style: AppTextStyles.body(color: AppColors.slateGreen),
                 ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

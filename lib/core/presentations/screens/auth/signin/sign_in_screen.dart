@@ -1,214 +1,149 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
-import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
-import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
-import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
-import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
-import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
+import 'package:limit_it_app/core/presentations/widgets/ui/ui.dart';
 
 class LoginInScreen extends StatelessWidget {
   LoginInScreen({super.key});
 
   final GlobalKey<FormState> _logKey = GlobalKey<FormState>();
 
-  // Controllers
   final TextEditingController emailCtrl = TextEditingController();
   final TextEditingController passWordCtrl = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthController>();
+    final l10n = context.l10n;
 
-    return Scaffold(
-      body: Stack(
-        children: [
+    return AppScaffold(
+      appBar: const AppTopBar(),
+      scrollable: true,
+      resizeToAvoidBottomInset: true,
+      body: Form(
+        key: _logKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(height: 8.h),
+            Text(l10n.logInYourAccount, style: AppTextStyles.h1()),
+            SizedBox(height: 8.h),
+            Text(
+              l10n.logInSecurely,
+              style: AppTextStyles.body(color: AppColors.slateGreen),
+            ),
 
-          Positioned(
-            top: 18.h,
-            right: 20.w,
-            child: Container(
-              width: 259.w,
-              height: 195.h,
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor.withValues(alpha: 0.5),
-                shape: BoxShape.circle,
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
+            SizedBox(height: 28.h),
+
+            AppTextField(
+              controller: emailCtrl,
+              label: l10n.email,
+              hintText: 'you@example.com',
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return '${l10n.email} ${l10n.passwordRequired}';
+                }
+                final ok = RegExp(r'^[\w\.\-\+]+@([\w\-]+\.)+[\w\-]{2,}$')
+                    .hasMatch(value.trim());
+                return ok ? null : l10n.emailInvalid;
+              },
+            ),
+            SizedBox(height: 16.h),
+
+            AppTextField(
+              controller: passWordCtrl,
+              label: l10n.password,
+              hintText: '••••••••',
+              isPassword: true,
+              validator: (value) => (value == null || value.isEmpty)
+                  ? l10n.passwordRequired
+                  : null,
+            ),
+
+            /// ---------------- Server-side login error ----------------
+            Obx(() {
+              if (authController.loginErrorMessage.value.isEmpty) {
+                return const SizedBox.shrink();
+              }
+              return Padding(
+                padding: EdgeInsets.only(top: 8.h, left: 2.w),
+                child: Text(
+                  authController.loginErrorMessage.value,
+                  style: AppTextStyles.caption(color: AppColors.alertRed),
                 ),
+              );
+            }),
+
+            SizedBox(height: 12.h),
+
+            Align(
+              alignment: Alignment.centerRight,
+              child: AppTextLink(
+                label: l10n.forgetPassword,
+                style: AppTextStyles.small(color: AppColors.forestGreen)
+                    .copyWith(fontWeight: AppFont.semiBold),
+                onPressed: () {
+                  if (emailCtrl.text.isEmpty) {
+                    authController.loginErrorMessage.value =
+                        "Please enter your email";
+                  } else {
+                    context.pushNamed(
+                      AppRoutes.forgetPasswordScreen,
+                      extra: emailCtrl.text,
+                    );
+                  }
+                },
               ),
             ),
-          ),
 
+            SizedBox(height: 20.h),
 
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Container(
-              width: 158.w,
-              height: 219.h,
-              decoration: BoxDecoration(
-                color: AppColors.textColor803D20.withValues(alpha: 0.3),
-                shape: BoxShape.circle,
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                ),
+            Obx(
+              () => AppButton(
+                label: l10n.login,
+                loading: authController.loginLoading.value,
+                onPressed: () {
+                  if (_logKey.currentState?.validate() ?? true) {
+                    authController.handleLogIn(
+                      emailCtrl.text,
+                      passWordCtrl.text.trim(),
+                      context: context,
+                    );
+                  }
+                },
               ),
             ),
-          ),
 
+            SizedBox(height: 20.h),
 
-          SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Form(
-                  key: _logKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Center(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => context.pushNamed(AppRoutes.signUpScreen),
+                child: RichText(
+                  text: TextSpan(
+                    text: '${l10n.alreadyHaveAccount} ',
+                    style: AppTextStyles.small(color: AppColors.slateGreen),
                     children: [
-                      SizedBox(height: 50.h),
-
-                      // Title
-                      CustomText(
-                        text: context.l10n.logInYourAccount,
-                        fontsize: 24.sp,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textColor3D3D3D,
+                      TextSpan(
+                        text: l10n.signUp,
+                        style: AppTextStyles.small(color: AppColors.forestGreen)
+                            .copyWith(fontWeight: AppFont.semiBold),
                       ),
-
-                      SizedBox(height: 8.h),
-
-                      // Subtitle
-                      CustomText(
-                        textAlign: TextAlign.start,
-                        text: context.l10n.logInSecurely,
-                        fontsize: 14.sp,
-                        color: AppColors.textColor5D5D5D,
-                        maxline: 2,
-                      ),
-
-                      SizedBox(height: 32.h),
-
-                      CustomTextField(
-                        hintextColor: AppColors.textColor5D5D5D,
-                        controller: emailCtrl,
-                        hintText: context.l10n.email,
-                        prefixIcon: Assets.icons.email.svg(),
-                        isEmail: true,
-                      ),
-
-
-                      SizedBox(height: 16.h),
-
-                      CustomTextField(
-                        hintextColor: AppColors.textColor5D5D5D,
-                        controller: passWordCtrl,
-                        prefixIcon: Assets.icons.pass.svg(),
-                        hintText: context.l10n.password,
-                        isPassword: true,
-                      ),
-
-                      /// ====================================> Error Message Below Password Field ========================>
-                      Obx(() {
-                        if (authController.loginErrorMessage.value.isNotEmpty) {
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: 4.h, top: 4.h),
-                            child: CustomText(
-                              text: authController.loginErrorMessage.value,
-                              color: Colors.red.shade700,
-                              fontsize: 11.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          );
-                        }
-                        return SizedBox.shrink();
-                      }),
-
-                      SizedBox(height: 5.h),
-
-                      /// ====================================> Forget password ========================>
-
-                      GestureDetector(
-                        onTap: (){
-                          if(emailCtrl.text.isEmpty){
-                            authController.loginErrorMessage.value = "Please enter your email";
-                          }else{
-                            context.pushNamed(AppRoutes.forgetPasswordScreen, extra: emailCtrl.text);
-                          }
-                        },
-                        child: CustomText(
-                          text: context.l10n.forgetPassword,
-                          color: AppColors.primaryColor,
-                          fontsize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-
-                      SizedBox(height: 32.h),
-
-                      Obx(()=>
-                      CustomButton(
-                        loading: authController.loginLoading.value,
-                          title: context.l10n.login,
-                          onpress: () {
-                            if (_logKey.currentState?.validate()?? true) {
-                              authController.handleLogIn(
-                                  emailCtrl.text, passWordCtrl.text.trim(),
-                                  context: context);
-                            }
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 12.h),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            CustomText(
-                              text: context.l10n.alreadyHaveAccount,
-                              color: AppColors.textColor1A1A1A,
-                              fontsize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                context.pushNamed(AppRoutes.signUpScreen);
-                              },
-                              child: CustomText(
-                                text: context.l10n.signUp,
-                                color: AppColors.primaryColor,
-                                fontsize: 14.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 40.h),
                     ],
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+            SizedBox(height: 24.h),
+          ],
+        ),
       ),
     );
   }

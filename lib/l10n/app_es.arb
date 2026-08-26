@@ -58,7 +58,7 @@
   },
   "notifications": "Notificaciones",
   "@notifications": {
-    "description": "Notifications setting label"
+    "description": "Notifications screen title"
   },
   "about": "Acerca de",
   "@about": {
@@ -126,7 +126,7 @@
   },
   "privacyPolicy": "Política de Privacidad",
   "@privacyPolicy": {
-    "description": "Privacy policy link"
+    "description": "Privacy Policy screen title"
   },
   "alreadyHaveAccount": "¿Ya tienes una cuenta? ",
   "@alreadyHaveAccount": {
@@ -290,11 +290,7 @@
   },
   "aboutUs": "Sobre Nosotros",
   "@aboutUs": {
-    "description": "About Us screen title"
-  },
-  "privacyPolicy": "Política de Privacidad",
-  "@privacyPolicy": {
-    "description": "Privacy Policy screen title"
+    "description": "About us menu item"
   },
   "termsConditions": "Términos y Condiciones",
   "@termsConditions": {
@@ -306,7 +302,7 @@
   },
   "retry": "Reintentar",
   "@retry": {
-    "description": "Retry button text"
+    "description": "Retry button"
   },
   "failedToLoadData": "Error al cargar los datos",
   "@failedToLoadData": {
@@ -315,10 +311,6 @@
   "networkError": "Error de red. Por favor, comprueba tu conexión",
   "@networkError": {
     "description": "Network error message"
-  },
-  "notifications": "Notificaciones",
-  "@notifications": {
-    "description": "Notifications screen title"
   },
   "noNotificationsYet": "Aún no hay notificaciones",
   "@noNotificationsYet": {
@@ -564,10 +556,6 @@
   "@addNewScreenTime": {
     "description": "Add new screen time button"
   },
-  "retry": "Reintentar",
-  "@retry": {
-    "description": "Retry button"
-  },
   "pleaseSelectAtLeastOneApp": "Por favor selecciona al menos una aplicación",
   "@pleaseSelectAtLeastOneApp": {
     "description": "App selection error"
@@ -592,10 +580,6 @@
   "changePassword": "Cambiar Contraseña",
   "@changePassword": {
     "description": "Change password menu item"
-  },
-  "aboutUs": "Sobre Nosotros",
-  "@aboutUs": {
-    "description": "About us menu item"
   },
   "notification": "Notificación",
   "@notification": {
@@ -692,5 +676,77 @@
   "failedToStartMonitoring": "Error al iniciar el monitoreo. Por favor intenta de nuevo.",
   "@failedToStartMonitoring": {
     "description": "Error message when monitoring fails to start"
-  }
+  },
+  "takeBackYourTime": "Recupera tu tiempo",
+  "getStartedSubtitle": "Protege las apps que te distraen y crea mejores hábitos digitales.",
+  "featureProtectTitle": "Protege tus apps",
+  "featureProtectSubtitle": "Define límites, bloqueos horarios y pausas conscientes.",
+  "featureInsightTitle": "Estadísticas reales",
+  "featureInsightSubtitle": "Controla tu tiempo de pantalla y cuánto has ahorrado.",
+  "featureGoalTitle": "Cumple tus objetivos",
+  "featureGoalSubtitle": "Crea rachas y mantente motivado cada día.",
+  "continueWithApple": "Continuar con Apple",
+  "continueWithGoogle": "Continuar con Google",
+  "continueWithEmail": "Continuar con Email",
+  "socialLoginComingSoon": "El inicio de sesión social aún no está disponible.",
+  "passwordRule": "Contraseña: mínimo 8 caracteres, letras y números obligatorios",
+  "emailInvalid": "Revisa tu correo",
+  "welcomeBack": "Bienvenido de nuevo",
+  "forgetPasswordSubtitle": "Introduce tu correo y te enviaremos un código de verificación.",
+  "verifyOtpSubtitle": "Enviamos un código de 6 dígitos a",
+  "resendIn": "Reenviar en",
+  "resend": "Reenviar",
+  "resetPasswordSubtitle": "Elige una nueva contraseña para proteger tu cuenta.",
+  "resetSuccessSubtitle": "Ya puedes iniciar sesión con tu nueva contraseña.",
+  "appProtection": "Protección de apps",
+  "yourProtectedApps": "Tus apps protegidas",
+  "todayYouveAvoided": "Hoy has evitado",
+  "impulsiveOpenings": "aperturas impulsivas",
+  "blocked": "Bloqueada",
+  "maxOpenings": "Máx",
+  "day": "día",
+  "noProtectionsYet": "Sin protecciones",
+  "noProtectionsSubtitle": "Añade tu primera app y empieza a recuperar tu tiempo.",
+  "addProtection": "Añadir protección",
+  "statistics": "Estadísticas",
+  "premium": "Premium",
+  "searchApp": "Buscar app",
+  "searchForAnApp": "Busca una app…",
+  "suggestions": "Sugerencias",
+  "results": "Resultados",
+  "noAppsFound": "No se encontraron apps",
+  "usageAccessNeeded": "Se necesita acceso de uso para listar tus apps.",
+  "editProtection": "Editar protección",
+  "newProtection": "Nueva protección",
+  "protection": "Protección",
+  "dailyTimeLimit": "Límite diario",
+  "dailyTimeLimitHint": "Permite un tiempo fijo cada día",
+  "maxOpeningsLabel": "Aperturas máximas",
+  "maxOpeningsHint": "Limita cuántas veces puedes abrirla",
+  "timeBlock": "Bloqueo horario",
+  "timeBlockHint": "Bloquea la app en un rango horario",
+  "from": "Desde",
+  "to": "Hasta",
+  "moreOptions": "Más opciones",
+  "customizeMessage": "Personalizar mensaje",
+  "customizeDays": "Personalizar días",
+  "previewPause": "Vista previa de pausa",
+  "defaultLabel": "Predeterminado",
+  "deleteProtection": "Eliminar protección",
+  "deleteProtectionQuestion": "¿Eliminar protección?",
+  "saveChanges": "Guardar cambios",
+  "activateProtection": "Activar protección",
+  "editMessage": "Editar mensaje",
+  "message": "Mensaje",
+  "messageHint": "Céntrate en lo que importa.",
+  "selectDaysToApply": "Selecciona los días para aplicar esta protección.",
+  "everyDay": "Todos los días",
+  "weekdays": "Días laborables",
+  "weekends": "Fines de semana",
+  "custom": "Personalizado",
+  "pauseActive": "Pausa activa",
+  "remainingTime": "Tiempo restante",
+  "openNow": "Abrir ahora",
+  "deleteProtectionMessage": "Esta protección para {appName} se eliminará permanentemente.",
+  "appIsCurrentlyPaused": "{appName} está pausada actualmente."
 }
