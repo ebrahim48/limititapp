@@ -37,8 +37,8 @@ class _SplashScreenState extends State<SplashScreen>
     _checkAuthAndNavigate();
   }
 
-  /// Unchanged auth gate — a saved bearer token goes straight to the app,
-  /// otherwise the user lands on Get started.
+  /// Auth gate — a saved bearer token goes straight to the app,
+  /// otherwise the user picks a language and then signs in.
   Future<void> _checkAuthAndNavigate() async {
     await Future.delayed(const Duration(seconds: 3));
 
@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen>
     if (bearerToken.isNotEmpty) {
       context.goNamed(AppRoutes.bottomNavBarScreen);
     } else {
-      context.goNamed(AppRoutes.getStartedScreen);
+      context.goNamed(AppRoutes.languageScreen);
     }
   }
 

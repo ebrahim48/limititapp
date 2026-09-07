@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
+import 'package:limit_it_app/core/models/protection_draft.dart';
+import 'package:limit_it_app/core/presentations/screens/Home/app_protection_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/Home/home_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/Home/profile/view_profile_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/Home/profile/view_update_profile_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/forget/forget_password_screen.dart';
-import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/limit_privacy.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/select_apps_manage.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/set_usage_limit_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/auth/limitItScreenTime/timer_settings_screen.dart';
@@ -26,16 +27,36 @@ import 'package:limit_it_app/core/presentations/screens/limits/schedules_limits_
 import 'package:limit_it_app/core/presentations/screens/limits/set_pin_number_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/notifications/notifications_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/language_screen.dart';
-import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_screen.dart';
-import 'package:limit_it_app/core/presentations/screens/onboarding/get_started_screen.dart';
-import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_start_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/premium/cancel_subscription_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/premium/choose_plan_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/premium/manage_subscription_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/premium/premium_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/premium/premium_success_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/premium/subscription_cancelled_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/choose_function_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/protection/customize_days_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/protection/customize_message_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/protection/preview_pause_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/protection/protection_editor_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/protection_review_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/protection_step_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/protection_success_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/protection/search_app_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/reports/reports_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/about_us_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings2/about_limitit_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings2/backup_restore_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings2/help_support_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings2/logout_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings2/privacy_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings2/reminders_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings2/settings_home_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/statistics/app_usage_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/statistics/goals_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/statistics/monthly_report_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/statistics/statistics_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/statistics/time_saved_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/statistics/trend_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/change_password.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/motivation_phrases.dart';
 import 'package:limit_it_app/core/presentations/screens/settings/pin_settings_screen.dart';
@@ -52,10 +73,7 @@ import 'package:limit_it_app/core/presentations/screens/splash/splash_screen.dar
 
 class AppRoutes {
   static const String splashScreen = "/splashScreen";
-  static const String onBoardingScreen = "/onBoardingScreen";
   static const String languageScreen = "/languageScreen";
-  static const String onBoardingStartScreen = "/onBoardingStartScreen";
-  static const String getStartedScreen = "/getStartedScreen";
 
   /// =============================> Auth ================================>
 
@@ -67,7 +85,6 @@ class AppRoutes {
   static const String resetSuccessFullyScreen = "/resetSuccessFullyScreen";
   static const String termsServicesScreen = "/termsServicesScreen";
   static const String privacyPolicyScreen = "/privacyPolicyScreen";
-  static const String limitPrivacyProtectionScreen = "/limitPrivacyProtectionScreen";
   static const String selectAppsManageScreen = "/selectAppsManageScreen";
   static const String setUsageLimitScreen = "/setUsageLimitScreen";
   static const String timerSettingsScreen = "/timerSettingsScreen";
@@ -102,11 +119,44 @@ class AppRoutes {
 
   /// ========================> Protection flow ==========================>
 
+  static const String chooseFunctionScreen = "/chooseFunctionScreen";
   static const String searchAppScreen = "/searchAppScreen";
   static const String protectionEditorScreen = "/protectionEditorScreen";
+  static const String protectionStepScreen = "/protectionStepScreen";
+  static const String protectionReviewScreen = "/protectionReviewScreen";
+  static const String protectionSuccessScreen = "/protectionSuccessScreen";
   static const String customizeMessageScreen = "/customizeMessageScreen";
   static const String customizeDaysScreen = "/customizeDaysScreen";
   static const String previewPauseScreen = "/previewPauseScreen";
+
+  /// ========================> Statistics ==============================>
+
+  static const String statisticsScreen = "/statisticsScreen";
+  static const String timeSavedScreen = "/timeSavedScreen";
+  static const String appUsageScreen = "/appUsageScreen";
+  static const String trendScreen = "/trendScreen";
+  static const String goalsScreen = "/goalsScreen";
+  static const String monthlyReportScreen = "/monthlyReportScreen";
+
+  /// ========================> Premium =================================>
+
+  static const String premiumScreen = "/premiumScreen";
+  static const String choosePlanScreen = "/choosePlanScreen";
+  static const String premiumSuccessScreen = "/premiumSuccessScreen";
+  static const String manageSubscriptionScreen = "/manageSubscriptionScreen";
+  static const String cancelSubscriptionScreen = "/cancelSubscriptionScreen";
+  static const String subscriptionCancelledScreen = "/subscriptionCancelledScreen";
+
+  /// ========================> Settings ================================>
+
+  static const String settingsHomeScreen = "/settingsHomeScreen";
+  static const String appProtectionScreen = "/appProtectionScreen";
+  static const String remindersScreen = "/remindersScreen";
+  static const String privacyScreen = "/privacyScreen";
+  static const String helpSupportScreen = "/helpSupportScreen";
+  static const String backupRestoreScreen = "/backupRestoreScreen";
+  static const String aboutLimitItScreen = "/aboutLimitItScreen";
+  static const String logoutScreen = "/logoutScreen";
 
 
 
@@ -120,21 +170,154 @@ class AppRoutes {
         builder: (context, state) => const SplashScreen(),
       ),
 
-      ///<<<=============>>> ONBOARDING SCREEN <<<===============>>>
+      ///<<<=============>>> SETTINGS <<<===============>>>
       GoRoute(
-        path: onBoardingScreen,
-        name: onBoardingScreen,
-        pageBuilder:
-            (context, state) =>
-                _customTransitionPage(OnboardingScreen(), state),
+        path: appProtectionScreen,
+        name: appProtectionScreen,
+        pageBuilder: (context, state) => _customTransitionPage(
+          const AppProtectionScreen(embedded: false),
+          state,
+        ),
+      ),
+      GoRoute(
+        path: settingsHomeScreen,
+        name: settingsHomeScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const SettingsHomeScreen(), state),
+      ),
+      GoRoute(
+        path: remindersScreen,
+        name: remindersScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const RemindersScreen(), state),
+      ),
+      GoRoute(
+        path: privacyScreen,
+        name: privacyScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const PrivacyScreen(), state),
+      ),
+      GoRoute(
+        path: helpSupportScreen,
+        name: helpSupportScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const HelpSupportScreen(), state),
+      ),
+      GoRoute(
+        path: backupRestoreScreen,
+        name: backupRestoreScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const BackupRestoreScreen(), state),
+      ),
+      GoRoute(
+        path: aboutLimitItScreen,
+        name: aboutLimitItScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const AboutLimitItScreen(), state),
+      ),
+      GoRoute(
+        path: logoutScreen,
+        name: logoutScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const LogoutScreen(), state),
+      ),
+
+      ///<<<=============>>> PREMIUM <<<===============>>>
+      GoRoute(
+        path: premiumScreen,
+        name: premiumScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const PremiumScreen(), state),
+      ),
+      GoRoute(
+        path: choosePlanScreen,
+        name: choosePlanScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const ChoosePlanScreen(), state),
+      ),
+      GoRoute(
+        path: premiumSuccessScreen,
+        name: premiumSuccessScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const PremiumSuccessScreen(), state),
+      ),
+      GoRoute(
+        path: manageSubscriptionScreen,
+        name: manageSubscriptionScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const ManageSubscriptionScreen(), state),
+      ),
+      GoRoute(
+        path: cancelSubscriptionScreen,
+        name: cancelSubscriptionScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const CancelSubscriptionScreen(), state),
+      ),
+      GoRoute(
+        path: subscriptionCancelledScreen,
+        name: subscriptionCancelledScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const SubscriptionCancelledScreen(), state),
+      ),
+
+      ///<<<=============>>> STATISTICS <<<===============>>>
+      GoRoute(
+        path: statisticsScreen,
+        name: statisticsScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const StatisticsScreen(), state),
+      ),
+      GoRoute(
+        path: timeSavedScreen,
+        name: timeSavedScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const TimeSavedScreen(), state),
+      ),
+      GoRoute(
+        path: appUsageScreen,
+        name: appUsageScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const AppUsageScreen(), state),
+      ),
+      GoRoute(
+        path: trendScreen,
+        name: trendScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const TrendScreen(), state),
+      ),
+      GoRoute(
+        path: goalsScreen,
+        name: goalsScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const GoalsScreen(), state),
+      ),
+      GoRoute(
+        path: monthlyReportScreen,
+        name: monthlyReportScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const MonthlyReportScreen(), state),
       ),
 
       ///<<<=============>>> PROTECTION FLOW <<<===============>>>
       GoRoute(
+        path: chooseFunctionScreen,
+        name: chooseFunctionScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const ChooseFunctionScreen(), state),
+      ),
+
+      GoRoute(
         path: searchAppScreen,
         name: searchAppScreen,
-        pageBuilder: (context, state) =>
-            _customTransitionPage(const SearchAppScreen(), state),
+        pageBuilder: (context, state) {
+          final extra = (state.extra as Map<String, dynamic>?) ?? const {};
+          return _customTransitionPage(
+            SearchAppScreen(
+              protectionType: extra['protectionType'] as ProtectionType?,
+            ),
+            state,
+          );
+        },
       ),
 
       GoRoute(
@@ -146,6 +329,39 @@ class AppRoutes {
             ProtectionEditorScreen(
               selectedApp: extra['selectedApp'] as SelectedAppInfo?,
               packageName: extra['packageName'] as String?,
+              initialType: extra['protectionType'] as ProtectionType?,
+            ),
+            state,
+          );
+        },
+      ),
+
+      GoRoute(
+        path: protectionStepScreen,
+        name: protectionStepScreen,
+        pageBuilder: (context, state) => _customTransitionPage(
+          ProtectionStepScreen(draft: state.extra as ProtectionDraft),
+          state,
+        ),
+      ),
+
+      GoRoute(
+        path: protectionReviewScreen,
+        name: protectionReviewScreen,
+        pageBuilder: (context, state) => _customTransitionPage(
+          ProtectionReviewScreen(draft: state.extra as ProtectionDraft),
+          state,
+        ),
+      ),
+
+      GoRoute(
+        path: protectionSuccessScreen,
+        name: protectionSuccessScreen,
+        pageBuilder: (context, state) {
+          final extra = (state.extra as Map<String, dynamic>?) ?? const {};
+          return _customTransitionPage(
+            ProtectionSuccessScreen(
+              appName: extra['appName'] as String? ?? '',
             ),
             state,
           );
@@ -191,19 +407,11 @@ class AppRoutes {
               packageName: extra['packageName'] as String?,
               appName: extra['appName'] as String?,
               message: extra['message'] as String?,
+              seconds: extra['seconds'] as int? ?? 10,
             ),
             state,
           );
         },
-      ),
-
-      ///<<<=============>>> GET STARTED SCREEN <<<===============>>>
-      GoRoute(
-        path: getStartedScreen,
-        name: getStartedScreen,
-        pageBuilder:
-            (context, state) =>
-                _customTransitionPage(const GetStartedScreen(), state),
       ),
 
       ///<<<=============>>> Language SCREEN <<<===============>>>
@@ -213,16 +421,6 @@ class AppRoutes {
         pageBuilder:
             (context, state) =>
             _customTransitionPage(LanguageScreen(), state),
-      ),
-
-
-      ///<<<=============>>> ONBOARDING Start SCREEN <<<===============>>>
-      GoRoute(
-        path: onBoardingStartScreen,
-        name: onBoardingStartScreen,
-        pageBuilder:
-            (context, state) =>
-            _customTransitionPage(OnboardingStartScreen(), state),
       ),
 
       /// =============================================================> Auth  =================================================>
@@ -288,14 +486,6 @@ class AppRoutes {
         pageBuilder:
             (context, state) =>
                 _customTransitionPage(ResetSuccessFullyScreen(), state),
-      ),
-      ///<<<=============>>>LimitPrivacyProtectionScreen <<<===============>>>
-      GoRoute(
-        path: limitPrivacyProtectionScreen,
-        name: limitPrivacyProtectionScreen,
-        pageBuilder:
-            (context, state) =>
-                _customTransitionPage(LimitPrivacyProtectionScreen(), state),
       ),
       ///<<<=============>>>selectAppsManageScreen <<<===============>>>
 

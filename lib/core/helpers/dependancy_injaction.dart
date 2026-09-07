@@ -5,6 +5,9 @@ import 'package:limit_it_app/controllers/notifications_controller.dart';
 import 'package:limit_it_app/controllers/pin_lock_controller.dart';
 import 'package:limit_it_app/controllers/profile_controller.dart';
 import 'package:limit_it_app/controllers/schedules_limits_controller.dart';
+import 'package:limit_it_app/controllers/premium_controller.dart';
+import 'package:limit_it_app/controllers/reminders_controller.dart';
+import 'package:limit_it_app/controllers/stats_controller.dart';
 import 'package:limit_it_app/controllers/upgrade_premium_controller.dart';
 import 'package:limit_it_app/core/presentations/controller/theme_controller.dart';
 import 'package:limit_it_app/core/presentations/controller/locale_controller.dart';
@@ -36,6 +39,9 @@ class DependencyInjection implements Bindings {
     Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
     Get.lazyPut<SchedulesLimitsController>(() => SchedulesLimitsController(), fenix: true);
     Get.lazyPut<UpgradePremiumController>(() => UpgradePremiumController(), fenix: true);
+    Get.put<PremiumController>(PremiumController(), permanent: true);
+    Get.lazyPut<StatsController>(() => StatsController(), fenix: true);
+    Get.lazyPut<RemindersController>(() => RemindersController(), fenix: true);
   }
 
   void lockDevicePortrait() {

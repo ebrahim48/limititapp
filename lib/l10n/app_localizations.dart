@@ -1366,11 +1366,35 @@ abstract class AppLocalizations {
   /// **'No apps found'**
   String get noAppsFound;
 
+  /// noUsageDataYet
+  ///
+  /// In en, this message translates to:
+  /// **'No usage data yet'**
+  String get noUsageDataYet;
+
+  /// usageStatsUnavailable
+  ///
+  /// In en, this message translates to:
+  /// **'iOS does not share app usage with other apps, so there is nothing to chart here.'**
+  String get usageStatsUnavailable;
+
   /// usageAccessNeeded
   ///
   /// In en, this message translates to:
-  /// **'Usage access is needed to list your apps.'**
+  /// **'Grant usage access to see how long you spend in each app.'**
   String get usageAccessNeeded;
+
+  /// appDetectionLimited
+  ///
+  /// In en, this message translates to:
+  /// **'iOS only lets us detect known apps. Search for the app you want to limit.'**
+  String get appDetectionLimited;
+
+  /// couldNotLoadApps
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your apps.'**
+  String get couldNotLoadApps;
 
   /// editProtection
   ///
@@ -1389,6 +1413,234 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Protection'**
   String get protection;
+
+  /// howLongShouldThePauseBe
+  ///
+  /// In en, this message translates to:
+  /// **'How long should the pause be?'**
+  String get howLongShouldThePauseBe;
+
+  /// pauseStepHint
+  ///
+  /// In en, this message translates to:
+  /// **'This is the time you\'ll wait before the app opens.'**
+  String get pauseStepHint;
+
+  /// whatsYourDailyLimit
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s your daily limit?'**
+  String get whatsYourDailyLimit;
+
+  /// setAMaximumTimePerDay
+  ///
+  /// In en, this message translates to:
+  /// **'Set a maximum time per day.'**
+  String get setAMaximumTimePerDay;
+
+  /// hoursLabel
+  ///
+  /// In en, this message translates to:
+  /// **'hours'**
+  String get hoursLabel;
+
+  /// minutesLabel
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get minutesLabel;
+
+  /// howManyTimesPerDay
+  ///
+  /// In en, this message translates to:
+  /// **'How many times per day?'**
+  String get howManyTimesPerDay;
+
+  /// setMaximumOpeningsPerDay
+  ///
+  /// In en, this message translates to:
+  /// **'Set the maximum number of openings per day.'**
+  String get setMaximumOpeningsPerDay;
+
+  /// openingsPerDay
+  ///
+  /// In en, this message translates to:
+  /// **'openings per day'**
+  String get openingsPerDay;
+
+  /// whenDoYouWantToBlockIt
+  ///
+  /// In en, this message translates to:
+  /// **'When do you want to block it?'**
+  String get whenDoYouWantToBlockIt;
+
+  /// selectTimePeriodToBlock
+  ///
+  /// In en, this message translates to:
+  /// **'Select the time period to block.'**
+  String get selectTimePeriodToBlock;
+
+  /// blockedTime
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked time'**
+  String get blockedTime;
+
+  /// review
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get review;
+
+  /// protectionTypeLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Protection type'**
+  String get protectionTypeLabel;
+
+  /// settingLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Setting'**
+  String get settingLabel;
+
+  /// activate
+  ///
+  /// In en, this message translates to:
+  /// **'Activate'**
+  String get activate;
+
+  /// delayExplainer
+  ///
+  /// In en, this message translates to:
+  /// **'You will see a countdown before this app opens.'**
+  String get delayExplainer;
+
+  /// dailyLimitExplainer
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll be notified when you reach your daily limit.'**
+  String get dailyLimitExplainer;
+
+  /// openingLimitExplainer
+  ///
+  /// In en, this message translates to:
+  /// **'You can modify this anytime.'**
+  String get openingLimitExplainer;
+
+  /// timeBlockExplainer
+  ///
+  /// In en, this message translates to:
+  /// **'This app will be blocked during the selected time.'**
+  String get timeBlockExplainer;
+
+  /// appIsNowProtected
+  ///
+  /// In en, this message translates to:
+  /// **'{app} is now protected!'**
+  String appIsNowProtected(String app);
+
+  /// smallPauseBigChange
+  ///
+  /// In en, this message translates to:
+  /// **'Small pause, big change.'**
+  String get smallPauseBigChange;
+
+  /// oneStepCloserToBetterHabits
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve taken one step closer to better digital habits.'**
+  String get oneStepCloserToBetterHabits;
+
+  /// done
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// addAnother
+  ///
+  /// In en, this message translates to:
+  /// **'Add another'**
+  String get addAnother;
+
+  /// secondsLong
+  ///
+  /// In en, this message translates to:
+  /// **'{count} seconds'**
+  String secondsLong(int count);
+
+  /// openingsPerDayValue
+  ///
+  /// In en, this message translates to:
+  /// **'{count} openings / day'**
+  String openingsPerDayValue(int count);
+
+  /// whatWouldYouLikeToDo
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like to do?'**
+  String get whatWouldYouLikeToDo;
+
+  /// chooseAFunctionToGetStarted
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a function to get started.'**
+  String get chooseAFunctionToGetStarted;
+
+  /// delayAppOpening
+  ///
+  /// In en, this message translates to:
+  /// **'Delay app opening'**
+  String get delayAppOpening;
+
+  /// delayAppOpeningHint
+  ///
+  /// In en, this message translates to:
+  /// **'Take a mindful pause before opening an app.'**
+  String get delayAppOpeningHint;
+
+  /// dailyTimeLimitFunctionHint
+  ///
+  /// In en, this message translates to:
+  /// **'Set a maximum time per day.'**
+  String get dailyTimeLimitFunctionHint;
+
+  /// openingLimit
+  ///
+  /// In en, this message translates to:
+  /// **'Opening limit'**
+  String get openingLimit;
+
+  /// openingLimitHint
+  ///
+  /// In en, this message translates to:
+  /// **'Limit how many times you can open an app.'**
+  String get openingLimitHint;
+
+  /// timeBlockFunctionHint
+  ///
+  /// In en, this message translates to:
+  /// **'Block apps during certain hours.'**
+  String get timeBlockFunctionHint;
+
+  /// recommended
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended'**
+  String get recommended;
+
+  /// pauseDuration
+  ///
+  /// In en, this message translates to:
+  /// **'Pause duration'**
+  String get pauseDuration;
+
+  /// secondsShort
+  ///
+  /// In en, this message translates to:
+  /// **'{count} sec'**
+  String secondsShort(int count);
 
   /// dailyTimeLimit
   ///
@@ -1569,6 +1821,912 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{appName} is currently paused.'**
   String appIsCurrentlyPaused(String appName);
+
+  /// today
+  ///
+  /// In en, this message translates to:
+  /// **'today'**
+  String get today;
+
+  /// days
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get days;
+
+  /// timeSaved
+  ///
+  /// In en, this message translates to:
+  /// **'Time saved'**
+  String get timeSaved;
+
+  /// blockedOpens
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked opens'**
+  String get blockedOpens;
+
+  /// goalStreak
+  ///
+  /// In en, this message translates to:
+  /// **'Goal streak'**
+  String get goalStreak;
+
+  /// weeklyUsage
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly usage'**
+  String get weeklyUsage;
+
+  /// trend
+  ///
+  /// In en, this message translates to:
+  /// **'Trend'**
+  String get trend;
+
+  /// goals
+  ///
+  /// In en, this message translates to:
+  /// **'Goals'**
+  String get goals;
+
+  /// monthlyReport
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Report'**
+  String get monthlyReport;
+
+  /// unlockYourStats
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock your stats'**
+  String get unlockYourStats;
+
+  /// unlockYourStatsSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'See exactly how much time you take back every week.'**
+  String get unlockYourStatsSubtitle;
+
+  /// lockedFeatureTimeSaved
+  ///
+  /// In en, this message translates to:
+  /// **'Time saved, day by day'**
+  String get lockedFeatureTimeSaved;
+
+  /// lockedFeatureTrends
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly and monthly trends'**
+  String get lockedFeatureTrends;
+
+  /// lockedFeatureGoals
+  ///
+  /// In en, this message translates to:
+  /// **'Goal streaks and history'**
+  String get lockedFeatureGoals;
+
+  /// lockedFeatureReports
+  ///
+  /// In en, this message translates to:
+  /// **'Full monthly reports'**
+  String get lockedFeatureReports;
+
+  /// unlockWithPremium
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock with Premium'**
+  String get unlockWithPremium;
+
+  /// week
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get week;
+
+  /// month
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get month;
+
+  /// thisWeek
+  ///
+  /// In en, this message translates to:
+  /// **'this week'**
+  String get thisWeek;
+
+  /// thisMonth
+  ///
+  /// In en, this message translates to:
+  /// **'this month'**
+  String get thisMonth;
+
+  /// savedByApp
+  ///
+  /// In en, this message translates to:
+  /// **'Saved by app'**
+  String get savedByApp;
+
+  /// nothingSavedYet
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing saved yet'**
+  String get nothingSavedYet;
+
+  /// inUse
+  ///
+  /// In en, this message translates to:
+  /// **'In use'**
+  String get inUse;
+
+  /// mostUsed
+  ///
+  /// In en, this message translates to:
+  /// **'Most used'**
+  String get mostUsed;
+
+  /// totalScreenTime
+  ///
+  /// In en, this message translates to:
+  /// **'Total screen time'**
+  String get totalScreenTime;
+
+  /// noUsageYet
+  ///
+  /// In en, this message translates to:
+  /// **'No usage recorded yet'**
+  String get noUsageYet;
+
+  /// screenTimeReduction
+  ///
+  /// In en, this message translates to:
+  /// **'Screen time reduction'**
+  String get screenTimeReduction;
+
+  /// vsLastWeek
+  ///
+  /// In en, this message translates to:
+  /// **'vs. last week'**
+  String get vsLastWeek;
+
+  /// vsLastMonth
+  ///
+  /// In en, this message translates to:
+  /// **'vs. last month'**
+  String get vsLastMonth;
+
+  /// screenTimeHours
+  ///
+  /// In en, this message translates to:
+  /// **'Screen time (hours)'**
+  String get screenTimeHours;
+
+  /// insight
+  ///
+  /// In en, this message translates to:
+  /// **'Insight'**
+  String get insight;
+
+  /// insightPositive
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve consistently reduced screen time. Your digital mindfulness is improving! Keep protecting those apps.'**
+  String get insightPositive;
+
+  /// insightNeutral
+  ///
+  /// In en, this message translates to:
+  /// **'Keep going — a few more protected days and the trend will start to bend.'**
+  String get insightNeutral;
+
+  /// dailyGoal
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goal'**
+  String get dailyGoal;
+
+  /// noGoalSet
+  ///
+  /// In en, this message translates to:
+  /// **'No goal set'**
+  String get noGoalSet;
+
+  /// dailyScreenTimeLimit
+  ///
+  /// In en, this message translates to:
+  /// **'daily screen time limit'**
+  String get dailyScreenTimeLimit;
+
+  /// daysGoalWasMet
+  ///
+  /// In en, this message translates to:
+  /// **'Days goal was met'**
+  String get daysGoalWasMet;
+
+  /// noHistoryYet
+  ///
+  /// In en, this message translates to:
+  /// **'No history yet'**
+  String get noHistoryYet;
+
+  /// streaks
+  ///
+  /// In en, this message translates to:
+  /// **'Streaks'**
+  String get streaks;
+
+  /// currentStreak
+  ///
+  /// In en, this message translates to:
+  /// **'current streak'**
+  String get currentStreak;
+
+  /// bestStreak
+  ///
+  /// In en, this message translates to:
+  /// **'best streak'**
+  String get bestStreak;
+
+  /// usageReduction
+  ///
+  /// In en, this message translates to:
+  /// **'Usage reduction'**
+  String get usageReduction;
+
+  /// monthProgress
+  ///
+  /// In en, this message translates to:
+  /// **'Month progress'**
+  String get monthProgress;
+
+  /// continueYourMonth
+  ///
+  /// In en, this message translates to:
+  /// **'Continue your month'**
+  String get continueYourMonth;
+
+  /// usedToday
+  ///
+  /// In en, this message translates to:
+  /// **'{value} used today'**
+  String usedToday(String value);
+
+  /// daysCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days'**
+  String daysCount(int count);
+
+  /// daysCompleted
+  ///
+  /// In en, this message translates to:
+  /// **'{done} of {total} days completed'**
+  String daysCompleted(int done, int total);
+
+  /// choosePlan
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your plan'**
+  String get choosePlan;
+
+  /// limitItPremium
+  ///
+  /// In en, this message translates to:
+  /// **'LimitIt Premium'**
+  String get limitItPremium;
+
+  /// premiumSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Everything you need to build a calmer relationship with your phone.'**
+  String get premiumSubtitle;
+
+  /// premiumFeatureUnlimitedTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited protections'**
+  String get premiumFeatureUnlimitedTitle;
+
+  /// premiumFeatureUnlimitedSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Protect as many apps as you want'**
+  String get premiumFeatureUnlimitedSubtitle;
+
+  /// premiumFeatureStatsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Full statistics'**
+  String get premiumFeatureStatsTitle;
+
+  /// premiumFeatureStatsSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Trends, goals and monthly reports'**
+  String get premiumFeatureStatsSubtitle;
+
+  /// premiumFeatureScheduleTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced schedules'**
+  String get premiumFeatureScheduleTitle;
+
+  /// premiumFeatureScheduleSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Time blocks and custom days'**
+  String get premiumFeatureScheduleSubtitle;
+
+  /// premiumFeatureBackupTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Backup & restore'**
+  String get premiumFeatureBackupTitle;
+
+  /// premiumFeatureBackupSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your setup safe'**
+  String get premiumFeatureBackupSubtitle;
+
+  /// premiumFeatureNoAdsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'No ads'**
+  String get premiumFeatureNoAdsTitle;
+
+  /// premiumFeatureNoAdsSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'A clean, distraction-free app'**
+  String get premiumFeatureNoAdsSubtitle;
+
+  /// restorePurchases
+  ///
+  /// In en, this message translates to:
+  /// **'Restore purchases'**
+  String get restorePurchases;
+
+  /// monthly
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// yearly
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get yearly;
+
+  /// perYear
+  ///
+  /// In en, this message translates to:
+  /// **'/ year'**
+  String get perYear;
+
+  /// perMonth
+  ///
+  /// In en, this message translates to:
+  /// **'/ month'**
+  String get perMonth;
+
+  /// perWeek
+  ///
+  /// In en, this message translates to:
+  /// **'/ week'**
+  String get perWeek;
+
+  /// paymentPending
+  ///
+  /// In en, this message translates to:
+  /// **'Payment pending…'**
+  String get paymentPending;
+
+  /// purchaseCancelled
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase cancelled'**
+  String get purchaseCancelled;
+
+  /// checkingPurchases
+  ///
+  /// In en, this message translates to:
+  /// **'Checking for existing purchases…'**
+  String get checkingPurchases;
+
+  /// youreAllSet
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all set!'**
+  String get youreAllSet;
+
+  /// youreAllSetSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your Premium features are now active. Enjoy every one of them.'**
+  String get youreAllSetSubtitle;
+
+  /// startUsingPremium
+  ///
+  /// In en, this message translates to:
+  /// **'Start using Premium'**
+  String get startUsingPremium;
+
+  /// manageSubscription
+  ///
+  /// In en, this message translates to:
+  /// **'Manage subscription'**
+  String get manageSubscription;
+
+  /// activeSubscription
+  ///
+  /// In en, this message translates to:
+  /// **'Active subscription'**
+  String get activeSubscription;
+
+  /// active
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// price
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// renewsOn
+  ///
+  /// In en, this message translates to:
+  /// **'Renews on'**
+  String get renewsOn;
+
+  /// options
+  ///
+  /// In en, this message translates to:
+  /// **'Options'**
+  String get options;
+
+  /// changePlan
+  ///
+  /// In en, this message translates to:
+  /// **'Change plan'**
+  String get changePlan;
+
+  /// changePlanSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Switch between monthly and yearly'**
+  String get changePlanSubtitle;
+
+  /// billingHistory
+  ///
+  /// In en, this message translates to:
+  /// **'Billing history'**
+  String get billingHistory;
+
+  /// billingHistorySubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'See past invoices'**
+  String get billingHistorySubtitle;
+
+  /// cancelSubscription
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel subscription'**
+  String get cancelSubscription;
+
+  /// yesCancelSubscription
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, cancel subscription'**
+  String get yesCancelSubscription;
+
+  /// keepMyPlan
+  ///
+  /// In en, this message translates to:
+  /// **'Keep my plan'**
+  String get keepMyPlan;
+
+  /// youllLoseAccessTo
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll lose access to'**
+  String get youllLoseAccessTo;
+
+  /// cancelKeepsAccess
+  ///
+  /// In en, this message translates to:
+  /// **'Your Premium access stays active until the end of your billing period.'**
+  String get cancelKeepsAccess;
+
+  /// cancelStoreNote
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring billing is managed by the App Store / Google Play. Turn off auto-renew there to avoid future charges.'**
+  String get cancelStoreNote;
+
+  /// subscriptionCancelled
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription cancelled'**
+  String get subscriptionCancelled;
+
+  /// subscriptionCancelledSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your Premium access will remain active until the end of your billing period.'**
+  String get subscriptionCancelledSubtitle;
+
+  /// youCanResubscribeAnytime
+  ///
+  /// In en, this message translates to:
+  /// **'You can resubscribe anytime.'**
+  String get youCanResubscribeAnytime;
+
+  /// goToHome
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Home'**
+  String get goToHome;
+
+  /// cancelKeepsAccessUntil
+  ///
+  /// In en, this message translates to:
+  /// **'Your Premium access stays active until {date}.'**
+  String cancelKeepsAccessUntil(String date);
+
+  /// premiumMember
+  ///
+  /// In en, this message translates to:
+  /// **'Premium member'**
+  String get premiumMember;
+
+  /// freePlan
+  ///
+  /// In en, this message translates to:
+  /// **'Free plan'**
+  String get freePlan;
+
+  /// openingsBlocked
+  ///
+  /// In en, this message translates to:
+  /// **'Openings blocked'**
+  String get openingsBlocked;
+
+  /// appProtections
+  ///
+  /// In en, this message translates to:
+  /// **'App protections'**
+  String get appProtections;
+
+  /// reminders
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get reminders;
+
+  /// privacy
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get privacy;
+
+  /// helpAndFaq
+  ///
+  /// In en, this message translates to:
+  /// **'Help & FAQ'**
+  String get helpAndFaq;
+
+  /// backupAndRestore
+  ///
+  /// In en, this message translates to:
+  /// **'Backup & restore'**
+  String get backupAndRestore;
+
+  /// aboutLimitIt
+  ///
+  /// In en, this message translates to:
+  /// **'About LimitIt'**
+  String get aboutLimitIt;
+
+  /// remindersSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Stay mindful with gentle nudges at the right moments.'**
+  String get remindersSubtitle;
+
+  /// daily
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get daily;
+
+  /// weekly
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get weekly;
+
+  /// dailyCheckIn
+  ///
+  /// In en, this message translates to:
+  /// **'Daily check-in'**
+  String get dailyCheckIn;
+
+  /// dailyCheckInSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Morning mindfulness reminder'**
+  String get dailyCheckInSubtitle;
+
+  /// reminderTime
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder time'**
+  String get reminderTime;
+
+  /// goalAlert
+  ///
+  /// In en, this message translates to:
+  /// **'Goal alert'**
+  String get goalAlert;
+
+  /// goalAlertSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Notify when near daily limit'**
+  String get goalAlertSubtitle;
+
+  /// weeklyReportReminder
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly report'**
+  String get weeklyReportReminder;
+
+  /// weeklyReportReminderSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Every Monday morning'**
+  String get weeklyReportReminderSubtitle;
+
+  /// breakReminder
+  ///
+  /// In en, this message translates to:
+  /// **'Break reminder'**
+  String get breakReminder;
+
+  /// breakReminderSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Remind after 30 min of use'**
+  String get breakReminderSubtitle;
+
+  /// remindersDeliveryNote
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders are delivered as push notifications. Make sure notifications are enabled in your device settings.'**
+  String get remindersDeliveryNote;
+
+  /// helpAndSupport
+  ///
+  /// In en, this message translates to:
+  /// **'Help & support'**
+  String get helpAndSupport;
+
+  /// faq
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ'**
+  String get faq;
+
+  /// faqSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Frequently asked questions'**
+  String get faqSubtitle;
+
+  /// contactSupport
+  ///
+  /// In en, this message translates to:
+  /// **'Contact support'**
+  String get contactSupport;
+
+  /// contactSupportSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Get in touch with our team'**
+  String get contactSupportSubtitle;
+
+  /// reportAProblem
+  ///
+  /// In en, this message translates to:
+  /// **'Report a problem'**
+  String get reportAProblem;
+
+  /// reportAProblemSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us what went wrong'**
+  String get reportAProblemSubtitle;
+
+  /// faqQ1
+  ///
+  /// In en, this message translates to:
+  /// **'How does a protection work?'**
+  String get faqQ1;
+
+  /// faqA1
+  ///
+  /// In en, this message translates to:
+  /// **'When you open a protected app, LimitIt shows a mindful pause before letting it through — and blocks it once the limit is reached.'**
+  String get faqA1;
+
+  /// faqQ2
+  ///
+  /// In en, this message translates to:
+  /// **'Is my usage data private?'**
+  String get faqQ2;
+
+  /// faqA2
+  ///
+  /// In en, this message translates to:
+  /// **'Usage and protections stay on your device. Only your account details reach our servers.'**
+  String get faqA2;
+
+  /// faqQ3
+  ///
+  /// In en, this message translates to:
+  /// **'Why do I need usage access?'**
+  String get faqQ3;
+
+  /// faqA3
+  ///
+  /// In en, this message translates to:
+  /// **'Android needs that permission to tell LimitIt which app is in the foreground, so limits can be applied.'**
+  String get faqA3;
+
+  /// faqQ4
+  ///
+  /// In en, this message translates to:
+  /// **'How do I cancel Premium?'**
+  String get faqQ4;
+
+  /// faqA4
+  ///
+  /// In en, this message translates to:
+  /// **'Open Premium → Manage subscription → Cancel subscription. Auto-renew is switched off in the App Store or Google Play.'**
+  String get faqA4;
+
+  /// createBackup
+  ///
+  /// In en, this message translates to:
+  /// **'Create backup'**
+  String get createBackup;
+
+  /// createBackupSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Save your protections to your account.'**
+  String get createBackupSubtitle;
+
+  /// backUpNow
+  ///
+  /// In en, this message translates to:
+  /// **'Back up now'**
+  String get backUpNow;
+
+  /// restoreBackup
+  ///
+  /// In en, this message translates to:
+  /// **'Restore backup'**
+  String get restoreBackup;
+
+  /// restoreBackupSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Recover your protections from a backup.'**
+  String get restoreBackupSubtitle;
+
+  /// restore
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get restore;
+
+  /// noBackupFound
+  ///
+  /// In en, this message translates to:
+  /// **'No backup found'**
+  String get noBackupFound;
+
+  /// version
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// aboutLimitItBody
+  ///
+  /// In en, this message translates to:
+  /// **'Built to help you take control of your digital habits and live a more focused life.'**
+  String get aboutLimitItBody;
+
+  /// logOutOfLimitIt
+  ///
+  /// In en, this message translates to:
+  /// **'Log out of LimitIt?'**
+  String get logOutOfLimitIt;
+
+  /// logOutSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your protections and data stay saved. You can log back in any time.'**
+  String get logOutSubtitle;
+
+  /// yesLogOut
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, log out'**
+  String get yesLogOut;
+
+  /// noDataAvailable
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get noDataAvailable;
+
+  /// backupCreated
+  ///
+  /// In en, this message translates to:
+  /// **'Backup created — {count} protections saved'**
+  String backupCreated(int count);
+
+  /// backupRestored
+  ///
+  /// In en, this message translates to:
+  /// **'Restored {count} protections'**
+  String backupRestored(int count);
+
+  /// lastBackup
+  ///
+  /// In en, this message translates to:
+  /// **'Last backup: {date}'**
+  String lastBackup(String date);
+
+  /// copyrightLine
+  ///
+  /// In en, this message translates to:
+  /// **'© {year} LimitIt'**
+  String copyrightLine(int year);
+
+  /// or
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get or;
+
+  /// dontHaveAnAccount
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get dontHaveAnAccount;
+
+  /// byContinuingYouAgree
+  ///
+  /// In en, this message translates to:
+  /// **'By continuing you agree to our Terms of Service and Privacy Policy.'**
+  String get byContinuingYouAgree;
+
+  /// takeBackControlOfYourScreenTime
+  ///
+  /// In en, this message translates to:
+  /// **'Take back control of your screen time'**
+  String get takeBackControlOfYourScreenTime;
 }
 
 class _AppLocalizationsDelegate

@@ -1,15 +1,20 @@
 import 'dart:typed_data';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:installed_apps/installed_apps.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/services/app_icon_service.dart';
 
 /// Reusable widget that displays an app icon.
-/// Shows [preloadedIcon] directly if provided, otherwise lazy-loads
-/// the icon by [packageName] from the device.
+///
+/// Shows [preloadedIcon] directly if provided, otherwise asks
+/// [AppIconService] for the real one — the device's own icon on Android, the
+/// App Store artwork on iOS. [appName] only helps the store lookup when the
+/// package is not in the catalogue.
 class AppIconWidget extends StatefulWidget {
   final String packageName;
+  final String? appName;
   final Uint8List? preloadedIcon;
   final double size;
   final double borderRadius;
@@ -18,6 +23,7 @@ class AppIconWidget extends StatefulWidget {
   const AppIconWidget({
     super.key,
     required this.packageName,
+    this.appName,
     this.preloadedIcon,
     this.size = 48,
     this.borderRadius = 12,
@@ -29,15 +35,14 @@ class AppIconWidget extends StatefulWidget {
 }
 
 class _AppIconWidgetState extends State<AppIconWidget> {
-  Future<Uint8List?>? _iconFuture;
+  Future<ResolvedAppIcon?>? _iconFuture;
 
   @override
   void initState() {
     super.initState();
     if (widget.preloadedIcon == null && widget.packageName.isNotEmpty) {
-      _iconFuture = InstalledApps.getAppInfo(widget.packageName)
-          .then((info) => info?.icon)
-          .catchError((_) => null);
+      _iconFuture = AppIconService.instance
+          .resolve(widget.packageName, appName: widget.appName);
     }
   }
 
@@ -48,11 +53,21 @@ class _AppIconWidgetState extends State<AppIconWidget> {
     }
 
     if (_iconFuture != null) {
-      return FutureBuilder<Uint8List?>(
+      return FutureBuilder<ResolvedAppIcon?>(
         future: _iconFuture,
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            return _wrap(_memImage(snapshot.data!));
+          final icon = snapshot.data;
+          final bytes = icon?.bytes;
+          if (bytes != null && bytes.isNotEmpty) return _wrap(_memImage(bytes));
+
+          final url = icon?.url;
+          if (url != null) {
+            return _wrap(CachedNetworkImage(
+              imageUrl: url,
+              fit: BoxFit.cover,
+              placeholder: (_, __) => const SizedBox.shrink(),
+              errorWidget: (_, __, ___) => _defaultIconChild(),
+            ));
           }
           return _defaultIcon();
         },

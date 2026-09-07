@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
@@ -10,6 +9,7 @@ import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/app_icon_widget.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
+import 'package:limit_it_app/core/services/device_apps_service.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
 
 class SelectAppsManageScreen extends StatefulWidget {
@@ -25,6 +25,11 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
   bool _isLoading = true;
   bool _hasPermission = false;
   List<AppUsageData> _appUsageList = [];
+
+  /// iOS list — the catalogue apps this device actually has (see
+  /// [DeviceAppsService]); Apple exposes no usage numbers for them.
+  List<KnownApp> _detectedApps = [];
+  final DeviceAppsService _deviceApps = DeviceAppsService();
   String? _errorMessage;
 
   @override
@@ -56,13 +61,18 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
     });
 
     try {
-      // Check if platform supports app usage tracking
+      // iOS exposes neither usage stats nor an app list, so we fall back to
+      // probing the known catalogue and show whatever is really installed.
       if (!Platform.isAndroid) {
+        final detected = await _deviceApps.detectInstalled();
+        if (!mounted) return;
         setState(() {
           _isLoading = false;
           _hasPermission = false;
+          _detectedApps =
+              detected.isNotEmpty ? detected : DeviceAppsService.catalog;
           _errorMessage =
-              'App usage tracking is only available on Android devices';
+              detected.isNotEmpty ? null : context.l10n.appDetectionLimited;
         });
         return;
       }
@@ -304,11 +314,20 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
                       ));
                     }
                   } else {
-                    // Use dummy data
-                    for (var appName in selectedApps) {
+                    // Detected (iOS) apps — package name is the stable id.
+                    for (var packageName in selectedApps) {
+                      final app = _detectedApps.firstWhere(
+                        (a) => a.packageName == packageName,
+                        orElse: () => KnownApp(
+                          name: packageName,
+                          packageName: packageName,
+                          iosSchemes: const [],
+                        ),
+                      );
+
                       selectedAppsData.add(SelectedAppInfo(
-                        packageName: appName.toLowerCase(),
-                        appName: appName,
+                        packageName: app.packageName,
+                        appName: app.name,
                       ));
                     }
                   }
@@ -348,15 +367,6 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
   final List<String> days = ['SAT', 'SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI'];
   bool allSelected = false;
   Set<String> selectedDays = {'WED', 'TUE'};
-
-  final List<Map<String, dynamic>> apps = [
-    {'name': 'Instagram', 'icon': 'assets/icons/instagram.svg'},
-    {'name': 'Facebook', 'icon': 'assets/icons/facebook.svg'},
-    {'name': 'Twitter', 'icon': 'assets/icons/twitter.svg'},
-    {'name': 'Youtube', 'icon': 'assets/icons/youtube.svg'},
-    {'name': 'Snapchat', 'icon': 'assets/icons/snapshot.svg'},
-    {'name': 'Netflix', 'icon': 'assets/icons/netflix.svg'},
-  ];
 
   Set<String> selectedApps = {}; // Start with empty selection
 
@@ -480,6 +490,7 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
                 // Display real app icon or placeholder
                 AppIconWidget(
                   packageName: appData.packageName,
+                  appName: appData.name,
                   preloadedIcon: appData.icon,
                   size: 32,
                   borderRadius: 8,
@@ -531,21 +542,23 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
     );
   }
 
-  /// Build fallback list with dummy data (for iOS or no permission)
+  /// Build the list for platforms without usage stats (iOS): real installed
+  /// apps where detection worked, the catalogue otherwise — and no usage line,
+  /// because there are no numbers to show.
   Widget _buildFallbackAppsList() {
     return ListView.builder(
-      itemCount: apps.length,
+      itemCount: _detectedApps.length,
       itemBuilder: (context, index) {
-        final app = apps[index];
-        final isSelected = selectedApps.contains(app['name']);
+        final app = _detectedApps[index];
+        final isSelected = selectedApps.contains(app.packageName);
 
         return GestureDetector(
           onTap: () {
             setState(() {
               if (isSelected) {
-                selectedApps.remove(app['name']);
+                selectedApps.remove(app.packageName);
               } else {
-                selectedApps.add(app['name']);
+                selectedApps.add(app.packageName);
               }
             });
           },
@@ -553,43 +566,32 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
             margin: EdgeInsets.only(bottom: 12.h),
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             decoration: BoxDecoration(
-              color:
-                  isSelected
-                      ? const Color(0xFFEDD69A)
-                      : AppColors.backGroundColor,
+              color: isSelected
+                  ? const Color(0xFFEDD69A)
+                  : AppColors.backGroundColor,
               borderRadius: BorderRadius.circular(12.r),
               border: Border.all(color: const Color(0xFFD1D1D1)),
             ),
             child: Row(
               children: [
-                Container(
-                  width: 32.w,
-                  height: 32.w,
-                  padding: EdgeInsets.all(4.w),
-                  child: SvgPicture.asset(app['icon'], fit: BoxFit.contain),
+                AppIconWidget(
+                  packageName: app.packageName,
+                  appName: app.name,
+                  size: 32,
+                  borderRadius: 8,
+                  padding: 2,
                 ),
                 SizedBox(width: 12.w),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        app['name'],
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        "45 min today • 12 Opens",
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    app.name,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Container(
@@ -598,10 +600,9 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.grey, width: 1.4),
-                    color:
-                        isSelected
-                            ? const Color(0xFF214432)
-                            : Colors.transparent,
+                    color: isSelected
+                        ? const Color(0xFF214432)
+                        : Colors.transparent,
                   ),
                 ),
               ],

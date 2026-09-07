@@ -28,6 +28,49 @@
 	<string>ca-app-pub-3940256099942544~1458002511</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>instagram</string>
+		<string>tiktok</string>
+		<string>snssdk1128</string>
+		<string>youtube</string>
+		<string>fb</string>
+		<string>fb-messenger</string>
+		<string>whatsapp</string>
+		<string>twitter</string>
+		<string>snapchat</string>
+		<string>reddit</string>
+		<string>pinterest</string>
+		<string>linkedin</string>
+		<string>tg</string>
+		<string>discord</string>
+		<string>nflx</string>
+		<string>spotify</string>
+		<string>twitch</string>
+		<string>barcelona</string>
+		<string>bereal</string>
+		<string>googlegmail</string>
+		<string>comgooglemaps</string>
+		<string>googlechrome</string>
+		<string>slack</string>
+		<string>zoomus</string>
+		<string>uber</string>
+		<string>airbnb</string>
+		<string>shazam</string>
+		<string>soundcloud</string>
+		<string>duolingo</string>
+		<string>tinder</string>
+		<string>sgnl</string>
+		<string>viber</string>
+		<string>disneyplus</string>
+		<string>aiv</string>
+		<string>ebay</string>
+		<string>paypal</string>
+		<string>waze</string>
+		<string>deliveroo</string>
+		<string>glovo</string>
+		<string>com.amazon.mobile.shopping</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

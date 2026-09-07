@@ -98,14 +98,15 @@ class AppButton extends StatelessWidget {
       height: height ?? 54.h,
       child: Material(
         color: _bg,
-        borderRadius: AppRadius.buttonRadius,
         clipBehavior: Clip.antiAlias,
-        shape: border != null
-            ? RoundedRectangleBorder(
-                borderRadius: AppRadius.buttonRadius,
-                side: BorderSide(color: border),
-              )
-            : null,
+        // Only `shape` is set — Material asserts if both `shape` and
+        // `borderRadius` are provided.
+        shape: RoundedRectangleBorder(
+          borderRadius: AppRadius.buttonRadius,
+          side: border != null
+              ? BorderSide(color: border)
+              : BorderSide.none,
+        ),
         child: InkWell(
           onTap: _interactive ? onPressed : null,
           child: Center(

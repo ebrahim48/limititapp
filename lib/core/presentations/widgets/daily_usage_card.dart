@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/daily_usage.dart';
 import 'package:limit_it_app/core/presentations/widgets/app_icon_widget.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
@@ -107,7 +108,7 @@ class DailyUsageCard extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   child: SizedBox(
                     width: dailyApps.isEmpty ? 250.w : (dailyApps.length * 60.0).w,
-                    child: Stack(children: [_buildDashedLines(), _buildBars()]),
+                    child: Stack(children: [_buildDashedLines(), _buildBars(context)]),
                   ),
                 ),
               ),
@@ -174,7 +175,9 @@ class DailyUsageCard extends StatelessWidget {
     );
   }
 
-  Widget _buildBars() {
+  Widget _buildBars(BuildContext context) {
+    if (!isLoading && dailyApps.isEmpty) return _buildEmptyBars(context);
+
     if (isLoading) {
       return SizedBox(
         height: 153.h,
@@ -270,6 +273,21 @@ class DailyUsageCard extends StatelessWidget {
                 ),
               );
             }).toList(),
+      ),
+    );
+  }
+
+  /// Nothing measured yet — an honest blank chart beats invented bars.
+  Widget _buildEmptyBars(BuildContext context) {
+    return SizedBox(
+      height: 153.h,
+      child: Center(
+        child: CustomText(
+          text: context.l10n.noUsageDataYet,
+          fontsize: 12.sp,
+          fontWeight: FontWeight.w400,
+          color: const Color(0xFF5D5D5D),
+        ),
       ),
     );
   }

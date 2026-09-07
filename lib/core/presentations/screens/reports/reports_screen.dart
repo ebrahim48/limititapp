@@ -101,17 +101,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
     try {
       // Convert real usage data to DailyUsageApp format for the report
-      List<DailyUsageApp> dailyApps;
-      if (_appUsageData != null && _appUsageData!.isNotEmpty) {
-        dailyApps = AppDataHelper.convertToDailyUsageApps(_appUsageData!);
-      } else {
-        dailyApps = AppDataHelper.dailyApps;
-      }
+      final dailyApps =
+          AppDataHelper.convertToDailyUsageApps(_appUsageData ?? const []);
 
       // Generate and download report
       await ReportGeneratorService.generateAndDownloadReport(
         dailyApps: dailyApps,
-        yourApps: AppDataHelper.yourApps,
+        yourApps: AppDataHelper.convertToYourApps(_allAppsData ?? const []),
         appUsageData: _appUsageData,
       );
 
@@ -171,11 +167,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
                 SizedBox(height: 24.h),
                 DailyUsageCard(
-                  dailyApps: _isLoading 
-                      ? AppDataHelper.dailyApps 
-                      : (_appUsageData != null && _appUsageData!.isNotEmpty
-                          ? AppDataHelper.convertToDailyUsageApps(_appUsageData!)
-                          : AppDataHelper.dailyApps),
+                  dailyApps: AppDataHelper.convertToDailyUsageApps(
+                      _appUsageData ?? const []),
                   appUsageData: _appUsageData,
                   isLoading: _isLoading,
                 ),

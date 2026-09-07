@@ -377,6 +377,7 @@ class _YourAppCardState extends State<YourAppCard> {
     if (widget.appData != null) {
       return AppIconWidget(
         packageName: widget.appData!.packageName,
+        appName: widget.appData!.name,
         preloadedIcon: widget.appData!.icon,
         size: 48,
         borderRadius: 12,

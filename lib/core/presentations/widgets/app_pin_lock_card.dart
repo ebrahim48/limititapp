@@ -68,6 +68,7 @@ class AppCardItem extends StatelessWidget {
   Widget _buildAppIcon() {
     return AppIconWidget(
       packageName: app.packageName ?? '',
+      appName: app.name,
       preloadedIcon: app.appIcon,
       size: 48,
       borderRadius: 12,

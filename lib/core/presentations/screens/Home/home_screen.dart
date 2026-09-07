@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -48,9 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 24.h),
                 DailyUsageCard(
-                  dailyApps: _appUsageList.isNotEmpty
-                      ? AppDataHelper.convertToDailyUsageApps(_appUsageList)
-                      : AppDataHelper.dailyApps,
+                  dailyApps: AppDataHelper.convertToDailyUsageApps(_appUsageList),
                   appUsageData: _appUsageList.isNotEmpty ? _appUsageList : null,
                   isLoading: _isLoading,
                 ),
@@ -192,17 +191,13 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    // Fallback to dummy data if no real data available (iOS or no data)
-    return Column(
-      children:
-          AppDataHelper.yourApps.asMap().entries.map((entry) {
-            final index = entry.key;
-            final app = entry.value;
-            return _buildAnimatedAppCard(
-              index: index,
-              child: YourAppCard(app: app, key: ValueKey('dummy_app_$index')),
-            );
-          }).toList(),
+    // Nothing measured — say so instead of showing invented apps.
+    return _buildInfoCard(
+      Platform.isAndroid
+          ? context.l10n.usageAccessNeeded
+          : context.l10n.usageStatsUnavailable,
+      icon: Icons.info_outline,
+      color: const Color(0xFFFF9800),
     );
   }
 
@@ -332,7 +327,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   BannerAd? _bannerAd;
   bool _isBannerAdReady = false;
-  final apps = AppDataHelper.dailyApps;
 
   bool _isLoading = true;
   bool _hasPermission = false;

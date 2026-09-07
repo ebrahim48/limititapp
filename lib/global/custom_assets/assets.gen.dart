@@ -156,6 +156,10 @@ class $AssetsIllustrationsGen {
   SvgGenImage get leafLogo =>
       const SvgGenImage('assets/illustrations/leaf_logo.svg');
 
+  /// File path: assets/illustrations/leaf_mark_white.svg
+  SvgGenImage get leafMarkWhite =>
+      const SvgGenImage('assets/illustrations/leaf_mark_white.svg');
+
   /// File path: assets/illustrations/logout_circle.svg
   SvgGenImage get logoutCircle =>
       const SvgGenImage('assets/illustrations/logout_circle.svg');
@@ -186,6 +190,7 @@ class $AssetsIllustrationsGen {
     checkCircle,
     leafBadge,
     leafLogo,
+    leafMarkWhite,
     logoutCircle,
     mailCircle,
     mountainScene,

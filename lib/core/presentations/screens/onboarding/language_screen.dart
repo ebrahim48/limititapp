@@ -89,6 +89,25 @@ class _LanguageScreenState extends State<LanguageScreen>
             ),
           ),
 
+          // Only reachable with a route below it when opened from settings;
+          // on first launch there is nothing to go back to.
+          if (context.canPop())
+            Positioned(
+              top: 0,
+              left: 8.w,
+              child: SafeArea(
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: AppColors.textColor3D3D3D,
+                    size: 24.r,
+                  ),
+                  onPressed: () => context.pop(),
+                ),
+              ),
+            ),
+
           SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -114,7 +133,12 @@ class _LanguageScreenState extends State<LanguageScreen>
                   CustomButton(
                     title: AppLocalizations.of(context)!.getStarted,
                     onpress: () {
-                      context.pushNamed(AppRoutes.onBoardingStartScreen);
+                      // Opened from settings: just go back. First launch: sign in.
+                      if (context.canPop()) {
+                        context.pop();
+                      } else {
+                        context.goNamed(AppRoutes.logInScreen);
+                      }
                     },
                   ),
 

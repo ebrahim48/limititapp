@@ -849,9 +849,25 @@
   "@noAppsFound": {
     "description": "noAppsFound"
   },
-  "usageAccessNeeded": "Usage access is needed to list your apps.",
+  "noUsageDataYet": "No usage data yet",
+  "@noUsageDataYet": {
+    "description": "noUsageDataYet"
+  },
+  "usageStatsUnavailable": "iOS does not share app usage with other apps, so there is nothing to chart here.",
+  "@usageStatsUnavailable": {
+    "description": "usageStatsUnavailable"
+  },
+  "usageAccessNeeded": "Grant usage access to see how long you spend in each app.",
   "@usageAccessNeeded": {
     "description": "usageAccessNeeded"
+  },
+  "appDetectionLimited": "iOS only lets us detect known apps. Search for the app you want to limit.",
+  "@appDetectionLimited": {
+    "description": "appDetectionLimited"
+  },
+  "couldNotLoadApps": "Could not load your apps.",
+  "@couldNotLoadApps": {
+    "description": "couldNotLoadApps"
   },
   "editProtection": "Edit protection",
   "@editProtection": {
@@ -864,6 +880,178 @@
   "protection": "Protection",
   "@protection": {
     "description": "protection"
+  },
+  "howLongShouldThePauseBe": "How long should the pause be?",
+  "@howLongShouldThePauseBe": {
+    "description": "howLongShouldThePauseBe"
+  },
+  "pauseStepHint": "This is the time you'll wait before the app opens.",
+  "@pauseStepHint": {
+    "description": "pauseStepHint"
+  },
+  "whatsYourDailyLimit": "What's your daily limit?",
+  "@whatsYourDailyLimit": {
+    "description": "whatsYourDailyLimit"
+  },
+  "setAMaximumTimePerDay": "Set a maximum time per day.",
+  "@setAMaximumTimePerDay": {
+    "description": "setAMaximumTimePerDay"
+  },
+  "hoursLabel": "hours",
+  "@hoursLabel": {
+    "description": "hoursLabel"
+  },
+  "minutesLabel": "minutes",
+  "@minutesLabel": {
+    "description": "minutesLabel"
+  },
+  "howManyTimesPerDay": "How many times per day?",
+  "@howManyTimesPerDay": {
+    "description": "howManyTimesPerDay"
+  },
+  "setMaximumOpeningsPerDay": "Set the maximum number of openings per day.",
+  "@setMaximumOpeningsPerDay": {
+    "description": "setMaximumOpeningsPerDay"
+  },
+  "openingsPerDay": "openings per day",
+  "@openingsPerDay": {
+    "description": "openingsPerDay"
+  },
+  "whenDoYouWantToBlockIt": "When do you want to block it?",
+  "@whenDoYouWantToBlockIt": {
+    "description": "whenDoYouWantToBlockIt"
+  },
+  "selectTimePeriodToBlock": "Select the time period to block.",
+  "@selectTimePeriodToBlock": {
+    "description": "selectTimePeriodToBlock"
+  },
+  "blockedTime": "Blocked time",
+  "@blockedTime": {
+    "description": "blockedTime"
+  },
+  "review": "Review",
+  "@review": {
+    "description": "review"
+  },
+  "protectionTypeLabel": "Protection type",
+  "@protectionTypeLabel": {
+    "description": "protectionTypeLabel"
+  },
+  "settingLabel": "Setting",
+  "@settingLabel": {
+    "description": "settingLabel"
+  },
+  "activate": "Activate",
+  "@activate": {
+    "description": "activate"
+  },
+  "delayExplainer": "You will see a countdown before this app opens.",
+  "@delayExplainer": {
+    "description": "delayExplainer"
+  },
+  "dailyLimitExplainer": "You'll be notified when you reach your daily limit.",
+  "@dailyLimitExplainer": {
+    "description": "dailyLimitExplainer"
+  },
+  "openingLimitExplainer": "You can modify this anytime.",
+  "@openingLimitExplainer": {
+    "description": "openingLimitExplainer"
+  },
+  "timeBlockExplainer": "This app will be blocked during the selected time.",
+  "@timeBlockExplainer": {
+    "description": "timeBlockExplainer"
+  },
+  "appIsNowProtected": "{app} is now protected!",
+  "@appIsNowProtected": {
+    "description": "appIsNowProtected",
+    "placeholders": {
+      "app": {
+        "type": "String"
+      }
+    }
+  },
+  "smallPauseBigChange": "Small pause, big change.",
+  "@smallPauseBigChange": {
+    "description": "smallPauseBigChange"
+  },
+  "oneStepCloserToBetterHabits": "You've taken one step closer to better digital habits.",
+  "@oneStepCloserToBetterHabits": {
+    "description": "oneStepCloserToBetterHabits"
+  },
+  "done": "Done",
+  "@done": {
+    "description": "done"
+  },
+  "addAnother": "Add another",
+  "@addAnother": {
+    "description": "addAnother"
+  },
+  "secondsLong": "{count} seconds",
+  "@secondsLong": {
+    "description": "secondsLong",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "openingsPerDayValue": "{count} openings / day",
+  "@openingsPerDayValue": {
+    "description": "openingsPerDayValue",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "whatWouldYouLikeToDo": "What would you like to do?",
+  "@whatWouldYouLikeToDo": {
+    "description": "whatWouldYouLikeToDo"
+  },
+  "chooseAFunctionToGetStarted": "Choose a function to get started.",
+  "@chooseAFunctionToGetStarted": {
+    "description": "chooseAFunctionToGetStarted"
+  },
+  "delayAppOpening": "Delay app opening",
+  "@delayAppOpening": {
+    "description": "delayAppOpening"
+  },
+  "delayAppOpeningHint": "Take a mindful pause before opening an app.",
+  "@delayAppOpeningHint": {
+    "description": "delayAppOpeningHint"
+  },
+  "dailyTimeLimitFunctionHint": "Set a maximum time per day.",
+  "@dailyTimeLimitFunctionHint": {
+    "description": "dailyTimeLimitFunctionHint"
+  },
+  "openingLimit": "Opening limit",
+  "@openingLimit": {
+    "description": "openingLimit"
+  },
+  "openingLimitHint": "Limit how many times you can open an app.",
+  "@openingLimitHint": {
+    "description": "openingLimitHint"
+  },
+  "timeBlockFunctionHint": "Block apps during certain hours.",
+  "@timeBlockFunctionHint": {
+    "description": "timeBlockFunctionHint"
+  },
+  "recommended": "Recommended",
+  "@recommended": {
+    "description": "recommended"
+  },
+  "pauseDuration": "Pause duration",
+  "@pauseDuration": {
+    "description": "pauseDuration"
+  },
+  "secondsShort": "{count} sec",
+  "@secondsShort": {
+    "description": "secondsShort",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "dailyTimeLimit": "Daily time limit",
   "@dailyTimeLimit": {
@@ -994,5 +1182,653 @@
         "type": "String"
       }
     }
+  },
+  "today": "today",
+  "@today": {
+    "description": "today"
+  },
+  "days": "days",
+  "@days": {
+    "description": "days"
+  },
+  "timeSaved": "Time saved",
+  "@timeSaved": {
+    "description": "timeSaved"
+  },
+  "blockedOpens": "Blocked opens",
+  "@blockedOpens": {
+    "description": "blockedOpens"
+  },
+  "goalStreak": "Goal streak",
+  "@goalStreak": {
+    "description": "goalStreak"
+  },
+  "weeklyUsage": "Weekly usage",
+  "@weeklyUsage": {
+    "description": "weeklyUsage"
+  },
+  "trend": "Trend",
+  "@trend": {
+    "description": "trend"
+  },
+  "goals": "Goals",
+  "@goals": {
+    "description": "goals"
+  },
+  "monthlyReport": "Monthly Report",
+  "@monthlyReport": {
+    "description": "monthlyReport"
+  },
+  "unlockYourStats": "Unlock your stats",
+  "@unlockYourStats": {
+    "description": "unlockYourStats"
+  },
+  "unlockYourStatsSubtitle": "See exactly how much time you take back every week.",
+  "@unlockYourStatsSubtitle": {
+    "description": "unlockYourStatsSubtitle"
+  },
+  "lockedFeatureTimeSaved": "Time saved, day by day",
+  "@lockedFeatureTimeSaved": {
+    "description": "lockedFeatureTimeSaved"
+  },
+  "lockedFeatureTrends": "Weekly and monthly trends",
+  "@lockedFeatureTrends": {
+    "description": "lockedFeatureTrends"
+  },
+  "lockedFeatureGoals": "Goal streaks and history",
+  "@lockedFeatureGoals": {
+    "description": "lockedFeatureGoals"
+  },
+  "lockedFeatureReports": "Full monthly reports",
+  "@lockedFeatureReports": {
+    "description": "lockedFeatureReports"
+  },
+  "unlockWithPremium": "Unlock with Premium",
+  "@unlockWithPremium": {
+    "description": "unlockWithPremium"
+  },
+  "week": "Week",
+  "@week": {
+    "description": "week"
+  },
+  "month": "Month",
+  "@month": {
+    "description": "month"
+  },
+  "thisWeek": "this week",
+  "@thisWeek": {
+    "description": "thisWeek"
+  },
+  "thisMonth": "this month",
+  "@thisMonth": {
+    "description": "thisMonth"
+  },
+  "savedByApp": "Saved by app",
+  "@savedByApp": {
+    "description": "savedByApp"
+  },
+  "nothingSavedYet": "Nothing saved yet",
+  "@nothingSavedYet": {
+    "description": "nothingSavedYet"
+  },
+  "inUse": "In use",
+  "@inUse": {
+    "description": "inUse"
+  },
+  "mostUsed": "Most used",
+  "@mostUsed": {
+    "description": "mostUsed"
+  },
+  "totalScreenTime": "Total screen time",
+  "@totalScreenTime": {
+    "description": "totalScreenTime"
+  },
+  "noUsageYet": "No usage recorded yet",
+  "@noUsageYet": {
+    "description": "noUsageYet"
+  },
+  "screenTimeReduction": "Screen time reduction",
+  "@screenTimeReduction": {
+    "description": "screenTimeReduction"
+  },
+  "vsLastWeek": "vs. last week",
+  "@vsLastWeek": {
+    "description": "vsLastWeek"
+  },
+  "vsLastMonth": "vs. last month",
+  "@vsLastMonth": {
+    "description": "vsLastMonth"
+  },
+  "screenTimeHours": "Screen time (hours)",
+  "@screenTimeHours": {
+    "description": "screenTimeHours"
+  },
+  "insight": "Insight",
+  "@insight": {
+    "description": "insight"
+  },
+  "insightPositive": "You've consistently reduced screen time. Your digital mindfulness is improving! Keep protecting those apps.",
+  "@insightPositive": {
+    "description": "insightPositive"
+  },
+  "insightNeutral": "Keep going — a few more protected days and the trend will start to bend.",
+  "@insightNeutral": {
+    "description": "insightNeutral"
+  },
+  "dailyGoal": "Daily goal",
+  "@dailyGoal": {
+    "description": "dailyGoal"
+  },
+  "noGoalSet": "No goal set",
+  "@noGoalSet": {
+    "description": "noGoalSet"
+  },
+  "dailyScreenTimeLimit": "daily screen time limit",
+  "@dailyScreenTimeLimit": {
+    "description": "dailyScreenTimeLimit"
+  },
+  "daysGoalWasMet": "Days goal was met",
+  "@daysGoalWasMet": {
+    "description": "daysGoalWasMet"
+  },
+  "noHistoryYet": "No history yet",
+  "@noHistoryYet": {
+    "description": "noHistoryYet"
+  },
+  "streaks": "Streaks",
+  "@streaks": {
+    "description": "streaks"
+  },
+  "currentStreak": "current streak",
+  "@currentStreak": {
+    "description": "currentStreak"
+  },
+  "bestStreak": "best streak",
+  "@bestStreak": {
+    "description": "bestStreak"
+  },
+  "usageReduction": "Usage reduction",
+  "@usageReduction": {
+    "description": "usageReduction"
+  },
+  "monthProgress": "Month progress",
+  "@monthProgress": {
+    "description": "monthProgress"
+  },
+  "continueYourMonth": "Continue your month",
+  "@continueYourMonth": {
+    "description": "continueYourMonth"
+  },
+  "usedToday": "{value} used today",
+  "@usedToday": {
+    "description": "usedToday",
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "daysCount": "{count} days",
+  "@daysCount": {
+    "description": "daysCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysCompleted": "{done} of {total} days completed",
+  "@daysCompleted": {
+    "description": "daysCompleted",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "choosePlan": "Choose your plan",
+  "@choosePlan": {
+    "description": "choosePlan"
+  },
+  "limitItPremium": "LimitIt Premium",
+  "@limitItPremium": {
+    "description": "limitItPremium"
+  },
+  "premiumSubtitle": "Everything you need to build a calmer relationship with your phone.",
+  "@premiumSubtitle": {
+    "description": "premiumSubtitle"
+  },
+  "premiumFeatureUnlimitedTitle": "Unlimited protections",
+  "@premiumFeatureUnlimitedTitle": {
+    "description": "premiumFeatureUnlimitedTitle"
+  },
+  "premiumFeatureUnlimitedSubtitle": "Protect as many apps as you want",
+  "@premiumFeatureUnlimitedSubtitle": {
+    "description": "premiumFeatureUnlimitedSubtitle"
+  },
+  "premiumFeatureStatsTitle": "Full statistics",
+  "@premiumFeatureStatsTitle": {
+    "description": "premiumFeatureStatsTitle"
+  },
+  "premiumFeatureStatsSubtitle": "Trends, goals and monthly reports",
+  "@premiumFeatureStatsSubtitle": {
+    "description": "premiumFeatureStatsSubtitle"
+  },
+  "premiumFeatureScheduleTitle": "Advanced schedules",
+  "@premiumFeatureScheduleTitle": {
+    "description": "premiumFeatureScheduleTitle"
+  },
+  "premiumFeatureScheduleSubtitle": "Time blocks and custom days",
+  "@premiumFeatureScheduleSubtitle": {
+    "description": "premiumFeatureScheduleSubtitle"
+  },
+  "premiumFeatureBackupTitle": "Backup & restore",
+  "@premiumFeatureBackupTitle": {
+    "description": "premiumFeatureBackupTitle"
+  },
+  "premiumFeatureBackupSubtitle": "Keep your setup safe",
+  "@premiumFeatureBackupSubtitle": {
+    "description": "premiumFeatureBackupSubtitle"
+  },
+  "premiumFeatureNoAdsTitle": "No ads",
+  "@premiumFeatureNoAdsTitle": {
+    "description": "premiumFeatureNoAdsTitle"
+  },
+  "premiumFeatureNoAdsSubtitle": "A clean, distraction-free app",
+  "@premiumFeatureNoAdsSubtitle": {
+    "description": "premiumFeatureNoAdsSubtitle"
+  },
+  "restorePurchases": "Restore purchases",
+  "@restorePurchases": {
+    "description": "restorePurchases"
+  },
+  "monthly": "Monthly",
+  "@monthly": {
+    "description": "monthly"
+  },
+  "yearly": "Yearly",
+  "@yearly": {
+    "description": "yearly"
+  },
+  "perYear": "/ year",
+  "@perYear": {
+    "description": "perYear"
+  },
+  "perMonth": "/ month",
+  "@perMonth": {
+    "description": "perMonth"
+  },
+  "perWeek": "/ week",
+  "@perWeek": {
+    "description": "perWeek"
+  },
+  "paymentPending": "Payment pending…",
+  "@paymentPending": {
+    "description": "paymentPending"
+  },
+  "purchaseCancelled": "Purchase cancelled",
+  "@purchaseCancelled": {
+    "description": "purchaseCancelled"
+  },
+  "checkingPurchases": "Checking for existing purchases…",
+  "@checkingPurchases": {
+    "description": "checkingPurchases"
+  },
+  "youreAllSet": "You're all set!",
+  "@youreAllSet": {
+    "description": "youreAllSet"
+  },
+  "youreAllSetSubtitle": "Your Premium features are now active. Enjoy every one of them.",
+  "@youreAllSetSubtitle": {
+    "description": "youreAllSetSubtitle"
+  },
+  "startUsingPremium": "Start using Premium",
+  "@startUsingPremium": {
+    "description": "startUsingPremium"
+  },
+  "manageSubscription": "Manage subscription",
+  "@manageSubscription": {
+    "description": "manageSubscription"
+  },
+  "activeSubscription": "Active subscription",
+  "@activeSubscription": {
+    "description": "activeSubscription"
+  },
+  "active": "Active",
+  "@active": {
+    "description": "active"
+  },
+  "price": "Price",
+  "@price": {
+    "description": "price"
+  },
+  "renewsOn": "Renews on",
+  "@renewsOn": {
+    "description": "renewsOn"
+  },
+  "options": "Options",
+  "@options": {
+    "description": "options"
+  },
+  "changePlan": "Change plan",
+  "@changePlan": {
+    "description": "changePlan"
+  },
+  "changePlanSubtitle": "Switch between monthly and yearly",
+  "@changePlanSubtitle": {
+    "description": "changePlanSubtitle"
+  },
+  "billingHistory": "Billing history",
+  "@billingHistory": {
+    "description": "billingHistory"
+  },
+  "billingHistorySubtitle": "See past invoices",
+  "@billingHistorySubtitle": {
+    "description": "billingHistorySubtitle"
+  },
+  "cancelSubscription": "Cancel subscription",
+  "@cancelSubscription": {
+    "description": "cancelSubscription"
+  },
+  "yesCancelSubscription": "Yes, cancel subscription",
+  "@yesCancelSubscription": {
+    "description": "yesCancelSubscription"
+  },
+  "keepMyPlan": "Keep my plan",
+  "@keepMyPlan": {
+    "description": "keepMyPlan"
+  },
+  "youllLoseAccessTo": "You'll lose access to",
+  "@youllLoseAccessTo": {
+    "description": "youllLoseAccessTo"
+  },
+  "cancelKeepsAccess": "Your Premium access stays active until the end of your billing period.",
+  "@cancelKeepsAccess": {
+    "description": "cancelKeepsAccess"
+  },
+  "cancelStoreNote": "Recurring billing is managed by the App Store / Google Play. Turn off auto-renew there to avoid future charges.",
+  "@cancelStoreNote": {
+    "description": "cancelStoreNote"
+  },
+  "subscriptionCancelled": "Subscription cancelled",
+  "@subscriptionCancelled": {
+    "description": "subscriptionCancelled"
+  },
+  "subscriptionCancelledSubtitle": "Your Premium access will remain active until the end of your billing period.",
+  "@subscriptionCancelledSubtitle": {
+    "description": "subscriptionCancelledSubtitle"
+  },
+  "youCanResubscribeAnytime": "You can resubscribe anytime.",
+  "@youCanResubscribeAnytime": {
+    "description": "youCanResubscribeAnytime"
+  },
+  "goToHome": "Go to Home",
+  "@goToHome": {
+    "description": "goToHome"
+  },
+  "cancelKeepsAccessUntil": "Your Premium access stays active until {date}.",
+  "@cancelKeepsAccessUntil": {
+    "description": "cancelKeepsAccessUntil",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "premiumMember": "Premium member",
+  "@premiumMember": {
+    "description": "premiumMember"
+  },
+  "freePlan": "Free plan",
+  "@freePlan": {
+    "description": "freePlan"
+  },
+  "openingsBlocked": "Openings blocked",
+  "@openingsBlocked": {
+    "description": "openingsBlocked"
+  },
+  "appProtections": "App protections",
+  "@appProtections": {
+    "description": "appProtections"
+  },
+  "reminders": "Reminders",
+  "@reminders": {
+    "description": "reminders"
+  },
+  "privacy": "Privacy",
+  "@privacy": {
+    "description": "privacy"
+  },
+  "helpAndFaq": "Help & FAQ",
+  "@helpAndFaq": {
+    "description": "helpAndFaq"
+  },
+  "backupAndRestore": "Backup & restore",
+  "@backupAndRestore": {
+    "description": "backupAndRestore"
+  },
+  "aboutLimitIt": "About LimitIt",
+  "@aboutLimitIt": {
+    "description": "aboutLimitIt"
+  },
+  "remindersSubtitle": "Stay mindful with gentle nudges at the right moments.",
+  "@remindersSubtitle": {
+    "description": "remindersSubtitle"
+  },
+  "daily": "Daily",
+  "@daily": {
+    "description": "daily"
+  },
+  "weekly": "Weekly",
+  "@weekly": {
+    "description": "weekly"
+  },
+  "dailyCheckIn": "Daily check-in",
+  "@dailyCheckIn": {
+    "description": "dailyCheckIn"
+  },
+  "dailyCheckInSubtitle": "Morning mindfulness reminder",
+  "@dailyCheckInSubtitle": {
+    "description": "dailyCheckInSubtitle"
+  },
+  "reminderTime": "Reminder time",
+  "@reminderTime": {
+    "description": "reminderTime"
+  },
+  "goalAlert": "Goal alert",
+  "@goalAlert": {
+    "description": "goalAlert"
+  },
+  "goalAlertSubtitle": "Notify when near daily limit",
+  "@goalAlertSubtitle": {
+    "description": "goalAlertSubtitle"
+  },
+  "weeklyReportReminder": "Weekly report",
+  "@weeklyReportReminder": {
+    "description": "weeklyReportReminder"
+  },
+  "weeklyReportReminderSubtitle": "Every Monday morning",
+  "@weeklyReportReminderSubtitle": {
+    "description": "weeklyReportReminderSubtitle"
+  },
+  "breakReminder": "Break reminder",
+  "@breakReminder": {
+    "description": "breakReminder"
+  },
+  "breakReminderSubtitle": "Remind after 30 min of use",
+  "@breakReminderSubtitle": {
+    "description": "breakReminderSubtitle"
+  },
+  "remindersDeliveryNote": "Reminders are delivered as push notifications. Make sure notifications are enabled in your device settings.",
+  "@remindersDeliveryNote": {
+    "description": "remindersDeliveryNote"
+  },
+  "helpAndSupport": "Help & support",
+  "@helpAndSupport": {
+    "description": "helpAndSupport"
+  },
+  "faq": "FAQ",
+  "@faq": {
+    "description": "faq"
+  },
+  "faqSubtitle": "Frequently asked questions",
+  "@faqSubtitle": {
+    "description": "faqSubtitle"
+  },
+  "contactSupport": "Contact support",
+  "@contactSupport": {
+    "description": "contactSupport"
+  },
+  "contactSupportSubtitle": "Get in touch with our team",
+  "@contactSupportSubtitle": {
+    "description": "contactSupportSubtitle"
+  },
+  "reportAProblem": "Report a problem",
+  "@reportAProblem": {
+    "description": "reportAProblem"
+  },
+  "reportAProblemSubtitle": "Tell us what went wrong",
+  "@reportAProblemSubtitle": {
+    "description": "reportAProblemSubtitle"
+  },
+  "faqQ1": "How does a protection work?",
+  "@faqQ1": {
+    "description": "faqQ1"
+  },
+  "faqA1": "When you open a protected app, LimitIt shows a mindful pause before letting it through — and blocks it once the limit is reached.",
+  "@faqA1": {
+    "description": "faqA1"
+  },
+  "faqQ2": "Is my usage data private?",
+  "@faqQ2": {
+    "description": "faqQ2"
+  },
+  "faqA2": "Usage and protections stay on your device. Only your account details reach our servers.",
+  "@faqA2": {
+    "description": "faqA2"
+  },
+  "faqQ3": "Why do I need usage access?",
+  "@faqQ3": {
+    "description": "faqQ3"
+  },
+  "faqA3": "Android needs that permission to tell LimitIt which app is in the foreground, so limits can be applied.",
+  "@faqA3": {
+    "description": "faqA3"
+  },
+  "faqQ4": "How do I cancel Premium?",
+  "@faqQ4": {
+    "description": "faqQ4"
+  },
+  "faqA4": "Open Premium → Manage subscription → Cancel subscription. Auto-renew is switched off in the App Store or Google Play.",
+  "@faqA4": {
+    "description": "faqA4"
+  },
+  "createBackup": "Create backup",
+  "@createBackup": {
+    "description": "createBackup"
+  },
+  "createBackupSubtitle": "Save your protections to your account.",
+  "@createBackupSubtitle": {
+    "description": "createBackupSubtitle"
+  },
+  "backUpNow": "Back up now",
+  "@backUpNow": {
+    "description": "backUpNow"
+  },
+  "restoreBackup": "Restore backup",
+  "@restoreBackup": {
+    "description": "restoreBackup"
+  },
+  "restoreBackupSubtitle": "Recover your protections from a backup.",
+  "@restoreBackupSubtitle": {
+    "description": "restoreBackupSubtitle"
+  },
+  "restore": "Restore",
+  "@restore": {
+    "description": "restore"
+  },
+  "noBackupFound": "No backup found",
+  "@noBackupFound": {
+    "description": "noBackupFound"
+  },
+  "version": "Version",
+  "@version": {
+    "description": "version"
+  },
+  "aboutLimitItBody": "Built to help you take control of your digital habits and live a more focused life.",
+  "@aboutLimitItBody": {
+    "description": "aboutLimitItBody"
+  },
+  "logOutOfLimitIt": "Log out of LimitIt?",
+  "@logOutOfLimitIt": {
+    "description": "logOutOfLimitIt"
+  },
+  "logOutSubtitle": "Your protections and data stay saved. You can log back in any time.",
+  "@logOutSubtitle": {
+    "description": "logOutSubtitle"
+  },
+  "yesLogOut": "Yes, log out",
+  "@yesLogOut": {
+    "description": "yesLogOut"
+  },
+  "noDataAvailable": "No data available",
+  "@noDataAvailable": {
+    "description": "noDataAvailable"
+  },
+  "backupCreated": "Backup created — {count} protections saved",
+  "@backupCreated": {
+    "description": "backupCreated",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "backupRestored": "Restored {count} protections",
+  "@backupRestored": {
+    "description": "backupRestored",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "lastBackup": "Last backup: {date}",
+  "@lastBackup": {
+    "description": "lastBackup",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "copyrightLine": "© {year} LimitIt",
+  "@copyrightLine": {
+    "description": "copyrightLine",
+    "placeholders": {
+      "year": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
+  "or": "or",
+  "@or": {
+    "description": "or"
+  },
+  "dontHaveAnAccount": "Don't have an account?",
+  "@dontHaveAnAccount": {
+    "description": "dontHaveAnAccount"
+  },
+  "byContinuingYouAgree": "By continuing you agree to our Terms of Service and Privacy Policy.",
+  "@byContinuingYouAgree": {
+    "description": "byContinuingYouAgree"
+  },
+  "takeBackControlOfYourScreenTime": "Take back control of your screen time",
+  "@takeBackControlOfYourScreenTime": {
+    "description": "takeBackControlOfYourScreenTime"
   }
 }

@@ -213,7 +213,7 @@ class AuthController extends GetxController {
         if (role == "user" || role == "usr") {
           await PrefsHelper.setBool(AppConstants.isLogged, true);
           if (context.mounted) {
-            context.go(AppRoutes.limitPrivacyProtectionScreen);
+            context.go(AppRoutes.bottomNavBarScreen);
           }
         } else {
           final message = response.body["message"];
@@ -225,7 +225,7 @@ class AuthController extends GetxController {
           } else {
             await PrefsHelper.setBool(AppConstants.isLogged, true);
             if (context.mounted) {
-              context.go(AppRoutes.limitPrivacyProtectionScreen);
+              context.go(AppRoutes.bottomNavBarScreen);
             }
           }
         }

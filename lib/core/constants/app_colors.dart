@@ -61,9 +61,14 @@ class AppColors {
   static const Color warmText = Color(0xFF8A5A00);
 
   /// ---------------- GRADIENT ----------------
+  /// linear-gradient(160deg, #2C5E1A 8.49%, #5FA330 91.51%)
+  ///
+  /// CSS 160deg points down-and-slightly-left, so the axis runs from the
+  /// top-right toward the bottom-left.
   static const LinearGradient greenGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
+    begin: Alignment(0.34, -1.0),
+    end: Alignment(-0.34, 1.0),
+    stops: [0.0849, 0.9151],
     colors: [forestGreen, leafGreen],
   );
 

@@ -184,8 +184,10 @@ class AppMessageView extends StatelessWidget {
           ),
         ],
         if (extra != null) ...[
-          SizedBox(height: 10.h),
-          extra!,
+          SizedBox(height: 12.h),
+          // Centred so a pill/badge keeps its intrinsic width inside the
+          // stretched column.
+          Align(alignment: Alignment.center, child: extra!),
         ],
         if (action != null) ...[
           SizedBox(height: 32.h),

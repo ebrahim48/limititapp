@@ -6,14 +6,26 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
+import 'package:limit_it_app/core/models/protection_draft.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
+import 'package:limit_it_app/core/services/device_apps_service.dart';
+import 'package:limit_it_app/l10n/app_localizations.dart';
 import '../../widgets/ui/ui.dart';
 
-/// Pick the app to protect. The list is the device's real installed apps
-/// (via [AppUsageService]); on iOS / without usage permission it falls back
-/// to the popular apps the design shows as suggestions.
+/// Why the banner above the list is showing. Resolved to text at build time so
+/// the loaders stay free of `BuildContext`.
+enum _Notice { usageAccess, limitedDetection, loadFailed }
+
+/// Pick the app to protect.
+///
+/// The list is always read off the device: Android enumerates every launchable
+/// app through [AppUsageService], iOS probes the [DeviceAppsService] catalogue
+/// (the only detection Apple allows) and shows the ones actually installed.
 class SearchAppScreen extends StatefulWidget {
-  const SearchAppScreen({super.key});
+  const SearchAppScreen({super.key, this.protectionType});
+
+  /// Chosen on the function chooser; lands preselected in the editor.
+  final ProtectionType? protectionType;
 
   @override
   State<SearchAppScreen> createState() => _SearchAppScreenState();
@@ -24,22 +36,13 @@ class _SearchAppScreenState extends State<SearchAppScreen>
   static const String _ownPackage = 'com.limitit.digitalbalance';
 
   final TextEditingController _searchCtrl = TextEditingController();
+  final DeviceAppsService _deviceApps = DeviceAppsService();
 
-  List<AppUsageData> _apps = [];
+  List<_AppEntry> _entries = [];
   String _query = '';
   bool _isLoading = true;
-  String? _errorMessage;
-
-  /// Shown when the device list is unavailable (iOS, permission denied).
-  static const List<_FallbackApp> _fallbackApps = [
-    _FallbackApp('Instagram', 'com.instagram.android'),
-    _FallbackApp('TikTok', 'com.zhiliaoapp.musically'),
-    _FallbackApp('YouTube', 'com.google.android.youtube'),
-    _FallbackApp('Facebook', 'com.facebook.katana'),
-    _FallbackApp('WhatsApp', 'com.whatsapp'),
-    _FallbackApp('X (Twitter)', 'com.twitter.android'),
-    _FallbackApp('Snapchat', 'com.snapchat.android'),
-  ];
+  _Notice? _notice;
+  String? _loadError;
 
   @override
   void initState() {
@@ -65,73 +68,108 @@ class _SearchAppScreenState extends State<SearchAppScreen>
     if (mounted) setState(() => _isLoading = true);
 
     try {
-      if (!Platform.isAndroid) {
-        if (!mounted) return;
-        setState(() {
-          _apps = [];
-          _isLoading = false;
-          _errorMessage = null;
-        });
-        return;
-      }
-
-      final service = Get.find<AppUsageService>();
-      var hasPermission = await service.hasPermission();
-      if (!hasPermission) hasPermission = await service.requestPermission();
-
-      if (!hasPermission) {
-        if (!mounted) return;
-        setState(() {
-          _apps = [];
-          _isLoading = false;
-          _errorMessage = context.l10n.usageAccessNeeded;
-        });
-        return;
-      }
-
-      final all = await service.getAllInstalledApps();
-      final seen = <String>{};
-      final unique = all.where((app) {
-        final pkg = app.packageName.trim();
-        if (pkg == _ownPackage || seen.contains(pkg)) return false;
-        seen.add(pkg);
-        return true;
-      }).toList()
-        ..sort((a, b) => b.usageTimeMs.compareTo(a.usageTimeMs));
+      final result =
+          Platform.isAndroid ? await _loadAndroidApps() : await _loadIosApps();
 
       if (!mounted) return;
       setState(() {
-        _apps = unique;
+        _entries = result.entries;
+        _notice = result.notice;
+        _loadError = null;
         _isLoading = false;
-        _errorMessage = null;
       });
     } catch (e) {
       if (!mounted) return;
       setState(() {
         _isLoading = false;
-        _errorMessage = '$e';
+        _notice = _Notice.loadFailed;
+        _loadError = '$e';
       });
     }
   }
 
+  /// Android lists the real launcher. Usage access is not needed for the list
+  /// itself — only for the "45 min today · 12 opens" subtitle — so a denied
+  /// permission costs the numbers, never the apps.
+  Future<_LoadResult> _loadAndroidApps() async {
+    final service = Get.find<AppUsageService>();
+    final hasUsageAccess = await service.hasPermission();
+    final all = await service.getAllInstalledApps();
+
+    final seen = <String>{};
+    final unique = all.where((app) {
+      final pkg = app.packageName.trim();
+      if (pkg == _ownPackage || seen.contains(pkg)) return false;
+      seen.add(pkg);
+      return true;
+    }).toList()
+      ..sort((a, b) {
+        final byUsage = b.usageTimeMs.compareTo(a.usageTimeMs);
+        return byUsage != 0
+            ? byUsage
+            : a.name.toLowerCase().compareTo(b.name.toLowerCase());
+      });
+
+    return _LoadResult(
+      entries: [
+        for (final app in unique)
+          _AppEntry(
+            name: app.name,
+            packageName: app.packageName,
+            icon: app.icon,
+            subtitle: hasUsageAccess
+                ? '${app.usageString} · ${app.openCount}'
+                : null,
+          ),
+      ],
+      notice: hasUsageAccess ? null : _Notice.usageAccess,
+    );
+  }
+
+  /// iOS cannot enumerate installed apps, so we probe the known catalogue and
+  /// show the hits. When nothing answers (older iOS, simulator) we still offer
+  /// the full catalogue rather than an empty screen.
+  Future<_LoadResult> _loadIosApps() async {
+    final detected = await _deviceApps.detectInstalled();
+
+    if (detected.isNotEmpty) {
+      return _LoadResult(
+        entries: [
+          for (final app in detected)
+            _AppEntry(name: app.name, packageName: app.packageName),
+        ],
+      );
+    }
+
+    return _LoadResult(
+      entries: [
+        for (final app in DeviceAppsService.catalog)
+          _AppEntry(name: app.name, packageName: app.packageName),
+      ],
+      notice: _Notice.limitedDetection,
+    );
+  }
+
+  Future<void> _grantUsageAccess() async {
+    await Get.find<AppUsageService>().requestPermission();
+    await _loadApps();
+  }
+
   List<_AppEntry> get _visibleApps {
-    final entries = _apps.isNotEmpty
-        ? _apps
-            .map((a) => _AppEntry(
-                  name: a.name,
-                  packageName: a.packageName,
-                  icon: a.icon,
-                  subtitle: '${a.usageString} · ${a.openCount}',
-                ))
-            .toList()
-        : _fallbackApps
-            .map((a) => _AppEntry(name: a.name, packageName: a.packageName))
-            .toList();
-
-    if (_query.trim().isEmpty) return entries;
-
     final q = _query.trim().toLowerCase();
-    return entries.where((e) => e.name.toLowerCase().contains(q)).toList();
+    if (q.isEmpty) return _entries;
+    return _entries.where((e) => e.name.toLowerCase().contains(q)).toList();
+  }
+
+  String _noticeText(AppLocalizations l10n) {
+    switch (_notice!) {
+      case _Notice.usageAccess:
+        return l10n.usageAccessNeeded;
+      case _Notice.limitedDetection:
+        return l10n.appDetectionLimited;
+      case _Notice.loadFailed:
+        return _loadError ?? l10n.couldNotLoadApps;
+    }
   }
 
   @override
@@ -160,7 +198,7 @@ class _SearchAppScreenState extends State<SearchAppScreen>
           ),
           SizedBox(height: 20.h),
 
-          if (_errorMessage != null) ...[
+          if (_notice != null) ...[
             AppSoftCard(
               color: AppColors.warmSoft,
               padding: EdgeInsets.all(12.w),
@@ -171,18 +209,23 @@ class _SearchAppScreenState extends State<SearchAppScreen>
                   SizedBox(width: 8.w),
                   Expanded(
                     child: Text(
-                      _errorMessage!,
+                      _noticeText(l10n),
                       style: AppTextStyles.small(color: AppColors.warmText),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: _loadApps,
-                    child: Text(
-                      l10n.retry,
-                      style: AppTextStyles.label(color: AppColors.warmText)
-                          .copyWith(fontWeight: AppFont.semiBold),
+                  if (_notice != _Notice.limitedDetection) ...[
+                    SizedBox(width: 8.w),
+                    GestureDetector(
+                      onTap: _notice == _Notice.usageAccess
+                          ? _grantUsageAccess
+                          : _loadApps,
+                      child: Text(
+                        _notice == _Notice.usageAccess ? l10n.grant : l10n.retry,
+                        style: AppTextStyles.label(color: AppColors.warmText)
+                            .copyWith(fontWeight: AppFont.semiBold),
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             ),
@@ -230,17 +273,37 @@ class _SearchAppScreenState extends State<SearchAppScreen>
   }
 
   void _pick(_AppEntry app) {
-    context.pushReplacementNamed(
-      AppRoutes.protectionEditorScreen,
-      extra: {
-        'selectedApp': SelectedAppInfo(
-          packageName: app.packageName,
-          appName: app.name,
-          appIcon: app.icon,
-        ),
-      },
+    final selected = SelectedAppInfo(
+      packageName: app.packageName,
+      appName: app.name,
+      appIcon: app.icon,
+    );
+
+    // Reached through the function chooser: continue into the wizard. Opened
+    // on its own (no type picked), fall back to the all-in-one editor.
+    final type = widget.protectionType;
+    if (type == null) {
+      context.pushReplacementNamed(
+        AppRoutes.protectionEditorScreen,
+        extra: {'selectedApp': selected},
+      );
+      return;
+    }
+
+    // Pushed, not replaced: Back through the wizard must reach the app picker
+    // and the function chooser again.
+    context.pushNamed(
+      AppRoutes.protectionStepScreen,
+      extra: ProtectionDraft(app: selected, type: type),
     );
   }
+}
+
+class _LoadResult {
+  const _LoadResult({required this.entries, this.notice});
+
+  final List<_AppEntry> entries;
+  final _Notice? notice;
 }
 
 class _AppEntry {
@@ -255,12 +318,6 @@ class _AppEntry {
   final String packageName;
   final dynamic icon;
   final String? subtitle;
-}
-
-class _FallbackApp {
-  const _FallbackApp(this.name, this.packageName);
-  final String name;
-  final String packageName;
 }
 
 class _SearchLoading extends StatelessWidget {

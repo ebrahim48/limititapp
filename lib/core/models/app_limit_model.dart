@@ -4,6 +4,9 @@ import 'package:get/get.dart';
 
 /// How an app is protected. Drives the badge and the editor controls.
 enum ProtectionType {
+  /// "Pause 10s before opening"
+  delayOpening,
+
   /// "Daily limit: 0h 30m"
   dailyLimit,
 
@@ -27,6 +30,7 @@ class AppLimitModel {
   final String appName;
   final Uint8List? appIcon;
   final int maxDailyOpens; // Maximum opens per day
+  final int delaySeconds; // Mindful pause before the app opens
   final int maxSessionDurationMinutes; // Maximum session duration in minutes
   final List<String> activeDays; // Days when limit is active (e.g., ['MON', 'TUE'])
   final RxString? scheduleStartTime; // Schedule start time (24h format: "22:00")
@@ -46,6 +50,7 @@ class AppLimitModel {
     required this.appName,
     this.appIcon,
     required this.maxDailyOpens,
+    this.delaySeconds = 0,
     required this.maxSessionDurationMinutes,
     required this.activeDays,
     this.scheduleStartTime,
@@ -62,6 +67,7 @@ class AppLimitModel {
       'packageName': packageName,
       'appName': appName,
       'maxDailyOpens': maxDailyOpens,
+      'delaySeconds': delaySeconds,
       'maxSessionDurationMinutes': maxSessionDurationMinutes,
       'activeDays': activeDays,
       'scheduleStartTime': scheduleStartTime?.value,
@@ -79,6 +85,7 @@ class AppLimitModel {
       packageName: json['packageName'],
       appName: json['appName'],
       maxDailyOpens: json['maxDailyOpens'],
+      delaySeconds: json['delaySeconds'] as int? ?? 0,
       maxSessionDurationMinutes: json['maxSessionDurationMinutes'],
       activeDays: List<String>.from(json['activeDays'] ?? []),
       scheduleStartTime: json['scheduleStartTime'] != null 
@@ -110,6 +117,7 @@ class AppLimitModel {
     String? appName,
     Uint8List? appIcon,
     int? maxDailyOpens,
+    int? delaySeconds,
     int? maxSessionDurationMinutes,
     List<String>? activeDays,
     String? scheduleStartTime,
@@ -124,6 +132,7 @@ class AppLimitModel {
       appName: appName ?? this.appName,
       appIcon: appIcon ?? this.appIcon,
       maxDailyOpens: maxDailyOpens ?? this.maxDailyOpens,
+      delaySeconds: delaySeconds ?? this.delaySeconds,
       maxSessionDurationMinutes: maxSessionDurationMinutes ?? this.maxSessionDurationMinutes,
       activeDays: activeDays ?? this.activeDays,
       scheduleStartTime: scheduleStartTime != null 

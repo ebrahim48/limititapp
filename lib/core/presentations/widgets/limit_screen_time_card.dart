@@ -72,6 +72,7 @@ class LimitScreenTimeCard extends StatelessWidget {
           // App Icon
           AppIconWidget(
             packageName: data.usageData?.packageName ?? '',
+            appName: data.usageData?.name,
             preloadedIcon: data.usageData?.icon,
             size: 48,
             borderRadius: 12,

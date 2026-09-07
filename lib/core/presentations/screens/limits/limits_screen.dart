@@ -14,7 +14,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../../constants/app_data_helper.dart';
 
 class LimitsScreen extends StatefulWidget {
   const LimitsScreen({super.key});
@@ -28,7 +27,6 @@ class _LimitsScreenState extends State<LimitsScreen> {
   bool _isBannerAdReady = false;
   InterstitialAd? _interstitialAd;
   bool _isInterstitialAdReady = false;
-  final apps = AppDataHelper.dailyApps;
   final AdsController _adsController = Get.put(AdsController());
 
   @override

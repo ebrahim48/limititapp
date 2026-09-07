@@ -1,7 +1,8 @@
 import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:installed_apps/installed_apps.dart';
+import 'package:limit_it_app/core/services/app_icon_service.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../constants/app_colors.dart';
 
@@ -70,9 +71,9 @@ class BrandLogos {
 
 /// Square app-logo tile used in every app list.
 ///
-/// Resolution order — the real icon installed on the device first (dynamic,
-/// loaded through `installed_apps`), then the bundled brand logo, then a
-/// neutral placeholder.
+/// Resolution order — the real icon, resolved by [AppIconService] (the device's
+/// own icon on Android, App Store artwork on iOS), then the bundled brand logo
+/// for when that is unreachable, then a neutral placeholder.
 class AppLogoTile extends StatefulWidget {
   const AppLogoTile({
     super.key,
@@ -94,16 +95,14 @@ class AppLogoTile extends StatefulWidget {
 }
 
 class _AppLogoTileState extends State<AppLogoTile> {
-  Future<Uint8List?>? _iconFuture;
+  Future<ResolvedAppIcon?>? _iconFuture;
 
   @override
   void initState() {
     super.initState();
     final pkg = widget.packageName;
     if (widget.preloadedIcon == null && pkg != null && pkg.isNotEmpty) {
-      _iconFuture = InstalledApps.getAppInfo(pkg)
-          .then((info) => info?.icon)
-          .catchError((_) => null);
+      _iconFuture = AppIconService.instance.resolve(pkg, appName: widget.appName);
     }
   }
 
@@ -117,12 +116,22 @@ class _AppLogoTileState extends State<AppLogoTile> {
     }
 
     if (_iconFuture != null) {
-      return FutureBuilder<Uint8List?>(
+      return FutureBuilder<ResolvedAppIcon?>(
         future: _iconFuture,
         builder: (context, snapshot) {
-          final bytes = snapshot.data;
+          final icon = snapshot.data;
+          final bytes = icon?.bytes;
           if (bytes != null && bytes.isNotEmpty) {
             return _frame(Image.memory(bytes, fit: BoxFit.cover));
+          }
+          final url = icon?.url;
+          if (url != null) {
+            return _frame(CachedNetworkImage(
+              imageUrl: url,
+              fit: BoxFit.cover,
+              placeholder: (_, __) => Container(color: AppColors.fog),
+              errorWidget: (_, __, ___) => _fallback(),
+            ));
           }
           return _fallback();
         },

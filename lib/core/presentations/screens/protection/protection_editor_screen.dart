@@ -18,10 +18,14 @@ class ProtectionEditorScreen extends StatefulWidget {
     super.key,
     this.selectedApp,
     this.packageName,
+    this.initialType,
   });
 
   final SelectedAppInfo? selectedApp;
   final String? packageName;
+
+  /// Picked on the function chooser when creating a new protection.
+  final ProtectionType? initialType;
 
   @override
   State<ProtectionEditorScreen> createState() => _ProtectionEditorScreenState();
@@ -49,6 +53,7 @@ class _ProtectionEditorScreenState extends State<ProtectionEditorScreen> {
   ProtectionType _type = ProtectionType.dailyLimit;
   int _dailyLimitMinutes = 30;
   int _maxOpens = 4;
+  int _delaySeconds = 10;
   TimeOfDay _blockStart = const TimeOfDay(hour: 23, minute: 0);
   TimeOfDay _blockEnd = const TimeOfDay(hour: 8, minute: 5);
   Set<String> _activeDays = _weekDays.toSet();
@@ -59,6 +64,7 @@ class _ProtectionEditorScreenState extends State<ProtectionEditorScreen> {
   @override
   void initState() {
     super.initState();
+    _type = widget.initialType ?? _type;
     _packageName = widget.selectedApp?.packageName ?? widget.packageName ?? '';
     _appName = widget.selectedApp?.appName ?? '';
     _appIcon = widget.selectedApp?.appIcon;
@@ -76,6 +82,7 @@ class _ProtectionEditorScreenState extends State<ProtectionEditorScreen> {
         _appIcon = limit.appIcon ?? _appIcon;
         _type = limit.protectionType;
         _maxOpens = limit.maxDailyOpens > 0 ? limit.maxDailyOpens : 4;
+        _delaySeconds = limit.delaySeconds > 0 ? limit.delaySeconds : 10;
         _dailyLimitMinutes = limit.maxSessionDurationMinutes > 0
             ? limit.maxSessionDurationMinutes
             : 30;
@@ -108,6 +115,8 @@ class _ProtectionEditorScreenState extends State<ProtectionEditorScreen> {
   String get _typeLabel {
     final l10n = context.l10n;
     switch (_type) {
+      case ProtectionType.delayOpening:
+        return l10n.delayAppOpening;
       case ProtectionType.dailyLimit:
         return l10n.dailyTimeLimit;
       case ProtectionType.maxOpens:
@@ -167,8 +176,10 @@ class _ProtectionEditorScreenState extends State<ProtectionEditorScreen> {
                   preloadedIcon: _appIcon,
                   size: 48.w,
                 ),
-                SizedBox(height: 10.h),
-                Text(_appName, style: AppTextStyles.h3()),
+                if (_appName.trim().isNotEmpty) ...[
+                  SizedBox(height: 10.h),
+                  Text(_appName, style: AppTextStyles.h3()),
+                ],
                 SizedBox(height: 8.h),
                 AppBadge.mint(_typeLabel),
               ],
@@ -180,10 +191,20 @@ class _ProtectionEditorScreenState extends State<ProtectionEditorScreen> {
           /// ---------------- Protection type ----------------
           SectionLabel(l10n.protection),
           AppSelectableTile(
+            selected: _type == ProtectionType.delayOpening,
+            onTap: () => setState(() => _type = ProtectionType.delayOpening),
+            child: _TileLabel(
+              icon: Assets.icons.ui.clock,
+              title: l10n.delayAppOpening,
+              subtitle: l10n.delayAppOpeningHint,
+            ),
+          ),
+          SizedBox(height: 8.h),
+          AppSelectableTile(
             selected: _type == ProtectionType.dailyLimit,
             onTap: () => setState(() => _type = ProtectionType.dailyLimit),
             child: _TileLabel(
-              icon: Assets.icons.ui.clock,
+              icon: Assets.icons.ui.restore,
               title: l10n.dailyTimeLimit,
               subtitle: l10n.dailyTimeLimitHint,
             ),
@@ -212,7 +233,18 @@ class _ProtectionEditorScreenState extends State<ProtectionEditorScreen> {
           SizedBox(height: 20.h),
 
           /// ---------------- Type-specific control ----------------
-          if (_type == ProtectionType.dailyLimit)
+          if (_type == ProtectionType.delayOpening)
+            _StepperCard(
+              label: l10n.pauseDuration,
+              value: l10n.secondsShort(_delaySeconds),
+              onDecrease: _delaySeconds > 5
+                  ? () => setState(() => _delaySeconds -= 5)
+                  : null,
+              onIncrease: _delaySeconds < 60
+                  ? () => setState(() => _delaySeconds += 5)
+                  : null,
+            )
+          else if (_type == ProtectionType.dailyLimit)
             _StepperCard(
               label: l10n.dailyTimeLimit,
               value: '${_dailyLimitMinutes ~/ 60}h ${_dailyLimitMinutes % 60}m',
@@ -344,6 +376,7 @@ class _ProtectionEditorScreenState extends State<ProtectionEditorScreen> {
         'packageName': _packageName,
         'appName': _appName,
         'message': _customMessage ?? '',
+        'seconds': _delaySeconds,
       },
     );
   }
@@ -376,6 +409,8 @@ class _ProtectionEditorScreenState extends State<ProtectionEditorScreen> {
         appName: _appName,
         appIcon: _appIcon,
         maxDailyOpens: _type == ProtectionType.maxOpens ? _maxOpens : 0,
+        delaySeconds:
+            _type == ProtectionType.delayOpening ? _delaySeconds : 0,
         maxSessionDurationMinutes:
             _type == ProtectionType.dailyLimit ? _dailyLimitMinutes : 0,
         activeDays: _activeDays.toList(),

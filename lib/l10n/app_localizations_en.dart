@@ -669,7 +669,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noAppsFound => 'No apps found';
 
   @override
-  String get usageAccessNeeded => 'Usage access is needed to list your apps.';
+  String get noUsageDataYet => 'No usage data yet';
+
+  @override
+  String get usageStatsUnavailable =>
+      'iOS does not share app usage with other apps, so there is nothing to chart here.';
+
+  @override
+  String get usageAccessNeeded =>
+      'Grant usage access to see how long you spend in each app.';
+
+  @override
+  String get appDetectionLimited =>
+      'iOS only lets us detect known apps. Search for the app you want to limit.';
+
+  @override
+  String get couldNotLoadApps => 'Could not load your apps.';
 
   @override
   String get editProtection => 'Edit protection';
@@ -679,6 +694,135 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get protection => 'Protection';
+
+  @override
+  String get howLongShouldThePauseBe => 'How long should the pause be?';
+
+  @override
+  String get pauseStepHint =>
+      'This is the time you\'ll wait before the app opens.';
+
+  @override
+  String get whatsYourDailyLimit => 'What\'s your daily limit?';
+
+  @override
+  String get setAMaximumTimePerDay => 'Set a maximum time per day.';
+
+  @override
+  String get hoursLabel => 'hours';
+
+  @override
+  String get minutesLabel => 'minutes';
+
+  @override
+  String get howManyTimesPerDay => 'How many times per day?';
+
+  @override
+  String get setMaximumOpeningsPerDay =>
+      'Set the maximum number of openings per day.';
+
+  @override
+  String get openingsPerDay => 'openings per day';
+
+  @override
+  String get whenDoYouWantToBlockIt => 'When do you want to block it?';
+
+  @override
+  String get selectTimePeriodToBlock => 'Select the time period to block.';
+
+  @override
+  String get blockedTime => 'Blocked time';
+
+  @override
+  String get review => 'Review';
+
+  @override
+  String get protectionTypeLabel => 'Protection type';
+
+  @override
+  String get settingLabel => 'Setting';
+
+  @override
+  String get activate => 'Activate';
+
+  @override
+  String get delayExplainer =>
+      'You will see a countdown before this app opens.';
+
+  @override
+  String get dailyLimitExplainer =>
+      'You\'ll be notified when you reach your daily limit.';
+
+  @override
+  String get openingLimitExplainer => 'You can modify this anytime.';
+
+  @override
+  String get timeBlockExplainer =>
+      'This app will be blocked during the selected time.';
+
+  @override
+  String appIsNowProtected(String app) {
+    return '$app is now protected!';
+  }
+
+  @override
+  String get smallPauseBigChange => 'Small pause, big change.';
+
+  @override
+  String get oneStepCloserToBetterHabits =>
+      'You\'ve taken one step closer to better digital habits.';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get addAnother => 'Add another';
+
+  @override
+  String secondsLong(int count) {
+    return '$count seconds';
+  }
+
+  @override
+  String openingsPerDayValue(int count) {
+    return '$count openings / day';
+  }
+
+  @override
+  String get whatWouldYouLikeToDo => 'What would you like to do?';
+
+  @override
+  String get chooseAFunctionToGetStarted => 'Choose a function to get started.';
+
+  @override
+  String get delayAppOpening => 'Delay app opening';
+
+  @override
+  String get delayAppOpeningHint =>
+      'Take a mindful pause before opening an app.';
+
+  @override
+  String get dailyTimeLimitFunctionHint => 'Set a maximum time per day.';
+
+  @override
+  String get openingLimit => 'Opening limit';
+
+  @override
+  String get openingLimitHint => 'Limit how many times you can open an app.';
+
+  @override
+  String get timeBlockFunctionHint => 'Block apps during certain hours.';
+
+  @override
+  String get recommended => 'Recommended';
+
+  @override
+  String get pauseDuration => 'Pause duration';
+
+  @override
+  String secondsShort(int count) {
+    return '$count sec';
+  }
 
   @override
   String get dailyTimeLimit => 'Daily time limit';
@@ -773,4 +917,497 @@ class AppLocalizationsEn extends AppLocalizations {
   String appIsCurrentlyPaused(String appName) {
     return '$appName is currently paused.';
   }
+
+  @override
+  String get today => 'today';
+
+  @override
+  String get days => 'days';
+
+  @override
+  String get timeSaved => 'Time saved';
+
+  @override
+  String get blockedOpens => 'Blocked opens';
+
+  @override
+  String get goalStreak => 'Goal streak';
+
+  @override
+  String get weeklyUsage => 'Weekly usage';
+
+  @override
+  String get trend => 'Trend';
+
+  @override
+  String get goals => 'Goals';
+
+  @override
+  String get monthlyReport => 'Monthly Report';
+
+  @override
+  String get unlockYourStats => 'Unlock your stats';
+
+  @override
+  String get unlockYourStatsSubtitle =>
+      'See exactly how much time you take back every week.';
+
+  @override
+  String get lockedFeatureTimeSaved => 'Time saved, day by day';
+
+  @override
+  String get lockedFeatureTrends => 'Weekly and monthly trends';
+
+  @override
+  String get lockedFeatureGoals => 'Goal streaks and history';
+
+  @override
+  String get lockedFeatureReports => 'Full monthly reports';
+
+  @override
+  String get unlockWithPremium => 'Unlock with Premium';
+
+  @override
+  String get week => 'Week';
+
+  @override
+  String get month => 'Month';
+
+  @override
+  String get thisWeek => 'this week';
+
+  @override
+  String get thisMonth => 'this month';
+
+  @override
+  String get savedByApp => 'Saved by app';
+
+  @override
+  String get nothingSavedYet => 'Nothing saved yet';
+
+  @override
+  String get inUse => 'In use';
+
+  @override
+  String get mostUsed => 'Most used';
+
+  @override
+  String get totalScreenTime => 'Total screen time';
+
+  @override
+  String get noUsageYet => 'No usage recorded yet';
+
+  @override
+  String get screenTimeReduction => 'Screen time reduction';
+
+  @override
+  String get vsLastWeek => 'vs. last week';
+
+  @override
+  String get vsLastMonth => 'vs. last month';
+
+  @override
+  String get screenTimeHours => 'Screen time (hours)';
+
+  @override
+  String get insight => 'Insight';
+
+  @override
+  String get insightPositive =>
+      'You\'ve consistently reduced screen time. Your digital mindfulness is improving! Keep protecting those apps.';
+
+  @override
+  String get insightNeutral =>
+      'Keep going — a few more protected days and the trend will start to bend.';
+
+  @override
+  String get dailyGoal => 'Daily goal';
+
+  @override
+  String get noGoalSet => 'No goal set';
+
+  @override
+  String get dailyScreenTimeLimit => 'daily screen time limit';
+
+  @override
+  String get daysGoalWasMet => 'Days goal was met';
+
+  @override
+  String get noHistoryYet => 'No history yet';
+
+  @override
+  String get streaks => 'Streaks';
+
+  @override
+  String get currentStreak => 'current streak';
+
+  @override
+  String get bestStreak => 'best streak';
+
+  @override
+  String get usageReduction => 'Usage reduction';
+
+  @override
+  String get monthProgress => 'Month progress';
+
+  @override
+  String get continueYourMonth => 'Continue your month';
+
+  @override
+  String usedToday(String value) {
+    return '$value used today';
+  }
+
+  @override
+  String daysCount(int count) {
+    return '$count days';
+  }
+
+  @override
+  String daysCompleted(int done, int total) {
+    return '$done of $total days completed';
+  }
+
+  @override
+  String get choosePlan => 'Choose your plan';
+
+  @override
+  String get limitItPremium => 'LimitIt Premium';
+
+  @override
+  String get premiumSubtitle =>
+      'Everything you need to build a calmer relationship with your phone.';
+
+  @override
+  String get premiumFeatureUnlimitedTitle => 'Unlimited protections';
+
+  @override
+  String get premiumFeatureUnlimitedSubtitle =>
+      'Protect as many apps as you want';
+
+  @override
+  String get premiumFeatureStatsTitle => 'Full statistics';
+
+  @override
+  String get premiumFeatureStatsSubtitle => 'Trends, goals and monthly reports';
+
+  @override
+  String get premiumFeatureScheduleTitle => 'Advanced schedules';
+
+  @override
+  String get premiumFeatureScheduleSubtitle => 'Time blocks and custom days';
+
+  @override
+  String get premiumFeatureBackupTitle => 'Backup & restore';
+
+  @override
+  String get premiumFeatureBackupSubtitle => 'Keep your setup safe';
+
+  @override
+  String get premiumFeatureNoAdsTitle => 'No ads';
+
+  @override
+  String get premiumFeatureNoAdsSubtitle => 'A clean, distraction-free app';
+
+  @override
+  String get restorePurchases => 'Restore purchases';
+
+  @override
+  String get monthly => 'Monthly';
+
+  @override
+  String get yearly => 'Yearly';
+
+  @override
+  String get perYear => '/ year';
+
+  @override
+  String get perMonth => '/ month';
+
+  @override
+  String get perWeek => '/ week';
+
+  @override
+  String get paymentPending => 'Payment pending…';
+
+  @override
+  String get purchaseCancelled => 'Purchase cancelled';
+
+  @override
+  String get checkingPurchases => 'Checking for existing purchases…';
+
+  @override
+  String get youreAllSet => 'You\'re all set!';
+
+  @override
+  String get youreAllSetSubtitle =>
+      'Your Premium features are now active. Enjoy every one of them.';
+
+  @override
+  String get startUsingPremium => 'Start using Premium';
+
+  @override
+  String get manageSubscription => 'Manage subscription';
+
+  @override
+  String get activeSubscription => 'Active subscription';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get price => 'Price';
+
+  @override
+  String get renewsOn => 'Renews on';
+
+  @override
+  String get options => 'Options';
+
+  @override
+  String get changePlan => 'Change plan';
+
+  @override
+  String get changePlanSubtitle => 'Switch between monthly and yearly';
+
+  @override
+  String get billingHistory => 'Billing history';
+
+  @override
+  String get billingHistorySubtitle => 'See past invoices';
+
+  @override
+  String get cancelSubscription => 'Cancel subscription';
+
+  @override
+  String get yesCancelSubscription => 'Yes, cancel subscription';
+
+  @override
+  String get keepMyPlan => 'Keep my plan';
+
+  @override
+  String get youllLoseAccessTo => 'You\'ll lose access to';
+
+  @override
+  String get cancelKeepsAccess =>
+      'Your Premium access stays active until the end of your billing period.';
+
+  @override
+  String get cancelStoreNote =>
+      'Recurring billing is managed by the App Store / Google Play. Turn off auto-renew there to avoid future charges.';
+
+  @override
+  String get subscriptionCancelled => 'Subscription cancelled';
+
+  @override
+  String get subscriptionCancelledSubtitle =>
+      'Your Premium access will remain active until the end of your billing period.';
+
+  @override
+  String get youCanResubscribeAnytime => 'You can resubscribe anytime.';
+
+  @override
+  String get goToHome => 'Go to Home';
+
+  @override
+  String cancelKeepsAccessUntil(String date) {
+    return 'Your Premium access stays active until $date.';
+  }
+
+  @override
+  String get premiumMember => 'Premium member';
+
+  @override
+  String get freePlan => 'Free plan';
+
+  @override
+  String get openingsBlocked => 'Openings blocked';
+
+  @override
+  String get appProtections => 'App protections';
+
+  @override
+  String get reminders => 'Reminders';
+
+  @override
+  String get privacy => 'Privacy';
+
+  @override
+  String get helpAndFaq => 'Help & FAQ';
+
+  @override
+  String get backupAndRestore => 'Backup & restore';
+
+  @override
+  String get aboutLimitIt => 'About LimitIt';
+
+  @override
+  String get remindersSubtitle =>
+      'Stay mindful with gentle nudges at the right moments.';
+
+  @override
+  String get daily => 'Daily';
+
+  @override
+  String get weekly => 'Weekly';
+
+  @override
+  String get dailyCheckIn => 'Daily check-in';
+
+  @override
+  String get dailyCheckInSubtitle => 'Morning mindfulness reminder';
+
+  @override
+  String get reminderTime => 'Reminder time';
+
+  @override
+  String get goalAlert => 'Goal alert';
+
+  @override
+  String get goalAlertSubtitle => 'Notify when near daily limit';
+
+  @override
+  String get weeklyReportReminder => 'Weekly report';
+
+  @override
+  String get weeklyReportReminderSubtitle => 'Every Monday morning';
+
+  @override
+  String get breakReminder => 'Break reminder';
+
+  @override
+  String get breakReminderSubtitle => 'Remind after 30 min of use';
+
+  @override
+  String get remindersDeliveryNote =>
+      'Reminders are delivered as push notifications. Make sure notifications are enabled in your device settings.';
+
+  @override
+  String get helpAndSupport => 'Help & support';
+
+  @override
+  String get faq => 'FAQ';
+
+  @override
+  String get faqSubtitle => 'Frequently asked questions';
+
+  @override
+  String get contactSupport => 'Contact support';
+
+  @override
+  String get contactSupportSubtitle => 'Get in touch with our team';
+
+  @override
+  String get reportAProblem => 'Report a problem';
+
+  @override
+  String get reportAProblemSubtitle => 'Tell us what went wrong';
+
+  @override
+  String get faqQ1 => 'How does a protection work?';
+
+  @override
+  String get faqA1 =>
+      'When you open a protected app, LimitIt shows a mindful pause before letting it through — and blocks it once the limit is reached.';
+
+  @override
+  String get faqQ2 => 'Is my usage data private?';
+
+  @override
+  String get faqA2 =>
+      'Usage and protections stay on your device. Only your account details reach our servers.';
+
+  @override
+  String get faqQ3 => 'Why do I need usage access?';
+
+  @override
+  String get faqA3 =>
+      'Android needs that permission to tell LimitIt which app is in the foreground, so limits can be applied.';
+
+  @override
+  String get faqQ4 => 'How do I cancel Premium?';
+
+  @override
+  String get faqA4 =>
+      'Open Premium → Manage subscription → Cancel subscription. Auto-renew is switched off in the App Store or Google Play.';
+
+  @override
+  String get createBackup => 'Create backup';
+
+  @override
+  String get createBackupSubtitle => 'Save your protections to your account.';
+
+  @override
+  String get backUpNow => 'Back up now';
+
+  @override
+  String get restoreBackup => 'Restore backup';
+
+  @override
+  String get restoreBackupSubtitle => 'Recover your protections from a backup.';
+
+  @override
+  String get restore => 'Restore';
+
+  @override
+  String get noBackupFound => 'No backup found';
+
+  @override
+  String get version => 'Version';
+
+  @override
+  String get aboutLimitItBody =>
+      'Built to help you take control of your digital habits and live a more focused life.';
+
+  @override
+  String get logOutOfLimitIt => 'Log out of LimitIt?';
+
+  @override
+  String get logOutSubtitle =>
+      'Your protections and data stay saved. You can log back in any time.';
+
+  @override
+  String get yesLogOut => 'Yes, log out';
+
+  @override
+  String get noDataAvailable => 'No data available';
+
+  @override
+  String backupCreated(int count) {
+    return 'Backup created — $count protections saved';
+  }
+
+  @override
+  String backupRestored(int count) {
+    return 'Restored $count protections';
+  }
+
+  @override
+  String lastBackup(String date) {
+    return 'Last backup: $date';
+  }
+
+  @override
+  String copyrightLine(int year) {
+    final intl.NumberFormat yearNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String yearString = yearNumberFormat.format(year);
+
+    return '© $yearString LimitIt';
+  }
+
+  @override
+  String get or => 'or';
+
+  @override
+  String get dontHaveAnAccount => 'Don\'t have an account?';
+
+  @override
+  String get byContinuingYouAgree =>
+      'By continuing you agree to our Terms of Service and Privacy Policy.';
+
+  @override
+  String get takeBackControlOfYourScreenTime =>
+      'Take back control of your screen time';
 }

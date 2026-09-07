@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/core/presentations/screens/Home/app_protection_screen.dart';
-import 'package:limit_it_app/core/presentations/screens/reports/reports_screen.dart';
-import 'package:limit_it_app/core/presentations/screens/settings/settings_screen.dart';
-import 'package:limit_it_app/core/presentations/screens/settings/upgrade_premium.dart';
+import 'package:limit_it_app/core/presentations/screens/statistics/statistics_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/settings2/settings_home_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/premium/premium_screen.dart';
 import 'package:limit_it_app/core/services/app_blocker_service.dart';
 import '../../widgets/ui/ui.dart';
 
@@ -22,9 +22,9 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
 
   final List<Widget> screens = [
     const AppProtectionScreen(),
-    ReportsScreen(),
-    const UpgradePremiumScreen(),
-    SettingsScreen(),
+    const StatisticsScreen(),
+    const PremiumScreen(),
+    const SettingsHomeScreen(),
   ];
 
   @override

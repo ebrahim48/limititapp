@@ -682,8 +682,22 @@ class AppLocalizationsIt extends AppLocalizations {
   String get noAppsFound => 'Nessuna app trovata';
 
   @override
+  String get noUsageDataYet => 'Nessun dato di utilizzo ancora';
+
+  @override
+  String get usageStatsUnavailable =>
+      'iOS non condivide l\'utilizzo delle app con altre app, quindi non c\'è nulla da mostrare qui.';
+
+  @override
   String get usageAccessNeeded =>
-      'È necessario l\'accesso all\'utilizzo per elencare le tue app.';
+      'Concedi l\'accesso all\'utilizzo per vedere quanto tempo passi in ogni app.';
+
+  @override
+  String get appDetectionLimited =>
+      'Su iOS possiamo rilevare solo le app conosciute. Cerca l\'app che vuoi limitare.';
+
+  @override
+  String get couldNotLoadApps => 'Impossibile caricare le tue app.';
 
   @override
   String get editProtection => 'Modifica protezione';
@@ -693,6 +707,136 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get protection => 'Protezione';
+
+  @override
+  String get howLongShouldThePauseBe => 'Quanto deve durare la pausa?';
+
+  @override
+  String get pauseStepHint =>
+      'Questo è il tempo che attenderai prima che l\'app si apra.';
+
+  @override
+  String get whatsYourDailyLimit => 'Qual è il tuo limite giornaliero?';
+
+  @override
+  String get setAMaximumTimePerDay => 'Imposta un tempo massimo al giorno.';
+
+  @override
+  String get hoursLabel => 'ore';
+
+  @override
+  String get minutesLabel => 'minuti';
+
+  @override
+  String get howManyTimesPerDay => 'Quante volte al giorno?';
+
+  @override
+  String get setMaximumOpeningsPerDay =>
+      'Imposta il numero massimo di aperture al giorno.';
+
+  @override
+  String get openingsPerDay => 'aperture al giorno';
+
+  @override
+  String get whenDoYouWantToBlockIt => 'Quando vuoi bloccarla?';
+
+  @override
+  String get selectTimePeriodToBlock => 'Seleziona il periodo da bloccare.';
+
+  @override
+  String get blockedTime => 'Orario bloccato';
+
+  @override
+  String get review => 'Riepilogo';
+
+  @override
+  String get protectionTypeLabel => 'Tipo di protezione';
+
+  @override
+  String get settingLabel => 'Impostazione';
+
+  @override
+  String get activate => 'Attiva';
+
+  @override
+  String get delayExplainer =>
+      'Vedrai un conto alla rovescia prima che questa app si apra.';
+
+  @override
+  String get dailyLimitExplainer =>
+      'Riceverai una notifica quando raggiungi il limite giornaliero.';
+
+  @override
+  String get openingLimitExplainer => 'Puoi modificarlo in qualsiasi momento.';
+
+  @override
+  String get timeBlockExplainer =>
+      'Questa app sarà bloccata durante l\'orario selezionato.';
+
+  @override
+  String appIsNowProtected(String app) {
+    return '$app è ora protetta!';
+  }
+
+  @override
+  String get smallPauseBigChange => 'Piccola pausa, grande cambiamento.';
+
+  @override
+  String get oneStepCloserToBetterHabits =>
+      'Hai fatto un passo avanti verso abitudini digitali migliori.';
+
+  @override
+  String get done => 'Fatto';
+
+  @override
+  String get addAnother => 'Aggiungine un\'altra';
+
+  @override
+  String secondsLong(int count) {
+    return '$count secondi';
+  }
+
+  @override
+  String openingsPerDayValue(int count) {
+    return '$count aperture / giorno';
+  }
+
+  @override
+  String get whatWouldYouLikeToDo => 'Cosa vuoi fare?';
+
+  @override
+  String get chooseAFunctionToGetStarted => 'Scegli una funzione per iniziare.';
+
+  @override
+  String get delayAppOpening => 'Ritarda l\'apertura dell\'app';
+
+  @override
+  String get delayAppOpeningHint =>
+      'Fai una pausa consapevole prima di aprire un\'app.';
+
+  @override
+  String get dailyTimeLimitFunctionHint =>
+      'Imposta un tempo massimo al giorno.';
+
+  @override
+  String get openingLimit => 'Limite di aperture';
+
+  @override
+  String get openingLimitHint => 'Limita quante volte puoi aprire un\'app.';
+
+  @override
+  String get timeBlockFunctionHint => 'Blocca le app in determinate ore.';
+
+  @override
+  String get recommended => 'Consigliato';
+
+  @override
+  String get pauseDuration => 'Durata della pausa';
+
+  @override
+  String secondsShort(int count) {
+    return '$count sec';
+  }
 
   @override
   String get dailyTimeLimit => 'Limite giornaliero';
@@ -788,4 +932,503 @@ class AppLocalizationsIt extends AppLocalizations {
   String appIsCurrentlyPaused(String appName) {
     return '$appName è attualmente in pausa.';
   }
+
+  @override
+  String get today => 'oggi';
+
+  @override
+  String get days => 'giorni';
+
+  @override
+  String get timeSaved => 'Tempo risparmiato';
+
+  @override
+  String get blockedOpens => 'Aperture bloccate';
+
+  @override
+  String get goalStreak => 'Serie obiettivi';
+
+  @override
+  String get weeklyUsage => 'Utilizzo settimanale';
+
+  @override
+  String get trend => 'Andamento';
+
+  @override
+  String get goals => 'Obiettivi';
+
+  @override
+  String get monthlyReport => 'Report mensile';
+
+  @override
+  String get unlockYourStats => 'Sblocca le tue statistiche';
+
+  @override
+  String get unlockYourStatsSubtitle =>
+      'Scopri quanto tempo recuperi ogni settimana.';
+
+  @override
+  String get lockedFeatureTimeSaved => 'Tempo risparmiato, giorno per giorno';
+
+  @override
+  String get lockedFeatureTrends => 'Andamento settimanale e mensile';
+
+  @override
+  String get lockedFeatureGoals => 'Serie e cronologia obiettivi';
+
+  @override
+  String get lockedFeatureReports => 'Report mensili completi';
+
+  @override
+  String get unlockWithPremium => 'Sblocca con Premium';
+
+  @override
+  String get week => 'Settimana';
+
+  @override
+  String get month => 'Mese';
+
+  @override
+  String get thisWeek => 'questa settimana';
+
+  @override
+  String get thisMonth => 'questo mese';
+
+  @override
+  String get savedByApp => 'Risparmiato per app';
+
+  @override
+  String get nothingSavedYet => 'Ancora nulla di risparmiato';
+
+  @override
+  String get inUse => 'In uso';
+
+  @override
+  String get mostUsed => 'Più usate';
+
+  @override
+  String get totalScreenTime => 'Tempo schermo totale';
+
+  @override
+  String get noUsageYet => 'Nessun utilizzo registrato';
+
+  @override
+  String get screenTimeReduction => 'Riduzione tempo schermo';
+
+  @override
+  String get vsLastWeek => 'rispetto a settimana scorsa';
+
+  @override
+  String get vsLastMonth => 'rispetto al mese scorso';
+
+  @override
+  String get screenTimeHours => 'Tempo schermo (ore)';
+
+  @override
+  String get insight => 'Analisi';
+
+  @override
+  String get insightPositive =>
+      'Hai ridotto costantemente il tempo sullo schermo. La tua consapevolezza digitale sta migliorando! Continua a proteggere le tue app.';
+
+  @override
+  String get insightNeutral =>
+      'Continua così: ancora qualche giorno protetto e l\'andamento inizierà a migliorare.';
+
+  @override
+  String get dailyGoal => 'Obiettivo giornaliero';
+
+  @override
+  String get noGoalSet => 'Nessun obiettivo';
+
+  @override
+  String get dailyScreenTimeLimit => 'limite giornaliero di tempo schermo';
+
+  @override
+  String get daysGoalWasMet => 'Giorni con obiettivo raggiunto';
+
+  @override
+  String get noHistoryYet => 'Nessuna cronologia';
+
+  @override
+  String get streaks => 'Serie';
+
+  @override
+  String get currentStreak => 'serie attuale';
+
+  @override
+  String get bestStreak => 'serie migliore';
+
+  @override
+  String get usageReduction => 'Riduzione utilizzo';
+
+  @override
+  String get monthProgress => 'Avanzamento del mese';
+
+  @override
+  String get continueYourMonth => 'Continua il tuo mese';
+
+  @override
+  String usedToday(String value) {
+    return '$value usati oggi';
+  }
+
+  @override
+  String daysCount(int count) {
+    return '$count giorni';
+  }
+
+  @override
+  String daysCompleted(int done, int total) {
+    return '$done di $total giorni completati';
+  }
+
+  @override
+  String get choosePlan => 'Scegli il tuo piano';
+
+  @override
+  String get limitItPremium => 'LimitIt Premium';
+
+  @override
+  String get premiumSubtitle =>
+      'Tutto ciò che serve per un rapporto più sereno con il telefono.';
+
+  @override
+  String get premiumFeatureUnlimitedTitle => 'Protezioni illimitate';
+
+  @override
+  String get premiumFeatureUnlimitedSubtitle =>
+      'Proteggi tutte le app che vuoi';
+
+  @override
+  String get premiumFeatureStatsTitle => 'Statistiche complete';
+
+  @override
+  String get premiumFeatureStatsSubtitle =>
+      'Andamento, obiettivi e report mensili';
+
+  @override
+  String get premiumFeatureScheduleTitle => 'Programmazioni avanzate';
+
+  @override
+  String get premiumFeatureScheduleSubtitle =>
+      'Blocchi orari e giorni personalizzati';
+
+  @override
+  String get premiumFeatureBackupTitle => 'Backup e ripristino';
+
+  @override
+  String get premiumFeatureBackupSubtitle =>
+      'Metti al sicuro la tua configurazione';
+
+  @override
+  String get premiumFeatureNoAdsTitle => 'Nessuna pubblicità';
+
+  @override
+  String get premiumFeatureNoAdsSubtitle =>
+      'Un\'app pulita e senza distrazioni';
+
+  @override
+  String get restorePurchases => 'Ripristina acquisti';
+
+  @override
+  String get monthly => 'Mensile';
+
+  @override
+  String get yearly => 'Annuale';
+
+  @override
+  String get perYear => '/ anno';
+
+  @override
+  String get perMonth => '/ mese';
+
+  @override
+  String get perWeek => '/ settimana';
+
+  @override
+  String get paymentPending => 'Pagamento in sospeso…';
+
+  @override
+  String get purchaseCancelled => 'Acquisto annullato';
+
+  @override
+  String get checkingPurchases => 'Verifica degli acquisti esistenti…';
+
+  @override
+  String get youreAllSet => 'È tutto pronto!';
+
+  @override
+  String get youreAllSetSubtitle =>
+      'Le funzioni Premium sono ora attive. Buon divertimento.';
+
+  @override
+  String get startUsingPremium => 'Inizia a usare Premium';
+
+  @override
+  String get manageSubscription => 'Gestisci abbonamento';
+
+  @override
+  String get activeSubscription => 'Abbonamento attivo';
+
+  @override
+  String get active => 'Attivo';
+
+  @override
+  String get price => 'Prezzo';
+
+  @override
+  String get renewsOn => 'Si rinnova il';
+
+  @override
+  String get options => 'Opzioni';
+
+  @override
+  String get changePlan => 'Cambia piano';
+
+  @override
+  String get changePlanSubtitle => 'Passa da mensile ad annuale';
+
+  @override
+  String get billingHistory => 'Cronologia pagamenti';
+
+  @override
+  String get billingHistorySubtitle => 'Vedi le fatture passate';
+
+  @override
+  String get cancelSubscription => 'Annulla abbonamento';
+
+  @override
+  String get yesCancelSubscription => 'Sì, annulla l\'abbonamento';
+
+  @override
+  String get keepMyPlan => 'Mantieni il mio piano';
+
+  @override
+  String get youllLoseAccessTo => 'Perderai l\'accesso a';
+
+  @override
+  String get cancelKeepsAccess =>
+      'L\'accesso Premium resta attivo fino alla fine del periodo di fatturazione.';
+
+  @override
+  String get cancelStoreNote =>
+      'Il rinnovo è gestito da App Store / Google Play. Disattiva lì il rinnovo automatico per evitare addebiti futuri.';
+
+  @override
+  String get subscriptionCancelled => 'Abbonamento annullato';
+
+  @override
+  String get subscriptionCancelledSubtitle =>
+      'L\'accesso Premium resterà attivo fino alla fine del periodo di fatturazione.';
+
+  @override
+  String get youCanResubscribeAnytime =>
+      'Puoi riabbonarti in qualsiasi momento.';
+
+  @override
+  String get goToHome => 'Vai alla Home';
+
+  @override
+  String cancelKeepsAccessUntil(String date) {
+    return 'L\'accesso Premium resta attivo fino al $date.';
+  }
+
+  @override
+  String get premiumMember => 'Membro Premium';
+
+  @override
+  String get freePlan => 'Piano gratuito';
+
+  @override
+  String get openingsBlocked => 'Aperture bloccate';
+
+  @override
+  String get appProtections => 'Protezioni app';
+
+  @override
+  String get reminders => 'Promemoria';
+
+  @override
+  String get privacy => 'Privacy';
+
+  @override
+  String get helpAndFaq => 'Aiuto e FAQ';
+
+  @override
+  String get backupAndRestore => 'Backup e ripristino';
+
+  @override
+  String get aboutLimitIt => 'Informazioni su LimitIt';
+
+  @override
+  String get remindersSubtitle =>
+      'Resta consapevole con piccoli promemoria al momento giusto.';
+
+  @override
+  String get daily => 'Giornaliero';
+
+  @override
+  String get weekly => 'Settimanale';
+
+  @override
+  String get dailyCheckIn => 'Check-in giornaliero';
+
+  @override
+  String get dailyCheckInSubtitle => 'Promemoria mattutino';
+
+  @override
+  String get reminderTime => 'Ora del promemoria';
+
+  @override
+  String get goalAlert => 'Avviso obiettivo';
+
+  @override
+  String get goalAlertSubtitle => 'Avvisa quando sei vicino al limite';
+
+  @override
+  String get weeklyReportReminder => 'Report settimanale';
+
+  @override
+  String get weeklyReportReminderSubtitle => 'Ogni lunedì mattina';
+
+  @override
+  String get breakReminder => 'Promemoria pausa';
+
+  @override
+  String get breakReminderSubtitle => 'Ricorda dopo 30 min di utilizzo';
+
+  @override
+  String get remindersDeliveryNote =>
+      'I promemoria arrivano come notifiche push. Assicurati che le notifiche siano attive nelle impostazioni del dispositivo.';
+
+  @override
+  String get helpAndSupport => 'Aiuto e supporto';
+
+  @override
+  String get faq => 'FAQ';
+
+  @override
+  String get faqSubtitle => 'Domande frequenti';
+
+  @override
+  String get contactSupport => 'Contatta il supporto';
+
+  @override
+  String get contactSupportSubtitle => 'Mettiti in contatto con il team';
+
+  @override
+  String get reportAProblem => 'Segnala un problema';
+
+  @override
+  String get reportAProblemSubtitle => 'Dicci cosa non ha funzionato';
+
+  @override
+  String get faqQ1 => 'Come funziona una protezione?';
+
+  @override
+  String get faqA1 =>
+      'Quando apri un\'app protetta, LimitIt mostra una pausa consapevole prima di consentirne l\'uso e la blocca al raggiungimento del limite.';
+
+  @override
+  String get faqQ2 => 'I miei dati di utilizzo sono privati?';
+
+  @override
+  String get faqA2 =>
+      'Utilizzo e protezioni restano sul tuo dispositivo. Solo i dati dell\'account raggiungono i nostri server.';
+
+  @override
+  String get faqQ3 => 'Perché serve l\'accesso all\'utilizzo?';
+
+  @override
+  String get faqA3 =>
+      'Android richiede questo permesso per indicare a LimitIt quale app è in primo piano e applicare i limiti.';
+
+  @override
+  String get faqQ4 => 'Come annullo Premium?';
+
+  @override
+  String get faqA4 =>
+      'Apri Premium → Gestisci abbonamento → Annulla abbonamento. Il rinnovo automatico si disattiva su App Store o Google Play.';
+
+  @override
+  String get createBackup => 'Crea backup';
+
+  @override
+  String get createBackupSubtitle => 'Salva le tue protezioni sul tuo account.';
+
+  @override
+  String get backUpNow => 'Esegui il backup';
+
+  @override
+  String get restoreBackup => 'Ripristina backup';
+
+  @override
+  String get restoreBackupSubtitle =>
+      'Recupera le tue protezioni da un backup.';
+
+  @override
+  String get restore => 'Ripristina';
+
+  @override
+  String get noBackupFound => 'Nessun backup trovato';
+
+  @override
+  String get version => 'Versione';
+
+  @override
+  String get aboutLimitItBody =>
+      'Creato per aiutarti a gestire le tue abitudini digitali e vivere più concentrato.';
+
+  @override
+  String get logOutOfLimitIt => 'Uscire da LimitIt?';
+
+  @override
+  String get logOutSubtitle =>
+      'Le tue protezioni e i tuoi dati restano salvati. Puoi rientrare quando vuoi.';
+
+  @override
+  String get yesLogOut => 'Sì, esci';
+
+  @override
+  String get noDataAvailable => 'Nessun dato disponibile';
+
+  @override
+  String backupCreated(int count) {
+    return 'Backup creato — $count protezioni salvate';
+  }
+
+  @override
+  String backupRestored(int count) {
+    return 'Ripristinate $count protezioni';
+  }
+
+  @override
+  String lastBackup(String date) {
+    return 'Ultimo backup: $date';
+  }
+
+  @override
+  String copyrightLine(int year) {
+    final intl.NumberFormat yearNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String yearString = yearNumberFormat.format(year);
+
+    return '© $yearString LimitIt';
+  }
+
+  @override
+  String get or => 'oppure';
+
+  @override
+  String get dontHaveAnAccount => 'Non hai un account?';
+
+  @override
+  String get byContinuingYouAgree =>
+      'Continuando accetti i nostri Termini di servizio e l\'Informativa sulla privacy.';
+
+  @override
+  String get takeBackControlOfYourScreenTime =>
+      'Riprendi il controllo del tuo tempo sullo schermo';
 }

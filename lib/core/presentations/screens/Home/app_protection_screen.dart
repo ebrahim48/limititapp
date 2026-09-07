@@ -20,7 +20,11 @@ import '../../widgets/ui/ui.dart';
 /// usage from [AppUsageService], the quote from the motivation API and the
 /// banner from AdMob.
 class AppProtectionScreen extends StatefulWidget {
-  const AppProtectionScreen({super.key});
+  const AppProtectionScreen({super.key, this.embedded = true});
+
+  /// `true` when rendered as the Home tab (no back button); `false` when
+  /// pushed as its own page from Settings.
+  final bool embedded;
 
   @override
   State<AppProtectionScreen> createState() => _AppProtectionScreenState();
@@ -110,7 +114,7 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
     final l10n = context.l10n;
 
     return AppScaffold(
-      appBar: AppTopBar(title: l10n.appProtection, showBack: false),
+      appBar: AppTopBar(title: l10n.appProtection, showBack: !widget.embedded),
       body: RefreshIndicator(
         color: AppColors.leafGreen,
         onRefresh: _loadProtections,
@@ -277,6 +281,10 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
   String _describe(AppLimitModel limit) {
     final l10n = context.l10n;
 
+    if (limit.protectionType == ProtectionType.delayOpening) {
+      return '${l10n.pauseDuration}: ${l10n.secondsShort(limit.delaySeconds)}';
+    }
+
     final start = limit.scheduleStartTime?.value;
     final end = limit.scheduleEndTime?.value;
     if (start != null && start.isNotEmpty && end != null && end.isNotEmpty) {
@@ -292,7 +300,7 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
   }
 
   Future<void> _openAddProtection() async {
-    await context.pushNamed(AppRoutes.searchAppScreen);
+    await context.pushNamed(AppRoutes.chooseFunctionScreen);
     if (mounted) _loadProtections();
   }
 
