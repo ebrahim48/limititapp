@@ -9,6 +9,7 @@ import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/core/presentations/widgets/app_icon_widget.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class LimitScreenTimeCard extends StatelessWidget {
   final AppLimitWithUsage data;
@@ -46,7 +47,7 @@ class LimitScreenTimeCard extends StatelessWidget {
     return '${percentage.clamp(0, 100).toStringAsFixed(0)}%';
   }
 
-  String _getLimitInfoString() {
+  String _getLimitInfoString(BuildContext context) {
     final sessionLimit = data.limit.maxSessionDurationMinutes;
     final openLimit = data.limit.maxDailyOpens;
 
@@ -54,7 +55,7 @@ class LimitScreenTimeCard extends StatelessWidget {
         ? '$sessionLimit mins'
         : '${(sessionLimit / 60).toStringAsFixed(1)} hrs';
 
-    return 'Limit: $sessionStr • $openLimit opens';
+    return context.l10n.limitSummary(sessionStr, '$openLimit');
   }
 
   @override
@@ -101,7 +102,7 @@ class LimitScreenTimeCard extends StatelessWidget {
                 ),
                 SizedBox(height: 2.h),
                 CustomText(
-                  text: _getLimitInfoString(),
+                  text: _getLimitInfoString(context),
                   fontsize: 11.sp,
                   fontWeight: FontWeight.w400,
                   color: const Color(0xFF888888),
@@ -146,7 +147,7 @@ class LimitScreenTimeCard extends StatelessWidget {
                   children: [
                     const Icon(Icons.edit, color: Colors.black54, size: 18),
                     SizedBox(width: 8.w),
-                    const Text('Edit'),
+                    Text(context.l10n.edit),
                   ],
                 ),
               ),
@@ -156,7 +157,7 @@ class LimitScreenTimeCard extends StatelessWidget {
                   children: [
                     const Icon(Icons.delete, color: Colors.redAccent, size: 18),
                     SizedBox(width: 8.w),
-                    const Text('Delete'),
+                    Text(context.l10n.delete),
                   ],
                 ),
               ),
@@ -201,7 +202,7 @@ class LimitScreenTimeCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CustomText(
-                  text: 'Remove Screen Time\nLimit?',
+                  text: context.l10n.removeScreenTimeLimit,
                   fontsize: 14.sp,
                   fontWeight: FontWeight.w500,
                   color: AppColors.textColor3D3D3D,
@@ -212,7 +213,7 @@ class LimitScreenTimeCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: CustomDeleteTwoButton(
-                        title: 'Cancel',
+                        title: context.l10n.cancel,
                         bgColor: AppColors.textColorE7E7E7,
                         textColor: AppColors.textColor3D3D3D,
                         onTap: () => Navigator.pop(context),
@@ -221,7 +222,7 @@ class LimitScreenTimeCard extends StatelessWidget {
                     SizedBox(width: 16.w),
                     Expanded(
                       child: CustomDeleteTwoButton(
-                        title: 'Delete',
+                        title: context.l10n.delete,
                         bgColor: AppColors.textColorA70D0D,
                         textColor: AppColors.textColorFFFFFF,
                         onTap: () {

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/models/limit_option_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class LimitCard extends StatelessWidget {
   final LimitOption option;
@@ -57,7 +58,7 @@ class LimitCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(100.r),
                   ),
                   child: CustomText(
-                    text: 'pro',
+                    text: context.l10n.pro,
                     fontsize: 10.sp,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,

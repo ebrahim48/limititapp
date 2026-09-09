@@ -1431,4 +1431,653 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get takeBackControlOfYourScreenTime =>
       'Riprendi il controllo del tuo tempo sullo schermo';
+
+  @override
+  String get warning => 'Attenzione';
+
+  @override
+  String get success => 'Operazione riuscita';
+
+  @override
+  String get attention => 'Attenzione';
+
+  @override
+  String get confirm => 'Conferma';
+
+  @override
+  String get edit => 'Modifica';
+
+  @override
+  String get undo => 'Annulla';
+
+  @override
+  String get selected => 'selezionate';
+
+  @override
+  String get limits => 'Limiti';
+
+  @override
+  String get loadingAd => 'Caricamento annuncio...';
+
+  @override
+  String get yourApps => 'Le tue app';
+
+  @override
+  String get grantPermission => 'Concedi permesso';
+
+  @override
+  String get grantPermissions => 'Concedi permessi';
+
+  @override
+  String get permissionsRequired => 'Permessi richiesti';
+
+  @override
+  String get viewProfile => 'Vedi profilo';
+
+  @override
+  String get failedToLoadProfile => 'Impossibile caricare il profilo';
+
+  @override
+  String get name => 'Nome';
+
+  @override
+  String get phone => 'Telefono';
+
+  @override
+  String get noAppsToSave => 'Nessuna app da salvare';
+
+  @override
+  String savedLimitsForApps(int count) {
+    return 'Limiti salvati per $count app';
+  }
+
+  @override
+  String errorSavingLimits(String error) {
+    return 'Errore durante il salvataggio dei limiti: $error';
+  }
+
+  @override
+  String get noMotivationalPhrasesAvailable =>
+      'Nessuna frase motivazionale disponibile';
+
+  @override
+  String get noMotivationalPhrasesFound =>
+      'Nessuna frase motivazionale trovata';
+
+  @override
+  String get noAppsAvailable => 'Nessuna app disponibile';
+
+  @override
+  String get timerSettingsUpdated =>
+      'Impostazioni del timer aggiornate correttamente!';
+
+  @override
+  String errorLoadingAppLimit(String error) {
+    return 'Errore durante il caricamento del limite dell\'app: $error';
+  }
+
+  @override
+  String get appLimitUpdated => 'Limite dell\'app aggiornato correttamente!';
+
+  @override
+  String get failedToUpdateAppLimit =>
+      'Impossibile aggiornare il limite dell\'app';
+
+  @override
+  String errorSavingAppLimit(String error) {
+    return 'Errore durante il salvataggio del limite dell\'app: $error';
+  }
+
+  @override
+  String limitDeletedForApp(String appName) {
+    return 'Limite per $appName eliminato correttamente!';
+  }
+
+  @override
+  String get limitDeletedSuccessfully => 'Limite eliminato correttamente!';
+
+  @override
+  String get failedToDeleteLimit => 'Impossibile eliminare il limite';
+
+  @override
+  String get proFeature => 'Funzione Pro';
+
+  @override
+  String get pro => 'pro';
+
+  @override
+  String get noBlockedAppsYet =>
+      'Nessuna app bloccata. Blocca le app dalla schermata principale per impostare gli orari.';
+
+  @override
+  String get noBlockedApps => 'Nessuna app bloccata';
+
+  @override
+  String get blockedAppsWillAppearHere => 'Le app che blocchi appariranno qui';
+
+  @override
+  String get noMoreNotifications => 'Nessun\'altra notifica';
+
+  @override
+  String get deleteNotification => 'Elimina notifica';
+
+  @override
+  String get deleteNotificationConfirm =>
+      'Vuoi davvero eliminare questa notifica?';
+
+  @override
+  String get markAllAsRead => 'Segna tutto come letto';
+
+  @override
+  String get markAllAsReadConfirm => 'Segnare tutte le notifiche come lette?';
+
+  @override
+  String get clearAllNotifications => 'Cancella tutte le notifiche';
+
+  @override
+  String get clearAllNotificationsConfirm =>
+      'Questa azione eliminerà definitivamente tutte le notifiche.';
+
+  @override
+  String get clearAll => 'Cancella tutto';
+
+  @override
+  String get noAppsFoundOnDevice => 'Nessuna app trovata su questo dispositivo';
+
+  @override
+  String get passwordsDoNotMatch => 'Le nuove password non coincidono';
+
+  @override
+  String get passwordMinLength =>
+      'La password deve contenere almeno 6 caratteri';
+
+  @override
+  String get oldPassword => 'Vecchia password';
+
+  @override
+  String get reEnterNewPassword => 'Reinserisci la nuova password';
+
+  @override
+  String get activatingSubscription => 'Attivazione dell\'abbonamento...';
+
+  @override
+  String get subscriptionActivated => 'Abbonamento attivato!';
+
+  @override
+  String youAreNowSubscribedTo(String plan) {
+    return 'Ora sei abbonato a\n$plan';
+  }
+
+  @override
+  String get noSubscriptionPlans => 'Nessun piano di abbonamento disponibile';
+
+  @override
+  String get takeFullControlOfScreenTime =>
+      'Prendi il pieno controllo del tuo tempo di utilizzo';
+
+  @override
+  String get mostPopular => 'PIÙ POPOLARE';
+
+  @override
+  String get pinCode => 'Codice PIN';
+
+  @override
+  String get pinCodeNotAvailable => 'Codice PIN non disponibile dal server';
+
+  @override
+  String get youAreFreeMemberNow => 'Ora sei un membro\ngratuito';
+
+  @override
+  String get tapToSelectForDetox => 'Tocca per selezionare per il detox';
+
+  @override
+  String get dailyUsage => 'Utilizzo giornaliero';
+
+  @override
+  String get removeScreenTimeLimit =>
+      'Rimuovere il limite di\ntempo di utilizzo?';
+
+  @override
+  String get screenTimeToday => 'Tempo di utilizzo oggi';
+
+  @override
+  String get startingMonitoringService =>
+      'Avvio del servizio di monitoraggio...';
+
+  @override
+  String get failedToStartMonitoringService =>
+      'Impossibile avviare il servizio di monitoraggio';
+
+  @override
+  String get cannotBlockApp =>
+      'Questa app non può essere bloccata. Usa i dati reali dell\'app.';
+
+  @override
+  String failedToBlockApp(String appName) {
+    return 'Impossibile bloccare $appName';
+  }
+
+  @override
+  String failedToUnblockApp(String appName) {
+    return 'Impossibile sbloccare $appName';
+  }
+
+  @override
+  String get updatedLocally => 'Aggiornato localmente';
+
+  @override
+  String get checkingForExistingPurchases =>
+      'Verifica degli acquisti esistenti...';
+
+  @override
+  String joinedIn(String date) {
+    return 'Iscritto da $date';
+  }
+
+  @override
+  String get appUsageAndroidOnly =>
+      'Il monitoraggio dell\'utilizzo delle app è disponibile solo su dispositivi Android';
+
+  @override
+  String get detoxModeAndroidOnly =>
+      'La modalità detox è disponibile solo su dispositivi Android';
+
+  @override
+  String get pinLockAndroidOnly =>
+      'Il blocco con PIN è disponibile solo su dispositivi Android';
+
+  @override
+  String get permissionDeniedUsageAccess =>
+      'Permesso negato. Concedi l\'accesso ai dati di utilizzo nelle impostazioni';
+
+  @override
+  String get pleaseGrantUsageAccess =>
+      'Concedi il permesso di accesso all\'utilizzo';
+
+  @override
+  String errorLoadingAppUsage(String error) {
+    return 'Errore durante il caricamento dei dati di utilizzo: $error';
+  }
+
+  @override
+  String errorLoadingApps(String error) {
+    return 'Errore durante il caricamento delle app: $error';
+  }
+
+  @override
+  String get joinedRecently => 'Iscritto di recente';
+
+  @override
+  String get pleaseEnterYourName => 'Inserisci il tuo nome';
+
+  @override
+  String get pleaseEnterYourPhone => 'Inserisci il tuo numero di telefono';
+
+  @override
+  String get pleaseEnterYourEmail => 'Inserisci la tua email';
+
+  @override
+  String get pleaseEnterOtp => 'Inserisci il codice OTP';
+
+  @override
+  String get pleaseConfirmYourPassword => 'Conferma la tua password';
+
+  @override
+  String get passwordNotMatching => 'Le password non coincidono';
+
+  @override
+  String get updatePassword => 'Aggiorna password';
+
+  @override
+  String get failedToSaveAppLimits => 'Impossibile salvare i limiti delle app';
+
+  @override
+  String get pleaseSelectAtLeastOneAppDetox =>
+      'Seleziona almeno un\'app per la modalità detox';
+
+  @override
+  String errorSavingDetoxMode(String error) {
+    return 'Errore durante il salvataggio della modalità detox: $error';
+  }
+
+  @override
+  String get unknownApp => 'App sconosciuta';
+
+  @override
+  String get proFeatureMessage =>
+      'Questa funzione è disponibile solo nella versione Pro.';
+
+  @override
+  String get pinLockSettingsSaved =>
+      'Impostazioni del blocco con PIN salvate correttamente';
+
+  @override
+  String get pleaseEnablePinLock => 'Attiva il blocco con PIN per continuare';
+
+  @override
+  String get pleaseSelectAtLeastOneAppToProtect =>
+      'Seleziona almeno un\'app da proteggere';
+
+  @override
+  String get noAppSelected => 'Nessuna app selezionata';
+
+  @override
+  String get schedulesSavedSuccessfully => 'Orari salvati correttamente!';
+
+  @override
+  String get pleaseEnterPinCode => 'Inserisci un codice PIN';
+
+  @override
+  String get pinCodeMustBe4Digits => 'Il codice PIN deve avere 4 cifre';
+
+  @override
+  String purchaseError(String error) {
+    return 'Errore di acquisto: $error';
+  }
+
+  @override
+  String couldNotStartPurchase(String error) {
+    return 'Impossibile avviare l\'acquisto: $error';
+  }
+
+  @override
+  String get couldNotStartPurchaseRetry =>
+      'Impossibile avviare l\'acquisto. Riprova.';
+
+  @override
+  String purchaseFailed(String error) {
+    return 'Acquisto non riuscito: $error';
+  }
+
+  @override
+  String get subscriptionFailed => 'Abbonamento non riuscito';
+
+  @override
+  String get subscriptionActivationFailed =>
+      'Attivazione dell\'abbonamento non riuscita';
+
+  @override
+  String restoreFailed(String error) {
+    return 'Ripristino non riuscito: $error';
+  }
+
+  @override
+  String serverErrorWithMessage(String error) {
+    return 'Errore del server: $error';
+  }
+
+  @override
+  String get subscriptionAutoRenewNote =>
+      'Gli abbonamenti si rinnovano automaticamente salvo disdetta almeno 24 ore\nprima della fine del periodo in corso.';
+
+  @override
+  String get startTime => 'Ora di inizio';
+
+  @override
+  String get endTime => 'Ora di fine';
+
+  @override
+  String pleaseEnterField(String field) {
+    return 'Inserisci $field';
+  }
+
+  @override
+  String limitSummary(String session, String opens) {
+    return 'Limite: $session • $opens aperture';
+  }
+
+  @override
+  String get planFeatureAdFree => 'Esperienza senza pubblicità';
+
+  @override
+  String get planFeatureStandardReports => 'Report standard';
+
+  @override
+  String get planFeatureEmailSupport => 'Assistenza via email';
+
+  @override
+  String get planFeatureEverythingInBasic => 'Tutto del piano Base';
+
+  @override
+  String get planFeatureAdvancedAnalytics => 'Analisi avanzate';
+
+  @override
+  String get planFeaturePrioritySupport => 'Assistenza prioritaria';
+
+  @override
+  String get planFeatureUnlimitedAppLimits => 'Limiti app illimitati';
+
+  @override
+  String get toBlockAppsGrantPermissions =>
+      'Per bloccare le app devi concedere i permessi di sovrapposizione e accessibilità. Vuoi andare alla schermata di configurazione dei permessi?';
+
+  @override
+  String appIsNowBlocked(String appName) {
+    return '$appName è ora bloccata';
+  }
+
+  @override
+  String appIsNowUnblocked(String appName) {
+    return '$appName è ora sbloccata';
+  }
+
+  @override
+  String get noUsageToday => 'Nessun utilizzo oggi';
+
+  @override
+  String get noPlansAvailable => 'Nessun piano disponibile';
+
+  @override
+  String get failedToFetchPlans => 'Impossibile recuperare i piani';
+
+  @override
+  String failedToFetchPlansWithError(String error) {
+    return 'Impossibile recuperare i piani: $error';
+  }
+
+  @override
+  String get invalidResponseFormat => 'Formato di risposta non valido';
+
+  @override
+  String get somethingWentWrong => 'Qualcosa è andato storto. Riprova.';
+
+  @override
+  String get signupFailed =>
+      'Registrazione non riuscita. Controlla la connessione.';
+
+  @override
+  String get verificationFailed => 'Verifica non riuscita';
+
+  @override
+  String errorVerifyingUser(String error) {
+    return 'Errore durante la verifica dell\'utente: $error';
+  }
+
+  @override
+  String get connectionErrorCheckInternet =>
+      'Errore di connessione. Controlla la tua connessione e riprova.';
+
+  @override
+  String get emailNotVerified =>
+      'Email non verificata. Verifica il tuo indirizzo email.';
+
+  @override
+  String get otpSentToEmail =>
+      'Abbiamo inviato un codice OTP alla tua email. Verifica il tuo indirizzo.';
+
+  @override
+  String get loginFailed => 'Accesso non riuscito. Riprova.';
+
+  @override
+  String get networkErrorCheckConnection =>
+      'Errore di rete. Controlla la connessione e riprova.';
+
+  @override
+  String get serverErrorTryLater => 'Errore del server! Riprova più tardi';
+
+  @override
+  String get failedToChangePassword => 'Impossibile cambiare la password';
+
+  @override
+  String get failedToUpdateProfile => 'Impossibile aggiornare il profilo';
+
+  @override
+  String get failedToUpdateProfileRetry =>
+      'Impossibile aggiornare il profilo. Riprova.';
+
+  @override
+  String get serverErrorTryAgainLater =>
+      'Errore del server. Riprova più tardi.';
+
+  @override
+  String get pinSavedLocallyServerError =>
+      'Errore del server. Il PIN è stato salvato localmente e verrà sincronizzato quando il server sarà disponibile.';
+
+  @override
+  String get pinSavedLocallyBadGateway =>
+      'Bad gateway. Il PIN è stato salvato localmente e verrà sincronizzato più tardi.';
+
+  @override
+  String get pinSavedLocallyServiceUnavailable =>
+      'Servizio non disponibile. Il PIN è stato salvato localmente e verrà sincronizzato più tardi.';
+
+  @override
+  String pinSavedLocallyServerErrorCode(String code) {
+    return 'Errore del server ($code). PIN salvato localmente.';
+  }
+
+  @override
+  String get failedToCreatePinLock => 'Impossibile creare il blocco con PIN.';
+
+  @override
+  String get failedToCreatePinLockRetry =>
+      'Impossibile creare il blocco con PIN. Riprova.';
+
+  @override
+  String get networkErrorPinSavedLocally =>
+      'Errore di rete. PIN salvato localmente.';
+
+  @override
+  String get connectionErrorTryAgain => 'Errore di connessione. Riprova.';
+
+  @override
+  String get pinUpdatedLocally =>
+      'PIN aggiornato localmente. La sincronizzazione con il server sarà disponibile a breve.';
+
+  @override
+  String get failedToUpdatePin => 'Impossibile aggiornare il PIN';
+
+  @override
+  String get failedToDeletePin => 'Impossibile eliminare il PIN';
+
+  @override
+  String get networkErrorTryAgain => 'Errore di rete. Riprova.';
+
+  @override
+  String get messageSuggestion1 => 'Respira. Concentrati. Scegli.';
+
+  @override
+  String get messageSuggestion2 => 'La disciplina è libertà.';
+
+  @override
+  String get messageSuggestion3 => 'Meno schermo, più vita.';
+
+  @override
+  String get messageSuggestion4 =>
+      'Il tuo futuro si costruisce con ciò che fai oggi.';
+
+  @override
+  String get reportTitle => 'LimitIt - Report di utilizzo';
+
+  @override
+  String reportGeneratedOn(String date, String time) {
+    return 'Generato il: $date alle $time';
+  }
+
+  @override
+  String get reportTodaysSummary => 'Riepilogo di oggi';
+
+  @override
+  String get reportTotalAppsUsed => 'App utilizzate';
+
+  @override
+  String get reportTotalTime => 'Tempo totale';
+
+  @override
+  String get reportAvgPerApp => 'Media per app';
+
+  @override
+  String get reportDailyUsageBreakdown =>
+      'Dettaglio dell\'utilizzo giornaliero';
+
+  @override
+  String get reportUsageTime => 'Tempo di utilizzo';
+
+  @override
+  String get reportAppName => 'Nome dell\'app';
+
+  @override
+  String get reportTips => 'Consigli per un migliore equilibrio digitale';
+
+  @override
+  String get reportFooterTagline =>
+      'Resta concentrato, prendi il controllo del tuo tempo';
+
+  @override
+  String get reportGeneratedBy => 'Generato dall\'app LimitIt';
+
+  @override
+  String get cantConnectToInternet => 'Impossibile connettersi a internet!';
+
+  @override
+  String get noInternetConnection => 'Nessuna connessione a internet';
+
+  @override
+  String get serverError => 'Errore del server';
+
+  @override
+  String get requestTimeout => 'Richiesta scaduta. Riprova.';
+
+  @override
+  String get unknownError => 'Errore sconosciuto';
+
+  @override
+  String get processing => 'Elaborazione...';
+
+  @override
+  String get reportTip1 => '• Imposta limiti giornalieri per i social media';
+
+  @override
+  String get reportTip2 => '• Fai pause regolari con la tecnica del pomodoro';
+
+  @override
+  String get reportTip3 =>
+      '• Usa la modalità detox durante il tempo di concentrazione';
+
+  @override
+  String get reportTip4 => '• Rivedi i tuoi report di utilizzo ogni settimana';
+
+  @override
+  String get reportTip5 =>
+      '• Attiva il blocco con PIN per evitare l\'uso impulsivo';
+
+  @override
+  String get defaultQuote1 =>
+      'Quasi tutta la buona scrittura nasce da pessimi primi tentativi. Bisogna pur cominciare da qualche parte';
+
+  @override
+  String get defaultQuote2 =>
+      'Dio dà il cibo a ogni uccello, ma non glielo getta nel nido';
+
+  @override
+  String get defaultQuote3 =>
+      'Uno sforzo fatto per la felicità degli altri ci eleva al di sopra di noi stessi';
+
+  @override
+  String get storeUnavailable =>
+      'L\'App Store non è disponibile in questo momento. Riprova più tardi.';
+
+  @override
+  String get planNotAvailable =>
+      'Questo piano non è al momento disponibile per l\'acquisto. Prova un altro piano o riprova più tardi.';
 }

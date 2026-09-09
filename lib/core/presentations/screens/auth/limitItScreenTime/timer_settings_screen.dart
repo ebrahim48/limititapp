@@ -207,7 +207,7 @@ class _TimerSettingsScreenState extends State<TimerSettingsScreen> {
                   if (motivationController.motivations.isEmpty) {
                     return Center(
                       child: CustomText(
-                        text: 'No motivational phrases available',
+                        text: context.l10n.noMotivationalPhrasesAvailable,
                         fontsize: 14.sp,
                         color: AppColors.textColor5D5D5D,
                       ),

@@ -121,7 +121,7 @@ class _SetNewPinNumberScreenState extends State<SetNewPinNumberScreen> {
     if (pinCode.isEmpty) {
       Get.snackbar(
         'Error',
-        'Please enter a PIN code',
+        appL10n.pleaseEnterPinCode,
         snackPosition: SnackPosition.BOTTOM,
       );
       return;
@@ -130,7 +130,7 @@ class _SetNewPinNumberScreenState extends State<SetNewPinNumberScreen> {
     if (pinCode.length != 4 || !RegExp(r'^[0-9]+$').hasMatch(pinCode)) {
       Get.snackbar(
         'Error',
-        'PIN code must be 4 digits',
+        appL10n.pinCodeMustBe4Digits,
         snackPosition: SnackPosition.BOTTOM,
       );
       return;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'custom_text.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class PinLockToggle extends StatelessWidget {
   final RxBool isPinLockEnabled;
@@ -26,7 +27,7 @@ class PinLockToggle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomText(
-            text: 'Pin Lock',
+            text: context.l10n.pinLock,
             fontsize: 16.sp,
             fontWeight: FontWeight.w600,
             color: Colors.black,

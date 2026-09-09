@@ -8,20 +8,16 @@ import 'package:get/get.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:limit_it_app/controllers/upgrade_premium_controller.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
+import 'package:limit_it_app/core/constants/iap_products.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/plan_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
 
-// ─── Product ID generator ─────────────────────────────────────────────────────
-// Same logic as upgrade_premium.dart — must stay in sync with Play Console IDs
-// Examples: limitit_basic_monthly, limitit_pro_yearly
-String _generateProductId(PlanModel plan) {
-  if (plan.duration >= 365) return 'limitit_yearly';
-  if (plan.duration >= 28) return 'limitit_monthly';
-  return 'limitit_weekly';
-}
+// Product IDs live in core/constants/iap_products.dart so this screen,
+// upgrade_premium.dart and choose_plan_screen.dart cannot drift apart.
 
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
@@ -89,7 +85,7 @@ class _InAppPurchaseSubscriptionScreenState
       onDone: () => _purchaseSub?.cancel(),
       onError: (e) {
         debugPrint('====> [IAP] Stream error: $e');
-        _showError('Purchase stream error: $e');
+        _showError(appL10n.purchaseError('$e'));
       },
     );
 
@@ -105,7 +101,8 @@ class _InAppPurchaseSubscriptionScreenState
   Future<void> _queryIAPProducts() async {
     final ids = <String>{};
     for (final plan in _planController.plans) {
-      ids.add(_generateProductId(plan));
+      final productId = productIdFor(plan);
+      if (productId != null) ids.add(productId);
     }
     if (ids.isEmpty) return;
 
@@ -130,25 +127,20 @@ class _InAppPurchaseSubscriptionScreenState
   Future<void> _subscribe(PlanModel plan) async {
     if (_isPurchasing) return;
 
-    // If Play Store is not available (emulator / dev build), use mock payment
+    // Premium is only ever granted after a real store purchase — no mock
+    // fallback, otherwise the app would hand out a paid plan for free.
     if (!_iapAvailable) {
-      debugPrint('====> [IAP] Store unavailable — using mock payment');
-      await _callBackend(
-        plan: plan,
-        paymentId: 'pay_mock_${DateTime.now().millisecondsSinceEpoch}',
-      );
+      debugPrint('====> [IAP] Store unavailable');
+      _showError(appL10n.storeUnavailable);
       return;
     }
 
-    final productId = _generateProductId(plan);
+    final productId = resolveProductId(plan, _planController.plans);
+    final product = productId == null ? null : _iapProducts[productId];
 
-    // Product not found in Play Store — fall back to mock
-    if (!_iapProducts.containsKey(productId)) {
-      debugPrint('====> [IAP] Product "$productId" not found — using mock payment');
-      await _callBackend(
-        plan: plan,
-        paymentId: 'pay_mock_${DateTime.now().millisecondsSinceEpoch}',
-      );
+    if (product == null) {
+      debugPrint('====> [IAP] No purchasable product for plan "${plan.name}"');
+      _showError(appL10n.planNotAvailable);
       return;
     }
 
@@ -159,9 +151,7 @@ class _InAppPurchaseSubscriptionScreenState
 
     try {
       await _iap.buyNonConsumable(
-        purchaseParam: PurchaseParam(
-          productDetails: _iapProducts[productId]!,
-        ),
+        purchaseParam: PurchaseParam(productDetails: product),
       );
       // Result comes back asynchronously via _onPurchaseUpdate
     } catch (e) {
@@ -170,7 +160,7 @@ class _InAppPurchaseSubscriptionScreenState
         _isPurchasing = false;
       });
       debugPrint('====> [IAP] Buy error: $e');
-      _showError('Could not start purchase. Please try again.');
+      _showError(appL10n.couldNotStartPurchaseRetry);
     }
   }
 
@@ -258,7 +248,7 @@ class _InAppPurchaseSubscriptionScreenState
                   color: AppColors.primaryGreen, size: 48.r),
               SizedBox(height: 16.h),
               CustomText(
-                text: 'Activating your subscription...',
+                text: context.l10n.activatingSubscription,
                 fontsize: 15.sp,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textColor2C2C2C,
@@ -282,10 +272,10 @@ class _InAppPurchaseSubscriptionScreenState
         if (data['status'] == 'success' && data['statusCode'] == 201) {
           _showSuccessDialog(plan);
         } else {
-          _showError(data['message'] ?? 'Subscription activation failed');
+          _showError(data['message'] ?? appL10n.subscriptionActivationFailed);
         }
       } else {
-        _showError('Server error: ${response.statusText}');
+        _showError(appL10n.serverErrorWithMessage('${response.statusText}'));
       }
     } catch (e) {
       if (mounted) Navigator.of(context).pop();
@@ -323,14 +313,14 @@ class _InAppPurchaseSubscriptionScreenState
               ),
               SizedBox(height: 20.h),
               CustomText(
-                text: 'Subscription Activated!',
+                text: context.l10n.subscriptionActivated,
                 fontsize: 20.sp,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textColor2C2C2C,
               ),
               SizedBox(height: 8.h),
               CustomText(
-                text: 'You are now subscribed to\n${plan.name}',
+                text: context.l10n.youAreNowSubscribedTo(plan.name),
                 fontsize: 14.sp,
                 fontWeight: FontWeight.w400,
                 color: AppColors.textColor5D5D5D,
@@ -339,7 +329,7 @@ class _InAppPurchaseSubscriptionScreenState
               ),
               SizedBox(height: 28.h),
               CustomButton(
-                title: 'Continue',
+                title: context.l10n.continueWithApps,
                 height: 50.h,
                 onpress: () {
                   Navigator.of(context).pop(); // close dialog
@@ -373,7 +363,7 @@ class _InAppPurchaseSubscriptionScreenState
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Checking for existing purchases...'),
+            content: Text(context.l10n.checkingForExistingPurchases),
             backgroundColor: AppColors.primaryGreen,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
@@ -384,7 +374,7 @@ class _InAppPurchaseSubscriptionScreenState
         );
       }
     } catch (e) {
-      _showError('Restore failed: $e');
+      _showError(appL10n.restoreFailed('$e'));
     }
   }
 
@@ -415,7 +405,7 @@ class _InAppPurchaseSubscriptionScreenState
             ),
             SizedBox(width: 6.w),
             CustomText(
-              text: 'Choose Your Plan',
+              text: context.l10n.choosePlan,
               fontsize: 20.sp,
               fontWeight: FontWeight.w600,
               color: AppColors.textColor2C2C2C,
@@ -426,7 +416,7 @@ class _InAppPurchaseSubscriptionScreenState
           TextButton(
             onPressed: _restorePurchases,
             child: CustomText(
-              text: 'Restore',
+              text: context.l10n.restore,
               fontsize: 13.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.primaryGreen,
@@ -453,7 +443,7 @@ class _InAppPurchaseSubscriptionScreenState
     if (_planController.plans.isEmpty) {
       return Center(
         child: CustomText(
-          text: 'No subscription plans available',
+          text: context.l10n.noSubscriptionPlans,
           fontsize: 15.sp,
           color: AppColors.textColor5D5D5D,
         ),
@@ -509,14 +499,14 @@ class _InAppPurchaseSubscriptionScreenState
           ),
           SizedBox(height: 12.h),
           CustomText(
-            text: 'Upgrade to Premium',
+            text: context.l10n.upgradeToPremium,
             fontsize: 20.sp,
             fontWeight: FontWeight.w700,
             color: Colors.white,
           ),
           SizedBox(height: 6.h),
           CustomText(
-            text: 'Take full control of your screen time',
+            text: context.l10n.takeFullControlOfScreenTime,
             fontsize: 13.sp,
             fontWeight: FontWeight.w400,
             color: Colors.white.withValues(alpha: 0.75),
@@ -530,14 +520,14 @@ class _InAppPurchaseSubscriptionScreenState
 
   Widget _buildPlanCard(PlanModel plan) {
     final isSelected = _planController.selectedPlan.value == plan.id;
-    final productId = _generateProductId(plan);
-    final iapProduct = _iapProducts[productId];
+    final productId = productIdFor(plan);
+    final iapProduct = productId == null ? null : _iapProducts[productId];
 
     // Use Play Store price if available, else fall back to API price
     final priceLabel =
         iapProduct?.price ?? '\$${plan.price.toStringAsFixed(2)}';
 
-    final periodLabel = _getPeriodLabel(plan);
+    final periodLabel = _getPeriodLabel(context, plan);
     final isPopular =
         plan.type == 'monthly' || (plan.duration >= 28 && plan.duration < 90);
     final isThisPurchasing = _isPurchasing && _pendingPlan?.id == plan.id;
@@ -580,7 +570,7 @@ class _InAppPurchaseSubscriptionScreenState
                   ),
                 ),
                 child: CustomText(
-                  text: 'MOST POPULAR',
+                  text: context.l10n.mostPopular,
                   fontsize: 11.sp,
                   fontWeight: FontWeight.w700,
                   color: Colors.white,
@@ -720,7 +710,7 @@ class _InAppPurchaseSubscriptionScreenState
                   // Subscribe button
                   CustomButton(
                     title:
-                        isThisPurchasing ? 'Processing...' : 'Subscribe Now',
+                        isThisPurchasing ? context.l10n.processing : context.l10n.subscribeNow,
                     onpress: () => _subscribe(plan),
                     loading: isThisPurchasing,
                     height: 50.h,
@@ -742,7 +732,7 @@ class _InAppPurchaseSubscriptionScreenState
         GestureDetector(
           onTap: _restorePurchases,
           child: CustomText(
-            text: 'Restore Purchases',
+            text: context.l10n.restorePurchases,
             fontsize: 13.sp,
             fontWeight: FontWeight.w500,
             color: AppColors.primaryGreen,
@@ -751,7 +741,7 @@ class _InAppPurchaseSubscriptionScreenState
         SizedBox(height: 10.h),
         CustomText(
           text:
-              'Subscriptions auto-renew unless cancelled at least 24 hours\nbefore the end of the current period.',
+              context.l10n.subscriptionAutoRenewNote,
           fontsize: 11.sp,
           fontWeight: FontWeight.w400,
           color: AppColors.textColor888888,
@@ -783,7 +773,7 @@ class _InAppPurchaseSubscriptionScreenState
             ),
             SizedBox(height: 24.h),
             CustomButton(
-              title: 'Retry',
+              title: context.l10n.retry,
               onpress: _planController.fetchPlans,
               width: 140.w,
               height: 48.h,
@@ -796,10 +786,11 @@ class _InAppPurchaseSubscriptionScreenState
 
   // ── Helpers ────────────────────────────────────────────────────────────────
 
-  String _getPeriodLabel(PlanModel plan) {
-    if (plan.type == 'yearly' || plan.duration >= 365) return 'Yearly';
-    if (plan.type == 'monthly' || plan.duration >= 28) return 'Monthly';
-    if (plan.duration >= 7) return 'Weekly';
-    return 'Monthly';
+  String _getPeriodLabel(BuildContext context, PlanModel plan) {
+    final l10n = context.l10n;
+    if (plan.type == 'yearly' || plan.duration >= 365) return l10n.yearly;
+    if (plan.type == 'monthly' || plan.duration >= 28) return l10n.monthly;
+    if (plan.duration >= 7) return l10n.weekly;
+    return l10n.monthly;
   }
 }

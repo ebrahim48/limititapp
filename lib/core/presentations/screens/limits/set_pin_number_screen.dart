@@ -64,7 +64,7 @@ class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
             SizedBox(height: 20.h),
 
             CustomText(
-              text: 'Provider: ${widget.providerName}',
+              text: '${context.l10n.provider}: ${widget.providerName}',
               fontsize: 16.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.primaryColor,
@@ -117,7 +117,7 @@ class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
     if (pinCode.isEmpty) {
       Get.snackbar(
         'Error',
-        'Please enter a PIN code',
+        appL10n.pleaseEnterPinCode,
         snackPosition: SnackPosition.BOTTOM,
       );
       return;
@@ -126,7 +126,7 @@ class _SetPinNumberScreenState extends State<SetPinNumberScreen> {
     if (pinCode.length != 4 || !RegExp(r'^[0-9]+$').hasMatch(pinCode)) {
       Get.snackbar(
         'Error',
-        'PIN code must be 4 digits',
+        appL10n.pinCodeMustBe4Digits,
         snackPosition: SnackPosition.BOTTOM,
       );
       return;

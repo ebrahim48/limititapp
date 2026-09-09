@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({super.key});
@@ -31,7 +32,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: 'Subscription',
+              text: context.l10n.subscription,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -65,7 +66,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomText(
-                        text: 'You are Free Member\nNow',
+                        text: context.l10n.youAreFreeMemberNow,
                         fontsize: 16.sp,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textColor2C2C2C,
@@ -94,7 +95,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           ),
                           alignment: Alignment.center,
                           child: CustomText(
-                            text: 'Upgrade to Premium',
+                            text: context.l10n.upgradeToPremium,
                             fontsize: 14.sp,
                             fontWeight: FontWeight.w500,
                             color: Colors.white,

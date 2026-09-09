@@ -51,13 +51,13 @@ class ResetPasswordScreen extends StatelessWidget {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   isMatched.value = false;
-                  return 'Please enter your confirm password';
+                  return context.l10n.pleaseConfirmYourPassword;
                 } else if (newPassWordCtrl.text == value) {
                   isMatched.value = true;
                   return null;
                 } else {
                   isMatched.value = false;
-                  return 'Password Not Matching';
+                  return context.l10n.passwordNotMatching;
                 }
               },
               onChanged: (value) {

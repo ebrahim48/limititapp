@@ -217,7 +217,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 else
                   // No apps found
                   CustomText(
-                    text: 'No apps found on this device',
+                    text: context.l10n.noAppsFoundOnDevice,
                     fontsize: 14.sp,
                     fontWeight: FontWeight.w400,
                     color: AppColors.textColor5D5D5D,

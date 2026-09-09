@@ -6,6 +6,7 @@ import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class SchedulesLimitsController extends GetxController {
   final RxBool isExpanded = true.obs;
@@ -60,7 +61,7 @@ class SchedulesLimitsController extends GetxController {
         ).firstOrNull;
 
         // Get usage info from today's usage
-        String usageInfo = 'No usage today';
+        String usageInfo = appL10n.noUsageToday;
         final usageToday = await appLimitStorageService.getAppUsageToday(
           blockedApp.packageName,
         );
@@ -110,7 +111,7 @@ class SchedulesLimitsController extends GetxController {
 
         for (final appLimit in appLimits) {
           // Get usage info from today's usage
-          String usageInfo = 'No usage today';
+          String usageInfo = appL10n.noUsageToday;
           final usageToday = await appLimitStorageService.getAppUsageToday(
             appLimit.packageName,
           );

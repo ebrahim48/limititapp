@@ -27,12 +27,12 @@ class _CustomizeMessageScreenState extends State<CustomizeMessageScreen> {
 
   String? _selected;
 
-  static const List<String> _fallbackSuggestions = [
-    'Breathe. Focus. Choose.',
-    'Discipline is freedom.',
-    'Less screen, more life.',
-    'Your future is created by what you do today.',
-  ];
+  List<String> _fallbackSuggestions(BuildContext context) => [
+        context.l10n.messageSuggestion1,
+        context.l10n.messageSuggestion2,
+        context.l10n.messageSuggestion3,
+        context.l10n.messageSuggestion4,
+      ];
 
   @override
   void initState() {
@@ -72,7 +72,7 @@ class _CustomizeMessageScreenState extends State<CustomizeMessageScreen> {
         final apiSuggestions =
             _motivation.motivations.map((m) => m.content).toList();
         final suggestions =
-            apiSuggestions.isNotEmpty ? apiSuggestions : _fallbackSuggestions;
+            apiSuggestions.isNotEmpty ? apiSuggestions : _fallbackSuggestions(context);
 
         return ListView(
           physics: const BouncingScrollPhysics(),

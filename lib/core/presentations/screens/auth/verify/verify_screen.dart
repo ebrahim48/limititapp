@@ -93,7 +93,7 @@ class VerifyScreen extends StatelessWidget {
               loading: authController.verfyLoading.value,
               onPressed: () {
                 if (otpTEController.text.isEmpty) {
-                  ToastMessageHelper.showToastMessage("Please enter OTP");
+                  ToastMessageHelper.showToastMessage(context.l10n.pleaseEnterOtp);
                   return;
                 }
 

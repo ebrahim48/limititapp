@@ -50,7 +50,7 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
         (limit) => limit.packageName == widget.packageName,
         orElse: () => AppLimitModel(
           packageName: widget.packageName ?? 'unknown',
-          appName: widget.packageName ?? 'Unknown App', // Fallback to package name
+          appName: widget.packageName ?? appL10n.unknownApp, // Fallback to package name
           maxDailyOpens: 5,
           maxSessionDurationMinutes: 30,
           activeDays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
@@ -70,7 +70,7 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
       });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error loading app limit: $e')),
+          SnackBar(content: Text(context.l10n.errorLoadingAppLimit('$e'))),
         );
       }
     }
@@ -104,7 +104,7 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
 
       if (success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('App limit updated successfully!')),
+          SnackBar(content: Text(context.l10n.appLimitUpdated)),
         );
 
         // Go back to previous screen
@@ -113,13 +113,13 @@ class _EditUsageLimitScreenState extends State<EditUsageLimitScreen> {
         }
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to update app limit')),
+          SnackBar(content: Text(context.l10n.failedToUpdateAppLimit)),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving app limit: $e')),
+          SnackBar(content: Text(context.l10n.errorSavingAppLimit('$e'))),
         );
       }
     }

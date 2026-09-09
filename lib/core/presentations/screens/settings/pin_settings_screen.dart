@@ -287,7 +287,7 @@ class _PinSettingsScreenState extends State<PinSettingsScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               CustomText(
-                text: 'PIN Code',
+                text: context.l10n.pinCode,
                 fontsize: 14.sp,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textColor5D5D5D,
@@ -322,7 +322,7 @@ class _PinSettingsScreenState extends State<PinSettingsScreen> {
               SizedBox(height: 16.h),
               if (pinCode == '••••')
                 CustomText(
-                  text: 'PIN code not available from server',
+                  text: context.l10n.pinCodeNotAvailable,
                   fontsize: 12.sp,
                   fontWeight: FontWeight.w400,
                   color: AppColors.textColor5D5D5D,

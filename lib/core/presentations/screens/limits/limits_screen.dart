@@ -6,6 +6,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/limit_data_helper.dart';
+import 'package:limit_it_app/core/models/limit_option_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/limit_card.dart';
 import 'package:limit_it_app/controllers/ads_controller.dart';
@@ -13,6 +14,7 @@ import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 
 class LimitsScreen extends StatefulWidget {
@@ -115,7 +117,7 @@ class _LimitsScreenState extends State<LimitsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final limitOptions = LimitDataHelper.limitOptions;
+    final limitOptions = LimitDataHelper.limitOptions(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -125,7 +127,7 @@ class _LimitsScreenState extends State<LimitsScreen> {
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: CustomText(
-          text: 'Limits',
+          text: context.l10n.limits,
           color: AppColors.textColor3D3D3D,
           fontsize: 20.sp,
           fontWeight: FontWeight.w500,
@@ -146,14 +148,14 @@ class _LimitsScreenState extends State<LimitsScreen> {
                       option: option,
                       onTap: () {
                         if (option.isPro) {
-                          if (option.title == 'Pin Lock') {
+                          if (option.id == LimitOptionId.pinLock) {
                             showDialog(
                               context: context,
                               builder:
                                   (context) => AlertDialog(
-                                    title: const Text("Pro Feature"),
-                                    content: const Text(
-                                      "This feature is only available in the Pro version.",
+                                    title: Text(context.l10n.proFeature),
+                                    content: Text(
+                                      context.l10n.proFeatureMessage,
                                     ),
                                     actions: [
                                       TextButton(
@@ -162,19 +164,19 @@ class _LimitsScreenState extends State<LimitsScreen> {
                                             AppRoutes.pinLockLimitsScreen,
                                           );
                                         },
-                                        child: const Text("OK"),
+                                        child: Text(context.l10n.ok),
                                       ),
                                     ],
                                   ),
                             );
-                          } else if (option.title == 'Detox Mode') {
+                          } else if (option.id == LimitOptionId.detoxMode) {
                             showDialog(
                               context: context,
                               builder:
                                   (context) => AlertDialog(
-                                    title: const Text("Pro Feature"),
-                                    content: const Text(
-                                      "This feature is only available in the Pro version.",
+                                    title: Text(context.l10n.proFeature),
+                                    content: Text(
+                                      context.l10n.proFeatureMessage,
                                     ),
                                     actions: [
                                       TextButton(
@@ -183,24 +185,21 @@ class _LimitsScreenState extends State<LimitsScreen> {
                                             AppRoutes.detoxModeScreen,
                                           );
                                         },
-                                        child: const Text("OK"),
+                                        child: Text(context.l10n.ok),
                                       ),
                                     ],
                                   ),
                             );
                           }
                         } else {
-                          switch (option.title) {
-                            case 'Screen time':
+                          switch (option.id) {
+                            case LimitOptionId.screenTime:
                               _showInterstitialAdAndNavigate();
                               break;
-                            case 'Schedules':
+                            case LimitOptionId.schedules:
                               context.pushNamed(
                                 AppRoutes.schedulesLimitsScreen,
                               );
-                              break;
-                            case 'App usage':
-                              Navigator.pushNamed(context, '/appUsage');
                               break;
                             default:
                               break;
@@ -246,7 +245,7 @@ class _LimitsScreenState extends State<LimitsScreen> {
                   ),
                   child: Center(
                     child: CustomText(
-                      text: 'Loading Ad...',
+                      text: context.l10n.loadingAd,
                       fontsize: 12.sp,
                       color: Colors.grey[600]!,
                     ),

@@ -163,8 +163,8 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
   Future<void> _saveAndContinue() async {
     if (widget.selectedApps == null || widget.selectedApps!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No apps to save'),
+        SnackBar(
+          content: Text(context.l10n.noAppsToSave),
           backgroundColor: Colors.orange,
         ),
       );
@@ -218,7 +218,7 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Saved limits for ${newAppLimits.length} apps'),
+            content: Text(context.l10n.savedLimitsForApps(newAppLimits.length)),
             backgroundColor: Colors.green,
           ),
         );
@@ -226,13 +226,13 @@ class _SetUsageLimitScreenState extends State<SetUsageLimitScreen> {
         // Navigate to timer settings screen with origin information
         context.pushNamed(AppRoutes.timerSettingsScreen, extra: {'origin': 'setUsage'});
       } else {
-        throw Exception('Failed to save app limits');
+        throw Exception(appL10n.failedToSaveAppLimits);
       }
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error saving limits: $e'),
+          content: Text(context.l10n.errorSavingLimits('$e')),
           backgroundColor: Colors.red,
         ),
       );

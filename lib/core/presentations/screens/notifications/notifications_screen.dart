@@ -69,7 +69,7 @@ class NotificationsScreen extends StatelessWidget {
                         color: AppColors.primaryColor,
                         size: 22.r,
                       ),
-                      tooltip: 'Mark all as read',
+                      tooltip: context.l10n.markAllAsRead,
                       onPressed: () => _showMarkAllReadDialog(context, controller),
                     ),
                     // Clear all
@@ -79,7 +79,7 @@ class NotificationsScreen extends StatelessWidget {
                         color: AppColors.textColorA70D0D,
                         size: 22.r,
                       ),
-                      tooltip: 'Clear all',
+                      tooltip: context.l10n.clearAll,
                       onPressed: () =>
                           _showClearAllDialog(context, controller),
                     ),
@@ -116,7 +116,7 @@ class NotificationsScreen extends StatelessWidget {
                       return _buildLoadingMoreIndicator();
                     }
                     if (!controller.hasMore.value) {
-                      return _buildNoMoreItemsIndicator();
+                      return _buildNoMoreItemsIndicator(context);
                     }
                     return _buildLoadingMoreIndicator();
                   }
@@ -258,12 +258,12 @@ class NotificationsScreen extends StatelessWidget {
   }
 
   // ===================== No More Items =====================
-  Widget _buildNoMoreItemsIndicator() {
+  Widget _buildNoMoreItemsIndicator(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.h),
       child: Center(
         child: CustomText(
-          text: 'No more notifications',
+          text: context.l10n.noMoreNotifications,
           fontsize: 14.sp,
           fontWeight: FontWeight.w400,
           color: AppColors.textColor888888,
@@ -281,13 +281,13 @@ class NotificationsScreen extends StatelessWidget {
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         backgroundColor: AppColors.textColorFFFFFF,
         title: CustomText(
-          text: 'Delete Notification',
+          text: context.l10n.deleteNotification,
           fontsize: 16.sp,
           fontWeight: FontWeight.w600,
           color: AppColors.textColor3D3D3D,
         ),
         content: CustomText(
-          text: 'Are you sure you want to delete this notification?',
+          text: context.l10n.deleteNotificationConfirm,
           fontsize: 14.sp,
           color: AppColors.textColor5D5D5D,
         ),
@@ -295,7 +295,7 @@ class NotificationsScreen extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context, false),
             child: CustomText(
-              text: 'Cancel',
+              text: context.l10n.cancel,
               fontsize: 14.sp,
               color: AppColors.textColor5D5D5D,
             ),
@@ -303,7 +303,7 @@ class NotificationsScreen extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: CustomText(
-              text: 'Delete',
+              text: context.l10n.delete,
               fontsize: 14.sp,
               color: AppColors.textColorA70D0D,
               fontWeight: FontWeight.w600,
@@ -323,13 +323,13 @@ class NotificationsScreen extends StatelessWidget {
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         backgroundColor: AppColors.textColorFFFFFF,
         title: CustomText(
-          text: 'Mark All as Read',
+          text: context.l10n.markAllAsRead,
           fontsize: 16.sp,
           fontWeight: FontWeight.w600,
           color: AppColors.textColor3D3D3D,
         ),
         content: CustomText(
-          text: 'Mark all notifications as read?',
+          text: context.l10n.markAllAsReadConfirm,
           fontsize: 14.sp,
           color: AppColors.textColor5D5D5D,
         ),
@@ -337,7 +337,7 @@ class NotificationsScreen extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: CustomText(
-              text: 'Cancel',
+              text: context.l10n.cancel,
               fontsize: 14.sp,
               color: AppColors.textColor5D5D5D,
             ),
@@ -348,7 +348,7 @@ class NotificationsScreen extends StatelessWidget {
               controller.markAllAsRead();
             },
             child: CustomText(
-              text: 'Confirm',
+              text: context.l10n.confirm,
               fontsize: 14.sp,
               color: AppColors.primaryColor,
               fontWeight: FontWeight.w600,
@@ -368,13 +368,13 @@ class NotificationsScreen extends StatelessWidget {
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         backgroundColor: AppColors.textColorFFFFFF,
         title: CustomText(
-          text: 'Clear All Notifications',
+          text: context.l10n.clearAllNotifications,
           fontsize: 16.sp,
           fontWeight: FontWeight.w600,
           color: AppColors.textColor3D3D3D,
         ),
         content: CustomText(
-          text: 'This will permanently delete all notifications.',
+          text: context.l10n.clearAllNotificationsConfirm,
           fontsize: 14.sp,
           color: AppColors.textColor5D5D5D,
         ),
@@ -382,7 +382,7 @@ class NotificationsScreen extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: CustomText(
-              text: 'Cancel',
+              text: context.l10n.cancel,
               fontsize: 14.sp,
               color: AppColors.textColor5D5D5D,
             ),
@@ -393,7 +393,7 @@ class NotificationsScreen extends StatelessWidget {
               controller.clearAllNotifications();
             },
             child: CustomText(
-              text: 'Clear All',
+              text: context.l10n.clearAll,
               fontsize: 14.sp,
               color: AppColors.textColorA70D0D,
               fontWeight: FontWeight.w600,

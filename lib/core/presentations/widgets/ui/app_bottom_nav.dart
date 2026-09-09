@@ -4,6 +4,7 @@ import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_text_styles.dart';
 import 'app_icons.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 /// The four tab destinations of the redesigned app.
 enum AppTab { home, statistics, premium, settings }
@@ -24,26 +25,26 @@ class AppTabItem {
   final Color? activeColor;
 }
 
-List<AppTabItem> get kAppTabs => [
+List<AppTabItem> appTabs(BuildContext context) => [
       AppTabItem(
         tab: AppTab.home,
-        label: 'Home',
+        label: context.l10n.home,
         icon: Assets.icons.ui.home,
       ),
       AppTabItem(
         tab: AppTab.statistics,
-        label: 'Statistics',
+        label: context.l10n.statistics,
         icon: Assets.icons.ui.barChart,
       ),
       AppTabItem(
         tab: AppTab.premium,
-        label: 'Premium',
+        label: context.l10n.premium,
         icon: Assets.icons.ui.crown,
         activeColor: AppColors.gold,
       ),
       AppTabItem(
         tab: AppTab.settings,
-        label: 'Settings',
+        label: context.l10n.settings,
         icon: Assets.icons.ui.sun,
       ),
     ];
@@ -64,7 +65,7 @@ class AppBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabs = items ?? kAppTabs;
+    final tabs = items ?? appTabs(context);
 
     return Container(
       decoration: const BoxDecoration(

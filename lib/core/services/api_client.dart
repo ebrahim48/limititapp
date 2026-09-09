@@ -12,11 +12,12 @@ import 'package:limit_it_app/core/helpers/prefs_helper.dart';
 import 'package:mime/mime.dart';
 import 'api_constants.dart';
 import 'error_response.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 
 class ApiClient extends GetxService {
   static var client = http.Client();
-  static const String noInternetMessage = "Can't connect to the internet!";
+  static String get noInternetMessage => appL10n.cantConnectToInternet;
   static const int timeoutInSeconds = 60; // Increased from 20s to 60s for better reliability
   static const int maxRetries = 2; // Retry failed requests up to 2 times
   static String bearerToken = "";
@@ -49,16 +50,16 @@ class ApiClient extends GetxService {
     } on SocketException catch (e) {
       debugPrint('------------SocketException: ${e.toString()}');
       debugPrint('------------Check internet permission and connectivity');
-      return const Response(statusCode: 1, statusText: "No internet connection");
+      return Response(statusCode: 1, statusText: appL10n.noInternetConnection);
     } on HttpException catch (e) {
       debugPrint('------------HttpException: ${e.toString()}');
-      return const Response(statusCode: 1, statusText: "Server error");
+      return Response(statusCode: 1, statusText: appL10n.serverError);
     } on TimeoutException catch (e) {
       debugPrint('------------TimeoutException: ${e.toString()}');
-      return const Response(statusCode: 1, statusText: "Request timeout. Please try again.");
+      return Response(statusCode: 1, statusText: appL10n.requestTimeout);
     } catch (e) {
       debugPrint('------------Exception: ${e.toString()}');
-      return const Response(statusCode: 1, statusText: "Can't connect to the internet!");
+      return Response(statusCode: 1, statusText: appL10n.cantConnectToInternet);
     }
   }
 
@@ -89,14 +90,14 @@ class ApiClient extends GetxService {
     } on TimeoutException catch (e) {
       debugPrint("===> TimeoutException in postData: $e");
       debugPrint("===> Request timed out after $timeoutInSeconds seconds");
-      return const Response(statusCode: 1, statusText: "Request timed out. Please try again.");
+      return Response(statusCode: 1, statusText: appL10n.requestTimeout);
     } on SocketException catch (e) {
       debugPrint("===> SocketException in postData: $e");
-      return const Response(statusCode: 1, statusText: "No internet connection");
+      return Response(statusCode: 1, statusText: appL10n.noInternetConnection);
     } catch (e, s) {
       debugPrint("===> Error in postData: e$e");
       debugPrint("===> Error in postData: s$s");
-      return const Response(statusCode: 1, statusText: noInternetMessage);
+      return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
 
@@ -141,7 +142,7 @@ class ApiClient extends GetxService {
     }
 
     // This should never be reached due to rethrow, but added for safety
-    throw lastException ?? Exception('Unknown error');
+    throw lastException ?? Exception(appL10n.unknownError);
   }
 
 
@@ -176,7 +177,7 @@ class ApiClient extends GetxService {
     } catch (e, s) {
       debugPrint("===> $e");
       debugPrint("===> $s");
-      return const Response(statusCode: 1, statusText: noInternetMessage);
+      return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
 
@@ -226,7 +227,7 @@ class ApiClient extends GetxService {
       await http.Response.fromStream(await request.send());
       return handleResponse(_response, uri);
     } catch (e) {
-      return const Response(statusCode: 1, statusText: noInternetMessage);
+      return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
 
@@ -259,7 +260,7 @@ class ApiClient extends GetxService {
   //     await http.Response.fromStream(await request.send());
   //     return handleResponse(_response, uri);
   //   } catch (e) {
-  //     return const Response(statusCode: 1, statusText: noInternetMessage);
+  //     return Response(statusCode: 1, statusText: noInternetMessage);
   //   }
   // }
 
@@ -313,7 +314,7 @@ class ApiClient extends GetxService {
           .timeout(const Duration(seconds: timeoutInSeconds));
       return handleResponse(response, uri);
     } catch (e) {
-      return const Response(statusCode: 1, statusText: noInternetMessage);
+      return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
 
@@ -361,7 +362,7 @@ class ApiClient extends GetxService {
           body: json.decode(content));
     } catch (e) {
       debugPrint("====================================e $e");
-      return const Response(statusCode: 1, statusText: noInternetMessage);
+      return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
 
@@ -411,7 +412,7 @@ class ApiClient extends GetxService {
           body: json.decode(content));
     } catch (e) {
       debugPrint("====================================e $e");
-      return const Response(statusCode: 1, statusText: noInternetMessage);
+      return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
 
@@ -435,7 +436,7 @@ class ApiClient extends GetxService {
           .timeout(const Duration(seconds: timeoutInSeconds));
       return handleResponse(response, uri);
     } catch (e) {
-      return const Response(statusCode: 1, statusText: noInternetMessage);
+      return Response(statusCode: 1, statusText: noInternetMessage);
     }
   }
 
@@ -467,7 +468,7 @@ class ApiClient extends GetxService {
           body: response0.body,
           statusText: errorResponse.message);
     } else if (response0.statusCode != 200 && response0.body == null) {
-      response0 = const Response(statusCode: 0, statusText: noInternetMessage);
+      response0 = Response(statusCode: 0, statusText: noInternetMessage);
     }
 
     debugPrint('====> API Response: [${response0.statusCode}] $uri\n${response0.body}');

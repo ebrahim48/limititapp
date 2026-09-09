@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:limit_it_app/core/models/plan_model.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class PlanService {
   /// Fetch all plans
@@ -29,15 +30,15 @@ class PlanService {
             return plans;
           } else {
             debugPrint('====> API returned error: $status, $statusCode');
-            throw Exception(data['message'] ?? 'Failed to fetch plans');
+            throw Exception(data['message'] ?? appL10n.failedToFetchPlans);
           }
         } else {
           debugPrint('====> Unexpected response format: $data');
-          throw Exception('Invalid response format');
+          throw Exception(appL10n.invalidResponseFormat);
         }
       } else {
         debugPrint('====> API error: ${response.statusCode}');
-        throw Exception('Failed to fetch plans: ${response.statusText}');
+        throw Exception(appL10n.failedToFetchPlansWithError('${response.statusText}'));
       }
     } catch (e) {
       debugPrint('====> Error in getAllPlans: $e');

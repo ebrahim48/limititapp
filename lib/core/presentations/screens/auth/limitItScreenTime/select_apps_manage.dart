@@ -98,20 +98,20 @@ class _SelectAppsManageScreenState extends State<SelectAppsManageScreen>
           _appUsageList = allApps;
           _isLoading = false;
           if (allApps.isEmpty) {
-            _errorMessage = 'No apps found on this device';
+            _errorMessage = appL10n.noAppsFoundOnDevice;
           }
         });
       } else {
         setState(() {
           _isLoading = false;
           _errorMessage =
-              'Permission denied. Please grant usage access permission in settings';
+              appL10n.permissionDeniedUsageAccess;
         });
       }
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _errorMessage = 'Error loading app usage data: ${e.toString()}';
+        _errorMessage = appL10n.errorLoadingAppUsage(e.toString());
       });
     }
   }

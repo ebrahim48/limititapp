@@ -9,6 +9,7 @@ import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
 import '../core/app_constants/app_constants.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 
 
@@ -85,10 +86,10 @@ class AuthController extends GetxController {
           );
         }
       } else {
-        signUpError(response.body["message"] ?? "Something went wrong. Please try again.");
+        signUpError(response.body["message"] ?? appL10n.somethingWentWrong);
       }
     } catch (e) {
-      signUpError("Signup failed. Please check your connection.");
+      signUpError(appL10n.signupFailed);
     } finally {
       signUpLoading(false);
     }
@@ -136,12 +137,12 @@ class AuthController extends GetxController {
         }
       } else {
         ToastMessageHelper.showToastMessage(
-          response.body["message"] ?? "Verification failed",
-          title: 'Attention',
+          response.body["message"] ?? appL10n.verificationFailed,
+          title: appL10n.attention,
         );
       }
     } catch (e) {
-      ToastMessageHelper.showToastMessage("Error verifying user: $e");
+      ToastMessageHelper.showToastMessage(appL10n.errorVerifyingUser('$e'));
     } finally {
       verfyLoading(false);
     }
@@ -180,7 +181,7 @@ class AuthController extends GetxController {
       // Handle timeout or connection errors
       if (response.statusCode == 1) {
         loginLoading.value = false;
-        loginErrorMessage.value = "Connection error. Please check your internet and try again.";
+        loginErrorMessage.value = appL10n.connectionErrorCheckInternet;
         return;
       }
 
@@ -219,7 +220,7 @@ class AuthController extends GetxController {
           final message = response.body["message"];
 
           if (message == "Email not verified. Please verify your email.") {
-            loginErrorMessage.value = "We've sent an OTP to your email. Please verify your email.";
+            loginErrorMessage.value = appL10n.otpSentToEmail;
           } else if (message == "⛔ Wrong password! ⛔") {
             loginErrorMessage.value = message;
           } else {
@@ -230,14 +231,14 @@ class AuthController extends GetxController {
           }
         }
       } else {
-        final errorMessage = response.body?["message"] ?? "Login failed. Please try again.";
+        final errorMessage = response.body?["message"] ?? appL10n.loginFailed;
         loginLoading.value = false;
         loginErrorMessage.value = errorMessage;
       }
     } catch (e) {
       debugPrint("=====> Login error: $e");
       loginLoading.value = false;
-      loginErrorMessage.value = "Network error. Please check your connection and try again.";
+      loginErrorMessage.value = appL10n.networkErrorCheckConnection;
     }
   }
 
@@ -306,10 +307,10 @@ class AuthController extends GetxController {
       setPasswordLoading(false);
     } else if(response.statusCode == 1){
       setPasswordLoading(false);
-      ToastMessageHelper.showToastMessage("Server error! \n Please try later");
+      ToastMessageHelper.showToastMessage(appL10n.serverErrorTryLater);
     } else {
       setPasswordLoading(false);
-      ToastMessageHelper.showToastMessage('${response.body["message"]}',title: 'attention');
+      ToastMessageHelper.showToastMessage('${response.body["message"]}',title: appL10n.attention);
     }
   }
 
@@ -401,18 +402,18 @@ class AuthController extends GetxController {
             });
           }
         } else {
-          ToastMessageHelper.showToastMessage(resBody['message'] ?? 'Failed to change password');
+          ToastMessageHelper.showToastMessage(resBody['message'] ?? appL10n.failedToChangePassword);
         }
         
         changePasswordLoading(false);
       } else {
-        final errorMessage = response.body?['message'] ?? 'Server error! Please try later';
+        final errorMessage = response.body?['message'] ?? appL10n.serverErrorTryLater;
         ToastMessageHelper.showToastMessage(errorMessage);
         changePasswordLoading(false);
       }
     } catch (e) {
       debugPrint('❌ Change password error: $e');
-      ToastMessageHelper.showToastMessage('Server error! Please try later');
+      ToastMessageHelper.showToastMessage(appL10n.serverErrorTryLater);
       changePasswordLoading(false);
     }
   }

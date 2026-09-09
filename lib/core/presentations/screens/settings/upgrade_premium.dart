@@ -7,23 +7,11 @@ import 'package:limit_it_app/core/models/plan_model.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/controllers/upgrade_premium_controller.dart';
+import 'package:limit_it_app/core/constants/iap_products.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Helper function to dynamically generate Google Play product ID from plan data
-// This creates product IDs based on plan name and type (monthly/yearly)
-// ─────────────────────────────────────────────────────────────────────────────
-String _generateProductId(PlanModel plan) {
-  if (plan.duration >= 365) return 'limitit_yearly';
-  if (plan.duration >= 28) return 'limitit_monthly';
-  return 'limitit_weekly';
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Note: Make sure to create these product IDs in Google Play Console:
-// - limitit_basic_monthly (Basic Plan - monthly)
-// - limitit_pro_monthly (Pro Plan - monthly)
-// - limitit_premium_yearly (Premium Plan - yearly)
-// ─────────────────────────────────────────────────────────────────────────────
+// Product IDs live in core/constants/iap_products.dart so this screen,
+// in_app_purchase_screen.dart and choose_plan_screen.dart cannot drift apart.
 
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
@@ -79,7 +67,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
       onDone: () => _purchaseSubscription?.cancel(),
       onError: (error) {
         debugPrint('====> IAP stream error: $error');
-        _showErrorSnackbar('Purchase error: $error');
+        _showErrorSnackbar(appL10n.purchaseError('$error'));
       },
     );
 
@@ -94,7 +82,8 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
     // Generate product IDs dynamically from available plans
     final productIds = <String>{};
     for (var plan in _controller.plans) {
-      productIds.add(_generateProductId(plan));
+      final productId = productIdFor(plan);
+      if (productId != null) productIds.add(productId);
     }
 
     if (productIds.isEmpty) {
@@ -123,27 +112,20 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
   // ── Purchase Flow ────────────────────────────────────────────────────────
 
   Future<void> _onSubscribePressed(PlanModel plan) async {
+    // Premium is only ever granted after a real store purchase — no mock
+    // fallback, otherwise the app would hand out a paid plan for free.
     if (!_iapAvailable) {
-      // No Play Store available — call backend directly with mock paymentId
-      // (useful for development / testing)
-      debugPrint('====> IAP not available, using mock payment');
-      await _callBackendSubscribe(
-        plan: plan,
-        paymentId: 'pay_mock_${DateTime.now().millisecondsSinceEpoch}',
-      );
+      debugPrint('====> IAP not available on this device');
+      _showErrorSnackbar(appL10n.storeUnavailable);
       return;
     }
 
-    // Generate product ID dynamically from plan data
-    final productId = _generateProductId(plan);
+    final productId = resolveProductId(plan, _controller.plans);
+    final product = productId == null ? null : _iapProducts[productId];
 
-    if (!_iapProducts.containsKey(productId)) {
-      // Product not found in Play Store — fall back to mock payment
-      debugPrint('====> IAP product not found: $productId (falling back to mock)');
-      await _callBackendSubscribe(
-        plan: plan,
-        paymentId: 'pay_mock_${DateTime.now().millisecondsSinceEpoch}',
-      );
+    if (product == null) {
+      debugPrint('====> No purchasable product for plan "${plan.name}" ($productId)');
+      _showErrorSnackbar(appL10n.planNotAvailable);
       return;
     }
 
@@ -152,7 +134,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
 
     // Trigger Google Play purchase sheet
     final purchaseParam = PurchaseParam(
-      productDetails: _iapProducts[productId]!,
+      productDetails: product,
     );
 
     try {
@@ -161,7 +143,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
     } catch (e) {
       _pendingPlan = null;
       debugPrint('====> IAP buy error: $e');
-      _showErrorSnackbar('Could not start purchase: $e');
+      _showErrorSnackbar(appL10n.couldNotStartPurchase('$e'));
     }
   }
 
@@ -171,7 +153,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
 
       switch (purchase.status) {
         case PurchaseStatus.pending:
-          _showSnackbar('Payment pending...', color: Colors.orange);
+          _showSnackbar(appL10n.paymentPending, color: Colors.orange);
           break;
 
         case PurchaseStatus.purchased:
@@ -186,7 +168,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
 
         case PurchaseStatus.canceled:
           _pendingPlan = null;
-          _showSnackbar('Purchase cancelled', color: Colors.grey);
+          _showSnackbar(appL10n.purchaseCancelled, color: Colors.grey);
           break;
       }
 
@@ -217,7 +199,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
 
   void _handlePurchaseError(IAPError error) {
     debugPrint('====> IAP error: ${error.code} — ${error.message}');
-    _showErrorSnackbar('Purchase failed: ${error.message}');
+    _showErrorSnackbar(appL10n.purchaseFailed('${error.message}'));
   }
 
   // ── Backend API Call ─────────────────────────────────────────────────────
@@ -252,10 +234,10 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
         if (data['status'] == 'success' && data['statusCode'] == 201) {
           _showSuccessDialog(plan);
         } else {
-          _showErrorSnackbar(data['message'] ?? 'Subscription failed');
+          _showErrorSnackbar(data['message'] ?? appL10n.subscriptionFailed);
         }
       } else {
-        _showErrorSnackbar('Server error: ${response.statusText}');
+        _showErrorSnackbar(appL10n.serverErrorWithMessage('${response.statusText}'));
       }
     } catch (e) {
       if (mounted) Navigator.of(context).pop();
@@ -275,13 +257,13 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
           children: [
             const Icon(Icons.check_circle, color: Color(0xFF1C3D2E), size: 64),
             const SizedBox(height: 16),
-            const Text(
-              'Subscription Activated!',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              appL10n.subscriptionActivated,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
-              'You are now subscribed to ${plan.name}',
+              appL10n.youAreNowSubscribedTo(plan.name),
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey),
             ),
@@ -293,7 +275,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
               Navigator.of(context).pop(); // close dialog
               Navigator.of(context).pop(); // go back to previous screen
             },
-            child: const Text('Continue'),
+            child: Text(context.l10n.continueWithApps),
           ),
         ],
       ),
@@ -341,9 +323,9 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
-          'Upgrade to premium',
-          style: TextStyle(
+        title: Text(
+          context.l10n.upgradeToPremium,
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w500,
             fontSize: 18,
@@ -372,7 +354,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: _controller.fetchPlans,
-                  child: const Text('Retry'),
+                  child: Text(context.l10n.retry),
                 ),
               ],
             ),
@@ -380,7 +362,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
         }
 
         if (_controller.plans.isEmpty) {
-          return const Center(child: Text('No subscription plans available'));
+          return Center(child: Text(context.l10n.noSubscriptionPlans));
         }
 
         return ListView.separated(
@@ -545,9 +527,9 @@ class _PlanCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    'Subscribe Now',
-                    style: TextStyle(
+                  child: Text(
+                    context.l10n.subscribeNow,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -572,16 +554,16 @@ class _PlanCard extends StatelessWidget {
   List<String> _getFeatures(PlanModel plan) {
     if (plan.price <= 10) {
       return [
-        'Ad-free experience',
-        'Standard reports',
-        'Email support',
+        appL10n.planFeatureAdFree,
+        appL10n.planFeatureStandardReports,
+        appL10n.planFeatureEmailSupport,
       ];
     } else {
       return [
-        'Everything in Basic',
-        'Advanced analytics',
-        'Priority support',
-        'Unlimited app limits',
+        appL10n.planFeatureEverythingInBasic,
+        appL10n.planFeatureAdvancedAnalytics,
+        appL10n.planFeaturePrioritySupport,
+        appL10n.planFeatureUnlimitedAppLimits,
       ];
     }
   }

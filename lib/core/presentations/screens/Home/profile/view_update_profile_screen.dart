@@ -142,7 +142,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   color: AppColors.textColor1A1A1A,
                 ),
                 CustomText(
-                  text: 'Joined in 24 May',
+                  text: context.l10n.joinedRecently,
                   fontsize: 12.sp,
                   color: AppColors.textColor5D5D5D,
                 ),
@@ -152,14 +152,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 CustomTextField(
                   hintextColor: AppColors.textColor5D5D5D,
                   controller: nameCtrl,
-                  hintText: "Name",
+                  hintText: context.l10n.name,
                   prefixIcon: Assets.icons.profileview.svg(),
                 ),
                 SizedBox(height: 16.h),
                 CustomTextField(
                   hintextColor: AppColors.textColor5D5D5D,
                   controller: phoneCtrl,
-                  hintText: "Phone",
+                  hintText: context.l10n.phone,
                   prefixIcon: Icon(Icons.phone_outlined, color: AppColors.primaryColor, size: 24.r),
                 ),
                 SizedBox(height: 16.h),
@@ -167,7 +167,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   readOnly: true,
                   hintextColor: AppColors.textColor5D5D5D,
                   controller: emailCtrl,
-                  hintText: "Email",
+                  hintText: context.l10n.email,
                   prefixIcon: Assets.icons.email.svg(),
                   isEmail: true,
                   // enabled: false,
@@ -225,13 +225,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void> _handleUpdateProfile() async {
     // Validate name
     if (nameCtrl.text.trim().isEmpty) {
-      ToastMessageHelper.showToastMessage('Please enter your name',);
+      ToastMessageHelper.showToastMessage(context.l10n.pleaseEnterYourName);
       return;
     }
 
     // Validate phone
     if (phoneCtrl.text.trim().isEmpty) {
-      ToastMessageHelper.showToastMessage('Please enter your phone number');
+      ToastMessageHelper.showToastMessage(context.l10n.pleaseEnterYourPhone);
       return;
     }
 

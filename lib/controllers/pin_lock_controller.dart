@@ -9,6 +9,7 @@ import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
 import 'package:limit_it_app/core/services/pin_lock_storage_service.dart';
 import '../core/app_constants/app_constants.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class PinLockController extends GetxController {
   final RxBool isLoading = false.obs;
@@ -116,7 +117,7 @@ class PinLockController extends GetxController {
         // Handle timeout or connection errors
         if (response.statusCode == 1) {
           ToastMessageHelper.showToastMessage(
-            response.statusText ?? "Connection error. Please check your internet and try again.",
+            response.statusText ?? appL10n.connectionErrorCheckInternet,
           );
           _navigateBack(context);
           return;
@@ -135,21 +136,21 @@ class PinLockController extends GetxController {
           String userMessage;
           switch (statusCode) {
             case 500:
-              userMessage = 'Server error. PIN saved locally and will sync when server is available.';
+              userMessage = appL10n.pinSavedLocallyServerError;
               break;
             case 502:
-              userMessage = 'Bad gateway. PIN saved locally and will sync later.';
+              userMessage = appL10n.pinSavedLocallyBadGateway;
               break;
             case 503:
-              userMessage = 'Service unavailable. PIN saved locally and will sync later.';
+              userMessage = appL10n.pinSavedLocallyServiceUnavailable;
               break;
             default:
-              userMessage = 'Server error ($statusCode). PIN saved locally.';
+              userMessage = appL10n.pinSavedLocallyServerErrorCode('$statusCode');
           }
           
           ToastMessageHelper.showToastMessage(
             userMessage,
-            title: 'Warning',
+            title: appL10n.warning,
           );
           _navigateBack(context);
           return;
@@ -157,11 +158,11 @@ class PinLockController extends GetxController {
 
         // Handle client errors (400, 401, 403, 404, etc.)
         if (response.statusCode != null && response.statusCode! >= 400 && response.statusCode! < 500) {
-          final errorMessage = response.body?['message'] ?? "Failed to create PIN lock.";
+          final errorMessage = response.body?['message'] ?? appL10n.failedToCreatePinLock;
           debugPrint('❌ Client Error: $errorMessage');
           ToastMessageHelper.showToastMessage(
             errorMessage,
-            title: 'Error',
+            title: appL10n.error,
           );
           return;
         }
@@ -179,11 +180,11 @@ class PinLockController extends GetxController {
 
             _navigateBack(context);
           } else {
-            final errorMessage = resBody['message'] ?? 'Failed to create PIN lock';
+            final errorMessage = resBody['message'] ?? appL10n.failedToCreatePinLock;
             ToastMessageHelper.showToastMessage(errorMessage);
           }
         } else {
-          final errorMessage = response.body?["message"] ?? "Failed to create PIN lock. Please try again.";
+          final errorMessage = response.body?["message"] ?? appL10n.failedToCreatePinLockRetry;
           ToastMessageHelper.showToastMessage(errorMessage);
         }
       } else {
@@ -202,8 +203,8 @@ class PinLockController extends GetxController {
       debugPrint("=====> Create PIN lock error: $e");
       isLoading(false);
       ToastMessageHelper.showToastMessage(
-        "Network error. PIN saved locally.",
-        title: 'Warning',
+        appL10n.networkErrorPinSavedLocally,
+        title: appL10n.warning,
       );
       _navigateBack(context);
     }
@@ -282,7 +283,7 @@ class PinLockController extends GetxController {
 
       if (response.statusCode == 1) {
         ToastMessageHelper.showToastMessage(
-          response.statusText ?? "Connection error. Please try again.",
+          response.statusText ?? appL10n.connectionErrorTryAgain,
         );
         return;
       }
@@ -297,8 +298,8 @@ class PinLockController extends GetxController {
         await pinLockService.savePinCode(pinCode);
         
         ToastMessageHelper.showToastMessage(
-          'PIN updated locally. Server sync will be available soon.',
-          title: 'Updated Locally',
+          appL10n.pinUpdatedLocally,
+          title: appL10n.updatedLocally,
         );
         
         // Navigate back
@@ -311,8 +312,8 @@ class PinLockController extends GetxController {
 
       if (response.statusCode != null && response.statusCode! >= 500) {
         ToastMessageHelper.showToastMessage(
-          'Server error. Please try again later.',
-          title: 'Error',
+          appL10n.serverErrorTryAgainLater,
+          title: appL10n.error,
         );
         return;
       }
@@ -338,20 +339,20 @@ class PinLockController extends GetxController {
           }
         } else {
           ToastMessageHelper.showToastMessage(
-            resBody['message'] ?? 'Failed to update PIN',
+            resBody['message'] ?? appL10n.failedToUpdatePin,
           );
         }
       } else {
         ToastMessageHelper.showToastMessage(
-          response.body?['message'] ?? 'Failed to update PIN',
+          response.body?['message'] ?? appL10n.failedToUpdatePin,
         );
       }
     } catch (e) {
       debugPrint("=====> Update PIN lock error: $e");
       isUpdating(false);
       ToastMessageHelper.showToastMessage(
-        "Network error. Please try again.",
-        title: 'Error',
+        appL10n.networkErrorTryAgain,
+        title: appL10n.error,
       );
     }
   }
@@ -392,7 +393,7 @@ class PinLockController extends GetxController {
 
       if (response.statusCode == 1) {
         ToastMessageHelper.showToastMessage(
-          response.statusText ?? "Connection error. Please try again.",
+          response.statusText ?? appL10n.connectionErrorTryAgain,
         );
         return;
       }
@@ -420,8 +421,8 @@ class PinLockController extends GetxController {
 
       if (response.statusCode != null && response.statusCode! >= 500) {
         ToastMessageHelper.showToastMessage(
-          'Server error. Please try again later.',
-          title: 'Error',
+          appL10n.serverErrorTryAgainLater,
+          title: appL10n.error,
         );
         return;
       }
@@ -446,20 +447,20 @@ class PinLockController extends GetxController {
           }
         } else {
           ToastMessageHelper.showToastMessage(
-            resBody['message'] ?? 'Failed to delete PIN',
+            resBody['message'] ?? appL10n.failedToDeletePin,
           );
         }
       } else {
         ToastMessageHelper.showToastMessage(
-          response.body?['message'] ?? 'Failed to delete PIN',
+          response.body?['message'] ?? appL10n.failedToDeletePin,
         );
       }
     } catch (e) {
       debugPrint("=====> Delete PIN lock error: $e");
       isDeleting(false);
       ToastMessageHelper.showToastMessage(
-        "Network error. Please try again.",
-        title: 'Error',
+        appL10n.networkErrorTryAgain,
+        title: appL10n.error,
       );
     }
   }

@@ -42,17 +42,17 @@ class _EditTimerSettingsScreenState extends State<EditTimerSettingsScreen> {
       // Default quotes if no settings exist
       quotes = [
         MotivationalQuote(
-          text: 'Almost all good writing begins with terrible first efforts. You need to start somewhere',
+          text: appL10n.defaultQuote1,
           author: 'Anne Lamott',
           isHighlighted: false,
         ),
         MotivationalQuote(
-          text: 'God gives every bird its food, but He does not throw it into its nest',
+          text: appL10n.defaultQuote2,
           author: 'J.G. Holland',
           isHighlighted: true,
         ),
         MotivationalQuote(
-          text: 'An effort made for the happiness of others lifts above ourselves',
+          text: appL10n.defaultQuote3,
           author: 'Lydia M. Child',
           isHighlighted: false,
         ),
@@ -78,8 +78,8 @@ class _EditTimerSettingsScreenState extends State<EditTimerSettingsScreen> {
     if (success) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Timer settings updated successfully!'),
+          SnackBar(
+            content: Text(context.l10n.timerSettingsUpdated),
             backgroundColor: Colors.green,
           ),
         );

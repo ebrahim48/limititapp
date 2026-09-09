@@ -58,7 +58,7 @@ void showDeleteAccountDialog(BuildContext context) {
 
                   // Title
                   Text(
-                    'Delete Account',
+                    context.l10n.deleteAccount,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ void showDeleteAccountDialog(BuildContext context) {
 
                   // Description
                   Text(
-                    'Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.',
+                    context.l10n.deleteAccountWarning,
                     style: TextStyle(
                       fontSize: 14.sp,
                       color: AppColors.textColor5D5D5D,
@@ -96,7 +96,7 @@ void showDeleteAccountDialog(BuildContext context) {
                             fontSize: 14.sp,
                             color: AppColors.textColor5D5D5D,
                           ),
-                          hintText: 'Enter your password',
+                          hintText: context.l10n.enterPassword,
                           hintStyle: TextStyle(
                             fontSize: 14.sp,
                             color: AppColors.borderColor,
@@ -219,7 +219,7 @@ void showDeleteAccountDialog(BuildContext context) {
                               ? null
                               : () {
                                   if (passwordController.text.trim().isEmpty) {
-                                    passwordError.value = 'Password is required';
+                                    passwordError.value = context.l10n.passwordRequired;
                                     return;
                                   }
                                   Navigator.of(dialogContext).pop();

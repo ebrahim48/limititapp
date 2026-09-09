@@ -72,7 +72,7 @@ class SchedulesLimitsScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20.r),
                           ),
                           child: CustomText(
-                            text: '$count ${count == 1 ? 'App' : 'Apps'}',
+                            text: '$count ${count == 1 ? context.l10n.app : context.l10n.apps}',
                             color: Colors.white,
                             fontsize: 14.sp,
                             fontWeight: FontWeight.w500,
@@ -84,7 +84,7 @@ class SchedulesLimitsScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(top: 16.h),
                       child: CustomText(
-                        text: 'No blocked apps yet. Block apps from the home screen to set schedules.',
+                        text: context.l10n.noBlockedAppsYet,
                         color: AppColors.textColor5D5D5D,
                         fontsize: 14.sp,
                         fontWeight: FontWeight.w400,
@@ -122,14 +122,14 @@ class SchedulesLimitsScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 16.h),
                         CustomText(
-                          text: 'No blocked apps',
+                          text: context.l10n.noBlockedApps,
                           color: AppColors.textColor3D3D3D,
                           fontsize: 18.sp,
                           fontWeight: FontWeight.w500,
                         ),
                         SizedBox(height: 8.h),
                         CustomText(
-                          text: 'Apps you block will appear here',
+                          text: context.l10n.blockedAppsWillAppearHere,
                           color: AppColors.textColor5D5D5D,
                           fontsize: 14.sp,
                           fontWeight: FontWeight.w400,
@@ -189,8 +189,8 @@ class SchedulesLimitsScreen extends StatelessWidget {
                       ? () {
                           controller.saveSchedules().then((_) {
                             ToastMessageHelper.showToastMessage(
-                              'Schedules saved successfully!',
-                              title: 'Success',
+                              appL10n.schedulesSavedSuccessfully,
+                              title: appL10n.success,
                             );
                           });
                         }

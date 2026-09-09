@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../app_constants/app_constants.dart';
 import '../../constants/app_colors.dart';
 import 'custom_text.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 
 class CustomTextField extends StatefulWidget {
@@ -96,20 +97,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     (value) {
                   if (widget.isEmail == false) {
                     if (value!.isEmpty) {
-                      return "Please ${widget.hintText?.toLowerCase()}";
+                      return context.l10n.pleaseEnterField('${widget.hintText?.toLowerCase()}');
                     } else if (widget.isPassword) {
                       if (value.isEmpty) {
-                        return "Please ${widget.hintText?.toLowerCase()}";
+                        return context.l10n.pleaseEnterField('${widget.hintText?.toLowerCase()}');
                       } else if (value.length < 8 || !AppConstants.validatePassword(value)) {
-                        return "Password: 8 characters min, letters & digits \nrequired";
+                        return context.l10n.passwordRule;
                       }
                     }
                   } else {
                     bool data = AppConstants.emailValidate.hasMatch(value!);
                     if (value.isEmpty) {
-                      return "Please ${widget.hintText!.toLowerCase()}";
+                      return context.l10n.pleaseEnterField('${widget.hintText!.toLowerCase()}');
                     } else if (!data) {
-                      return "Please check your email!";
+                      return context.l10n.emailInvalid;
                     }
                   }
                   return null;

@@ -8,19 +8,12 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:limit_it_app/controllers/premium_controller.dart';
 import 'package:limit_it_app/controllers/upgrade_premium_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
+import 'package:limit_it_app/core/constants/iap_products.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/plan_model.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
 import '../../widgets/ui/ui.dart';
-
-/// Google Play product id derived from the plan's duration.
-/// (Unchanged from the previous implementation.)
-String _generateProductId(PlanModel plan) {
-  if (plan.duration >= 365) return 'limitit_yearly';
-  if (plan.duration >= 28) return 'limitit_monthly';
-  return 'limitit_weekly';
-}
 
 /// Plan picker + purchase. Plans come from `/plans`, payment goes through
 /// In-App Purchase, and `/subscriptions/subscribe` activates it server-side.
@@ -42,8 +35,8 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
 
   PlanModel? _pendingPlan;
 
-  /// 0 = monthly, 1 = yearly
-  int _cycleIndex = 0;
+  /// Index into [_cycles].
+  int _cycleIndex = 1;
   String _selectedPlanId = '';
   bool _isSubscribing = false;
 
@@ -83,7 +76,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
       onDone: () => _purchaseSubscription?.cancel(),
       onError: (error) {
         debugPrint('====> IAP stream error: $error');
-        _showError('Purchase error: $error');
+        _showError(appL10n.purchaseError('$error'));
       },
     );
 
@@ -92,10 +85,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
   }
 
   Future<void> _loadIAPProducts() async {
-    final productIds = <String>{};
-    for (final plan in _controller.plans) {
-      productIds.add(_generateProductId(plan));
-    }
+    final productIds = productIdsFor(_controller.plans);
 
     if (productIds.isEmpty) {
       debugPrint('====> No plans available — skipping IAP query');
@@ -115,41 +105,46 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
       _iapProducts = {for (final p in response.productDetails) p.id: p};
     });
     debugPrint('====> IAP products loaded: ${_iapProducts.keys.toList()}');
+    if (response.notFoundIDs.isNotEmpty) {
+      debugPrint('====> IAP products missing from store: ${response.notFoundIDs}');
+    }
+  }
+
+  /// Store product backing [plan], or null when it is not purchasable.
+  ProductDetails? _productFor(PlanModel plan) {
+    final id = resolveProductId(plan, _controller.plans);
+    if (id == null) return null;
+    return _iapProducts[id];
   }
 
   Future<void> _onSubscribePressed(PlanModel plan) async {
+    // Premium is only ever granted after a real store purchase — no mock
+    // fallback, otherwise the app would hand out a paid plan for free.
     if (!_iapAvailable) {
-      debugPrint('====> IAP not available, using mock payment');
-      await _callBackendSubscribe(
-        plan: plan,
-        paymentId: 'pay_mock_${DateTime.now().millisecondsSinceEpoch}',
-      );
+      debugPrint('====> IAP not available on this device');
+      _showError(appL10n.storeUnavailable);
       return;
     }
 
-    final productId = _generateProductId(plan);
+    final product = _productFor(plan);
 
-    if (!_iapProducts.containsKey(productId)) {
-      debugPrint('====> IAP product not found: $productId (falling back to mock)');
-      await _callBackendSubscribe(
-        plan: plan,
-        paymentId: 'pay_mock_${DateTime.now().millisecondsSinceEpoch}',
-      );
+    if (product == null) {
+      debugPrint(
+          '====> No purchasable product for plan "${plan.name}" (${productIdFor(plan)})');
+      _showError(appL10n.planNotAvailable);
       return;
     }
 
     _pendingPlan = plan;
 
-    final purchaseParam = PurchaseParam(
-      productDetails: _iapProducts[productId]!,
-    );
+    final purchaseParam = PurchaseParam(productDetails: product);
 
     try {
       await _iap.buyNonConsumable(purchaseParam: purchaseParam);
     } catch (e) {
       _pendingPlan = null;
       debugPrint('====> IAP buy error: $e');
-      _showError('Could not start purchase: $e');
+      _showError(appL10n.couldNotStartPurchase('$e'));
     }
   }
 
@@ -172,7 +167,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
           _pendingPlan = null;
           debugPrint(
               '====> IAP error: ${purchase.error?.code} — ${purchase.error?.message}');
-          _showError('Purchase failed: ${purchase.error?.message}');
+          _showError(appL10n.purchaseFailed('${purchase.error?.message}'));
           break;
 
         case PurchaseStatus.canceled:
@@ -231,9 +226,9 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
           context.pushReplacementNamed(AppRoutes.premiumSuccessScreen);
           return;
         }
-        _showError(data['message'] ?? 'Subscription failed');
+        _showError(data['message'] ?? appL10n.subscriptionFailed);
       } else {
-        _showError('Server error: ${response.statusText}');
+        _showError(appL10n.serverErrorWithMessage('${response.statusText}'));
       }
     } catch (e) {
       _showError(e.toString());
@@ -259,13 +254,15 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
 
   // ── UI ───────────────────────────────────────────────────────────────────
 
-  /// Plans filtered by the selected billing cycle.
+  /// Billing cycles shown as tabs, in the order they appear.
+  static const List<String> _cycles = ['weekly', 'monthly', 'yearly'];
+
+  /// Plans belonging to the selected billing cycle. Empty when the backend has
+  /// no plan for that cycle — the tab then shows an empty state rather than
+  /// silently falling back to plans from another cycle.
   List<PlanModel> _plansForCycle(List<PlanModel> plans) {
-    final yearly = _cycleIndex == 1;
-    final filtered = plans
-        .where((p) => yearly ? p.duration >= 365 : p.duration < 365)
-        .toList();
-    return filtered.isEmpty ? plans : filtered;
+    final cycle = _cycles[_cycleIndex];
+    return plans.where((p) => billingCycleOf(p) == cycle).toList();
   }
 
   /// Yearly saving vs. paying monthly for a year, e.g. "Save 33%".
@@ -313,17 +310,19 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
 
         if (_selectedPlanId.isEmpty ||
             !plans.any((p) => p.id == _selectedPlanId)) {
-          _selectedPlanId = plans.first.id;
+          _selectedPlanId = plans.isEmpty ? '' : plans.first.id;
         }
 
-        final selected =
-            plans.firstWhere((p) => p.id == _selectedPlanId, orElse: () => plans.first);
+        final selected = plans.isEmpty
+            ? null
+            : plans.firstWhere((p) => p.id == _selectedPlanId,
+                orElse: () => plans.first);
 
         return Column(
           children: [
             AppSegmentedTabs(
-              segments: [l10n.monthly, l10n.yearly],
-              trailingBadges: [null, badge],
+              segments: [l10n.weekly, l10n.monthly, l10n.yearly],
+              trailingBadges: [null, null, badge],
               selectedIndex: _cycleIndex,
               onChanged: (i) => setState(() {
                 _cycleIndex = i;
@@ -333,26 +332,30 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
             SizedBox(height: 20.h),
 
             Expanded(
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
-                padding: EdgeInsets.only(bottom: 16.h),
-                children: [
-                  for (final plan in plans) ...[
-                    _PlanCard(
-                      plan: plan,
-                      selected: plan.id == _selectedPlanId,
-                      onTap: () => setState(() => _selectedPlanId = plan.id),
+              child: plans.isEmpty
+                  ? AppMessageView(title: l10n.noPlansAvailable)
+                  : ListView(
+                      physics: const BouncingScrollPhysics(),
+                      padding: EdgeInsets.only(bottom: 16.h),
+                      children: [
+                        for (final plan in plans) ...[
+                          _PlanCard(
+                            plan: plan,
+                            selected: plan.id == _selectedPlanId,
+                            onTap: () =>
+                                setState(() => _selectedPlanId = plan.id),
+                          ),
+                          SizedBox(height: 12.h),
+                        ],
+                      ],
                     ),
-                    SizedBox(height: 12.h),
-                  ],
-                ],
-              ),
             ),
 
             AppButton(
               label: l10n.subscribeNow,
               loading: _isSubscribing,
-              onPressed: () => _onSubscribePressed(selected),
+              onPressed:
+                  selected == null ? null : () => _onSubscribePressed(selected),
             ),
             SizedBox(height: 8.h),
             AppTextLink(

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_thumber.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class CustomScreenTimeSlider extends StatelessWidget {
   final int totalScreenTimeMinutes;
@@ -51,7 +52,7 @@ class CustomScreenTimeSlider extends StatelessWidget {
             children: [
               CustomText(
                 textAlign: TextAlign.start,
-                text: "Screen time Today",
+                text: context.l10n.screenTimeToday,
                 fontsize: 13.sp,
                 fontWeight: FontWeight.w400,
                 color: AppColors.textColor3D3D3D,

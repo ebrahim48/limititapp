@@ -64,7 +64,7 @@ class _MotivationPhrasesScreenState extends State<MotivationPhrasesScreen> {
                   if (controller.motivations.isEmpty) {
                     return Center(
                       child: CustomText(
-                        text: 'No motivational phrases found',
+                        text: context.l10n.noMotivationalPhrasesFound,
                         fontsize: 16.sp,
                         color: AppColors.textColor5D5D5D,
                       ),

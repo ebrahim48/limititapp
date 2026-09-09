@@ -5,6 +5,7 @@ import 'package:limit_it_app/core/presentations/widgets/app_icon_widget.dart';
 import 'package:limit_it_app/core/presentations/widgets/check_box.dart';
 import 'custom_text.dart';
 import '../../../core/constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class AppCardItem extends StatelessWidget {
   final AppModel app;
@@ -50,7 +51,7 @@ class AppCardItem extends StatelessWidget {
                   ),
                   SizedBox(height: 2.h),
                   CustomText(
-                    text: "Tap to select for detox",
+                    text: context.l10n.tapToSelectForDetox,
                     fontsize: 12.sp,
                     fontWeight: FontWeight.w400,
                     color: const Color(0xFF8B8B8B),

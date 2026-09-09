@@ -98,8 +98,8 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
 
     if (started) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('App monitoring started successfully!'),
+        SnackBar(
+          content: Text(context.l10n.monitoringStartedSuccess),
           backgroundColor: Colors.green,
         ),
       );
@@ -120,8 +120,8 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Failed to start monitoring. Please try again.'),
+        SnackBar(
+          content: Text(context.l10n.failedToStartMonitoring),
           backgroundColor: Colors.red,
         ),
       );

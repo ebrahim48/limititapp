@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:limit_it_app/core/models/plan_model.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class UpgradePremiumController extends GetxController {
   final selectedPlan = ''.obs;
@@ -70,19 +71,19 @@ class UpgradePremiumController extends GetxController {
               selectedPlan.value = plans.first.id;
             } else {
               isError.value = true;
-              errorMessage.value = 'No plans available';
+              errorMessage.value = appL10n.noPlansAvailable;
             }
           } else {
             isError.value = true;
-            errorMessage.value = data['message'] ?? 'Failed to fetch plans';
+            errorMessage.value = data['message'] ?? appL10n.failedToFetchPlans;
           }
         } else {
           isError.value = true;
-          errorMessage.value = 'Invalid response format';
+          errorMessage.value = appL10n.invalidResponseFormat;
         }
       } else {
         isError.value = true;
-        errorMessage.value = 'Failed to fetch plans: ${response.statusText}';
+        errorMessage.value = appL10n.failedToFetchPlansWithError('${response.statusText}');
       }
     } catch (e) {
       isError.value = true;

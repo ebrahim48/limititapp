@@ -5,6 +5,7 @@ import 'package:limit_it_app/core/models/appinfo_model.dart';
 import 'package:limit_it_app/core/models/daily_usage.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:intl/intl.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class ReportGeneratorService {
   /// Generate PDF report with usage statistics
@@ -59,7 +60,7 @@ class ReportGeneratorService {
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Text(
-            'LimitIt - Usage Report',
+            appL10n.reportTitle,
             style: pw.TextStyle(
               fontSize: 24,
               fontWeight: pw.FontWeight.bold,
@@ -68,7 +69,7 @@ class ReportGeneratorService {
           ),
           pw.SizedBox(height: 10),
           pw.Text(
-            'Generated on: $date at $time',
+            appL10n.reportGeneratedOn(date, time),
             style: pw.TextStyle(
               fontSize: 12,
               color: PdfColors.white,
@@ -105,7 +106,7 @@ class ReportGeneratorService {
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Text(
-            'Today\'s Summary',
+            appL10n.reportTodaysSummary,
             style: pw.TextStyle(
               fontSize: 18,
               fontWeight: pw.FontWeight.bold,
@@ -116,9 +117,9 @@ class ReportGeneratorService {
           pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
             children: [
-              _buildSummaryItem('Total Apps Used', '$totalApps'),
-              _buildSummaryItem('Total Time', '$hours h $minutes min'),
-              _buildSummaryItem('Avg per App', totalApps > 0 ? '${(totalUsageMinutes / totalApps).toInt()} min' : '0 min'),
+              _buildSummaryItem(appL10n.reportTotalAppsUsed, '$totalApps'),
+              _buildSummaryItem(appL10n.reportTotalTime, '$hours h $minutes min'),
+              _buildSummaryItem(appL10n.reportAvgPerApp, totalApps > 0 ? '${(totalUsageMinutes / totalApps).toInt()} min' : '0 min'),
             ],
           ),
         ],
@@ -156,7 +157,7 @@ class ReportGeneratorService {
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Text(
-          'Daily Usage Breakdown',
+          appL10n.reportDailyUsageBreakdown,
           style: pw.TextStyle(
             fontSize: 18,
             fontWeight: pw.FontWeight.bold,
@@ -172,7 +173,7 @@ class ReportGeneratorService {
               decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xFFF0F0F0)),
               children: [
                 _buildTableCell('App', isHeader: true),
-                _buildTableCell('Usage Time', isHeader: true, align: pw.TextAlign.right),
+                _buildTableCell(appL10n.reportUsageTime, isHeader: true, align: pw.TextAlign.right),
                 _buildTableCell('% of Total', isHeader: true, align: pw.TextAlign.right),
               ],
             ),
@@ -242,7 +243,7 @@ class ReportGeneratorService {
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
         pw.Text(
-          'Most Used Apps',
+          appL10n.mostUsedApps,
           style: pw.TextStyle(
             fontSize: 18,
             fontWeight: pw.FontWeight.bold,
@@ -257,7 +258,7 @@ class ReportGeneratorService {
             pw.TableRow(
               decoration: const pw.BoxDecoration(color: PdfColor.fromInt(0xFFF0F0F0)),
               children: [
-                _buildTableCell('App Name', isHeader: true),
+                _buildTableCell(appL10n.reportAppName, isHeader: true),
                 _buildTableCell('Usage', isHeader: true, align: pw.TextAlign.right),
                 _buildTableCell('Share', isHeader: true, align: pw.TextAlign.right),
               ],
@@ -320,7 +321,7 @@ class ReportGeneratorService {
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Text(
-            'Tips for Better Digital Balance',
+            appL10n.reportTips,
             style: pw.TextStyle(
               fontSize: 16,
               fontWeight: pw.FontWeight.bold,
@@ -328,11 +329,11 @@ class ReportGeneratorService {
             ),
           ),
           pw.SizedBox(height: 10),
-          _buildTipItem('• Set daily limits for social media apps'),
-          _buildTipItem('• Take regular breaks using the Pomodoro technique'),
-          _buildTipItem('• Use Detox Mode during focus time'),
-          _buildTipItem('• Review your usage reports weekly'),
-          _buildTipItem('• Enable PIN lock to prevent impulsive usage'),
+          _buildTipItem(appL10n.reportTip1),
+          _buildTipItem(appL10n.reportTip2),
+          _buildTipItem(appL10n.reportTip3),
+          _buildTipItem(appL10n.reportTip4),
+          _buildTipItem(appL10n.reportTip5),
         ],
       ),
     );
@@ -363,7 +364,7 @@ class ReportGeneratorService {
       child: pw.Column(
         children: [
           pw.Text(
-            'Stay focused, take control of your time',
+            appL10n.reportFooterTagline,
             style: pw.TextStyle(
               fontSize: 12,
               fontStyle: pw.FontStyle.italic,
@@ -373,7 +374,7 @@ class ReportGeneratorService {
           ),
           pw.SizedBox(height: 10),
           pw.Text(
-            'Generated by LimitIt App',
+            appL10n.reportGeneratedBy,
             style: pw.TextStyle(
               fontSize: 10,
               color: PdfColor.fromInt(0xFF999999),

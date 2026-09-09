@@ -63,13 +63,13 @@ class _LimitScreenTimeState extends State<LimitScreenTime> {
 
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Limit for $appName deleted successfully!')),
+        SnackBar(content: Text(context.l10n.limitDeletedForApp(appName))),
       );
       // Reload the list
       _loadAppLimits();
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to delete limit')),
+        SnackBar(content: Text(context.l10n.failedToDeleteLimit)),
       );
     }
   }

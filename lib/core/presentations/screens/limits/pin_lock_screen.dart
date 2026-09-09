@@ -57,7 +57,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
       errorMessage('');
 
       if (!Platform.isAndroid) {
-        errorMessage.value = 'PIN Lock is only available on Android devices';
+        errorMessage.value = appL10n.pinLockAndroidOnly;
         isLoading(false);
         return;
       }
@@ -71,7 +71,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
       }
 
       if (!hasPermission) {
-        errorMessage.value = 'Please grant usage access permission';
+        errorMessage.value = appL10n.pleaseGrantUsageAccess;
         isLoading(false);
         return;
       }
@@ -80,7 +80,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
       final allApps = await appUsageService.getAllInstalledApps();
 
       if (allApps.isEmpty) {
-        errorMessage.value = 'No apps found on this device';
+        errorMessage.value = appL10n.noAppsFoundOnDevice;
         isLoading(false);
         return;
       }
@@ -98,7 +98,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
       apps.assignAll(appModels);
       isLoading(false);
     } catch (e) {
-      errorMessage.value = 'Error loading apps: ${e.toString()}';
+      errorMessage.value = appL10n.errorLoadingApps(e.toString());
       isLoading(false);
     }
   }
@@ -118,8 +118,8 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
 
       if (success && isPinLockEnabled.value && selectedApps.isNotEmpty) {
         ToastMessageHelper.showToastMessage(
-          'PIN lock settings saved successfully',
-          title: 'Success',
+          appL10n.pinLockSettingsSaved,
+          title: appL10n.success,
         );
       }
     } catch (e) {
@@ -160,16 +160,16 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
   Future<void> _handleNext() async {
     if (!isPinLockEnabled.value) {
       ToastMessageHelper.showToastMessage(
-        'Please enable PIN lock to continue',
-        title: 'Warning',
+        appL10n.pleaseEnablePinLock,
+        title: appL10n.warning,
       );
       return;
     }
 
     if (selectedApps.isEmpty) {
       ToastMessageHelper.showToastMessage(
-        'Please select at least one app to protect',
-        title: 'Warning',
+        appL10n.pleaseSelectAtLeastOneAppToProtect,
+        title: appL10n.warning,
       );
       return;
     }
@@ -195,8 +195,8 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
       }
     } else {
       ToastMessageHelper.showToastMessage(
-        'No app selected',
-        title: 'Warning',
+        appL10n.noAppSelected,
+        title: appL10n.warning,
       );
     }
   }
@@ -276,7 +276,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
                         ),
                         SizedBox(height: 16.h),
                         CustomButton(
-                          title: 'Retry',
+                          title: context.l10n.retry,
                           onpress: _loadApps,
                         ),
                       ],
@@ -298,7 +298,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
                         ),
                         SizedBox(height: 16.h),
                         CustomText(
-                          text: 'No apps available',
+                          text: context.l10n.noAppsAvailable,
                           fontsize: 16.sp,
                           fontWeight: FontWeight.w500,
                           color: AppColors.textColor3D3D3D,
@@ -358,7 +358,7 @@ class _PinLockLimitsScreenState extends State<PinLockLimitsScreen> {
                         padding: EdgeInsets.only(bottom: 12.h),
                         child: CustomText(
                           textAlign: TextAlign.start,
-                          text: '$selectedCount ${selectedCount == 1 ? 'app' : 'apps'} selected',
+                          text: '$selectedCount ${selectedCount == 1 ? context.l10n.app : context.l10n.apps} ${context.l10n.selected}',
                           fontsize: 14.sp,
                           fontWeight: FontWeight.w500,
                           color: AppColors.primaryColor,

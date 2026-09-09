@@ -8,6 +8,7 @@ import 'package:limit_it_app/core/models/appinfo_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_delete_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class ScreenTimeCard extends StatelessWidget {
   final AppInfo app;
@@ -87,7 +88,7 @@ class ScreenTimeCard extends StatelessWidget {
                   children: [
                     const Icon(Icons.edit, color: Colors.black54, size: 18),
                     SizedBox(width: 8.w),
-                    const Text('Edit'),
+                    Text(context.l10n.edit),
                   ],
                 ),
               ),
@@ -97,7 +98,7 @@ class ScreenTimeCard extends StatelessWidget {
                   children: [
                     const Icon(Icons.delete, color: Colors.redAccent, size: 18),
                     SizedBox(width: 8.w),
-                    const Text('Delete'),
+                    Text(context.l10n.delete),
                   ],
                 ),
               ),
@@ -128,7 +129,7 @@ void _showDeleteConfirmationDialog(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CustomText(
-                text: 'Remove Screen Time\nLimit?',
+                text: context.l10n.removeScreenTimeLimit,
                 fontsize: 14.sp,
                 fontWeight: FontWeight.w500,
                 color: AppColors.textColor3D3D3D,
@@ -139,7 +140,7 @@ void _showDeleteConfirmationDialog(BuildContext context) {
                 children: [
                   Expanded(
                     child: CustomDeleteTwoButton(
-                      title: 'Cancel',
+                      title: context.l10n.cancel,
                       bgColor: AppColors.textColorE7E7E7,
                       textColor: AppColors.textColor3D3D3D,
                       onTap: () => Navigator.pop(context),
@@ -148,14 +149,14 @@ void _showDeleteConfirmationDialog(BuildContext context) {
                   SizedBox(width: 16.w),
                   Expanded(
                     child: CustomDeleteTwoButton(
-                      title: 'Delete',
+                      title: context.l10n.delete,
                       bgColor: AppColors.textColorA70D0D,
                       textColor: AppColors.textColorFFFFFF,
                       onTap: () {
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Limit deleted successfully!'),
+                          SnackBar(
+                            content: Text(context.l10n.limitDeletedSuccessfully),
                           ),
                         );
                       },

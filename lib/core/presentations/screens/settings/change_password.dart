@@ -9,6 +9,7 @@ import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 
 
@@ -50,8 +51,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     // Validate passwords match
     if (setNewPassCtrl.text != reenterNewPassCtrl.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('New passwords do not match'),
+        SnackBar(
+          content: Text(context.l10n.passwordsDoNotMatch),
           backgroundColor: Colors.red,
         ),
       );
@@ -61,8 +62,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
     // Validate password strength
     if (setNewPassCtrl.text.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password must be at least 6 characters'),
+        SnackBar(
+          content: Text(context.l10n.passwordMinLength),
           backgroundColor: Colors.red,
         ),
       );
@@ -96,7 +97,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: 'Change Password',
+              text: context.l10n.changePassword,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.textColor3D3D3D,
@@ -117,7 +118,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     hintextColor: AppColors.textColor5D5D5D,
                     controller: oldPassCtrl,
                     prefixIcon: Assets.icons.pass.svg(),
-                    hintText: "Old Password",
+                    hintText: context.l10n.oldPassword,
                     isPassword: _authController.isObscure.value,
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -138,7 +139,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     hintextColor: AppColors.textColor5D5D5D,
                     controller: setNewPassCtrl,
                     prefixIcon: Assets.icons.pass.svg(),
-                    hintText: "Set New Password",
+                    hintText: context.l10n.setNewPassword,
                     isPassword: _authController.isObscureConfirmPassword.value,
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -159,7 +160,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   hintextColor: AppColors.textColor5D5D5D,
                   controller: reenterNewPassCtrl,
                   prefixIcon: Assets.icons.pass.svg(),
-                  hintText: "Re-Enter New Password",
+                  hintText: context.l10n.reEnterNewPassword,
                   isPassword: _authController.isObscureConfirmPassword.value,
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -177,7 +178,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       Future.delayed(Duration.zero, () => setState(() {
                         isMatched = false;
                       }));
-                      return 'Please confirm your password';
+                      return context.l10n.pleaseConfirmYourPassword;
                     } else if (setNewPassCtrl.text == value) {
                       Future.delayed(Duration.zero, () => setState(() {
                         isMatched = true;
@@ -187,7 +188,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                       Future.delayed(Duration.zero, () => setState(() {
                         isMatched = false;
                       }));
-                      return 'Password Not Matching';
+                      return context.l10n.passwordNotMatching;
                     }
                   },
                   onChanged: (value) {
@@ -213,7 +214,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     alignment: Alignment.centerLeft,
                     child: CustomText(
                       textAlign: TextAlign.start,
-                      text: 'Forget password?',
+                      text: context.l10n.forgetPassword,
                       color: AppColors.primaryColor,
                       fontsize: 12.sp,
                     ),
@@ -225,7 +226,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 Obx(() => CustomButton(
                     title: _authController.changePasswordLoading.value 
                         ? 'Updating...' 
-                        : 'Update Password',
+                        : context.l10n.updatePassword,
                     onpress: () {
                       if (!_authController.changePasswordLoading.value) {
                         _handleChangePassword();

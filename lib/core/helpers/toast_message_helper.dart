@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:toastification/toastification.dart';
 
 import '../constants/app_colors.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 
 
@@ -74,7 +75,7 @@ class ToastMessageHelper {
           return OutlinedButton.icon(
             onPressed: onClose,
             icon: const Icon(Icons.close, size: 20),
-            label: const Text('Close'),
+            label: Text(appL10n.close),
           );
         },
       ),

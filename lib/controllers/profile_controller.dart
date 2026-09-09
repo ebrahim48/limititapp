@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:limit_it_app/core/models/profile_model.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 
 class ProfileController extends GetxController {
@@ -87,15 +88,15 @@ class ProfileController extends GetxController {
           await getProfile();
           onSuccess();
         } else {
-          onError(resBody?['message'] ?? 'Failed to update profile');
+          onError(resBody?['message'] ?? appL10n.failedToUpdateProfile);
         }
       } else {
-        onError(response.body?['message'] ?? 'Failed to update profile');
+        onError(response.body?['message'] ?? appL10n.failedToUpdateProfile);
       }
     } catch (e, s) {
       debugPrint('❌ Error updating profile: $e');
       debugPrint('❌ Stack trace: $s');
-      onError('Failed to update profile. Please try again.');
+      onError(appL10n.failedToUpdateProfileRetry);
     } finally {
       profileLoading(false);
     }

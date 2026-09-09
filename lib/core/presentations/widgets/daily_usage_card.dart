@@ -71,7 +71,7 @@ class DailyUsageCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               CustomText(
-                text: 'Daily Usage',
+                text: context.l10n.dailyUsage,
                 fontsize: 14.sp,
                 fontWeight: FontWeight.w400,
                 color: AppColors.textColor3D3D3D,
@@ -81,7 +81,7 @@ class DailyUsageCard extends StatelessWidget {
                 child: Row(
                   children: [
                     CustomText(
-                      text: 'Today',
+                      text: context.l10n.today,
                       fontsize: 14.sp,
                       fontWeight: FontWeight.w400,
                       color: const Color(0xFF5D5D5D),

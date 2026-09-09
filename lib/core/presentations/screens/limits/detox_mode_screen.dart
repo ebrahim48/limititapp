@@ -42,7 +42,7 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
       errorMessage('');
 
       if (!Platform.isAndroid) {
-        errorMessage.value = 'Detox mode is only available on Android devices';
+        errorMessage.value = appL10n.detoxModeAndroidOnly;
         isLoading(false);
         return;
       }
@@ -56,7 +56,7 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
       }
 
       if (!hasPermission) {
-        errorMessage.value = 'Please grant usage access permission';
+        errorMessage.value = appL10n.pleaseGrantUsageAccess;
         isLoading(false);
         return;
       }
@@ -65,7 +65,7 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
       final allApps = await appUsageService.getAllInstalledApps();
       
       if (allApps.isEmpty) {
-        errorMessage.value = 'No apps found on this device';
+        errorMessage.value = appL10n.noAppsFoundOnDevice;
         isLoading(false);
         return;
       }
@@ -83,7 +83,7 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
       apps.assignAll(appModels);
       isLoading(false);
     } catch (e) {
-      errorMessage.value = 'Error loading apps: ${e.toString()}';
+      errorMessage.value = appL10n.errorLoadingApps(e.toString());
       isLoading(false);
     }
   }
@@ -92,8 +92,8 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
   Future<void> _saveDetoxMode() async {
     if (selectedApps.isEmpty) {
       ToastMessageHelper.showToastMessage(
-        'Please select at least one app for detox mode',
-        title: 'Warning',
+        appL10n.pleaseSelectAtLeastOneAppDetox,
+        title: appL10n.warning,
       );
       return;
     }
@@ -141,15 +141,15 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
 
       ToastMessageHelper.showToastMessage(
         message,
-        title: 'Success',
+        title: appL10n.success,
       );
 
       // Reset selection
       selectedApps.clear();
     } catch (e) {
       ToastMessageHelper.showToastMessage(
-        'Error saving detox mode: ${e.toString()}',
-        title: 'Error',
+        appL10n.errorSavingDetoxMode(e.toString()),
+        title: appL10n.error,
       );
     }
   }
@@ -226,7 +226,7 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
                         ),
                         SizedBox(height: 16.h),
                         CustomButton(
-                          title: 'Retry',
+                          title: context.l10n.retry,
                           onpress: _loadApps,
                         ),
                       ],
@@ -248,7 +248,7 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
                         ),
                         SizedBox(height: 16.h),
                         CustomText(
-                          text: 'No apps available',
+                          text: context.l10n.noAppsAvailable,
                           fontsize: 16.sp,
                           fontWeight: FontWeight.w500,
                           color: AppColors.textColor3D3D3D,
@@ -314,7 +314,7 @@ class _DetoxModeScreenState extends State<DetoxModeScreen> {
                       return Padding(
                         padding: EdgeInsets.only(bottom: 12.h),
                         child: CustomText(
-                          text: '$selectedCount ${selectedCount == 1 ? 'app' : 'apps'} selected',
+                          text: '$selectedCount ${selectedCount == 1 ? context.l10n.app : context.l10n.apps} ${context.l10n.selected}',
                           fontsize: 14.sp,
                           fontWeight: FontWeight.w500,
                           color: AppColors.primaryColor,

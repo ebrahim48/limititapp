@@ -1830,5 +1830,868 @@
   "takeBackControlOfYourScreenTime": "Take back control of your screen time",
   "@takeBackControlOfYourScreenTime": {
     "description": "takeBackControlOfYourScreenTime"
+  },
+  "warning": "Warning",
+  "@warning": {
+    "description": "Warning"
+  },
+  "success": "Success",
+  "@success": {
+    "description": "Success"
+  },
+  "attention": "Attention",
+  "@attention": {
+    "description": "Attention"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "edit": "Edit",
+  "@edit": {
+    "description": "Edit"
+  },
+  "undo": "Undo",
+  "@undo": {
+    "description": "Undo"
+  },
+  "selected": "selected",
+  "@selected": {
+    "description": "selected"
+  },
+  "limits": "Limits",
+  "@limits": {
+    "description": "Limits"
+  },
+  "loadingAd": "Loading Ad...",
+  "@loadingAd": {
+    "description": "Loading Ad..."
+  },
+  "yourApps": "Your Apps",
+  "@yourApps": {
+    "description": "Your Apps"
+  },
+  "grantPermission": "Grant Permission",
+  "@grantPermission": {
+    "description": "Grant Permission"
+  },
+  "grantPermissions": "Grant Permissions",
+  "@grantPermissions": {
+    "description": "Grant Permissions"
+  },
+  "permissionsRequired": "Permissions Required",
+  "@permissionsRequired": {
+    "description": "Permissions Required"
+  },
+  "viewProfile": "View Profile",
+  "@viewProfile": {
+    "description": "View Profile"
+  },
+  "failedToLoadProfile": "Failed to load profile",
+  "@failedToLoadProfile": {
+    "description": "Failed to load profile"
+  },
+  "name": "Name",
+  "@name": {
+    "description": "Name"
+  },
+  "phone": "Phone",
+  "@phone": {
+    "description": "Phone"
+  },
+  "noAppsToSave": "No apps to save",
+  "@noAppsToSave": {
+    "description": "No apps to save"
+  },
+  "savedLimitsForApps": "Saved limits for {count} apps",
+  "@savedLimitsForApps": {
+    "description": "Saved limits for {count} apps",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "errorSavingLimits": "Error saving limits: {error}",
+  "@errorSavingLimits": {
+    "description": "Error saving limits: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "noMotivationalPhrasesAvailable": "No motivational phrases available",
+  "@noMotivationalPhrasesAvailable": {
+    "description": "No motivational phrases available"
+  },
+  "noMotivationalPhrasesFound": "No motivational phrases found",
+  "@noMotivationalPhrasesFound": {
+    "description": "No motivational phrases found"
+  },
+  "noAppsAvailable": "No apps available",
+  "@noAppsAvailable": {
+    "description": "No apps available"
+  },
+  "timerSettingsUpdated": "Timer settings updated successfully!",
+  "@timerSettingsUpdated": {
+    "description": "Timer settings updated successfully!"
+  },
+  "errorLoadingAppLimit": "Error loading app limit: {error}",
+  "@errorLoadingAppLimit": {
+    "description": "Error loading app limit: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "appLimitUpdated": "App limit updated successfully!",
+  "@appLimitUpdated": {
+    "description": "App limit updated successfully!"
+  },
+  "failedToUpdateAppLimit": "Failed to update app limit",
+  "@failedToUpdateAppLimit": {
+    "description": "Failed to update app limit"
+  },
+  "errorSavingAppLimit": "Error saving app limit: {error}",
+  "@errorSavingAppLimit": {
+    "description": "Error saving app limit: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "limitDeletedForApp": "Limit for {appName} deleted successfully!",
+  "@limitDeletedForApp": {
+    "description": "Limit for {appName} deleted successfully!",
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "limitDeletedSuccessfully": "Limit deleted successfully!",
+  "@limitDeletedSuccessfully": {
+    "description": "Limit deleted successfully!"
+  },
+  "failedToDeleteLimit": "Failed to delete limit",
+  "@failedToDeleteLimit": {
+    "description": "Failed to delete limit"
+  },
+  "proFeature": "Pro Feature",
+  "@proFeature": {
+    "description": "Pro Feature"
+  },
+  "pro": "pro",
+  "@pro": {
+    "description": "pro"
+  },
+  "noBlockedAppsYet": "No blocked apps yet. Block apps from the home screen to set schedules.",
+  "@noBlockedAppsYet": {
+    "description": "No blocked apps yet. Block apps from the home screen to set schedules."
+  },
+  "noBlockedApps": "No blocked apps",
+  "@noBlockedApps": {
+    "description": "No blocked apps"
+  },
+  "blockedAppsWillAppearHere": "Apps you block will appear here",
+  "@blockedAppsWillAppearHere": {
+    "description": "Apps you block will appear here"
+  },
+  "noMoreNotifications": "No more notifications",
+  "@noMoreNotifications": {
+    "description": "No more notifications"
+  },
+  "deleteNotification": "Delete Notification",
+  "@deleteNotification": {
+    "description": "Delete Notification"
+  },
+  "deleteNotificationConfirm": "Are you sure you want to delete this notification?",
+  "@deleteNotificationConfirm": {
+    "description": "Are you sure you want to delete this notification?"
+  },
+  "markAllAsRead": "Mark All as Read",
+  "@markAllAsRead": {
+    "description": "Mark All as Read"
+  },
+  "markAllAsReadConfirm": "Mark all notifications as read?",
+  "@markAllAsReadConfirm": {
+    "description": "Mark all notifications as read?"
+  },
+  "clearAllNotifications": "Clear All Notifications",
+  "@clearAllNotifications": {
+    "description": "Clear All Notifications"
+  },
+  "clearAllNotificationsConfirm": "This will permanently delete all notifications.",
+  "@clearAllNotificationsConfirm": {
+    "description": "This will permanently delete all notifications."
+  },
+  "clearAll": "Clear All",
+  "@clearAll": {
+    "description": "Clear All"
+  },
+  "noAppsFoundOnDevice": "No apps found on this device",
+  "@noAppsFoundOnDevice": {
+    "description": "No apps found on this device"
+  },
+  "passwordsDoNotMatch": "New passwords do not match",
+  "@passwordsDoNotMatch": {
+    "description": "New passwords do not match"
+  },
+  "passwordMinLength": "Password must be at least 6 characters",
+  "@passwordMinLength": {
+    "description": "Password must be at least 6 characters"
+  },
+  "oldPassword": "Old Password",
+  "@oldPassword": {
+    "description": "Old Password"
+  },
+  "reEnterNewPassword": "Re-Enter New Password",
+  "@reEnterNewPassword": {
+    "description": "Re-Enter New Password"
+  },
+  "activatingSubscription": "Activating your subscription...",
+  "@activatingSubscription": {
+    "description": "Activating your subscription..."
+  },
+  "subscriptionActivated": "Subscription Activated!",
+  "@subscriptionActivated": {
+    "description": "Subscription Activated!"
+  },
+  "youAreNowSubscribedTo": "You are now subscribed to\n{plan}",
+  "@youAreNowSubscribedTo": {
+    "description": "You are now subscribed to\n{plan}",
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "noSubscriptionPlans": "No subscription plans available",
+  "@noSubscriptionPlans": {
+    "description": "No subscription plans available"
+  },
+  "takeFullControlOfScreenTime": "Take full control of your screen time",
+  "@takeFullControlOfScreenTime": {
+    "description": "Take full control of your screen time"
+  },
+  "mostPopular": "MOST POPULAR",
+  "@mostPopular": {
+    "description": "MOST POPULAR"
+  },
+  "pinCode": "PIN Code",
+  "@pinCode": {
+    "description": "PIN Code"
+  },
+  "pinCodeNotAvailable": "PIN code not available from server",
+  "@pinCodeNotAvailable": {
+    "description": "PIN code not available from server"
+  },
+  "youAreFreeMemberNow": "You are Free Member\nNow",
+  "@youAreFreeMemberNow": {
+    "description": "You are Free Member\nNow"
+  },
+  "tapToSelectForDetox": "Tap to select for detox",
+  "@tapToSelectForDetox": {
+    "description": "Tap to select for detox"
+  },
+  "dailyUsage": "Daily Usage",
+  "@dailyUsage": {
+    "description": "Daily Usage"
+  },
+  "removeScreenTimeLimit": "Remove Screen Time\nLimit?",
+  "@removeScreenTimeLimit": {
+    "description": "Remove Screen Time\nLimit?"
+  },
+  "screenTimeToday": "Screen time Today",
+  "@screenTimeToday": {
+    "description": "Screen time Today"
+  },
+  "startingMonitoringService": "Starting monitoring service...",
+  "@startingMonitoringService": {
+    "description": "Starting monitoring service..."
+  },
+  "failedToStartMonitoringService": "Failed to start monitoring service",
+  "@failedToStartMonitoringService": {
+    "description": "Failed to start monitoring service"
+  },
+  "cannotBlockApp": "This app cannot be blocked. Please use real app data.",
+  "@cannotBlockApp": {
+    "description": "This app cannot be blocked. Please use real app data."
+  },
+  "failedToBlockApp": "Failed to block {appName}",
+  "@failedToBlockApp": {
+    "description": "Failed to block {appName}",
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToUnblockApp": "Failed to unblock {appName}",
+  "@failedToUnblockApp": {
+    "description": "Failed to unblock {appName}",
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "updatedLocally": "Updated Locally",
+  "@updatedLocally": {
+    "description": "Updated Locally"
+  },
+  "checkingForExistingPurchases": "Checking for existing purchases...",
+  "@checkingForExistingPurchases": {
+    "description": "Checking for existing purchases..."
+  },
+  "joinedIn": "Joined in {date}",
+  "@joinedIn": {
+    "description": "Joined in {date}",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "appUsageAndroidOnly": "App usage tracking is only available on Android devices",
+  "@appUsageAndroidOnly": {
+    "description": "App usage tracking is only available on Android devices"
+  },
+  "detoxModeAndroidOnly": "Detox mode is only available on Android devices",
+  "@detoxModeAndroidOnly": {
+    "description": "Detox mode is only available on Android devices"
+  },
+  "pinLockAndroidOnly": "PIN Lock is only available on Android devices",
+  "@pinLockAndroidOnly": {
+    "description": "PIN Lock is only available on Android devices"
+  },
+  "permissionDeniedUsageAccess": "Permission denied. Please grant usage access permission in settings",
+  "@permissionDeniedUsageAccess": {
+    "description": "Permission denied. Please grant usage access permission in settings"
+  },
+  "pleaseGrantUsageAccess": "Please grant usage access permission",
+  "@pleaseGrantUsageAccess": {
+    "description": "Please grant usage access permission"
+  },
+  "errorLoadingAppUsage": "Error loading app usage data: {error}",
+  "@errorLoadingAppUsage": {
+    "description": "Error loading app usage data: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorLoadingApps": "Error loading apps: {error}",
+  "@errorLoadingApps": {
+    "description": "Error loading apps: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "joinedRecently": "Joined recently",
+  "@joinedRecently": {
+    "description": "Joined recently"
+  },
+  "pleaseEnterYourName": "Please enter your name",
+  "@pleaseEnterYourName": {
+    "description": "Please enter your name"
+  },
+  "pleaseEnterYourPhone": "Please enter your phone number",
+  "@pleaseEnterYourPhone": {
+    "description": "Please enter your phone number"
+  },
+  "pleaseEnterYourEmail": "Please enter your email",
+  "@pleaseEnterYourEmail": {
+    "description": "Please enter your email"
+  },
+  "pleaseEnterOtp": "Please enter OTP",
+  "@pleaseEnterOtp": {
+    "description": "Please enter OTP"
+  },
+  "pleaseConfirmYourPassword": "Please confirm your password",
+  "@pleaseConfirmYourPassword": {
+    "description": "Please confirm your password"
+  },
+  "passwordNotMatching": "Password Not Matching",
+  "@passwordNotMatching": {
+    "description": "Password Not Matching"
+  },
+  "updatePassword": "Update Password",
+  "@updatePassword": {
+    "description": "Update Password"
+  },
+  "failedToSaveAppLimits": "Failed to save app limits",
+  "@failedToSaveAppLimits": {
+    "description": "Failed to save app limits"
+  },
+  "pleaseSelectAtLeastOneAppDetox": "Please select at least one app for detox mode",
+  "@pleaseSelectAtLeastOneAppDetox": {
+    "description": "Please select at least one app for detox mode"
+  },
+  "errorSavingDetoxMode": "Error saving detox mode: {error}",
+  "@errorSavingDetoxMode": {
+    "description": "Error saving detox mode: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownApp": "Unknown App",
+  "@unknownApp": {
+    "description": "Unknown App"
+  },
+  "proFeatureMessage": "This feature is only available in the Pro version.",
+  "@proFeatureMessage": {
+    "description": "This feature is only available in the Pro version."
+  },
+  "pinLockSettingsSaved": "PIN lock settings saved successfully",
+  "@pinLockSettingsSaved": {
+    "description": "PIN lock settings saved successfully"
+  },
+  "pleaseEnablePinLock": "Please enable PIN lock to continue",
+  "@pleaseEnablePinLock": {
+    "description": "Please enable PIN lock to continue"
+  },
+  "pleaseSelectAtLeastOneAppToProtect": "Please select at least one app to protect",
+  "@pleaseSelectAtLeastOneAppToProtect": {
+    "description": "Please select at least one app to protect"
+  },
+  "noAppSelected": "No app selected",
+  "@noAppSelected": {
+    "description": "No app selected"
+  },
+  "schedulesSavedSuccessfully": "Schedules saved successfully!",
+  "@schedulesSavedSuccessfully": {
+    "description": "Schedules saved successfully!"
+  },
+  "pleaseEnterPinCode": "Please enter a PIN code",
+  "@pleaseEnterPinCode": {
+    "description": "Please enter a PIN code"
+  },
+  "pinCodeMustBe4Digits": "PIN code must be 4 digits",
+  "@pinCodeMustBe4Digits": {
+    "description": "PIN code must be 4 digits"
+  },
+  "purchaseError": "Purchase error: {error}",
+  "@purchaseError": {
+    "description": "Purchase error: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotStartPurchase": "Could not start purchase: {error}",
+  "@couldNotStartPurchase": {
+    "description": "Could not start purchase: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "couldNotStartPurchaseRetry": "Could not start purchase. Please try again.",
+  "@couldNotStartPurchaseRetry": {
+    "description": "Could not start purchase. Please try again."
+  },
+  "purchaseFailed": "Purchase failed: {error}",
+  "@purchaseFailed": {
+    "description": "Purchase failed: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionFailed": "Subscription failed",
+  "@subscriptionFailed": {
+    "description": "Subscription failed"
+  },
+  "subscriptionActivationFailed": "Subscription activation failed",
+  "@subscriptionActivationFailed": {
+    "description": "Subscription activation failed"
+  },
+  "restoreFailed": "Restore failed: {error}",
+  "@restoreFailed": {
+    "description": "Restore failed: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "serverErrorWithMessage": "Server error: {error}",
+  "@serverErrorWithMessage": {
+    "description": "Server error: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionAutoRenewNote": "Subscriptions auto-renew unless cancelled at least 24 hours\nbefore the end of the current period.",
+  "@subscriptionAutoRenewNote": {
+    "description": "Subscriptions auto-renew unless cancelled at least 24 hours\nbefore the end of the current period."
+  },
+  "startTime": "Start Time",
+  "@startTime": {
+    "description": "Start Time"
+  },
+  "endTime": "End Time",
+  "@endTime": {
+    "description": "End Time"
+  },
+  "pleaseEnterField": "Please enter {field}",
+  "@pleaseEnterField": {
+    "description": "Please enter {field}",
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "limitSummary": "Limit: {session} • {opens} opens",
+  "@limitSummary": {
+    "description": "Limit: {session} • {opens} opens",
+    "placeholders": {
+      "session": {
+        "type": "String"
+      },
+      "opens": {
+        "type": "String"
+      }
+    }
+  },
+  "planFeatureAdFree": "Ad-free experience",
+  "@planFeatureAdFree": {
+    "description": "Ad-free experience"
+  },
+  "planFeatureStandardReports": "Standard reports",
+  "@planFeatureStandardReports": {
+    "description": "Standard reports"
+  },
+  "planFeatureEmailSupport": "Email support",
+  "@planFeatureEmailSupport": {
+    "description": "Email support"
+  },
+  "planFeatureEverythingInBasic": "Everything in Basic",
+  "@planFeatureEverythingInBasic": {
+    "description": "Everything in Basic"
+  },
+  "planFeatureAdvancedAnalytics": "Advanced analytics",
+  "@planFeatureAdvancedAnalytics": {
+    "description": "Advanced analytics"
+  },
+  "planFeaturePrioritySupport": "Priority support",
+  "@planFeaturePrioritySupport": {
+    "description": "Priority support"
+  },
+  "planFeatureUnlimitedAppLimits": "Unlimited app limits",
+  "@planFeatureUnlimitedAppLimits": {
+    "description": "Unlimited app limits"
+  },
+  "toBlockAppsGrantPermissions": "To block apps, you need to grant Overlay and Accessibility permissions. Would you like to go to the permissions setup screen?",
+  "@toBlockAppsGrantPermissions": {
+    "description": "To block apps, you need to grant Overlay and Accessibility permissions. Would you like to go to the permissions setup screen?"
+  },
+  "appIsNowBlocked": "{appName} is now blocked",
+  "@appIsNowBlocked": {
+    "description": "{appName} is now blocked",
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "appIsNowUnblocked": "{appName} is now unblocked",
+  "@appIsNowUnblocked": {
+    "description": "{appName} is now unblocked",
+    "placeholders": {
+      "appName": {
+        "type": "String"
+      }
+    }
+  },
+  "noUsageToday": "No usage today",
+  "@noUsageToday": {
+    "description": "No usage today"
+  },
+  "noPlansAvailable": "No plans available",
+  "@noPlansAvailable": {
+    "description": "No plans available"
+  },
+  "failedToFetchPlans": "Failed to fetch plans",
+  "@failedToFetchPlans": {
+    "description": "Failed to fetch plans"
+  },
+  "failedToFetchPlansWithError": "Failed to fetch plans: {error}",
+  "@failedToFetchPlansWithError": {
+    "description": "Failed to fetch plans: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "invalidResponseFormat": "Invalid response format",
+  "@invalidResponseFormat": {
+    "description": "Invalid response format"
+  },
+  "somethingWentWrong": "Something went wrong. Please try again.",
+  "@somethingWentWrong": {
+    "description": "Something went wrong. Please try again."
+  },
+  "signupFailed": "Signup failed. Please check your connection.",
+  "@signupFailed": {
+    "description": "Signup failed. Please check your connection."
+  },
+  "verificationFailed": "Verification failed",
+  "@verificationFailed": {
+    "description": "Verification failed"
+  },
+  "errorVerifyingUser": "Error verifying user: {error}",
+  "@errorVerifyingUser": {
+    "description": "Error verifying user: {error}",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "connectionErrorCheckInternet": "Connection error. Please check your internet and try again.",
+  "@connectionErrorCheckInternet": {
+    "description": "Connection error. Please check your internet and try again."
+  },
+  "emailNotVerified": "Email not verified. Please verify your email.",
+  "@emailNotVerified": {
+    "description": "Email not verified. Please verify your email."
+  },
+  "otpSentToEmail": "We've sent an OTP to your email. Please verify your email.",
+  "@otpSentToEmail": {
+    "description": "We've sent an OTP to your email. Please verify your email."
+  },
+  "loginFailed": "Login failed. Please try again.",
+  "@loginFailed": {
+    "description": "Login failed. Please try again."
+  },
+  "networkErrorCheckConnection": "Network error. Please check your connection and try again.",
+  "@networkErrorCheckConnection": {
+    "description": "Network error. Please check your connection and try again."
+  },
+  "serverErrorTryLater": "Server error! Please try later",
+  "@serverErrorTryLater": {
+    "description": "Server error! Please try later"
+  },
+  "failedToChangePassword": "Failed to change password",
+  "@failedToChangePassword": {
+    "description": "Failed to change password"
+  },
+  "failedToUpdateProfile": "Failed to update profile",
+  "@failedToUpdateProfile": {
+    "description": "Failed to update profile"
+  },
+  "failedToUpdateProfileRetry": "Failed to update profile. Please try again.",
+  "@failedToUpdateProfileRetry": {
+    "description": "Failed to update profile. Please try again."
+  },
+  "serverErrorTryAgainLater": "Server error. Please try again later.",
+  "@serverErrorTryAgainLater": {
+    "description": "Server error. Please try again later."
+  },
+  "pinSavedLocallyServerError": "Server error. PIN saved locally and will sync when server is available.",
+  "@pinSavedLocallyServerError": {
+    "description": "Server error. PIN saved locally and will sync when server is available."
+  },
+  "pinSavedLocallyBadGateway": "Bad gateway. PIN saved locally and will sync later.",
+  "@pinSavedLocallyBadGateway": {
+    "description": "Bad gateway. PIN saved locally and will sync later."
+  },
+  "pinSavedLocallyServiceUnavailable": "Service unavailable. PIN saved locally and will sync later.",
+  "@pinSavedLocallyServiceUnavailable": {
+    "description": "Service unavailable. PIN saved locally and will sync later."
+  },
+  "pinSavedLocallyServerErrorCode": "Server error ({code}). PIN saved locally.",
+  "@pinSavedLocallyServerErrorCode": {
+    "description": "Server error ({code}). PIN saved locally.",
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToCreatePinLock": "Failed to create PIN lock.",
+  "@failedToCreatePinLock": {
+    "description": "Failed to create PIN lock."
+  },
+  "failedToCreatePinLockRetry": "Failed to create PIN lock. Please try again.",
+  "@failedToCreatePinLockRetry": {
+    "description": "Failed to create PIN lock. Please try again."
+  },
+  "networkErrorPinSavedLocally": "Network error. PIN saved locally.",
+  "@networkErrorPinSavedLocally": {
+    "description": "Network error. PIN saved locally."
+  },
+  "connectionErrorTryAgain": "Connection error. Please try again.",
+  "@connectionErrorTryAgain": {
+    "description": "Connection error. Please try again."
+  },
+  "pinUpdatedLocally": "PIN updated locally. Server sync will be available soon.",
+  "@pinUpdatedLocally": {
+    "description": "PIN updated locally. Server sync will be available soon."
+  },
+  "failedToUpdatePin": "Failed to update PIN",
+  "@failedToUpdatePin": {
+    "description": "Failed to update PIN"
+  },
+  "failedToDeletePin": "Failed to delete PIN",
+  "@failedToDeletePin": {
+    "description": "Failed to delete PIN"
+  },
+  "networkErrorTryAgain": "Network error. Please try again.",
+  "@networkErrorTryAgain": {
+    "description": "Network error. Please try again."
+  },
+  "messageSuggestion1": "Breathe. Focus. Choose.",
+  "@messageSuggestion1": {
+    "description": "Breathe. Focus. Choose."
+  },
+  "messageSuggestion2": "Discipline is freedom.",
+  "@messageSuggestion2": {
+    "description": "Discipline is freedom."
+  },
+  "messageSuggestion3": "Less screen, more life.",
+  "@messageSuggestion3": {
+    "description": "Less screen, more life."
+  },
+  "messageSuggestion4": "Your future is created by what you do today.",
+  "@messageSuggestion4": {
+    "description": "Your future is created by what you do today."
+  },
+  "reportTitle": "LimitIt - Usage Report",
+  "@reportTitle": {
+    "description": "LimitIt - Usage Report"
+  },
+  "reportGeneratedOn": "Generated on: {date} at {time}",
+  "@reportGeneratedOn": {
+    "description": "Generated on: {date} at {time}",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reportTodaysSummary": "Today's Summary",
+  "@reportTodaysSummary": {
+    "description": "Today's Summary"
+  },
+  "reportTotalAppsUsed": "Total Apps Used",
+  "@reportTotalAppsUsed": {
+    "description": "Total Apps Used"
+  },
+  "reportTotalTime": "Total Time",
+  "@reportTotalTime": {
+    "description": "Total Time"
+  },
+  "reportAvgPerApp": "Avg per App",
+  "@reportAvgPerApp": {
+    "description": "Avg per App"
+  },
+  "reportDailyUsageBreakdown": "Daily Usage Breakdown",
+  "@reportDailyUsageBreakdown": {
+    "description": "Daily Usage Breakdown"
+  },
+  "reportUsageTime": "Usage Time",
+  "@reportUsageTime": {
+    "description": "Usage Time"
+  },
+  "reportAppName": "App Name",
+  "@reportAppName": {
+    "description": "App Name"
+  },
+  "reportTips": "Tips for Better Digital Balance",
+  "@reportTips": {
+    "description": "Tips for Better Digital Balance"
+  },
+  "reportFooterTagline": "Stay focused, take control of your time",
+  "@reportFooterTagline": {
+    "description": "Stay focused, take control of your time"
+  },
+  "reportGeneratedBy": "Generated by LimitIt App",
+  "@reportGeneratedBy": {
+    "description": "Generated by LimitIt App"
+  },
+  "cantConnectToInternet": "Can't connect to the internet!",
+  "@cantConnectToInternet": {
+    "description": "Can't connect to the internet!"
+  },
+  "noInternetConnection": "No internet connection",
+  "@noInternetConnection": {
+    "description": "No internet connection"
+  },
+  "serverError": "Server error",
+  "@serverError": {
+    "description": "Server error"
+  },
+  "requestTimeout": "Request timed out. Please try again.",
+  "@requestTimeout": {
+    "description": "Request timed out. Please try again."
+  },
+  "unknownError": "Unknown error",
+  "@unknownError": {
+    "description": "Unknown error"
+  },
+  "processing": "Processing...",
+  "@processing": {
+    "description": "Processing..."
+  },
+  "reportTip1": "• Set daily limits for social media apps",
+  "@reportTip1": {
+    "description": "• Set daily limits for social media apps"
+  },
+  "reportTip2": "• Take regular breaks using the Pomodoro technique",
+  "@reportTip2": {
+    "description": "• Take regular breaks using the Pomodoro technique"
+  },
+  "reportTip3": "• Use Detox Mode during focus time",
+  "@reportTip3": {
+    "description": "• Use Detox Mode during focus time"
+  },
+  "reportTip4": "• Review your usage reports weekly",
+  "@reportTip4": {
+    "description": "• Review your usage reports weekly"
+  },
+  "reportTip5": "• Enable PIN lock to prevent impulsive usage",
+  "@reportTip5": {
+    "description": "• Enable PIN lock to prevent impulsive usage"
+  },
+  "defaultQuote1": "Almost all good writing begins with terrible first efforts. You need to start somewhere",
+  "@defaultQuote1": {
+    "description": "Almost all good writing begins with terrible first efforts. You need to start somewhere"
+  },
+  "defaultQuote2": "God gives every bird its food, but He does not throw it into its nest",
+  "@defaultQuote2": {
+    "description": "God gives every bird its food, but He does not throw it into its nest"
+  },
+  "defaultQuote3": "An effort made for the happiness of others lifts above ourselves",
+  "@defaultQuote3": {
+    "description": "An effort made for the happiness of others lifts above ourselves"
+  },
+  "storeUnavailable": "The App Store is unavailable right now. Please try again later.",
+  "@storeUnavailable": {
+    "description": "storeUnavailable"
+  },
+  "planNotAvailable": "This plan is not available for purchase right now. Please try another plan or check back later.",
+  "@planNotAvailable": {
+    "description": "planNotAvailable"
   }
 }

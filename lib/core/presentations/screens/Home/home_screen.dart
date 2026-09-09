@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: Center(
                         child: CustomText(
-                          text: 'Loading Ad...',
+                          text: context.l10n.loadingAd,
                           fontsize: 12.sp,
                           color: Colors.grey[600]!,
                         ),
@@ -106,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: 'Your Apps',
+                      text: context.l10n.yourApps,
                       fontsize: 20.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColors.textColor2C2C2C,
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       TextButton(
                         onPressed: _loadAppUsageData,
                         child: CustomText(
-                          text: 'Grant Permission',
+                          text: context.l10n.grantPermission,
                           fontsize: 12.sp,
                           fontWeight: FontWeight.w500,
                           color: const Color(0xFFDDA742),
@@ -375,7 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _isLoading = false;
           _hasPermission = false;
           _errorMessage =
-          'App usage tracking is only available on Android devices';
+          appL10n.appUsageAndroidOnly;
         });
         return;
       }
@@ -409,20 +409,20 @@ class _HomeScreenState extends State<HomeScreen> {
           _totalScreenTimeMinutes = totalMinutes;
           _isLoading = false;
           if (allApps.isEmpty) {
-            _errorMessage = 'No apps found on this device';
+            _errorMessage = appL10n.noAppsFoundOnDevice;
           }
         });
       } else {
         setState(() {
           _isLoading = false;
           _errorMessage =
-          'Permission denied. Please grant usage access permission in settings';
+          appL10n.permissionDeniedUsageAccess;
         });
       }
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _errorMessage = 'Error loading app usage data: ${e.toString()}';
+        _errorMessage = appL10n.errorLoadingAppUsage(e.toString());
       });
     }
   }

@@ -10,6 +10,7 @@ import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/core/services/blocked_apps_service.dart';
 import 'package:limit_it_app/core/services/app_blocker_service.dart';
 import 'package:limit_it_app/core/presentations/screens/permissions/permissions_setup_screen.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class YourAppCard extends StatefulWidget {
   final AppInfo? app;
@@ -80,8 +81,8 @@ class _YourAppCardState extends State<YourAppCard> {
     if (mounted) {
       // Show loading indicator
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Starting monitoring service...'),
+        SnackBar(
+          content: Text(context.l10n.startingMonitoringService),
           duration: Duration(seconds: 2),
         ),
       );
@@ -91,8 +92,8 @@ class _YourAppCardState extends State<YourAppCard> {
     if (!started) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to start monitoring service'),
+          SnackBar(
+            content: Text(context.l10n.failedToStartMonitoringService),
             backgroundColor: Colors.red,
           ),
         );
@@ -111,17 +112,14 @@ class _YourAppCardState extends State<YourAppCard> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Permissions Required'),
-          content: const Text(
-            'To block apps, you need to grant Overlay and Accessibility permissions. '
-            'Would you like to go to the permissions setup screen?',
-          ),
+          title: Text(context.l10n.permissionsRequired),
+          content: Text(context.l10n.toBlockAppsGrantPermissions),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: Text(context.l10n.cancel),
             ),
             ElevatedButton(
               onPressed: () {
@@ -137,7 +135,7 @@ class _YourAppCardState extends State<YourAppCard> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF214432),
               ),
-              child: const Text('Grant Permissions', style: TextStyle(color: Colors.white)),
+              child: Text(context.l10n.grantPermissions, style: const TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -156,8 +154,8 @@ class _YourAppCardState extends State<YourAppCard> {
     if (packageName.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('This app cannot be blocked. Please use real app data.'),
+          SnackBar(
+            content: Text(context.l10n.cannotBlockApp),
             backgroundColor: Colors.orange,
           ),
         );
@@ -201,7 +199,9 @@ class _YourAppCardState extends State<YourAppCard> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to ${_isBlocked ? 'block' : 'unblock'} $appName'),
+            content: Text(_isBlocked
+                ? context.l10n.failedToBlockApp(appName)
+                : context.l10n.failedToUnblockApp(appName)),
             backgroundColor: Colors.red,
           ),
         );
@@ -218,13 +218,13 @@ class _YourAppCardState extends State<YourAppCard> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            _isBlocked ? '$appName is now blocked' : '$appName is now unblocked',
-          ),
+          content: Text(_isBlocked
+              ? context.l10n.appIsNowBlocked(appName)
+              : context.l10n.appIsNowUnblocked(appName)),
           backgroundColor: _isBlocked ? const Color(0xFFFF5252) : const Color(0xFF214432),
           duration: const Duration(seconds: 2),
           action: SnackBarAction(
-            label: 'Undo',
+            label: context.l10n.undo,
             textColor: Colors.white,
             onPressed: () async {
               // Undo the action

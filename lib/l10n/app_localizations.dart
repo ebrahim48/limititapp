@@ -2727,6 +2727,1108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Take back control of your screen time'**
   String get takeBackControlOfYourScreenTime;
+
+  /// Warning
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get warning;
+
+  /// Success
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get success;
+
+  /// Attention
+  ///
+  /// In en, this message translates to:
+  /// **'Attention'**
+  String get attention;
+
+  /// Confirm
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// Edit
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// Undo
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// selected
+  ///
+  /// In en, this message translates to:
+  /// **'selected'**
+  String get selected;
+
+  /// Limits
+  ///
+  /// In en, this message translates to:
+  /// **'Limits'**
+  String get limits;
+
+  /// Loading Ad...
+  ///
+  /// In en, this message translates to:
+  /// **'Loading Ad...'**
+  String get loadingAd;
+
+  /// Your Apps
+  ///
+  /// In en, this message translates to:
+  /// **'Your Apps'**
+  String get yourApps;
+
+  /// Grant Permission
+  ///
+  /// In en, this message translates to:
+  /// **'Grant Permission'**
+  String get grantPermission;
+
+  /// Grant Permissions
+  ///
+  /// In en, this message translates to:
+  /// **'Grant Permissions'**
+  String get grantPermissions;
+
+  /// Permissions Required
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions Required'**
+  String get permissionsRequired;
+
+  /// View Profile
+  ///
+  /// In en, this message translates to:
+  /// **'View Profile'**
+  String get viewProfile;
+
+  /// Failed to load profile
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load profile'**
+  String get failedToLoadProfile;
+
+  /// Name
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// Phone
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phone;
+
+  /// No apps to save
+  ///
+  /// In en, this message translates to:
+  /// **'No apps to save'**
+  String get noAppsToSave;
+
+  /// Saved limits for {count} apps
+  ///
+  /// In en, this message translates to:
+  /// **'Saved limits for {count} apps'**
+  String savedLimitsForApps(int count);
+
+  /// Error saving limits: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving limits: {error}'**
+  String errorSavingLimits(String error);
+
+  /// No motivational phrases available
+  ///
+  /// In en, this message translates to:
+  /// **'No motivational phrases available'**
+  String get noMotivationalPhrasesAvailable;
+
+  /// No motivational phrases found
+  ///
+  /// In en, this message translates to:
+  /// **'No motivational phrases found'**
+  String get noMotivationalPhrasesFound;
+
+  /// No apps available
+  ///
+  /// In en, this message translates to:
+  /// **'No apps available'**
+  String get noAppsAvailable;
+
+  /// Timer settings updated successfully!
+  ///
+  /// In en, this message translates to:
+  /// **'Timer settings updated successfully!'**
+  String get timerSettingsUpdated;
+
+  /// Error loading app limit: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading app limit: {error}'**
+  String errorLoadingAppLimit(String error);
+
+  /// App limit updated successfully!
+  ///
+  /// In en, this message translates to:
+  /// **'App limit updated successfully!'**
+  String get appLimitUpdated;
+
+  /// Failed to update app limit
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update app limit'**
+  String get failedToUpdateAppLimit;
+
+  /// Error saving app limit: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving app limit: {error}'**
+  String errorSavingAppLimit(String error);
+
+  /// Limit for {appName} deleted successfully!
+  ///
+  /// In en, this message translates to:
+  /// **'Limit for {appName} deleted successfully!'**
+  String limitDeletedForApp(String appName);
+
+  /// Limit deleted successfully!
+  ///
+  /// In en, this message translates to:
+  /// **'Limit deleted successfully!'**
+  String get limitDeletedSuccessfully;
+
+  /// Failed to delete limit
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete limit'**
+  String get failedToDeleteLimit;
+
+  /// Pro Feature
+  ///
+  /// In en, this message translates to:
+  /// **'Pro Feature'**
+  String get proFeature;
+
+  /// pro
+  ///
+  /// In en, this message translates to:
+  /// **'pro'**
+  String get pro;
+
+  /// No blocked apps yet. Block apps from the home screen to set schedules.
+  ///
+  /// In en, this message translates to:
+  /// **'No blocked apps yet. Block apps from the home screen to set schedules.'**
+  String get noBlockedAppsYet;
+
+  /// No blocked apps
+  ///
+  /// In en, this message translates to:
+  /// **'No blocked apps'**
+  String get noBlockedApps;
+
+  /// Apps you block will appear here
+  ///
+  /// In en, this message translates to:
+  /// **'Apps you block will appear here'**
+  String get blockedAppsWillAppearHere;
+
+  /// No more notifications
+  ///
+  /// In en, this message translates to:
+  /// **'No more notifications'**
+  String get noMoreNotifications;
+
+  /// Delete Notification
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Notification'**
+  String get deleteNotification;
+
+  /// Are you sure you want to delete this notification?
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this notification?'**
+  String get deleteNotificationConfirm;
+
+  /// Mark All as Read
+  ///
+  /// In en, this message translates to:
+  /// **'Mark All as Read'**
+  String get markAllAsRead;
+
+  /// Mark all notifications as read?
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all notifications as read?'**
+  String get markAllAsReadConfirm;
+
+  /// Clear All Notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All Notifications'**
+  String get clearAllNotifications;
+
+  /// This will permanently delete all notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete all notifications.'**
+  String get clearAllNotificationsConfirm;
+
+  /// Clear All
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All'**
+  String get clearAll;
+
+  /// No apps found on this device
+  ///
+  /// In en, this message translates to:
+  /// **'No apps found on this device'**
+  String get noAppsFoundOnDevice;
+
+  /// New passwords do not match
+  ///
+  /// In en, this message translates to:
+  /// **'New passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// Password must be at least 6 characters
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMinLength;
+
+  /// Old Password
+  ///
+  /// In en, this message translates to:
+  /// **'Old Password'**
+  String get oldPassword;
+
+  /// Re-Enter New Password
+  ///
+  /// In en, this message translates to:
+  /// **'Re-Enter New Password'**
+  String get reEnterNewPassword;
+
+  /// Activating your subscription...
+  ///
+  /// In en, this message translates to:
+  /// **'Activating your subscription...'**
+  String get activatingSubscription;
+
+  /// Subscription Activated!
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription Activated!'**
+  String get subscriptionActivated;
+
+  /// You are now subscribed to
+  /// {plan}
+  ///
+  /// In en, this message translates to:
+  /// **'You are now subscribed to\n{plan}'**
+  String youAreNowSubscribedTo(String plan);
+
+  /// No subscription plans available
+  ///
+  /// In en, this message translates to:
+  /// **'No subscription plans available'**
+  String get noSubscriptionPlans;
+
+  /// Take full control of your screen time
+  ///
+  /// In en, this message translates to:
+  /// **'Take full control of your screen time'**
+  String get takeFullControlOfScreenTime;
+
+  /// MOST POPULAR
+  ///
+  /// In en, this message translates to:
+  /// **'MOST POPULAR'**
+  String get mostPopular;
+
+  /// PIN Code
+  ///
+  /// In en, this message translates to:
+  /// **'PIN Code'**
+  String get pinCode;
+
+  /// PIN code not available from server
+  ///
+  /// In en, this message translates to:
+  /// **'PIN code not available from server'**
+  String get pinCodeNotAvailable;
+
+  /// You are Free Member
+  /// Now
+  ///
+  /// In en, this message translates to:
+  /// **'You are Free Member\nNow'**
+  String get youAreFreeMemberNow;
+
+  /// Tap to select for detox
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to select for detox'**
+  String get tapToSelectForDetox;
+
+  /// Daily Usage
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Usage'**
+  String get dailyUsage;
+
+  /// Remove Screen Time
+  /// Limit?
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Screen Time\nLimit?'**
+  String get removeScreenTimeLimit;
+
+  /// Screen time Today
+  ///
+  /// In en, this message translates to:
+  /// **'Screen time Today'**
+  String get screenTimeToday;
+
+  /// Starting monitoring service...
+  ///
+  /// In en, this message translates to:
+  /// **'Starting monitoring service...'**
+  String get startingMonitoringService;
+
+  /// Failed to start monitoring service
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start monitoring service'**
+  String get failedToStartMonitoringService;
+
+  /// This app cannot be blocked. Please use real app data.
+  ///
+  /// In en, this message translates to:
+  /// **'This app cannot be blocked. Please use real app data.'**
+  String get cannotBlockApp;
+
+  /// Failed to block {appName}
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to block {appName}'**
+  String failedToBlockApp(String appName);
+
+  /// Failed to unblock {appName}
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to unblock {appName}'**
+  String failedToUnblockApp(String appName);
+
+  /// Updated Locally
+  ///
+  /// In en, this message translates to:
+  /// **'Updated Locally'**
+  String get updatedLocally;
+
+  /// Checking for existing purchases...
+  ///
+  /// In en, this message translates to:
+  /// **'Checking for existing purchases...'**
+  String get checkingForExistingPurchases;
+
+  /// Joined in {date}
+  ///
+  /// In en, this message translates to:
+  /// **'Joined in {date}'**
+  String joinedIn(String date);
+
+  /// App usage tracking is only available on Android devices
+  ///
+  /// In en, this message translates to:
+  /// **'App usage tracking is only available on Android devices'**
+  String get appUsageAndroidOnly;
+
+  /// Detox mode is only available on Android devices
+  ///
+  /// In en, this message translates to:
+  /// **'Detox mode is only available on Android devices'**
+  String get detoxModeAndroidOnly;
+
+  /// PIN Lock is only available on Android devices
+  ///
+  /// In en, this message translates to:
+  /// **'PIN Lock is only available on Android devices'**
+  String get pinLockAndroidOnly;
+
+  /// Permission denied. Please grant usage access permission in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Permission denied. Please grant usage access permission in settings'**
+  String get permissionDeniedUsageAccess;
+
+  /// Please grant usage access permission
+  ///
+  /// In en, this message translates to:
+  /// **'Please grant usage access permission'**
+  String get pleaseGrantUsageAccess;
+
+  /// Error loading app usage data: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading app usage data: {error}'**
+  String errorLoadingAppUsage(String error);
+
+  /// Error loading apps: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading apps: {error}'**
+  String errorLoadingApps(String error);
+
+  /// Joined recently
+  ///
+  /// In en, this message translates to:
+  /// **'Joined recently'**
+  String get joinedRecently;
+
+  /// Please enter your name
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your name'**
+  String get pleaseEnterYourName;
+
+  /// Please enter your phone number
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your phone number'**
+  String get pleaseEnterYourPhone;
+
+  /// Please enter your email
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get pleaseEnterYourEmail;
+
+  /// Please enter OTP
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter OTP'**
+  String get pleaseEnterOtp;
+
+  /// Please confirm your password
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password'**
+  String get pleaseConfirmYourPassword;
+
+  /// Password Not Matching
+  ///
+  /// In en, this message translates to:
+  /// **'Password Not Matching'**
+  String get passwordNotMatching;
+
+  /// Update Password
+  ///
+  /// In en, this message translates to:
+  /// **'Update Password'**
+  String get updatePassword;
+
+  /// Failed to save app limits
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save app limits'**
+  String get failedToSaveAppLimits;
+
+  /// Please select at least one app for detox mode
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least one app for detox mode'**
+  String get pleaseSelectAtLeastOneAppDetox;
+
+  /// Error saving detox mode: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving detox mode: {error}'**
+  String errorSavingDetoxMode(String error);
+
+  /// Unknown App
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown App'**
+  String get unknownApp;
+
+  /// This feature is only available in the Pro version.
+  ///
+  /// In en, this message translates to:
+  /// **'This feature is only available in the Pro version.'**
+  String get proFeatureMessage;
+
+  /// PIN lock settings saved successfully
+  ///
+  /// In en, this message translates to:
+  /// **'PIN lock settings saved successfully'**
+  String get pinLockSettingsSaved;
+
+  /// Please enable PIN lock to continue
+  ///
+  /// In en, this message translates to:
+  /// **'Please enable PIN lock to continue'**
+  String get pleaseEnablePinLock;
+
+  /// Please select at least one app to protect
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least one app to protect'**
+  String get pleaseSelectAtLeastOneAppToProtect;
+
+  /// No app selected
+  ///
+  /// In en, this message translates to:
+  /// **'No app selected'**
+  String get noAppSelected;
+
+  /// Schedules saved successfully!
+  ///
+  /// In en, this message translates to:
+  /// **'Schedules saved successfully!'**
+  String get schedulesSavedSuccessfully;
+
+  /// Please enter a PIN code
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a PIN code'**
+  String get pleaseEnterPinCode;
+
+  /// PIN code must be 4 digits
+  ///
+  /// In en, this message translates to:
+  /// **'PIN code must be 4 digits'**
+  String get pinCodeMustBe4Digits;
+
+  /// Purchase error: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase error: {error}'**
+  String purchaseError(String error);
+
+  /// Could not start purchase: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start purchase: {error}'**
+  String couldNotStartPurchase(String error);
+
+  /// Could not start purchase. Please try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not start purchase. Please try again.'**
+  String get couldNotStartPurchaseRetry;
+
+  /// Purchase failed: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed: {error}'**
+  String purchaseFailed(String error);
+
+  /// Subscription failed
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription failed'**
+  String get subscriptionFailed;
+
+  /// Subscription activation failed
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription activation failed'**
+  String get subscriptionActivationFailed;
+
+  /// Restore failed: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Restore failed: {error}'**
+  String restoreFailed(String error);
+
+  /// Server error: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Server error: {error}'**
+  String serverErrorWithMessage(String error);
+
+  /// Subscriptions auto-renew unless cancelled at least 24 hours
+  /// before the end of the current period.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions auto-renew unless cancelled at least 24 hours\nbefore the end of the current period.'**
+  String get subscriptionAutoRenewNote;
+
+  /// Start Time
+  ///
+  /// In en, this message translates to:
+  /// **'Start Time'**
+  String get startTime;
+
+  /// End Time
+  ///
+  /// In en, this message translates to:
+  /// **'End Time'**
+  String get endTime;
+
+  /// Please enter {field}
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter {field}'**
+  String pleaseEnterField(String field);
+
+  /// Limit: {session} • {opens} opens
+  ///
+  /// In en, this message translates to:
+  /// **'Limit: {session} • {opens} opens'**
+  String limitSummary(String session, String opens);
+
+  /// Ad-free experience
+  ///
+  /// In en, this message translates to:
+  /// **'Ad-free experience'**
+  String get planFeatureAdFree;
+
+  /// Standard reports
+  ///
+  /// In en, this message translates to:
+  /// **'Standard reports'**
+  String get planFeatureStandardReports;
+
+  /// Email support
+  ///
+  /// In en, this message translates to:
+  /// **'Email support'**
+  String get planFeatureEmailSupport;
+
+  /// Everything in Basic
+  ///
+  /// In en, this message translates to:
+  /// **'Everything in Basic'**
+  String get planFeatureEverythingInBasic;
+
+  /// Advanced analytics
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced analytics'**
+  String get planFeatureAdvancedAnalytics;
+
+  /// Priority support
+  ///
+  /// In en, this message translates to:
+  /// **'Priority support'**
+  String get planFeaturePrioritySupport;
+
+  /// Unlimited app limits
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited app limits'**
+  String get planFeatureUnlimitedAppLimits;
+
+  /// To block apps, you need to grant Overlay and Accessibility permissions. Would you like to go to the permissions setup screen?
+  ///
+  /// In en, this message translates to:
+  /// **'To block apps, you need to grant Overlay and Accessibility permissions. Would you like to go to the permissions setup screen?'**
+  String get toBlockAppsGrantPermissions;
+
+  /// {appName} is now blocked
+  ///
+  /// In en, this message translates to:
+  /// **'{appName} is now blocked'**
+  String appIsNowBlocked(String appName);
+
+  /// {appName} is now unblocked
+  ///
+  /// In en, this message translates to:
+  /// **'{appName} is now unblocked'**
+  String appIsNowUnblocked(String appName);
+
+  /// No usage today
+  ///
+  /// In en, this message translates to:
+  /// **'No usage today'**
+  String get noUsageToday;
+
+  /// No plans available
+  ///
+  /// In en, this message translates to:
+  /// **'No plans available'**
+  String get noPlansAvailable;
+
+  /// Failed to fetch plans
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to fetch plans'**
+  String get failedToFetchPlans;
+
+  /// Failed to fetch plans: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to fetch plans: {error}'**
+  String failedToFetchPlansWithError(String error);
+
+  /// Invalid response format
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid response format'**
+  String get invalidResponseFormat;
+
+  /// Something went wrong. Please try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get somethingWentWrong;
+
+  /// Signup failed. Please check your connection.
+  ///
+  /// In en, this message translates to:
+  /// **'Signup failed. Please check your connection.'**
+  String get signupFailed;
+
+  /// Verification failed
+  ///
+  /// In en, this message translates to:
+  /// **'Verification failed'**
+  String get verificationFailed;
+
+  /// Error verifying user: {error}
+  ///
+  /// In en, this message translates to:
+  /// **'Error verifying user: {error}'**
+  String errorVerifyingUser(String error);
+
+  /// Connection error. Please check your internet and try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection error. Please check your internet and try again.'**
+  String get connectionErrorCheckInternet;
+
+  /// Email not verified. Please verify your email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email not verified. Please verify your email.'**
+  String get emailNotVerified;
+
+  /// We've sent an OTP to your email. Please verify your email.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve sent an OTP to your email. Please verify your email.'**
+  String get otpSentToEmail;
+
+  /// Login failed. Please try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed. Please try again.'**
+  String get loginFailed;
+
+  /// Network error. Please check your connection and try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please check your connection and try again.'**
+  String get networkErrorCheckConnection;
+
+  /// Server error! Please try later
+  ///
+  /// In en, this message translates to:
+  /// **'Server error! Please try later'**
+  String get serverErrorTryLater;
+
+  /// Failed to change password
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to change password'**
+  String get failedToChangePassword;
+
+  /// Failed to update profile
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update profile'**
+  String get failedToUpdateProfile;
+
+  /// Failed to update profile. Please try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update profile. Please try again.'**
+  String get failedToUpdateProfileRetry;
+
+  /// Server error. Please try again later.
+  ///
+  /// In en, this message translates to:
+  /// **'Server error. Please try again later.'**
+  String get serverErrorTryAgainLater;
+
+  /// Server error. PIN saved locally and will sync when server is available.
+  ///
+  /// In en, this message translates to:
+  /// **'Server error. PIN saved locally and will sync when server is available.'**
+  String get pinSavedLocallyServerError;
+
+  /// Bad gateway. PIN saved locally and will sync later.
+  ///
+  /// In en, this message translates to:
+  /// **'Bad gateway. PIN saved locally and will sync later.'**
+  String get pinSavedLocallyBadGateway;
+
+  /// Service unavailable. PIN saved locally and will sync later.
+  ///
+  /// In en, this message translates to:
+  /// **'Service unavailable. PIN saved locally and will sync later.'**
+  String get pinSavedLocallyServiceUnavailable;
+
+  /// Server error ({code}). PIN saved locally.
+  ///
+  /// In en, this message translates to:
+  /// **'Server error ({code}). PIN saved locally.'**
+  String pinSavedLocallyServerErrorCode(String code);
+
+  /// Failed to create PIN lock.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create PIN lock.'**
+  String get failedToCreatePinLock;
+
+  /// Failed to create PIN lock. Please try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create PIN lock. Please try again.'**
+  String get failedToCreatePinLockRetry;
+
+  /// Network error. PIN saved locally.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. PIN saved locally.'**
+  String get networkErrorPinSavedLocally;
+
+  /// Connection error. Please try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection error. Please try again.'**
+  String get connectionErrorTryAgain;
+
+  /// PIN updated locally. Server sync will be available soon.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN updated locally. Server sync will be available soon.'**
+  String get pinUpdatedLocally;
+
+  /// Failed to update PIN
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update PIN'**
+  String get failedToUpdatePin;
+
+  /// Failed to delete PIN
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete PIN'**
+  String get failedToDeletePin;
+
+  /// Network error. Please try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Network error. Please try again.'**
+  String get networkErrorTryAgain;
+
+  /// Breathe. Focus. Choose.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathe. Focus. Choose.'**
+  String get messageSuggestion1;
+
+  /// Discipline is freedom.
+  ///
+  /// In en, this message translates to:
+  /// **'Discipline is freedom.'**
+  String get messageSuggestion2;
+
+  /// Less screen, more life.
+  ///
+  /// In en, this message translates to:
+  /// **'Less screen, more life.'**
+  String get messageSuggestion3;
+
+  /// Your future is created by what you do today.
+  ///
+  /// In en, this message translates to:
+  /// **'Your future is created by what you do today.'**
+  String get messageSuggestion4;
+
+  /// LimitIt - Usage Report
+  ///
+  /// In en, this message translates to:
+  /// **'LimitIt - Usage Report'**
+  String get reportTitle;
+
+  /// Generated on: {date} at {time}
+  ///
+  /// In en, this message translates to:
+  /// **'Generated on: {date} at {time}'**
+  String reportGeneratedOn(String date, String time);
+
+  /// Today's Summary
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Summary'**
+  String get reportTodaysSummary;
+
+  /// Total Apps Used
+  ///
+  /// In en, this message translates to:
+  /// **'Total Apps Used'**
+  String get reportTotalAppsUsed;
+
+  /// Total Time
+  ///
+  /// In en, this message translates to:
+  /// **'Total Time'**
+  String get reportTotalTime;
+
+  /// Avg per App
+  ///
+  /// In en, this message translates to:
+  /// **'Avg per App'**
+  String get reportAvgPerApp;
+
+  /// Daily Usage Breakdown
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Usage Breakdown'**
+  String get reportDailyUsageBreakdown;
+
+  /// Usage Time
+  ///
+  /// In en, this message translates to:
+  /// **'Usage Time'**
+  String get reportUsageTime;
+
+  /// App Name
+  ///
+  /// In en, this message translates to:
+  /// **'App Name'**
+  String get reportAppName;
+
+  /// Tips for Better Digital Balance
+  ///
+  /// In en, this message translates to:
+  /// **'Tips for Better Digital Balance'**
+  String get reportTips;
+
+  /// Stay focused, take control of your time
+  ///
+  /// In en, this message translates to:
+  /// **'Stay focused, take control of your time'**
+  String get reportFooterTagline;
+
+  /// Generated by LimitIt App
+  ///
+  /// In en, this message translates to:
+  /// **'Generated by LimitIt App'**
+  String get reportGeneratedBy;
+
+  /// Can't connect to the internet!
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t connect to the internet!'**
+  String get cantConnectToInternet;
+
+  /// No internet connection
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection'**
+  String get noInternetConnection;
+
+  /// Server error
+  ///
+  /// In en, this message translates to:
+  /// **'Server error'**
+  String get serverError;
+
+  /// Request timed out. Please try again.
+  ///
+  /// In en, this message translates to:
+  /// **'Request timed out. Please try again.'**
+  String get requestTimeout;
+
+  /// Unknown error
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error'**
+  String get unknownError;
+
+  /// Processing...
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get processing;
+
+  /// • Set daily limits for social media apps
+  ///
+  /// In en, this message translates to:
+  /// **'• Set daily limits for social media apps'**
+  String get reportTip1;
+
+  /// • Take regular breaks using the Pomodoro technique
+  ///
+  /// In en, this message translates to:
+  /// **'• Take regular breaks using the Pomodoro technique'**
+  String get reportTip2;
+
+  /// • Use Detox Mode during focus time
+  ///
+  /// In en, this message translates to:
+  /// **'• Use Detox Mode during focus time'**
+  String get reportTip3;
+
+  /// • Review your usage reports weekly
+  ///
+  /// In en, this message translates to:
+  /// **'• Review your usage reports weekly'**
+  String get reportTip4;
+
+  /// • Enable PIN lock to prevent impulsive usage
+  ///
+  /// In en, this message translates to:
+  /// **'• Enable PIN lock to prevent impulsive usage'**
+  String get reportTip5;
+
+  /// Almost all good writing begins with terrible first efforts. You need to start somewhere
+  ///
+  /// In en, this message translates to:
+  /// **'Almost all good writing begins with terrible first efforts. You need to start somewhere'**
+  String get defaultQuote1;
+
+  /// God gives every bird its food, but He does not throw it into its nest
+  ///
+  /// In en, this message translates to:
+  /// **'God gives every bird its food, but He does not throw it into its nest'**
+  String get defaultQuote2;
+
+  /// An effort made for the happiness of others lifts above ourselves
+  ///
+  /// In en, this message translates to:
+  /// **'An effort made for the happiness of others lifts above ourselves'**
+  String get defaultQuote3;
+
+  /// storeUnavailable
+  ///
+  /// In en, this message translates to:
+  /// **'The App Store is unavailable right now. Please try again later.'**
+  String get storeUnavailable;
+
+  /// planNotAvailable
+  ///
+  /// In en, this message translates to:
+  /// **'This plan is not available for purchase right now. Please try another plan or check back later.'**
+  String get planNotAvailable;
 }
 
 class _AppLocalizationsDelegate

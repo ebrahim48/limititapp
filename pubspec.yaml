@@ -64,13 +64,17 @@ dev_dependencies:
   image: ^4.5.4
 
 flutter_launcher_icons:
-
-flutter_icons:
   android: true
   ios: true
-  image_path: "assets/icons/appLogo.png"
-  adaptive_icon_foreground: "assets/icons/appLogo.png"
+  image_path: "assets/icons/ui/appLogonew.png"
+  # Padded copy — Android masks adaptive icons to the inner ~66%, so the
+  # full-bleed logo would get its corners cropped.
+  adaptive_icon_foreground: "assets/icons/ui/appLogonew_adaptive_fg.png"
   adaptive_icon_background: "#214432"
+  # App Store rejects icons with an alpha channel; flatten it onto the
+  # logo's own white card.
+  remove_alpha_ios: true
+  background_color_ios: "#ffffff"
 
 
 flutter_gen:

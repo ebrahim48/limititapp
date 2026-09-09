@@ -12,6 +12,7 @@ import 'package:limit_it_app/core/presentations/widgets/custom_text_field.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 import '../../../../../core/constants/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 
 class ViewProfileScreen extends StatelessWidget {
@@ -40,7 +41,7 @@ class ViewProfileScreen extends StatelessWidget {
             ),
             SizedBox(width: 12.w),
             CustomText(
-              text: "View Profile",
+              text: context.l10n.viewProfile,
               color: AppColors.textColor3D3D3D,
               fontsize: 24.sp,
               fontWeight: FontWeight.w500,
@@ -71,7 +72,7 @@ class ViewProfileScreen extends StatelessWidget {
         if (profile == null) {
           return Center(
             child: CustomText(
-              text: 'Failed to load profile',
+              text: context.l10n.failedToLoadProfile,
               fontsize: 16.sp,
               color: AppColors.textColor5D5D5D,
             ),
@@ -84,23 +85,24 @@ class ViewProfileScreen extends StatelessWidget {
         phoneCtrl.text = profile.phone ?? '';
 
         // Format join date
-        String joinDate = _formatJoinDate(profile.createdAt);
+        String joinDate = _formatJoinDate(context, profile.createdAt);
 
         return _buildProfileContent(profile, joinDate);
       }),
     );
   }
 
-  String _formatJoinDate(String? createdAt) {
+  String _formatJoinDate(BuildContext context, String? createdAt) {
     if (createdAt != null && createdAt.isNotEmpty) {
       try {
         DateTime date = DateTime.parse(createdAt);
-        return 'Joined in ${date.day} ${_getMonthName(date.month)} ${date.year}';
+        return context.l10n.joinedIn(
+            '${date.day} ${_getMonthName(date.month)} ${date.year}');
       } catch (e) {
-        return 'Joined recently';
+        return context.l10n.joinedRecently;
       }
     }
-    return 'Joined';
+    return context.l10n.joinedRecently;
   }
 
   Widget _buildShimmerLoading() {

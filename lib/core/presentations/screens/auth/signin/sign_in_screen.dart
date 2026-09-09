@@ -91,7 +91,7 @@ class LoginInScreen extends StatelessWidget {
                 onPressed: () {
                   if (emailCtrl.text.isEmpty) {
                     authController.loginErrorMessage.value =
-                        "Please enter your email";
+                        l10n.pleaseEnterYourEmail;
                   } else {
                     context.pushNamed(
                       AppRoutes.forgetPasswordScreen,

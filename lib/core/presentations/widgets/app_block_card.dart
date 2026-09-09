@@ -7,6 +7,7 @@ import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/models/app_bock_item.dart';
 import 'package:limit_it_app/core/presentations/widgets/app_icon_widget.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
 class AppBlockCard extends StatelessWidget {
   final AppBlockItem app;
@@ -77,12 +78,12 @@ class AppBlockCard extends StatelessWidget {
                     children: [
                       _buildTimePicker(
                         context,
-                        'Start Time',
+                        context.l10n.startTime,
                         app.startTime,
                         true,
                       ),
                       SizedBox(height: 16.h),
-                      _buildTimePicker(context, 'End Time', app.endTime, false),
+                      _buildTimePicker(context, context.l10n.endTime, app.endTime, false),
                       SizedBox(height: 24.h),
                     ],
                   )
