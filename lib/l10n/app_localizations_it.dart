@@ -2080,4 +2080,65 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get planNotAvailable =>
       'Questo piano non è al momento disponibile per l\'acquisto. Prova un altro piano o riprova più tardi.';
+
+  @override
+  String get screenTimeExplainer =>
+      'iOS blocca le app tramite Tempo di utilizzo di Apple. Le scegli nel selettore di Apple e iOS non ci dice mai quali sono, quindi possiamo mostrarne solo il numero.';
+
+  @override
+  String get screenTimeUnavailableTitle => 'Tempo di utilizzo non disponibile';
+
+  @override
+  String get screenTimeUnavailableBody =>
+      'Il blocco delle app su iOS richiede iOS 16 o successivo.';
+
+  @override
+  String get screenTimeNeedsAccess => 'Consenti l’accesso a Tempo di utilizzo';
+
+  @override
+  String get screenTimeNeedsAccessBody =>
+      'LimitIt ha bisogno del permesso Tempo di utilizzo per bloccare le app.';
+
+  @override
+  String get screenTimeAllow => 'Consenti Tempo di utilizzo';
+
+  @override
+  String get screenTimeSelected => 'LA TUA SELEZIONE';
+
+  @override
+  String get screenTimeNothingPicked => 'Nessuna app scelta';
+
+  @override
+  String screenTimeCounts(int apps, int categories) {
+    return '$apps app · $categories categorie';
+  }
+
+  @override
+  String get screenTimeBlockedNow => 'Adesso sono bloccate.';
+
+  @override
+  String get screenTimeNotBlocked =>
+      'Non ancora bloccate — tocca Blocca per iniziare.';
+
+  @override
+  String get screenTimeChooseApps => 'Scegli le app';
+
+  @override
+  String get screenTimeChangeApps => 'Cambia le app';
+
+  @override
+  String get screenTimeBlockNow => 'Blocca queste app';
+
+  @override
+  String get screenTimeUnblock => 'Sblocca';
+
+  @override
+  String get screenTimePickFirst => 'Scegli le app qui sotto per iniziare.';
+
+  @override
+  String get screenTimeUsageTitle => 'TEMPO DI UTILIZZO OGGI';
+
+  @override
+  String get screenTimeUsageMissing =>
+      'L\'utilizzo per app richiede l\'estensione dei report di Tempo di utilizzo, non inclusa in questa build.';
 }

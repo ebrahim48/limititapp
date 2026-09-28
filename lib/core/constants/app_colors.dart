@@ -23,6 +23,9 @@ class AppColors {
   /// Body text on green backgrounds
   static const Color fern = Color(0xFF3E7B25);
 
+  /// Onboarding / welcome flow CTA green (#3D7A1E)
+  static const Color brandGreen = Color(0xFF3D7A1E);
+
   /// ---------------- NEUTRALS ----------------
   /// Primary text, headings
   static const Color ink = Color(0xFF1A1A1A);
@@ -71,6 +74,10 @@ class AppColors {
     stops: [0.0849, 0.9151],
     colors: [forestGreen, leafGreen],
   );
+
+  /// ---------------- ONBOARDING ----------------
+  /// Inactive step bar on the onboarding pager
+  static const Color stepInactive = Color(0xFFA3A3A3);
 
   /// ---------------- SEMANTIC ALIASES ----------------
   static const Color scaffoldBg = white;

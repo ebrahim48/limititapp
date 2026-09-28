@@ -21,8 +21,21 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Home.svg
   SvgGenImage get home => const SvgGenImage('assets/icons/Home.svg');
 
+  /// File path: assets/icons/LimitItappicon.png
+  AssetGenImage get limitItappicon =>
+      const AssetGenImage('assets/icons/LimitItappicon.png');
+
+  /// File path: assets/icons/add.svg
+  SvgGenImage get add => const SvgGenImage('assets/icons/add.svg');
+
+  /// File path: assets/icons/addicon.png
+  AssetGenImage get addicon => const AssetGenImage('assets/icons/addicon.png');
+
   /// File path: assets/icons/appLogo.png
   AssetGenImage get appLogo => const AssetGenImage('assets/icons/appLogo.png');
+
+  /// File path: assets/icons/apple.svg
+  SvgGenImage get apple => const SvgGenImage('assets/icons/apple.svg');
 
   /// Directory path: assets/icons/apps
   $AssetsIconsAppsGen get apps => const $AssetsIconsAppsGen();
@@ -45,6 +58,12 @@ class $AssetsIconsGen {
   /// File path: assets/icons/facebook.svg
   SvgGenImage get facebook => const SvgGenImage('assets/icons/facebook.svg');
 
+  /// File path: assets/icons/google.svg
+  SvgGenImage get google => const SvgGenImage('assets/icons/google.svg');
+
+  /// File path: assets/icons/icon.svg
+  SvgGenImage get icon => const SvgGenImage('assets/icons/icon.svg');
+
   /// File path: assets/icons/instagram.svg
   SvgGenImage get instagram => const SvgGenImage('assets/icons/instagram.svg');
 
@@ -63,6 +82,10 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/netflix.svg
   SvgGenImage get netflix => const SvgGenImage('assets/icons/netflix.svg');
+
+  /// File path: assets/icons/notification.svg
+  SvgGenImage get notification =>
+      const SvgGenImage('assets/icons/notification.svg');
 
   /// File path: assets/icons/notifications.svg
   SvgGenImage get notifications =>
@@ -109,19 +132,26 @@ class $AssetsIconsGen {
   /// List of all assets
   List<dynamic> get values => [
     home,
+    limitItappicon,
+    add,
+    addicon,
     appLogo,
+    apple,
     chevron,
     detoxmode,
     edit,
     email,
     facbook,
     facebook,
+    google,
+    icon,
     instagram,
     limit,
     logo,
     moreVert,
     nameProfile,
     netflix,
+    notification,
     notifications,
     pass,
     pinlock,
@@ -349,6 +379,22 @@ class $AssetsIconsAppsGen {
 class $AssetsIconsUiGen {
   const $AssetsIconsUiGen();
 
+  /// File path: assets/icons/ui/appIcon.png
+  AssetGenImage get appIcon =>
+      const AssetGenImage('assets/icons/ui/appIcon.png');
+
+  /// File path: assets/icons/ui/appIconAdaptiveFg.png
+  AssetGenImage get appIconAdaptiveFg =>
+      const AssetGenImage('assets/icons/ui/appIconAdaptiveFg.png');
+
+  /// File path: assets/icons/ui/appLogonew.png
+  AssetGenImage get appLogonew =>
+      const AssetGenImage('assets/icons/ui/appLogonew.png');
+
+  /// File path: assets/icons/ui/appLogonew_adaptive_fg.png
+  AssetGenImage get appLogonewAdaptiveFg =>
+      const AssetGenImage('assets/icons/ui/appLogonew_adaptive_fg.png');
+
   /// File path: assets/icons/ui/apple.svg
   SvgGenImage get apple => const SvgGenImage('assets/icons/ui/apple.svg');
 
@@ -405,6 +451,10 @@ class $AssetsIconsUiGen {
   /// File path: assets/icons/ui/leaf.svg
   SvgGenImage get leaf => const SvgGenImage('assets/icons/ui/leaf.svg');
 
+  /// File path: assets/icons/ui/limitItLogo.png
+  AssetGenImage get limitItLogo =>
+      const AssetGenImage('assets/icons/ui/limitItLogo.png');
+
   /// File path: assets/icons/ui/lock.svg
   SvgGenImage get lock => const SvgGenImage('assets/icons/ui/lock.svg');
 
@@ -444,7 +494,11 @@ class $AssetsIconsUiGen {
       const SvgGenImage('assets/icons/ui/x_circle_outline.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [
+  List<dynamic> get values => [
+    appIcon,
+    appIconAdaptiveFg,
+    appLogonew,
+    appLogonewAdaptiveFg,
     apple,
     barChart,
     bell,
@@ -462,6 +516,7 @@ class $AssetsIconsUiGen {
     home,
     info,
     leaf,
+    limitItLogo,
     lock,
     logout,
     mail,

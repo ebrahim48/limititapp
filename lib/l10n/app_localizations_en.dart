@@ -2044,4 +2044,64 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get planNotAvailable =>
       'This plan is not available for purchase right now. Please try another plan or check back later.';
+
+  @override
+  String get screenTimeExplainer =>
+      'iOS blocks apps through Apple\'s Screen Time. You pick them in Apple\'s own picker, and iOS never tells us which apps they are — so we can only show how many.';
+
+  @override
+  String get screenTimeUnavailableTitle => 'Screen Time not available';
+
+  @override
+  String get screenTimeUnavailableBody =>
+      'App blocking on iOS needs iOS 16 or later.';
+
+  @override
+  String get screenTimeNeedsAccess => 'Allow Screen Time access';
+
+  @override
+  String get screenTimeNeedsAccessBody =>
+      'LimitIt needs Screen Time permission before it can block apps for you.';
+
+  @override
+  String get screenTimeAllow => 'Allow Screen Time';
+
+  @override
+  String get screenTimeSelected => 'YOUR SELECTION';
+
+  @override
+  String get screenTimeNothingPicked => 'No apps picked yet';
+
+  @override
+  String screenTimeCounts(int apps, int categories) {
+    return '$apps apps · $categories categories';
+  }
+
+  @override
+  String get screenTimeBlockedNow => 'These are blocked right now.';
+
+  @override
+  String get screenTimeNotBlocked => 'Not blocked yet — tap Block to start.';
+
+  @override
+  String get screenTimeChooseApps => 'Choose apps';
+
+  @override
+  String get screenTimeChangeApps => 'Change apps';
+
+  @override
+  String get screenTimeBlockNow => 'Block these apps';
+
+  @override
+  String get screenTimeUnblock => 'Unblock';
+
+  @override
+  String get screenTimePickFirst => 'Choose apps below to get started.';
+
+  @override
+  String get screenTimeUsageTitle => 'SCREEN TIME TODAY';
+
+  @override
+  String get screenTimeUsageMissing =>
+      'Per-app usage needs the Screen Time report extension, which is not part of this build.';
 }

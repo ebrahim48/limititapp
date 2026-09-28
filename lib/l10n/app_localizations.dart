@@ -3829,6 +3829,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This plan is not available for purchase right now. Please try another plan or check back later.'**
   String get planNotAvailable;
+
+  /// screenTimeExplainer
+  ///
+  /// In en, this message translates to:
+  /// **'iOS blocks apps through Apple\'s Screen Time. You pick them in Apple\'s own picker, and iOS never tells us which apps they are — so we can only show how many.'**
+  String get screenTimeExplainer;
+
+  /// screenTimeUnavailableTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Screen Time not available'**
+  String get screenTimeUnavailableTitle;
+
+  /// screenTimeUnavailableBody
+  ///
+  /// In en, this message translates to:
+  /// **'App blocking on iOS needs iOS 16 or later.'**
+  String get screenTimeUnavailableBody;
+
+  /// screenTimeNeedsAccess
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Screen Time access'**
+  String get screenTimeNeedsAccess;
+
+  /// screenTimeNeedsAccessBody
+  ///
+  /// In en, this message translates to:
+  /// **'LimitIt needs Screen Time permission before it can block apps for you.'**
+  String get screenTimeNeedsAccessBody;
+
+  /// screenTimeAllow
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Screen Time'**
+  String get screenTimeAllow;
+
+  /// screenTimeSelected
+  ///
+  /// In en, this message translates to:
+  /// **'YOUR SELECTION'**
+  String get screenTimeSelected;
+
+  /// screenTimeNothingPicked
+  ///
+  /// In en, this message translates to:
+  /// **'No apps picked yet'**
+  String get screenTimeNothingPicked;
+
+  /// screenTimeCounts
+  ///
+  /// In en, this message translates to:
+  /// **'{apps} apps · {categories} categories'**
+  String screenTimeCounts(int apps, int categories);
+
+  /// screenTimeBlockedNow
+  ///
+  /// In en, this message translates to:
+  /// **'These are blocked right now.'**
+  String get screenTimeBlockedNow;
+
+  /// screenTimeNotBlocked
+  ///
+  /// In en, this message translates to:
+  /// **'Not blocked yet — tap Block to start.'**
+  String get screenTimeNotBlocked;
+
+  /// screenTimeChooseApps
+  ///
+  /// In en, this message translates to:
+  /// **'Choose apps'**
+  String get screenTimeChooseApps;
+
+  /// screenTimeChangeApps
+  ///
+  /// In en, this message translates to:
+  /// **'Change apps'**
+  String get screenTimeChangeApps;
+
+  /// screenTimeBlockNow
+  ///
+  /// In en, this message translates to:
+  /// **'Block these apps'**
+  String get screenTimeBlockNow;
+
+  /// screenTimeUnblock
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get screenTimeUnblock;
+
+  /// screenTimePickFirst
+  ///
+  /// In en, this message translates to:
+  /// **'Choose apps below to get started.'**
+  String get screenTimePickFirst;
+
+  /// screenTimeUsageTitle
+  ///
+  /// In en, this message translates to:
+  /// **'SCREEN TIME TODAY'**
+  String get screenTimeUsageTitle;
+
+  /// screenTimeUsageMissing
+  ///
+  /// In en, this message translates to:
+  /// **'Per-app usage needs the Screen Time report extension, which is not part of this build.'**
+  String get screenTimeUsageMissing;
 }
 
 class _AppLocalizationsDelegate

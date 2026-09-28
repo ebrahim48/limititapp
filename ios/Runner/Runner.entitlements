@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Required by FamilyControls / ManagedSettings (Screen Time).
+	     Enable "Family Controls" under Signing & Capabilities in Xcode; App
+	     Store distribution additionally needs Apple to approve the request at
+	     https://developer.apple.com/contact/request/family-controls-distribution -->
+	<key>com.apple.developer.family-controls</key>
+	<true/>
+</dict>
+</plist>

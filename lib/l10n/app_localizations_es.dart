@@ -2083,4 +2083,65 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get planNotAvailable =>
       'Este plan no está disponible para su compra en este momento. Prueba con otro plan o vuelve más tarde.';
+
+  @override
+  String get screenTimeExplainer =>
+      'iOS bloquea las apps mediante Tiempo de uso de Apple. Tú las eliges en el selector de Apple y iOS nunca nos dice cuáles son, así que solo podemos mostrar cuántas.';
+
+  @override
+  String get screenTimeUnavailableTitle => 'Tiempo de uso no disponible';
+
+  @override
+  String get screenTimeUnavailableBody =>
+      'Bloquear apps en iOS requiere iOS 16 o posterior.';
+
+  @override
+  String get screenTimeNeedsAccess => 'Permitir acceso a Tiempo de uso';
+
+  @override
+  String get screenTimeNeedsAccessBody =>
+      'LimitIt necesita permiso de Tiempo de uso para poder bloquear apps.';
+
+  @override
+  String get screenTimeAllow => 'Permitir Tiempo de uso';
+
+  @override
+  String get screenTimeSelected => 'TU SELECCIÓN';
+
+  @override
+  String get screenTimeNothingPicked => 'Aún no has elegido apps';
+
+  @override
+  String screenTimeCounts(int apps, int categories) {
+    return '$apps apps · $categories categorías';
+  }
+
+  @override
+  String get screenTimeBlockedNow => 'Ahora están bloqueadas.';
+
+  @override
+  String get screenTimeNotBlocked =>
+      'Aún no bloqueadas: toca Bloquear para empezar.';
+
+  @override
+  String get screenTimeChooseApps => 'Elegir apps';
+
+  @override
+  String get screenTimeChangeApps => 'Cambiar apps';
+
+  @override
+  String get screenTimeBlockNow => 'Bloquear estas apps';
+
+  @override
+  String get screenTimeUnblock => 'Desbloquear';
+
+  @override
+  String get screenTimePickFirst => 'Elige las apps abajo para empezar.';
+
+  @override
+  String get screenTimeUsageTitle => 'TIEMPO DE USO HOY';
+
+  @override
+  String get screenTimeUsageMissing =>
+      'El uso por aplicación necesita la extensión de informes de Tiempo de uso, que no forma parte de esta versión.';
 }

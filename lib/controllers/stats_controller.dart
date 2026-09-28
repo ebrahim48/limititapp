@@ -56,9 +56,14 @@ class StatsController extends GetxController {
 
       for (final limit in limits) {
         final today = await storage.getAppUsageToday(limit.packageName);
-        final opens = today?['opensCount'] ?? 0;
-        final usedMinutes = today?['usageMinutes'] ??
-            ((usageByPackage[limit.packageName]?.usageTimeMs ?? 0) ~/ 60000);
+        final device = usageByPackage[limit.packageName];
+
+        // The stored counters only exist once something has written them for
+        // today; the device's own UsageStats launch count is the real number
+        // and is what keeps these totals live.
+        final opens = today?['opensCount'] ?? device?.openCount ?? 0;
+        final usedMinutes =
+            today?['usageMinutes'] ?? ((device?.usageTimeMs ?? 0) ~/ 60000);
 
         if (limit.maxDailyOpens > 0 && opens > limit.maxDailyOpens) {
           opensBlocked += opens - limit.maxDailyOpens;
@@ -76,7 +81,7 @@ class StatsController extends GetxController {
             AppSaving(
               packageName: limit.packageName,
               appName: limit.appName,
-              icon: limit.appIcon ?? usageByPackage[limit.packageName]?.icon,
+              icon: limit.appIcon ?? device?.icon,
               savedMinutes: saved,
             ),
           );

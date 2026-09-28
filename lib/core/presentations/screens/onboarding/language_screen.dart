@@ -3,15 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
-import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
+import 'package:limit_it_app/core/presentations/widgets/ui/ui.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
 import 'package:limit_it_app/core/presentations/controller/locale_controller.dart';
 import 'package:limit_it_app/l10n/app_localizations.dart';
-import 'dart:ui';
-import '../../../constants/app_colors.dart';
 
 class LanguageScreen extends StatefulWidget {
-  const LanguageScreen({super.key});
+  const LanguageScreen({super.key, this.fromSettings = true});
+
+  /// Settings theke khola hoyeche na onboarding flow er moddhe —
+  /// CTA ta kothay jabe seta ei flag e thik hoy.
+  final bool fromSettings;
 
   @override
   State<LanguageScreen> createState() => _LanguageScreenState();
@@ -49,48 +51,11 @@ class _LanguageScreenState extends State<LanguageScreen>
       final _ = localeController.locale.value;
 
       return Scaffold(
+        backgroundColor: AppColors.white,
         body: Stack(
           children: [
-            Positioned(
-            top: 18.h,
-            left: 109.w,
-            child: Container(
-              width: 259.w,
-              height: 195.h,
-              decoration: BoxDecoration(
-                color: AppColors.primaryColor.withValues(alpha: 0.5),
-                shape: BoxShape.circle,
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                child: Container(
-                  decoration: BoxDecoration(color: Colors.transparent),
-                ),
-              ),
-            ),
-          ),
-
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Container(
-              width: 158.w,
-              height: 219.h,
-              decoration: BoxDecoration(
-                color: AppColors.textColor803D20.withValues(alpha: 0.3),
-                shape: BoxShape.circle,
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 100, sigmaY: 100),
-                child: Container(
-                  decoration: BoxDecoration(color: Colors.transparent),
-                ),
-              ),
-            ),
-          ),
-
-          // Only reachable with a route below it when opened from settings;
-          // on first launch there is nothing to go back to.
+          // Onboarding flow theke elei ekta route niche thake, tai back
+          // arrow ta sekhetreo dekha jay.
           if (context.canPop())
             Positioned(
               top: 0,
@@ -130,14 +95,15 @@ class _LanguageScreenState extends State<LanguageScreen>
 
                   SizedBox(height: 32.h),
 
-                  CustomButton(
-                    title: AppLocalizations.of(context)!.getStarted,
-                    onpress: () {
-                      // Opened from settings: just go back. First launch: sign in.
-                      if (context.canPop()) {
+                  AppButton(
+                    label: AppLocalizations.of(context)!.getStarted,
+                    onPressed: () {
+                      // Opened from settings: just go back. First launch:
+                      // continue into the onboarding tour.
+                      if (widget.fromSettings) {
                         context.pop();
                       } else {
-                        context.goNamed(AppRoutes.logInScreen);
+                        context.pushNamed(AppRoutes.onboardingScreen);
                       }
                     },
                   ),

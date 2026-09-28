@@ -1135,5 +1135,85 @@
   "planNotAvailable": "Este plan no está disponible para su compra en este momento. Prueba con otro plan o vuelve más tarde.",
   "@planNotAvailable": {
     "description": "planNotAvailable"
+  },
+  "screenTimeExplainer": "iOS bloquea las apps mediante Tiempo de uso de Apple. Tú las eliges en el selector de Apple y iOS nunca nos dice cuáles son, así que solo podemos mostrar cuántas.",
+  "@screenTimeExplainer": {
+    "description": "screenTimeExplainer"
+  },
+  "screenTimeUnavailableTitle": "Tiempo de uso no disponible",
+  "@screenTimeUnavailableTitle": {
+    "description": "screenTimeUnavailableTitle"
+  },
+  "screenTimeUnavailableBody": "Bloquear apps en iOS requiere iOS 16 o posterior.",
+  "@screenTimeUnavailableBody": {
+    "description": "screenTimeUnavailableBody"
+  },
+  "screenTimeNeedsAccess": "Permitir acceso a Tiempo de uso",
+  "@screenTimeNeedsAccess": {
+    "description": "screenTimeNeedsAccess"
+  },
+  "screenTimeNeedsAccessBody": "LimitIt necesita permiso de Tiempo de uso para poder bloquear apps.",
+  "@screenTimeNeedsAccessBody": {
+    "description": "screenTimeNeedsAccessBody"
+  },
+  "screenTimeAllow": "Permitir Tiempo de uso",
+  "@screenTimeAllow": {
+    "description": "screenTimeAllow"
+  },
+  "screenTimeSelected": "TU SELECCIÓN",
+  "@screenTimeSelected": {
+    "description": "screenTimeSelected"
+  },
+  "screenTimeNothingPicked": "Aún no has elegido apps",
+  "@screenTimeNothingPicked": {
+    "description": "screenTimeNothingPicked"
+  },
+  "screenTimeCounts": "{apps} apps · {categories} categorías",
+  "@screenTimeCounts": {
+    "description": "screenTimeCounts",
+    "placeholders": {
+      "apps": {
+        "type": "int"
+      },
+      "categories": {
+        "type": "int"
+      }
+    }
+  },
+  "screenTimeBlockedNow": "Ahora están bloqueadas.",
+  "@screenTimeBlockedNow": {
+    "description": "screenTimeBlockedNow"
+  },
+  "screenTimeNotBlocked": "Aún no bloqueadas: toca Bloquear para empezar.",
+  "@screenTimeNotBlocked": {
+    "description": "screenTimeNotBlocked"
+  },
+  "screenTimeChooseApps": "Elegir apps",
+  "@screenTimeChooseApps": {
+    "description": "screenTimeChooseApps"
+  },
+  "screenTimeChangeApps": "Cambiar apps",
+  "@screenTimeChangeApps": {
+    "description": "screenTimeChangeApps"
+  },
+  "screenTimeBlockNow": "Bloquear estas apps",
+  "@screenTimeBlockNow": {
+    "description": "screenTimeBlockNow"
+  },
+  "screenTimeUnblock": "Desbloquear",
+  "@screenTimeUnblock": {
+    "description": "screenTimeUnblock"
+  },
+  "screenTimePickFirst": "Elige las apps abajo para empezar.",
+  "@screenTimePickFirst": {
+    "description": "screenTimePickFirst"
+  },
+  "screenTimeUsageTitle": "TIEMPO DE USO HOY",
+  "@screenTimeUsageTitle": {
+    "description": "screenTimeUsageTitle"
+  },
+  "screenTimeUsageMissing": "El uso por aplicación necesita la extensión de informes de Tiempo de uso, que no forma parte de esta versión.",
+  "@screenTimeUsageMissing": {
+    "description": "screenTimeUsageMissing"
   }
 }

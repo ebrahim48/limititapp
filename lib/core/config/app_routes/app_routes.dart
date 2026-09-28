@@ -27,6 +27,8 @@ import 'package:limit_it_app/core/presentations/screens/limits/schedules_limits_
 import 'package:limit_it_app/core/presentations/screens/limits/set_pin_number_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/notifications/notifications_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/onboarding/language_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/onboarding/get_started_screen.dart';
+import 'package:limit_it_app/core/presentations/screens/onboarding/onboarding_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/premium/cancel_subscription_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/premium/choose_plan_screen.dart';
 import 'package:limit_it_app/core/presentations/screens/premium/manage_subscription_screen.dart';
@@ -73,7 +75,9 @@ import 'package:limit_it_app/core/presentations/screens/splash/splash_screen.dar
 
 class AppRoutes {
   static const String splashScreen = "/splashScreen";
+  static const String getStartedScreen = "/getStartedScreen";
   static const String languageScreen = "/languageScreen";
+  static const String onboardingScreen = "/onboardingScreen";
 
   /// =============================> Auth ================================>
 
@@ -416,11 +420,28 @@ class AppRoutes {
 
       ///<<<=============>>> Language SCREEN <<<===============>>>
       GoRoute(
+        path: getStartedScreen,
+        name: getStartedScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const GetStartedScreen(), state),
+      ),
+
+      GoRoute(
+        path: onboardingScreen,
+        name: onboardingScreen,
+        pageBuilder: (context, state) =>
+            _customTransitionPage(const OnboardingScreen(), state),
+      ),
+
+      GoRoute(
         path: languageScreen,
         name: languageScreen,
-        pageBuilder:
-            (context, state) =>
-            _customTransitionPage(LanguageScreen(), state),
+        pageBuilder: (context, state) => _customTransitionPage(
+          LanguageScreen(
+            fromSettings: state.uri.queryParameters['from'] != 'onboarding',
+          ),
+          state,
+        ),
       ),
 
       /// =============================================================> Auth  =================================================>

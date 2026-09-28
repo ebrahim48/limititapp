@@ -7,6 +7,13 @@ class PlanModel {
   final List<String> benefits;
   final PlanLimits limits;
   final bool isActive;
+
+  /// Store product ID backing this plan (App Store Connect / Play Console).
+  ///
+  /// Sent by the backend as `productId`. Null when the backend has not set one
+  /// yet — the app then falls back to the billing-cycle mapping in
+  /// `core/constants/iap_products.dart`.
+  final String? productId;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -19,6 +26,7 @@ class PlanModel {
     required this.benefits,
     required this.limits,
     required this.isActive,
+    this.productId,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -35,6 +43,7 @@ class PlanModel {
           : [],
       limits: PlanLimits.fromJson(json['limits'] ?? {}),
       isActive: json['isActive'] ?? false,
+      productId: _readProductId(json),
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );
@@ -50,10 +59,19 @@ class PlanModel {
       'benefits': benefits,
       'limits': limits.toJson(),
       'isActive': isActive,
+      if (productId != null) 'productId': productId,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };
   }
+}
+
+/// Reads `productId` off a plan payload, treating blank values as unset.
+String? _readProductId(Map<String, dynamic> json) {
+  final raw = json['productId'];
+  if (raw is! String) return null;
+  final trimmed = raw.trim();
+  return trimmed.isEmpty ? null : trimmed;
 }
 
 class PlanLimits {

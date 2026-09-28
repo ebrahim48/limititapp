@@ -362,6 +362,7 @@ class AppLineChart extends StatelessWidget {
     this.height,
     this.showDots = true,
     this.color,
+    this.smooth = false,
   });
 
   final List<double> values;
@@ -369,6 +370,9 @@ class AppLineChart extends StatelessWidget {
   final double? height;
   final bool showDots;
   final Color? color;
+
+  /// Straight segments er bodole ekta curved (Catmull-Rom) line.
+  final bool smooth;
 
   @override
   Widget build(BuildContext context) {
@@ -382,6 +386,7 @@ class AppLineChart extends StatelessWidget {
               values: values,
               color: color ?? AppColors.leafGreen,
               showDots: showDots,
+              smooth: smooth,
             ),
             size: Size.infinite,
           ),
@@ -415,11 +420,46 @@ class _LinePainter extends CustomPainter {
     required this.values,
     required this.color,
     required this.showDots,
+    required this.smooth,
   });
 
   final List<double> values;
   final Color color;
   final bool showDots;
+  final bool smooth;
+
+  /// Catmull-Rom spline ke cubic bezier e convert kore — ekta soft curve
+  /// je protita data point er upor diyei jay.
+  Path _buildPath(List<Offset> pts) {
+    final path = Path()..moveTo(pts.first.dx, pts.first.dy);
+
+    if (!smooth || pts.length < 3) {
+      for (final p in pts.skip(1)) {
+        path.lineTo(p.dx, p.dy);
+      }
+      return path;
+    }
+
+    for (var i = 0; i < pts.length - 1; i++) {
+      final p0 = i == 0 ? pts[i] : pts[i - 1];
+      final p1 = pts[i];
+      final p2 = pts[i + 1];
+      final p3 = i + 2 < pts.length ? pts[i + 2] : p2;
+
+      final c1 = Offset(
+        p1.dx + (p2.dx - p0.dx) / 6,
+        p1.dy + (p2.dy - p0.dy) / 6,
+      );
+      final c2 = Offset(
+        p2.dx - (p3.dx - p1.dx) / 6,
+        p2.dy - (p3.dy - p1.dy) / 6,
+      );
+
+      path.cubicTo(c1.dx, c1.dy, c2.dx, c2.dy, p2.dx, p2.dy);
+    }
+
+    return path;
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -441,10 +481,7 @@ class _LinePainter extends CustomPainter {
         ),
     ];
 
-    final linePath = Path()..moveTo(points.first.dx, points.first.dy);
-    for (final p in points.skip(1)) {
-      linePath.lineTo(p.dx, p.dy);
-    }
+    final linePath = _buildPath(points);
 
     final areaPath = Path.from(linePath)
       ..lineTo(size.width, size.height)
@@ -484,5 +521,8 @@ class _LinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _LinePainter old) =>
-      old.values != values || old.color != color || old.showDots != showDots;
+      old.values != values ||
+      old.color != color ||
+      old.showDots != showDots ||
+      old.smooth != smooth;
 }

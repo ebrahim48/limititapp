@@ -17,6 +17,14 @@ import UIKit
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
     registerDeviceAppsChannel(engineBridge.pluginRegistry)
+
+    ScreenTimeChannel.register(with: engineBridge.pluginRegistry) { [weak self] in
+      self?.window?.rootViewController
+    }
+
+    // Apple resolves app icons and usage only inside SwiftUI, so those rows are
+    // drawn natively and embedded in the Flutter tree.
+    ScreenTimePlatformViews.register(with: engineBridge.pluginRegistry)
   }
 
   /// Lets Dart ask which of a known set of apps is present on this device.

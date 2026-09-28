@@ -8,9 +8,9 @@ import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
 import 'package:limit_it_app/core/models/protection_draft.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
-import 'package:limit_it_app/core/services/device_apps_service.dart';
 import 'package:limit_it_app/l10n/app_localizations.dart';
 import '../../widgets/ui/ui.dart';
+import 'ios_screen_time_view.dart';
 
 /// Why the banner above the list is showing. Resolved to text at build time so
 /// the loaders stay free of `BuildContext`.
@@ -18,9 +18,13 @@ enum _Notice { usageAccess, limitedDetection, loadFailed }
 
 /// Pick the app to protect.
 ///
-/// The list is always read off the device: Android enumerates every launchable
-/// app through [AppUsageService], iOS probes the [DeviceAppsService] catalogue
-/// (the only detection Apple allows) and shows the ones actually installed.
+/// Android enumerates every launchable app through [AppUsageService] and
+/// protects them one by one.
+///
+/// iOS cannot do that: Apple exposes no API to list installed apps, read their
+/// usage, or draw our own block screen. The only sanctioned route is Screen
+/// Time, so on iOS this screen hands over to [IosScreenTimeView], which drives
+/// Apple's picker and shield instead of a list of rows.
 class SearchAppScreen extends StatefulWidget {
   const SearchAppScreen({super.key, this.protectionType});
 
@@ -36,7 +40,6 @@ class _SearchAppScreenState extends State<SearchAppScreen>
   static const String _ownPackage = 'com.limitit.digitalbalance';
 
   final TextEditingController _searchCtrl = TextEditingController();
-  final DeviceAppsService _deviceApps = DeviceAppsService();
 
   List<_AppEntry> _entries = [];
   String _query = '';
@@ -65,11 +68,11 @@ class _SearchAppScreenState extends State<SearchAppScreen>
   }
 
   Future<void> _loadApps() async {
+    if (!Platform.isAndroid) return; // iOS renders [IosScreenTimeView] instead.
     if (mounted) setState(() => _isLoading = true);
 
     try {
-      final result =
-          Platform.isAndroid ? await _loadAndroidApps() : await _loadIosApps();
+      final result = await _loadAndroidApps();
 
       if (!mounted) return;
       setState(() {
@@ -126,30 +129,6 @@ class _SearchAppScreenState extends State<SearchAppScreen>
     );
   }
 
-  /// iOS cannot enumerate installed apps, so we probe the known catalogue and
-  /// show the hits. When nothing answers (older iOS, simulator) we still offer
-  /// the full catalogue rather than an empty screen.
-  Future<_LoadResult> _loadIosApps() async {
-    final detected = await _deviceApps.detectInstalled();
-
-    if (detected.isNotEmpty) {
-      return _LoadResult(
-        entries: [
-          for (final app in detected)
-            _AppEntry(name: app.name, packageName: app.packageName),
-        ],
-      );
-    }
-
-    return _LoadResult(
-      entries: [
-        for (final app in DeviceAppsService.catalog)
-          _AppEntry(name: app.name, packageName: app.packageName),
-      ],
-      notice: _Notice.limitedDetection,
-    );
-  }
-
   Future<void> _grantUsageAccess() async {
     await Get.find<AppUsageService>().requestPermission();
     await _loadApps();
@@ -188,7 +167,11 @@ class _SearchAppScreenState extends State<SearchAppScreen>
           ),
         ],
       ),
-      body: Column(
+      // Apple gives us no app list to search, so the whole list UI is
+      // replaced rather than left empty.
+      body: !Platform.isAndroid
+          ? const IosScreenTimeView()
+          : Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AppSearchField(

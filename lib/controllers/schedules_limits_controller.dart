@@ -43,6 +43,12 @@ class SchedulesLimitsController extends GetxController {
         appIconMap[app.packageName] = app.icon;
       }
 
+      // Today's real minutes / launch counts straight off the device.
+      final todayUsage = {
+        for (final app in await appUsageService.getTodayAppUsage())
+          app.packageName: app,
+      };
+
       // Get app limits to get schedule information
       final appLimits = await appLimitStorageService.getAppLimits();
 
@@ -62,17 +68,11 @@ class SchedulesLimitsController extends GetxController {
 
         // Get usage info from today's usage
         String usageInfo = appL10n.noUsageToday;
-        final usageToday = await appLimitStorageService.getAppUsageToday(
-          blockedApp.packageName,
+        final usageToday = _usageLine(
+          await appLimitStorageService.getAppUsageToday(blockedApp.packageName),
+          todayUsage[blockedApp.packageName],
         );
-
-        if (usageToday != null) {
-          final opens = usageToday['opensCount'] ?? 0;
-          final minutes = usageToday['usageMinutes'] ?? 0;
-          if (minutes > 0 || opens > 0) {
-            usageInfo = '$minutes mins • $opens Opens';
-          }
-        }
+        if (usageToday != null) usageInfo = usageToday;
 
         // Get schedule times from app limit or use defaults
         String startTime = '10:00 PM';
@@ -112,17 +112,11 @@ class SchedulesLimitsController extends GetxController {
         for (final appLimit in appLimits) {
           // Get usage info from today's usage
           String usageInfo = appL10n.noUsageToday;
-          final usageToday = await appLimitStorageService.getAppUsageToday(
-            appLimit.packageName,
+          final usageToday = _usageLine(
+            await appLimitStorageService.getAppUsageToday(appLimit.packageName),
+            todayUsage[appLimit.packageName],
           );
-
-          if (usageToday != null) {
-            final opens = usageToday['opensCount'] ?? 0;
-            final minutes = usageToday['usageMinutes'] ?? 0;
-            if (minutes > 0 || opens > 0) {
-              usageInfo = '$minutes mins • $opens Opens';
-            }
-          }
+          if (usageToday != null) usageInfo = usageToday;
 
           // Get schedule times from app limit or use defaults
           String startTime = '10:00 PM';
@@ -164,6 +158,19 @@ class SchedulesLimitsController extends GetxController {
       debugPrint('Error loading blocked apps: $e');
       isLoading(false);
     }
+  }
+
+  /// "45 mins • 12 Opens" for the card subtitle.
+  ///
+  /// The stored counters only exist once something has written them for today,
+  /// so the device's own UsageStats numbers are the reliable source and the
+  /// stored ones are treated as an override.
+  String? _usageLine(Map<String, int>? stored, AppUsageData? device) {
+    final minutes = stored?['usageMinutes'] ?? ((device?.usageTimeMs ?? 0) ~/ 60000);
+    final opens = stored?['opensCount'] ?? device?.openCount ?? 0;
+
+    if (minutes <= 0 && opens <= 0) return null;
+    return '$minutes mins • $opens Opens';
   }
 
   /// Convert 24h format to 12h AM/PM format

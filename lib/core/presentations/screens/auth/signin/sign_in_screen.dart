@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
+import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/ui/ui.dart';
+import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
 class LoginInScreen extends StatelessWidget {
   LoginInScreen({super.key});
@@ -122,6 +124,42 @@ class LoginInScreen extends StatelessWidget {
 
             SizedBox(height: 20.h),
 
+            /// ---------------- OR divider ----------------
+            _OrDivider(label: l10n.or),
+
+            SizedBox(height: 20.h),
+
+            /// ---------------- Sign in with Apple ----------------
+            AppSocialButton(
+              dark: true,
+              label: l10n.continueWithApple,
+              icon: Assets.icons.ui.apple.svg(
+                width: 20.w,
+                height: 20.w,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.white,
+                  BlendMode.srcIn,
+                ),
+              ),
+              onPressed: () => ToastMessageHelper.showToastMessage(
+                l10n.socialLoginComingSoon,
+              ),
+            ),
+
+            SizedBox(height: 12.h),
+
+            /// ---------------- Sign in with Google ----------------
+            AppSocialButton(
+              dark: false,
+              label: l10n.continueWithGoogle,
+              icon: Assets.icons.ui.google.svg(width: 20.w, height: 20.w),
+              onPressed: () => ToastMessageHelper.showToastMessage(
+                l10n.socialLoginComingSoon,
+              ),
+            ),
+
+            SizedBox(height: 20.h),
+
             Center(
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -145,6 +183,30 @@ class LoginInScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// "— or —" horizontal rule with a centred label.
+class _OrDivider extends StatelessWidget {
+  const _OrDivider({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        const Expanded(child: Divider(color: AppColors.haze, thickness: 1)),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          child: Text(
+            label,
+            style: AppTextStyles.small(color: AppColors.mist),
+          ),
+        ),
+        const Expanded(child: Divider(color: AppColors.haze, thickness: 1)),
+      ],
     );
   }
 }

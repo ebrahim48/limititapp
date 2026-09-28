@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:limit_it_app/controllers/ads_controller.dart';
 import 'package:limit_it_app/controllers/motivation_controller.dart';
+import 'package:limit_it_app/controllers/stats_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
@@ -35,8 +36,14 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
       Get.put(MotivationController(), permanent: true);
   final AdsController _adsController = Get.put(AdsController());
 
+  /// Owns the "opens avoided" maths and appends today to the stored history,
+  /// so both the number and the trend below are the same real data the
+  /// Statistics tab shows.
+  final StatsController _stats = Get.find<StatsController>();
+
   List<AppLimitModel> _limits = [];
-  Map<String, int> _opensToday = {};
+  int _avoidedToday = 0;
+  List<double> _avoidedTrend = const [];
   bool _isLoading = true;
 
   BannerAd? _bannerAd;
@@ -64,17 +71,16 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
     try {
       final limits = await AppLimitStorageService.instance.getAppLimits();
 
-      final opens = <String, int>{};
-      for (final limit in limits) {
-        final usage = await AppLimitStorageService.instance
-            .getAppUsageToday(limit.packageName);
-        opens[limit.packageName] = usage?['opensCount'] ?? 0;
-      }
+      await _stats.load();
+      final week = await _stats.seriesFor(StatsRange.week);
 
       if (!mounted) return;
       setState(() {
         _limits = limits;
-        _opensToday = opens;
+        _avoidedToday = _stats.blockedOpens.value;
+        _avoidedTrend = [
+          for (final day in week) day.blockedOpens.toDouble(),
+        ];
         _isLoading = false;
       });
     } catch (e) {
@@ -98,23 +104,38 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
     _bannerAd?.load();
   }
 
-  /// How many blocked opens the protections prevented today.
-  int get _avoidedToday {
-    var total = 0;
-    for (final limit in _limits) {
-      final opens = _opensToday[limit.packageName] ?? 0;
-      final over = opens - limit.maxDailyOpens;
-      if (limit.maxDailyOpens > 0 && over > 0) total += over;
-    }
-    return total;
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
+    // Home tab er brand header; Settings theke push korle purono
+    // back-button wala AppTopBar thake.
+    final headerActions = [
+      GestureDetector(
+        onTap: () => context.pushNamed(AppRoutes.notificationsScreen),
+        child: Assets.icons.notification.svg(width: 22.w, height: 22.w),
+      ),
+      SizedBox(width: 14.w),
+      _AddProtectionButton(onTap: _openAddProtection),
+    ];
+
     return AppScaffold(
-      appBar: AppTopBar(title: l10n.appProtection, showBack: !widget.embedded),
+      appBar: widget.embedded
+          ? AppBrandBar(title: l10n.appTitle, actions: headerActions)
+          : AppTopBar(
+              title: l10n.appProtection,
+              actions: [
+                GestureDetector(
+                  onTap: () =>
+                      context.pushNamed(AppRoutes.notificationsScreen),
+                  child: Assets.icons.notification.svg(
+                    width: 22.w,
+                    height: 22.w,
+                  ),
+                ),
+                SizedBox(width: 4.w),
+              ],
+            ),
       body: RefreshIndicator(
         color: AppColors.leafGreen,
         onRefresh: _loadProtections,
@@ -124,14 +145,7 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
           ),
           padding: EdgeInsets.only(bottom: 24.h),
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(l10n.yourProtectedApps, style: AppTextStyles.h4()),
-                ),
-                _AddProtectionButton(onTap: _openAddProtection),
-              ],
-            ),
+            Text(l10n.yourProtectedApps, style: AppTextStyles.h4()),
             SizedBox(height: 12.h),
 
             if (_isLoading)
@@ -160,41 +174,49 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
 
             /// ---------------- Avoided today ----------------
             AppSoftCard(
-              padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 0),
+              // Padding ta text block e — trend line ta card er dhar theke
+              // dhar porjonto full-bleed hoy.
+              padding: EdgeInsets.zero,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    l10n.todayYouveAvoided,
-                    style: AppTextStyles.label(color: AppColors.fern),
-                  ),
-                  SizedBox(height: 6.h),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(
-                        '$_avoidedToday',
-                        style: AppTextStyles.display(
-                          color: AppColors.forestGreen,
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16.w, 14.h, 16.w, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.todayYouveAvoided,
+                          style: AppTextStyles.label(color: AppColors.fern),
                         ),
-                      ),
-                      SizedBox(width: 6.w),
-                      Text(
-                        l10n.impulsiveOpenings,
-                        style: AppTextStyles.body(color: AppColors.fern),
-                      ),
-                    ],
+                        SizedBox(height: 6.h),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              '$_avoidedToday',
+                              style: AppTextStyles.display(
+                                color: AppColors.forestGreen,
+                              ),
+                            ),
+                            SizedBox(width: 6.w),
+                            Text(
+                              l10n.impulsiveOpenings,
+                              style: AppTextStyles.body(color: AppColors.fern),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 8.h),
-                  if (_avoidedToday > 0)
-                    AppLineChart(
-                      values: _weeklyAvoidedTrend,
-                      height: 56.h,
-                      showDots: false,
-                    )
-                  else
-                    SizedBox(height: 14.h),
+                  AppLineChart(
+                    values: _avoidedTrend,
+                    height: 56.h,
+                    showDots: false,
+                    smooth: true,
+                  ),
                 ],
               ),
             ),
@@ -264,20 +286,6 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
     );
   }
 
-  /// Placeholder trend until per-day history is stored.
-  List<double> get _weeklyAvoidedTrend {
-    final today = _avoidedToday.toDouble();
-    return [
-      today * 0.25,
-      today * 0.35,
-      today * 0.45,
-      today * 0.55,
-      today * 0.7,
-      today * 0.85,
-      today,
-    ];
-  }
-
   String _describe(AppLimitModel limit) {
     final l10n = context.l10n;
 
@@ -320,17 +328,20 @@ class _AddProtectionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // The artwork is a 30pt circle on a 46pt canvas — the extra 8pt all round
+    // is the drop shadow. Laying the widget out at 46 would push it off the
+    // header's gutter, so the box stays 30 and the shadow paints outside it.
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        width: 32.w,
-        height: 32.w,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: AppColors.mint,
-          borderRadius: BorderRadius.circular(10.r),
+      behavior: HitTestBehavior.opaque,
+      child: SizedBox(
+        width: 30.w,
+        height: 30.w,
+        child: OverflowBox(
+          maxWidth: 46.w,
+          maxHeight: 46.w,
+          child: Assets.icons.add.svg(width: 46.w, height: 46.w),
         ),
-        child: Icon(Icons.add_rounded, size: 20.sp, color: AppColors.fern),
       ),
     );
   }

@@ -80,11 +80,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
 
   Future<void> _loadIAPProducts() async {
     // Generate product IDs dynamically from available plans
-    final productIds = <String>{};
-    for (var plan in _controller.plans) {
-      final productId = productIdFor(plan);
-      if (productId != null) productIds.add(productId);
-    }
+    final productIds = productIdsFor(_controller.plans);
 
     if (productIds.isEmpty) {
       debugPrint('====> No plans available — skipping IAP query');
@@ -110,6 +106,15 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
   }
 
   // ── Purchase Flow ────────────────────────────────────────────────────────
+
+  /// Price to show for [plan]: the store's own localised price once the product
+  /// is loaded, so a card never advertises a different amount than the purchase
+  /// sheet charges. Falls back to the backend price until the store answers.
+  String _priceLabelFor(PlanModel plan) {
+    final productId = productIdFor(plan);
+    final product = productId == null ? null : _iapProducts[productId];
+    return product?.price ?? '\$${plan.price.toStringAsFixed(2)}';
+  }
 
   Future<void> _onSubscribePressed(PlanModel plan) async {
     // Premium is only ever granted after a real store purchase — no mock
@@ -373,6 +378,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
             final plan = _controller.plans[index];
             return Obx(() => _PlanCard(
               plan: plan,
+              priceLabel: _priceLabelFor(plan),
               isSelected: _controller.selectedPlan.value == plan.id,
               onSelect: () => _controller.changePlan(plan.id),
               onSubscribe: () => _onSubscribePressed(plan),
@@ -388,12 +394,16 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
 
 class _PlanCard extends StatelessWidget {
   final PlanModel plan;
+
+  /// Already formatted — store price when known, backend price otherwise.
+  final String priceLabel;
   final bool isSelected;
   final VoidCallback onSelect;
   final VoidCallback onSubscribe;
 
   const _PlanCard({
     required this.plan,
+    required this.priceLabel,
     required this.isSelected,
     required this.onSelect,
     required this.onSubscribe,
@@ -478,7 +488,7 @@ class _PlanCard extends StatelessWidget {
               const SizedBox(height: 12),
 
               Text(
-                '\$${plan.price.toStringAsFixed(2)}',
+                priceLabel,
                 style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,

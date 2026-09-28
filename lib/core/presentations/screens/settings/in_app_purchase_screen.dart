@@ -99,11 +99,7 @@ class _InAppPurchaseSubscriptionScreenState
   }
 
   Future<void> _queryIAPProducts() async {
-    final ids = <String>{};
-    for (final plan in _planController.plans) {
-      final productId = productIdFor(plan);
-      if (productId != null) ids.add(productId);
-    }
+    final ids = productIdsFor(_planController.plans);
     if (ids.isEmpty) return;
 
     debugPrint('====> [IAP] Querying Play Store products: $ids');

@@ -38,7 +38,8 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   /// Auth gate — a saved bearer token goes straight to the app,
-  /// otherwise the user picks a language and then signs in.
+  /// otherwise the user starts at the welcome screen: Get Started →
+  /// language → onboarding tour → sign up.
   Future<void> _checkAuthAndNavigate() async {
     await Future.delayed(const Duration(seconds: 3));
 
@@ -49,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen>
     if (bearerToken.isNotEmpty) {
       context.goNamed(AppRoutes.bottomNavBarScreen);
     } else {
-      context.goNamed(AppRoutes.languageScreen);
+      context.goNamed(AppRoutes.getStartedScreen);
     }
   }
 
@@ -71,10 +72,11 @@ class _SplashScreenState extends State<SplashScreen>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Assets.illustrations.leafLogo.svg(width: 96.w, height: 96.w),
-                SizedBox(height: 20.h),
-                Text(context.l10n.appTitle, style: AppTextStyles.h1()),
-                SizedBox(height: 8.h),
+                Assets.icons.ui.limitItLogo.image(
+                  width: 220.w,
+                  fit: BoxFit.contain,
+                ),
+                SizedBox(height: 16.h),
                 Text(
                   context.l10n.takeBackYourTime,
                   style: AppTextStyles.body(color: AppColors.slateGreen),

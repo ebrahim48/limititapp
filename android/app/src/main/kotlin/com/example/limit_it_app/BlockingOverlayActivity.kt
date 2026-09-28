@@ -15,9 +15,18 @@ import android.graphics.Typeface
 import android.widget.Space
 
 /**
- * Full-screen overlay activity that blocks access to limited apps
+ * Full-screen overlay shown on top of a protected app.
+ *
+ * Two modes, picked by the `delaySeconds` extra:
+ *  - `0` (hard block) — the caller already pushed the user home, so the button
+ *    just dismisses this screen.
+ *  - `> 0` (mindful pause) — the app is still alive behind this activity. A
+ *    countdown runs and then finishes the overlay, letting the user through;
+ *    the button instead takes them home.
  */
 class BlockingOverlayActivity : Activity() {
+
+    private var countDownTimer: android.os.CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +41,13 @@ class BlockingOverlayActivity : Activity() {
         val packageName = intent.getStringExtra("packageName") ?: ""
         val title = intent.getStringExtra("title") ?: "App Limit Reached"
         val message = intent.getStringExtra("message") ?: "You have reached your usage limit for this app."
+        val delaySeconds = intent.getIntExtra("delaySeconds", 0)
 
         // Create UI programmatically
-        createBlockingUI(title, message)
+        createBlockingUI(title, message, delaySeconds)
     }
 
-    private fun createBlockingUI(title: String, message: String) {
+    private fun createBlockingUI(title: String, message: String, delaySeconds: Int) {
         // Main container with gradient background
         val mainLayout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -95,9 +105,24 @@ class BlockingOverlayActivity : Activity() {
             setLineSpacing(0f, 1.3f)
         }
 
+        // Countdown, only in pause mode
+        val countdownView = TextView(this).apply {
+            text = "Opening in ${delaySeconds}s"
+            textSize = 30f
+            setTypeface(null, Typeface.BOLD)
+            setTextColor(Color.parseColor("#214432"))
+            gravity = Gravity.CENTER
+            layoutParams = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(0, 0, 0, 40)
+            }
+        }
+
         // Close button with gradient
         val closeButton = Button(this).apply {
-            text = "Go Back to Home"
+            text = if (delaySeconds > 0) "Go Back" else "Go Back to Home"
             textSize = 16f
             setTypeface(null, Typeface.BOLD)
             setTextColor(Color.WHITE)
@@ -110,6 +135,9 @@ class BlockingOverlayActivity : Activity() {
             }
             elevation = 8f
             setOnClickListener {
+                // In pause mode the protected app is still behind us, so
+                // finishing alone would hand it right back.
+                if (delaySeconds > 0) goHome()
                 finish()
             }
         }
@@ -118,9 +146,32 @@ class BlockingOverlayActivity : Activity() {
         mainLayout.addView(logoView)
         mainLayout.addView(titleView)
         mainLayout.addView(messageView)
+        if (delaySeconds > 0) mainLayout.addView(countdownView)
         mainLayout.addView(closeButton)
 
         setContentView(mainLayout)
+
+        if (delaySeconds > 0) {
+            countDownTimer = object : android.os.CountDownTimer(delaySeconds * 1000L, 1000L) {
+                override fun onTick(millisUntilFinished: Long) {
+                    countdownView.text = "Opening in ${(millisUntilFinished / 1000) + 1}s"
+                }
+
+                override fun onFinish() {
+                    // Pause served — drop the overlay and let the app through.
+                    finish()
+                }
+            }.start()
+        }
+    }
+
+    private fun goHome() {
+        val homeIntent = android.content.Intent(android.content.Intent.ACTION_MAIN).apply {
+            addCategory(android.content.Intent.CATEGORY_HOME)
+            flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or
+                android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        startActivity(homeIntent)
     }
 
     private fun createButtonBackground(): GradientDrawable {
@@ -146,6 +197,12 @@ class BlockingOverlayActivity : Activity() {
         super.onPause()
         // When user leaves this activity, finish it
         finish()
+    }
+
+    override fun onDestroy() {
+        countDownTimer?.cancel()
+        countDownTimer = null
+        super.onDestroy()
     }
 
     override fun onNewIntent(intent: android.content.Intent?) {

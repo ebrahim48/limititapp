@@ -1,19 +1,26 @@
-package com.limitit.digitalbalance 
+package com.limitit.digitalbalance
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
-import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
-import java.util.*
-
+import org.json.JSONArray
+import org.json.JSONObject
+import java.util.Calendar
 
 /**
- * AccessibilityService to monitor app launches and enforce app limits
+ * AccessibilityService that watches app launches and enforces the protections
+ * the user configured in Flutter.
+ *
+ * The protection list is written by Dart through `shared_preferences`, which on
+ * Android always lands in the `FlutterSharedPreferences` XML with every key
+ * prefixed `flutter.` — see [FLUTTER_PREFS] / [KEY_APP_LIMITS]. Reading any
+ * other file/key combination silently yields an empty list and nothing ever
+ * gets blocked.
  */
 class AppMonitoringService : AccessibilityService() {
 
@@ -21,46 +28,57 @@ class AppMonitoringService : AccessibilityService() {
     private var appLaunchTime: Long = 0
     private val TAG = "AppMonitoringService"
 
-    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var flutterPreferences: SharedPreferences
     private lateinit var blockerPreferences: SharedPreferences
-    private val appSessionStartTimes = mutableMapOf<String, Long>()
-    private val appOpenCountsToday = mutableMapOf<String, Int>()
+    private val openCountsToday = mutableMapOf<String, Int>()
     private var blockedApps = mutableSetOf<String>()
     private lateinit var usageStatsManager: UsageStatsManager
-
 
     // Debouncing mechanism
     private var lastBlockedPackage: String? = null
     private var lastBlockTime: Long = 0
-    private val blockCooldownMs = 2000L // 2 seconds cooldown
+    private val blockCooldownMs = 2000L
     private val currentlyBlockedApps = mutableSetOf<String>()
+
+    /** When each app was last shown the mindful pause, so it fires once per visit. */
+    private val lastPauseAt = mutableMapOf<String, Long>()
+    private val pauseCooldownMs = 60_000L
+
+    /** Throttle for the in-app re-check; window events fire on every dialog. */
+    private val lastTimeCheckAt = mutableMapOf<String, Long>()
+    private val timeCheckIntervalMs = 15_000L
 
     companion object {
         var isServiceRunning = false
-        private const val PREFS_NAME = "flutter.app_limits"
-        private const val KEY_APP_LIMITS = "app_limits"
-        private const val KEY_LAST_RESET_DATE = "last_reset_date"
+
+        /** The XML file the shared_preferences plugin writes to. */
+        private const val FLUTTER_PREFS = "FlutterSharedPreferences"
+
+        /** `AppLimitStorageService._keyAppLimits`, with the plugin's prefix. */
+        private const val KEY_APP_LIMITS = "flutter.app_limits"
+
         private const val BLOCKER_PREFS_NAME = "app_blocker_prefs"
         private const val KEY_BLOCKED_APPS = "blocked_apps"
+        private const val KEY_OPEN_COUNTS = "open_counts_today"
+        private const val KEY_COUNTS_DATE = "open_counts_date"
+
+        private const val DEFAULT_MESSAGE =
+            "You've reached your screen time limit.\nHead back and manage your apps in LimitIt."
     }
 
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "AppMonitoringService created")
-        sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        flutterPreferences = getSharedPreferences(FLUTTER_PREFS, Context.MODE_PRIVATE)
         blockerPreferences = getSharedPreferences(BLOCKER_PREFS_NAME, Context.MODE_PRIVATE)
         usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         isServiceRunning = true
 
-        // Load blocked apps
         loadBlockedApps()
-
-        // Check if we need to reset daily counters
-        checkAndResetDailyCounters()
+        loadOpenCounts()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        // Handle intent actions
         when (intent?.action) {
             "UPDATE_BLOCKED_APPS" -> {
                 val blockedAppsList = intent.getStringArrayListExtra("blocked_apps")
@@ -75,7 +93,8 @@ class AppMonitoringService : AccessibilityService() {
     }
 
     private fun loadBlockedApps() {
-        blockedApps = blockerPreferences.getStringSet(KEY_BLOCKED_APPS, emptySet())?.toMutableSet() ?: mutableSetOf()
+        blockedApps = blockerPreferences.getStringSet(KEY_BLOCKED_APPS, emptySet())
+            ?.toMutableSet() ?: mutableSetOf()
         Log.d(TAG, "Loaded blocked apps: $blockedApps")
     }
 
@@ -97,10 +116,12 @@ class AppMonitoringService : AccessibilityService() {
 
         if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             event.packageName?.toString()?.let { packageName ->
-                // Ignore our own app and system UI
+                // Our own screens (including the pause overlay) and system chrome
+                // must never count as an app launch.
                 if (packageName == this.packageName ||
                     packageName == "com.android.systemui" ||
-                    packageName == "android") {
+                    packageName == "android"
+                ) {
                     return
                 }
 
@@ -112,113 +133,130 @@ class AppMonitoringService : AccessibilityService() {
     private fun handleAppSwitch(packageName: String) {
         val currentTime = System.currentTimeMillis()
 
-        // Track session time for previous app
-        if (lastPackageName != null && lastPackageName != packageName) {
-            val sessionDuration = (currentTime - appLaunchTime) / 1000 / 60 // minutes
-            Log.d(TAG, "Previous app $lastPackageName session: $sessionDuration minutes")
-        }
-
-        // Check if this is a new app launch
         if (lastPackageName != packageName) {
             lastPackageName = packageName
             appLaunchTime = currentTime
 
-            // Increment open count
-            val currentCount = appOpenCountsToday.getOrDefault(packageName, 0)
-            appOpenCountsToday[packageName] = currentCount + 1
+            rollOverCountsIfNewDay()
+            val count = openCountsToday.getOrDefault(packageName, 0) + 1
+            openCountsToday[packageName] = count
+            saveOpenCounts()
 
-            // Store session start time
-            appSessionStartTimes[packageName] = currentTime
+            Log.d(TAG, "App launched: $packageName (opens today: $count)")
 
-            Log.d(TAG, "App launched: $packageName (Opens today: ${appOpenCountsToday[packageName]})")
-
-            // Check if app should be blocked
             checkAndBlockApp(packageName)
         } else {
-            // Same app, check session duration
-            val sessionDuration = (currentTime - appLaunchTime) / 1000 / 60 // minutes
-            checkSessionDuration(packageName, sessionDuration.toInt())
+            // Still in the same app — re-check the time-based rules so a limit
+            // reached mid-session takes effect without a relaunch.
+            checkTimeBasedLimits(packageName)
         }
     }
 
     private fun checkAndBlockApp(packageName: String) {
-        val currentTime = System.currentTimeMillis()
+        val now = System.currentTimeMillis()
 
-        // Check debouncing
-        if (lastBlockedPackage == packageName && currentTime - lastBlockTime < blockCooldownMs) {
+        if (lastBlockedPackage == packageName && now - lastBlockTime < blockCooldownMs) {
             Log.d(TAG, "Ignoring rapid block attempt for: $packageName")
             return
         }
-
-        // Check if app is currently being blocked
         if (currentlyBlockedApps.contains(packageName)) {
             Log.d(TAG, "App $packageName is already being blocked")
             return
         }
 
-        // First check if app is in instant block list
+        // Detox / instant block list wins over every configured limit.
         if (blockedApps.contains(packageName)) {
-            Log.d(TAG, "Blocking $packageName - app is in instant block list")
-            blockApp(packageName, "App Blocked",
-                "You've reached your screen time limit.\nHead back and manage your apps in LimitIt.")
+            Log.d(TAG, "Blocking $packageName - in instant block list")
+            blockApp(packageName, "App Blocked", DEFAULT_MESSAGE)
             return
         }
 
-        // Then check app limits
-        val appLimits = getAppLimitsFromPrefs()
-        val limit = appLimits.find { it.packageName == packageName } ?: return
-
-        // Check if today is an active day
-        val today = getDayOfWeek()
-        if (!limit.activeDays.contains(today)) {
-            Log.d(TAG, "Today ($today) is not an active day for $packageName")
-            blockApp(packageName, "App Blocked",
-                "You've reached your screen time limit.\nHead back and manage your apps in LimitIt.")
+        val limit = findLimit(packageName) ?: return
+        if (!isActiveToday(limit)) {
+            Log.d(TAG, "${limit.packageName}: protection not active today")
             return
         }
 
-        // Check open count limit
-        val opensToday = appOpenCountsToday.getOrDefault(packageName, 0)
-        if (opensToday > limit.maxDailyOpens) {
-            Log.d(TAG, "Blocking $packageName - exceeded open limit ($opensToday > ${limit.maxDailyOpens})")
-            blockApp(packageName, "Daily Limit Reached",
-                "You've reached your screen time limit.\nHead back and manage your apps in LimitIt.")
-            return
+        when (limit.protectionType) {
+            "maxOpens" -> {
+                val opens = openCountsToday.getOrDefault(packageName, 0)
+                if (limit.maxDailyOpens > 0 && opens > limit.maxDailyOpens) {
+                    Log.d(TAG, "Blocking $packageName - opens $opens > ${limit.maxDailyOpens}")
+                    blockApp(packageName, "Daily Limit Reached", limit.message())
+                }
+            }
+
+            "timeBlock" -> {
+                if (isWithinSchedule(limit.scheduleStartTime, limit.scheduleEndTime)) {
+                    Log.d(TAG, "Blocking $packageName - inside blocked schedule")
+                    blockApp(packageName, "App Blocked", limit.message())
+                }
+            }
+
+            "delayOpening" -> {
+                if (limit.delaySeconds > 0) {
+                    val lastPause = lastPauseAt[packageName] ?: 0L
+                    if (now - lastPause > pauseCooldownMs) {
+                        lastPauseAt[packageName] = now
+                        showPause(packageName, limit.delaySeconds, limit.message())
+                    }
+                }
+            }
+
+            else -> checkTimeBasedLimits(packageName, force = true)
         }
     }
 
-    private fun checkSessionDuration(packageName: String, durationMinutes: Int) {
-        val appLimits = getAppLimitsFromPrefs()
-        val limit = appLimits.find { it.packageName == packageName } ?: return
+    /**
+     * Daily-limit enforcement. Uses the real foreground total from
+     * UsageStats rather than an in-memory session timer, so time spent before
+     * the service started still counts.
+     */
+    private fun checkTimeBasedLimits(packageName: String, force: Boolean = false) {
+        val now = System.currentTimeMillis()
+        if (currentlyBlockedApps.contains(packageName)) return
+        if (lastBlockedPackage == packageName && now - lastBlockTime < blockCooldownMs) return
 
-        if (durationMinutes >= limit.maxSessionDurationMinutes) {
-            Log.d(TAG, "Blocking $packageName - exceeded session duration ($durationMinutes >= ${limit.maxSessionDurationMinutes})")
-            blockApp(packageName, "Time Limit Reached",
-                "You've reached your screen time limit.\nHead back and manage your apps in LimitIt.")
+        // A fresh launch always checks; the throttle only exists to keep the
+        // repeated in-app window events cheap.
+        if (!force) {
+            val lastCheck = lastTimeCheckAt[packageName] ?: 0L
+            if (now - lastCheck < timeCheckIntervalMs) return
+        }
+        lastTimeCheckAt[packageName] = now
+
+        val limit = findLimit(packageName) ?: return
+        if (!isActiveToday(limit)) return
+        if (limit.protectionType != "dailyLimit") return
+        if (limit.maxSessionDurationMinutes <= 0) return
+
+        val usedMinutes = todayForegroundMinutes(packageName)
+        if (usedMinutes >= limit.maxSessionDurationMinutes) {
+            Log.d(
+                TAG,
+                "Blocking $packageName - used $usedMinutes >= ${limit.maxSessionDurationMinutes} min"
+            )
+            blockApp(packageName, "Time Limit Reached", limit.message())
         }
     }
 
+    /** Hard block: push the user home, then show the blocking screen. */
     private fun blockApp(packageName: String, title: String, message: String) {
         try {
             val currentTime = System.currentTimeMillis()
 
-            // Add to currently blocked set
             currentlyBlockedApps.add(packageName)
-
-            // Update last block info
             lastBlockedPackage = packageName
             lastBlockTime = currentTime
 
             Log.d(TAG, "Blocking app: $packageName")
 
-            // First, move the blocked app to the background by launching home
             val homeIntent = Intent(Intent.ACTION_MAIN).apply {
                 addCategory(Intent.CATEGORY_HOME)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
             }
             startActivity(homeIntent)
 
-            // Small delay to ensure home is launched, then show blocking overlay
             android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                 try {
                     val intent = Intent(this@AppMonitoringService, BlockingOverlayActivity::class.java).apply {
@@ -234,41 +272,80 @@ class AppMonitoringService : AccessibilityService() {
                     startActivity(intent)
                     Log.d(TAG, "Successfully blocked app: $packageName")
 
-                    // Remove from currently blocked set after a delay
                     android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                         currentlyBlockedApps.remove(packageName)
                     }, 1000)
-
                 } catch (e: Exception) {
                     Log.e(TAG, "Error starting BlockingOverlayActivity", e)
                     currentlyBlockedApps.remove(packageName)
                 }
             }, 200)
-
         } catch (e: Exception) {
             Log.e(TAG, "Error blocking app: $packageName", e)
             currentlyBlockedApps.remove(packageName)
         }
     }
 
+    /**
+     * Mindful pause: overlay the app with a countdown and let the user through
+     * when it runs out. No home intent here — the app stays behind the overlay
+     * so dismissing it returns the user straight to it.
+     */
+    private fun showPause(packageName: String, delaySeconds: Int, message: String) {
+        try {
+            Log.d(TAG, "Pausing $packageName for ${delaySeconds}s")
+            val intent = Intent(this, BlockingOverlayActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                putExtra("packageName", packageName)
+                putExtra("title", "Take a breath")
+                putExtra("message", message)
+                putExtra("delaySeconds", delaySeconds)
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error showing pause for $packageName", e)
+        }
+    }
+
+    // ---------------------------------------------------------------- limits
+
+    private fun findLimit(packageName: String): AppLimit? =
+        getAppLimitsFromPrefs().find { it.packageName == packageName }
+
+    /** An empty `activeDays` means "every day", not "never". */
+    private fun isActiveToday(limit: AppLimit): Boolean =
+        limit.activeDays.isEmpty() || limit.activeDays.contains(getDayOfWeek())
+
     private fun getAppLimitsFromPrefs(): List<AppLimit> {
-        val json = sharedPreferences.getString(KEY_APP_LIMITS, null) ?: return emptyList()
+        val json = flutterPreferences.getString(KEY_APP_LIMITS, null)
+        if (json.isNullOrEmpty()) {
+            Log.d(TAG, "No app limits stored yet")
+            return emptyList()
+        }
 
         return try {
-            val jsonArray = org.json.JSONArray(json)
+            val jsonArray = JSONArray(json)
             val limits = mutableListOf<AppLimit>()
 
             for (i in 0 until jsonArray.length()) {
                 val obj = jsonArray.getJSONObject(i)
-                limits.add(AppLimit(
-                    packageName = obj.getString("packageName"),
-                    appName = obj.getString("appName"),
-                    maxDailyOpens = obj.getInt("maxDailyOpens"),
-                    maxSessionDurationMinutes = obj.getInt("maxSessionDurationMinutes"),
-                    activeDays = obj.getJSONArray("activeDays").let { arr ->
-                        List(arr.length()) { arr.getString(it) }
-                    }
-                ))
+                limits.add(
+                    AppLimit(
+                        packageName = obj.optString("packageName"),
+                        appName = obj.optString("appName"),
+                        maxDailyOpens = obj.optInt("maxDailyOpens", 0),
+                        delaySeconds = obj.optInt("delaySeconds", 0),
+                        maxSessionDurationMinutes = obj.optInt("maxSessionDurationMinutes", 0),
+                        activeDays = obj.optJSONArray("activeDays").toStringList(),
+                        scheduleStartTime = obj.optStringOrNull("scheduleStartTime"),
+                        scheduleEndTime = obj.optStringOrNull("scheduleEndTime"),
+                        protectionType = obj.optString("protectionType", "dailyLimit"),
+                        customMessage = obj.optStringOrNull("customMessage")
+                    )
+                )
             }
             limits
         } catch (e: Exception) {
@@ -277,15 +354,110 @@ class AppMonitoringService : AccessibilityService() {
         }
     }
 
-    private fun checkAndResetDailyCounters() {
-        val today = getTodayDate()
-        val lastReset = sharedPreferences.getString(KEY_LAST_RESET_DATE, null)
+    private fun JSONArray?.toStringList(): List<String> {
+        if (this == null) return emptyList()
+        return List(length()) { optString(it) }.filter { it.isNotEmpty() }
+    }
 
-        if (lastReset != today) {
-            Log.d(TAG, "Resetting daily counters (last reset: $lastReset, today: $today)")
-            appOpenCountsToday.clear()
-            sharedPreferences.edit().putString(KEY_LAST_RESET_DATE, today).apply()
+    private fun JSONObject.optStringOrNull(key: String): String? {
+        if (isNull(key)) return null
+        val value = optString(key)
+        return if (value.isEmpty()) null else value
+    }
+
+    // ----------------------------------------------------------- open counts
+
+    private fun loadOpenCounts() {
+        openCountsToday.clear()
+        if (blockerPreferences.getString(KEY_COUNTS_DATE, null) != getTodayDate()) {
+            // Stored counts belong to a previous day.
+            saveOpenCounts()
+            return
         }
+
+        val raw = blockerPreferences.getString(KEY_OPEN_COUNTS, null) ?: return
+        try {
+            val obj = JSONObject(raw)
+            for (key in obj.keys()) {
+                openCountsToday[key] = obj.optInt(key, 0)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error reading open counts", e)
+        }
+    }
+
+    private fun saveOpenCounts() {
+        try {
+            val obj = JSONObject()
+            openCountsToday.forEach { (key, value) -> obj.put(key, value) }
+            blockerPreferences.edit()
+                .putString(KEY_OPEN_COUNTS, obj.toString())
+                .putString(KEY_COUNTS_DATE, getTodayDate())
+                .apply()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error writing open counts", e)
+        }
+    }
+
+    private fun rollOverCountsIfNewDay() {
+        if (blockerPreferences.getString(KEY_COUNTS_DATE, null) != getTodayDate()) {
+            Log.d(TAG, "New day — resetting open counts")
+            openCountsToday.clear()
+            lastPauseAt.clear()
+            lastTimeCheckAt.clear()
+            saveOpenCounts()
+        }
+    }
+
+    // ---------------------------------------------------------------- clocks
+
+    /** Total foreground minutes for [packageName] since midnight. */
+    private fun todayForegroundMinutes(packageName: String): Int {
+        return try {
+            val start = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.timeInMillis
+
+            val stats = usageStatsManager.queryUsageStats(
+                UsageStatsManager.INTERVAL_DAILY,
+                start,
+                System.currentTimeMillis()
+            ) ?: return 0
+
+            var total = 0L
+            for (stat in stats) {
+                if (stat.packageName == packageName) total += stat.totalTimeInForeground
+            }
+            (total / 1000 / 60).toInt()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error reading usage for $packageName", e)
+            0
+        }
+    }
+
+    /** `true` while now sits inside the blocked window; handles overnight spans. */
+    private fun isWithinSchedule(start: String?, end: String?): Boolean {
+        val from = parseMinutes(start) ?: return false
+        val to = parseMinutes(end) ?: return false
+
+        val calendar = Calendar.getInstance()
+        val now = calendar.get(Calendar.HOUR_OF_DAY) * 60 + calendar.get(Calendar.MINUTE)
+
+        // 22:00 → 06:00 wraps past midnight.
+        return if (from <= to) now in from until to else now >= from || now < to
+    }
+
+    /** "22:30" → 1350. */
+    private fun parseMinutes(time: String?): Int? {
+        if (time.isNullOrEmpty()) return null
+        val parts = time.split(":")
+        if (parts.size < 2) return null
+        val hour = parts[0].trim().toIntOrNull() ?: return null
+        val minute = parts[1].trim().toIntOrNull() ?: return null
+        return hour * 60 + minute
     }
 
     private fun getTodayDate(): String {
@@ -318,38 +490,19 @@ class AppMonitoringService : AccessibilityService() {
         Log.d(TAG, "AppMonitoringService destroyed")
     }
 
-    private fun isAppInForeground(packageName: String): Boolean {
-        val time = System.currentTimeMillis()
-        val usageEvents = usageStatsManager.queryEvents(time - 1000 * 60, time)
-        var foregroundPackage: String? = null
-        val event = UsageEvents.Event()
-        while (usageEvents.hasNextEvent()) {
-            usageEvents.getNextEvent(event)
-            if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
-                foregroundPackage = event.packageName
-            }
-        }
-        return foregroundPackage == packageName
-    }
-
-    private fun bringAppToForeground(packageName: String) {
-        if (isAppInForeground(packageName)) {
-            Log.d(TAG, "App $packageName is already in foreground.")
-            return
-        }
-
-        val intent = packageManager.getLaunchIntentForPackage(packageName)
-        if (intent != null) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-        }
-    }
+    private fun AppLimit.message(): String =
+        customMessage?.takeIf { it.isNotBlank() } ?: DEFAULT_MESSAGE
 
     data class AppLimit(
         val packageName: String,
         val appName: String,
         val maxDailyOpens: Int,
+        val delaySeconds: Int,
         val maxSessionDurationMinutes: Int,
-        val activeDays: List<String>
+        val activeDays: List<String>,
+        val scheduleStartTime: String?,
+        val scheduleEndTime: String?,
+        val protectionType: String,
+        val customMessage: String?
     )
 }

@@ -66,11 +66,15 @@ dev_dependencies:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/icons/ui/appLogonew.png"
+  # Built from assets/icons/LimitItappicon.png with the corners squared off to
+  # the card's white — the source drew them on black, which shows as a dark
+  # hairline inside Apple's own mask.
+  image_path: "assets/icons/ui/appIcon.png"
   # Padded copy — Android masks adaptive icons to the inner ~66%, so the
   # full-bleed logo would get its corners cropped.
-  adaptive_icon_foreground: "assets/icons/ui/appLogonew_adaptive_fg.png"
-  adaptive_icon_background: "#214432"
+  adaptive_icon_foreground: "assets/icons/ui/appIconAdaptiveFg.png"
+  # The card is white, so the mask has to continue it rather than frame it.
+  adaptive_icon_background: "#FFFFFF"
   # App Store rejects icons with an alpha channel; flatten it onto the
   # logo's own white card.
   remove_alpha_ios: true

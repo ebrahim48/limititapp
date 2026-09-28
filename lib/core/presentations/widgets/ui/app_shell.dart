@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_spacing.dart';
 import '../../../constants/app_text_styles.dart';
+import '../../../../global/custom_assets/assets.gen.dart';
 import 'app_buttons.dart';
 
 /// Back chevron + left-aligned title. Used on every pushed screen.
@@ -55,6 +56,44 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         ...?actions,
         SizedBox(width: 8.w),
+      ],
+    );
+  }
+}
+
+/// Brand header for the Home tab — leaf mark + "LimitIt" wordmark on the
+/// left, caller-supplied actions on the right.
+class AppBrandBar extends StatelessWidget implements PreferredSizeWidget {
+  const AppBrandBar({super.key, required this.title, this.actions});
+
+  final String title;
+  final List<Widget>? actions;
+
+  @override
+  Size get preferredSize => Size.fromHeight(56.h);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: AppColors.scaffoldBg,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+      scrolledUnderElevation: 0,
+      centerTitle: false,
+      titleSpacing: AppSpacing.screenH,
+      // The wordmark carries the name, so `title` is only the accessible
+      // label for it.
+      title: Semantics(
+        label: title,
+        child: Assets.icons.ui.limitItLogo.image(
+          height: 26.h,
+          fit: BoxFit.contain,
+          alignment: Alignment.centerLeft,
+        ),
+      ),
+      actions: [
+        ...?actions,
+        SizedBox(width: AppSpacing.screenH),
       ],
     );
   }

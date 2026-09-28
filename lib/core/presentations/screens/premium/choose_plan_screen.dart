@@ -117,6 +117,15 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
     return _iapProducts[id];
   }
 
+  /// Price to show for [plan]: the store's own localised price once the product
+  /// is loaded, so a card never advertises a different amount than the purchase
+  /// sheet charges. Falls back to the backend price until the store answers.
+  String _priceLabelFor(PlanModel plan) {
+    final id = productIdFor(plan);
+    final product = id == null ? null : _iapProducts[id];
+    return product?.price ?? '€${plan.price.toStringAsFixed(2)}';
+  }
+
   Future<void> _onSubscribePressed(PlanModel plan) async {
     // Premium is only ever granted after a real store purchase — no mock
     // fallback, otherwise the app would hand out a paid plan for free.
@@ -219,7 +228,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
         if (data['status'] == 'success' && data['statusCode'] == 201) {
           await _premium.activate(
             name: plan.name,
-            price: '€${plan.price.toStringAsFixed(2)}',
+            price: _priceLabelFor(plan),
             renewal: DateTime.now().add(Duration(days: plan.duration)),
           );
           if (!mounted) return;
@@ -341,6 +350,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
                         for (final plan in plans) ...[
                           _PlanCard(
                             plan: plan,
+                            priceLabel: _priceLabelFor(plan),
                             selected: plan.id == _selectedPlanId,
                             onTap: () =>
                                 setState(() => _selectedPlanId = plan.id),
@@ -376,11 +386,15 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
 class _PlanCard extends StatelessWidget {
   const _PlanCard({
     required this.plan,
+    required this.priceLabel,
     required this.selected,
     required this.onTap,
   });
 
   final PlanModel plan;
+
+  /// Already formatted — store price when known, backend price otherwise.
+  final String priceLabel;
   final bool selected;
   final VoidCallback onTap;
 
@@ -417,7 +431,7 @@ class _PlanCard extends StatelessWidget {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Text(
-                '€${plan.price.toStringAsFixed(2)}',
+                priceLabel,
                 style: AppTextStyles.display(color: AppColors.forestGreen),
               ),
               SizedBox(width: 6.w),

@@ -25,18 +25,12 @@ class AboutLimitItScreen extends StatelessWidget {
         children: [
           SizedBox(height: 40.h),
           Center(
-            child: Assets.illustrations.leafLogo.svg(
-              width: 88.w,
-              height: 88.w,
+            child: Assets.icons.ui.limitItLogo.image(
+              width: 200.w,
+              fit: BoxFit.contain,
             ),
           ),
-          SizedBox(height: 18.h),
-          Text(
-            l10n.appTitle,
-            textAlign: TextAlign.center,
-            style: AppTextStyles.h2(),
-          ),
-          SizedBox(height: 10.h),
+          SizedBox(height: 14.h),
           Center(child: AppBadge.mint('${l10n.version} $appVersion')),
           SizedBox(height: 18.h),
           Text(
