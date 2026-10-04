@@ -1,5 +1,7 @@
 #!/usr/bin/env dart
 import 'dart:io';
+import 'dart:math';
+import 'dart:nativewrappers/_internal/vm/lib/math_patch.dart';
 import 'package:image/image.dart' as img;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:typed_data';

@@ -26,6 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController passWordCtrl = TextEditingController();
   final TextEditingController confirmPassWordCtrl = TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthController>();
