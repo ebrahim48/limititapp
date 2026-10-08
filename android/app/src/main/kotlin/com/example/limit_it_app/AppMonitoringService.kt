@@ -61,9 +61,6 @@ class AppMonitoringService : AccessibilityService() {
         private const val KEY_BLOCKED_APPS = "blocked_apps"
         private const val KEY_OPEN_COUNTS = "open_counts_today"
         private const val KEY_COUNTS_DATE = "open_counts_date"
-
-        private const val DEFAULT_MESSAGE =
-            "You've reached your screen time limit.\nHead back and manage your apps in LimitIt."
     }
 
     override fun onCreate() {
@@ -167,7 +164,9 @@ class AppMonitoringService : AccessibilityService() {
         // Detox / instant block list wins over every configured limit.
         if (blockedApps.contains(packageName)) {
             Log.d(TAG, "Blocking $packageName - in instant block list")
-            blockApp(packageName, "App Blocked", DEFAULT_MESSAGE)
+            blockApp(packageName) {
+                putExtra(BlockingOverlayActivity.EXTRA_BLOCK_TYPE, BlockingOverlayActivity.TYPE_INSTANT)
+            }
             return
         }
 
@@ -182,14 +181,21 @@ class AppMonitoringService : AccessibilityService() {
                 val opens = openCountsToday.getOrDefault(packageName, 0)
                 if (limit.maxDailyOpens > 0 && opens > limit.maxDailyOpens) {
                     Log.d(TAG, "Blocking $packageName - opens $opens > ${limit.maxDailyOpens}")
-                    blockApp(packageName, "Daily Limit Reached", limit.message())
+                    blockApp(packageName, limit) {
+                        putExtra(BlockingOverlayActivity.EXTRA_BLOCK_TYPE, BlockingOverlayActivity.TYPE_OPENS)
+                        putExtra(BlockingOverlayActivity.EXTRA_MAX_OPENS, limit.maxDailyOpens)
+                    }
                 }
             }
 
             "timeBlock" -> {
                 if (isWithinSchedule(limit.scheduleStartTime, limit.scheduleEndTime)) {
                     Log.d(TAG, "Blocking $packageName - inside blocked schedule")
-                    blockApp(packageName, "App Blocked", limit.message())
+                    blockApp(packageName, limit) {
+                        putExtra(BlockingOverlayActivity.EXTRA_BLOCK_TYPE, BlockingOverlayActivity.TYPE_SCHEDULE)
+                        putExtra(BlockingOverlayActivity.EXTRA_SCHEDULE_START, limit.scheduleStartTime)
+                        putExtra(BlockingOverlayActivity.EXTRA_SCHEDULE_END, limit.scheduleEndTime)
+                    }
                 }
             }
 
@@ -198,7 +204,7 @@ class AppMonitoringService : AccessibilityService() {
                     val lastPause = lastPauseAt[packageName] ?: 0L
                     if (now - lastPause > pauseCooldownMs) {
                         lastPauseAt[packageName] = now
-                        showPause(packageName, limit.delaySeconds, limit.message())
+                        showPause(packageName, limit)
                     }
                 }
             }
@@ -236,12 +242,23 @@ class AppMonitoringService : AccessibilityService() {
                 TAG,
                 "Blocking $packageName - used $usedMinutes >= ${limit.maxSessionDurationMinutes} min"
             )
-            blockApp(packageName, "Time Limit Reached", limit.message())
+            blockApp(packageName, limit) {
+                putExtra(BlockingOverlayActivity.EXTRA_BLOCK_TYPE, BlockingOverlayActivity.TYPE_TIME)
+                putExtra(BlockingOverlayActivity.EXTRA_USED_MINUTES, usedMinutes)
+                putExtra(BlockingOverlayActivity.EXTRA_LIMIT_MINUTES, limit.maxSessionDurationMinutes)
+            }
         }
     }
 
-    /** Hard block: push the user home, then show the blocking screen. */
-    private fun blockApp(packageName: String, title: String, message: String) {
+    /**
+     * Hard block: push the user home, then show the blocking screen. [extras]
+     * adds the block type and the numbers that screen displays.
+     */
+    private fun blockApp(
+        packageName: String,
+        limit: AppLimit? = null,
+        extras: Intent.() -> Unit
+    ) {
         try {
             val currentTime = System.currentTimeMillis()
 
@@ -265,9 +282,9 @@ class AppMonitoringService : AccessibilityService() {
                         addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
                         addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                         addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                        putExtra("packageName", packageName)
-                        putExtra("title", title)
-                        putExtra("message", message)
+                        putExtra(BlockingOverlayActivity.EXTRA_PACKAGE, packageName)
+                        putLimitExtras(limit)
+                        extras()
                     }
                     startActivity(intent)
                     Log.d(TAG, "Successfully blocked app: $packageName")
@@ -291,18 +308,18 @@ class AppMonitoringService : AccessibilityService() {
      * when it runs out. No home intent here — the app stays behind the overlay
      * so dismissing it returns the user straight to it.
      */
-    private fun showPause(packageName: String, delaySeconds: Int, message: String) {
+    private fun showPause(packageName: String, limit: AppLimit) {
         try {
-            Log.d(TAG, "Pausing $packageName for ${delaySeconds}s")
+            Log.d(TAG, "Pausing $packageName for ${limit.delaySeconds}s")
             val intent = Intent(this, BlockingOverlayActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
                 addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                putExtra("packageName", packageName)
-                putExtra("title", "Take a breath")
-                putExtra("message", message)
-                putExtra("delaySeconds", delaySeconds)
+                putExtra(BlockingOverlayActivity.EXTRA_PACKAGE, packageName)
+                putExtra(BlockingOverlayActivity.EXTRA_BLOCK_TYPE, BlockingOverlayActivity.TYPE_DELAY)
+                putExtra(BlockingOverlayActivity.EXTRA_DELAY_SECONDS, limit.delaySeconds)
+                putLimitExtras(limit)
             }
             startActivity(intent)
         } catch (e: Exception) {
@@ -490,8 +507,11 @@ class AppMonitoringService : AccessibilityService() {
         Log.d(TAG, "AppMonitoringService destroyed")
     }
 
-    private fun AppLimit.message(): String =
-        customMessage?.takeIf { it.isNotBlank() } ?: DEFAULT_MESSAGE
+    private fun Intent.putLimitExtras(limit: AppLimit?) {
+        if (limit == null) return
+        putExtra(BlockingOverlayActivity.EXTRA_APP_NAME, limit.appName)
+        putExtra(BlockingOverlayActivity.EXTRA_CUSTOM_MESSAGE, limit.customMessage)
+    }
 
     data class AppLimit(
         val packageName: String,

@@ -59,3 +59,18 @@ String? resolveProductId(PlanModel plan, Iterable<PlanModel> allPlans) {
   );
   return collides ? null : id;
 }
+
+/// [plans] with at most one plan per store product, keeping the first one the
+/// backend sends.
+///
+/// When the backend has several plans in one billing cycle without their own
+/// `productId`, they all fall back to the same product and none could be
+/// bought. Showing only the first keeps that cycle purchasable — the other
+/// plans reappear once the backend gives each one its own `productId`.
+List<PlanModel> uniqueProductPlans(Iterable<PlanModel> plans) {
+  final seen = <String>{};
+  return plans.where((plan) {
+    final id = productIdFor(plan);
+    return id != null && seen.add(id);
+  }).toList();
+}
