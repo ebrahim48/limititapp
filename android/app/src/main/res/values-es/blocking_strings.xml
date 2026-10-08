@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Blocking screen (BlockingOverlayActivity) strings. -->
+<resources>
+    <string name="block_title_delay">Tómate un momento.</string>
+    <string name="block_subtitle_delay" formatted="true">%1$s se abrirá en</string>
+    <string name="block_seconds">segundos</string>
+    <string name="block_title_opens">Has alcanzado\ntu límite diario.</string>
+    <string name="block_opens_label">Límite diario</string>
+    <string name="block_used">Usado</string>
+    <string name="block_title_time">Has alcanzado tu\nlímite de tiempo diario.</string>
+    <string name="block_subtitle_time" formatted="true">Hoy has usado %1$s.</string>
+    <string name="block_time_label">Límite de tiempo diario</string>
+    <string name="block_minutes" formatted="true">%d min</string>
+    <string name="block_title_schedule">Esta app está bloqueada\nen este momento.</string>
+    <string name="block_subtitle_schedule" formatted="true">Has bloqueado %1$s\ndurante este horario.</string>
+    <string name="block_blocked_until">Bloqueada hasta las</string>
+    <string name="block_active_block">Bloqueo horario activo</string>
+    <string name="block_subtitle_instant" formatted="true">Has bloqueado %1$s por ahora.</string>
+    <string name="block_q_delay">Una pequeña pausa\npuede marcar una gran diferencia.</string>
+    <string name="block_q_opens">Está bien tomarse un descanso.\nTu tiempo es valioso.</string>
+    <string name="block_q_time">Más tiempo para lo que\nrealmente importa.</string>
+    <string name="block_q_schedule">Menos distracciones.\nMás tiempo para ti.</string>
+    <string name="block_got_it">Entendido</string>
+    <string name="block_cancel">Cancelar y volver</string>
+    <plurals name="block_subtitle_opens">
+        <item quantity="one">Ya has abierto %1$s\nuna vez hoy.</item>
+        <item quantity="other">Ya has abierto %1$s\n%2$d veces hoy.</item>
+    </plurals>
+    <plurals name="block_openings">
+        <item quantity="one">%d apertura</item>
+        <item quantity="other">%d aperturas</item>
+    </plurals>
+    <plurals name="block_hours">
+        <item quantity="one">%d hora</item>
+        <item quantity="other">%d horas</item>
+    </plurals>
+</resources>

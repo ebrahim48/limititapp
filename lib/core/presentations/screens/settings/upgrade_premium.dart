@@ -125,7 +125,7 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
       return;
     }
 
-    final productId = resolveProductId(plan, _controller.plans);
+    final productId = resolveProductId(plan, uniqueProductPlans(_controller.plans));
     final product = productId == null ? null : _iapProducts[productId];
 
     if (product == null) {
@@ -370,12 +370,14 @@ class _UpgradePremiumScreenState extends State<UpgradePremiumScreen> {
           return Center(child: Text(context.l10n.noSubscriptionPlans));
         }
 
+        final plans = uniqueProductPlans(_controller.plans);
+
         return ListView.separated(
           padding: const EdgeInsets.all(16),
-          itemCount: _controller.plans.length,
+          itemCount: plans.length,
           separatorBuilder: (_, __) => const SizedBox(height: 16),
           itemBuilder: (context, index) {
-            final plan = _controller.plans[index];
+            final plan = plans[index];
             return Obx(() => _PlanCard(
               plan: plan,
               priceLabel: _priceLabelFor(plan),

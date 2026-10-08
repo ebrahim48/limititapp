@@ -110,9 +110,12 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
     }
   }
 
+  /// Plans the user can pick from — one per store product.
+  List<PlanModel> get _plans => uniqueProductPlans(_controller.plans);
+
   /// Store product backing [plan], or null when it is not purchasable.
   ProductDetails? _productFor(PlanModel plan) {
-    final id = resolveProductId(plan, _controller.plans);
+    final id = resolveProductId(plan, _plans);
     if (id == null) return null;
     return _iapProducts[id];
   }
@@ -313,7 +316,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
           );
         }
 
-        final allPlans = _controller.plans.toList();
+        final allPlans = _plans;
         final plans = _plansForCycle(allPlans);
         final badge = _yearlySavingBadge(allPlans);
 

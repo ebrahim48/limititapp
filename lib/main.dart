@@ -9,6 +9,7 @@ import 'package:limit_it_app/core/presentations/controller/locale_controller.dar
 import 'package:toastification/toastification.dart';
 import 'core/config/app_routes/app_routes.dart';
 import 'core/config/app_themes/app_themes.dart';
+import 'core/services/ad_service.dart';
 import 'core/helpers/dependancy_injaction.dart';
 import 'l10n/app_localizations.dart';
 
@@ -19,6 +20,7 @@ void main() async {
   DependencyInjection di = DependencyInjection();
   di.dependencies();
   di.lockDevicePortrait();
+  AdService.instance.init();
 
   runApp(
     DevicePreview(

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:limit_it_app/controllers/ads_controller.dart';
 import 'package:limit_it_app/controllers/motivation_controller.dart';
+import 'package:limit_it_app/controllers/premium_controller.dart';
 import 'package:limit_it_app/controllers/stats_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
+import 'package:limit_it_app/core/services/ad_service.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
@@ -35,6 +36,7 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
   final MotivationController _motivationController =
       Get.put(MotivationController(), permanent: true);
   final AdsController _adsController = Get.put(AdsController());
+  final PremiumController _premium = Get.find<PremiumController>();
 
   /// Owns the "opens avoided" maths and appends today to the stored history,
   /// so both the number and the trend below are the same real data the
@@ -46,23 +48,13 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
   List<double> _avoidedTrend = const [];
   bool _isLoading = true;
 
-  BannerAd? _bannerAd;
-  bool _isBannerAdReady = false;
-
   @override
   void initState() {
     super.initState();
     _loadProtections();
-    _loadBannerAd();
     if (_motivationController.motivations.isEmpty) {
       _motivationController.getMotivationalPhrases();
     }
-  }
-
-  @override
-  void dispose() {
-    _bannerAd?.dispose();
-    super.dispose();
   }
 
   Future<void> _loadProtections() async {
@@ -87,21 +79,6 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
       debugPrint('Error loading protections: $e');
       if (mounted) setState(() => _isLoading = false);
     }
-  }
-
-  void _loadBannerAd() {
-    _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111', // Test Banner ID
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (_) {
-          if (mounted) setState(() => _isBannerAdReady = true);
-        },
-        onAdFailedToLoad: (ad, error) => ad.dispose(),
-      ),
-    );
-    _bannerAd?.load();
   }
 
   @override
@@ -248,21 +225,14 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
               );
             }),
 
-            /// ---------------- Banner ad ----------------
-            if (_isBannerAdReady && _bannerAd != null) ...[
-              SizedBox(height: 16.h),
-              Center(
-                child: SizedBox(
-                  width: _bannerAd!.size.width.toDouble(),
-                  height: _bannerAd!.size.height.toDouble(),
-                  child: AdWidget(ad: _bannerAd!),
-                ),
-              ),
-            ],
+            /// ---------------- Banner ad (Free only) ----------------
+            AppBannerAd(padding: EdgeInsets.only(top: 16.h)),
 
             /// ---------------- Announcements (ads API) ----------------
             Obx(() {
-              if (_adsController.ads.isEmpty) return const SizedBox.shrink();
+              if (_premium.isPremium.value || _adsController.ads.isEmpty) {
+                return const SizedBox.shrink();
+              }
               return Padding(
                 padding: EdgeInsets.only(top: 16.h),
                 child: Column(
@@ -313,6 +283,10 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
   }
 
   Future<void> _openEditProtection(AppLimitModel limit) async {
+    // Occasional full-screen ad before modifying a protection (Free only,
+    // frequency-capped in AdService).
+    await AdService.instance.maybeShowInterstitial();
+    if (!mounted) return;
     await context.pushNamed(
       AppRoutes.protectionEditorScreen,
       extra: {'packageName': limit.packageName},
