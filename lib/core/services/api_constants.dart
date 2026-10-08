@@ -15,6 +15,7 @@ class ApiConstants{
   static const String resetPasswordEndPoint = "/users/set-password";
   static const String resendOtpEndPoint = "/users/resend-otp";
 
+
   static const String aboutUsPoint = "/settings/about-us";
   static const String privacyPolicyPoint = "/settings/privacy-policy";
   static const String termsConditionPoint = "/settings/terms-condition";
