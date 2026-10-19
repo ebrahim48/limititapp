@@ -8,6 +8,7 @@ import 'package:limit_it_app/core/helpers/prefs_helper.dart';
 import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
+import 'package:limit_it_app/core/services/social_auth_service.dart';
 import '../core/app_constants/app_constants.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
@@ -242,6 +243,83 @@ class AuthController extends GetxController {
     }
   }
 
+  // =============================================< Social Sign-In (Google / Apple) ++++++++++++++++++++++++++++++
+
+  RxBool googleSignInLoading = false.obs;
+  RxBool appleSignInLoading = false.obs;
+
+  /// Signs in with Google → Firebase → LimitIT backend.
+  Future<void> handleGoogleSignIn({required BuildContext context}) =>
+      _handleSocialSignIn(
+        provider: 'Google',
+        loading: googleSignInLoading,
+        signIn: SocialAuthService.instance.signInWithGoogle,
+        context: context,
+      );
+
+  /// Signs in with Apple → Firebase → LimitIT backend.
+  Future<void> handleAppleSignIn({required BuildContext context}) =>
+      _handleSocialSignIn(
+        provider: 'Apple',
+        loading: appleSignInLoading,
+        signIn: SocialAuthService.instance.signInWithApple,
+        context: context,
+      );
+
+  /// Runs [signIn], saves the returned JWT tokens and navigates to the main
+  /// screen on success.
+  Future<void> _handleSocialSignIn({
+    required String provider,
+    required RxBool loading,
+    required Future<SocialLoginResult> Function() signIn,
+    required BuildContext context,
+  }) async {
+    loading.value = true;
+    loginErrorMessage.value = '';
+
+    try {
+      final result = await signIn();
+
+      // Persist tokens and user info the same way regular login does.
+      await PrefsHelper.setString(AppConstants.bearerToken, result.accessToken);
+      await PrefsHelper.setString(AppConstants.refreshToken, result.refreshToken);
+      await PrefsHelper.setString(
+        AppConstants.userId,
+        result.user['_id']?.toString() ?? '',
+      );
+      await PrefsHelper.setString(
+        AppConstants.email,
+        result.user['email']?.toString() ?? '',
+      );
+      await PrefsHelper.setString(
+        AppConstants.role,
+        result.user['role']?.toString() ?? 'USER',
+      );
+      await PrefsHelper.setBool(AppConstants.isLogged, true);
+
+      debugPrint('✅ $provider sign-in complete. User: ${result.user['email']}');
+
+      if (context.mounted) {
+        context.go(AppRoutes.bottomNavBarScreen);
+      }
+    } on Exception catch (e) {
+      final msg = e.toString().replaceFirst('Exception: ', '');
+      debugPrint('❌ $provider sign-in error: $msg');
+
+      // Don't show an error for a user-cancelled flow.
+      if (!msg.toLowerCase().contains('cancel')) {
+        loginErrorMessage.value = msg;
+        ToastMessageHelper.showToastMessage(msg, title: 'Sign-in failed');
+      }
+    } catch (e, stack) {
+      debugPrint('❌ Unexpected $provider sign-in error: $e\n$stack');
+      loginErrorMessage.value = 'An unexpected error occurred. Please try again.';
+      ToastMessageHelper.showToastMessage(e.toString(), title: 'Sign-in failed');
+    } finally {
+      loading.value = false;
+    }
+  }
+
   ///===========================================> Forgot Password ====================================================<>
   RxBool forgotLoading = false.obs;
   Future<void>handleForgot(String email, screenType, {required BuildContext context}) async {
@@ -452,6 +530,7 @@ class AuthController extends GetxController {
 
           // Clear all stored data
           await PrefsHelper.remove(AppConstants.bearerToken);
+          await PrefsHelper.remove(AppConstants.refreshToken);
           await PrefsHelper.remove(AppConstants.userId);
           await PrefsHelper.remove(AppConstants.email);
           await PrefsHelper.remove(AppConstants.role);
@@ -474,6 +553,7 @@ class AuthController extends GetxController {
         if (message.contains('deleted')) {
           // Account was already deleted, clear local data
           await PrefsHelper.remove(AppConstants.bearerToken);
+          await PrefsHelper.remove(AppConstants.refreshToken);
           await PrefsHelper.remove(AppConstants.userId);
           await PrefsHelper.remove(AppConstants.email);
           await PrefsHelper.remove(AppConstants.role);

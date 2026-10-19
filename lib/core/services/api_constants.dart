@@ -1,14 +1,15 @@
 class ApiConstants{
 
-
-  static const String baseUrl = "https://mihad4173.ssh.bd/api/v1";
-  static const String imageBaseUrl = "https://mihad4173.ssh.bd";
-
+  //
   // static const String baseUrl = "https://api.limitit.eu/api/v1";
   // static const String imageBaseUrl = "https://api.limitit.eu";
 
+  static const String baseUrl = "https://mihad8080.ssh.bd/api/v1";
+  static const String imageBaseUrl = "https://mihad8080.ssh.bd";
+
   static const String registerEndPoint = "/users/register";
   static const String loginEndPoint = "/users/sign-in";
+  static const String socialLoginEndPoint = "/users/social-login";
   static const String changePasswordEndPoint = "/users/change-password";
   static const String verifyEmailEndPoint = "/users/verify-code";
   static const String forgotPasswordEndPoint = "/users/forgot-password";

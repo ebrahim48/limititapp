@@ -8,5 +8,9 @@
 	     https://developer.apple.com/contact/request/family-controls-distribution -->
 	<key>com.apple.developer.family-controls</key>
 	<true/>
+	<key>com.apple.developer.applesignin</key>
+	<array>
+		<string>Default</string>
+	</array>
 </dict>
 </plist>

@@ -1,10 +1,7 @@
 #!/usr/bin/env dart
 import 'dart:io';
 import 'dart:math';
-import 'dart:nativewrappers/_internal/vm/lib/math_patch.dart';
 import 'package:image/image.dart' as img;
-import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:typed_data';
 
 /// Simple script to create a placeholder PNG logo
 /// This creates a 1024x1024 green circle as a placeholder
@@ -25,11 +22,11 @@ void main() async {
     for (var x = 0; x < image.width; x++) {
       final dx = x - centerX;
       final dy = y - centerY;
-      final distance = (dx * dx + dy * dy).sqrt();
+      final distance = sqrt(dx * dx + dy * dy);
       
       if (distance <= radius) {
         // Inside circle - use brand color #214432
-        image.setPixelRgba8(x, y, 33, 68, 50, 255);
+        image.setPixel(x, y, img.ColorRgba8(33, 68, 50, 255));
       }
     }
   }

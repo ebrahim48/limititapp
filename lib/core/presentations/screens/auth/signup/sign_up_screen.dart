@@ -199,12 +199,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
             SizedBox(height: 12.h),
 
             /// ---------------- Sign up with Google ----------------
-            AppSocialButton(
-              dark: false,
-              label: l10n.continueWithGoogle,
-              icon: Assets.icons.ui.google.svg(width: 20.w, height: 20.w),
-              onPressed: () => ToastMessageHelper.showToastMessage(
-                l10n.socialLoginComingSoon,
+            Obx(
+              () => Opacity(
+                opacity: authController.googleSignInLoading.value ? 0.6 : 1.0,
+                child: IgnorePointer(
+                  ignoring: authController.googleSignInLoading.value,
+                  child: AppSocialButton(
+                    dark: false,
+                    label: authController.googleSignInLoading.value
+                        ? '${l10n.continueWithGoogle}…'
+                        : l10n.continueWithGoogle,
+                    icon: Assets.icons.ui.google.svg(width: 20.w, height: 20.w),
+                    onPressed: () =>
+                        authController.handleGoogleSignIn(context: context),
+                  ),
+                ),
               ),
             ),
 

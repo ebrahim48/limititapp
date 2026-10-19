@@ -5,6 +5,7 @@ import 'package:limit_it_app/core/app_constants/app_constants.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/helpers/prefs_helper.dart';
+import 'package:limit_it_app/core/services/social_auth_service.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 import '../../widgets/ui/ui.dart';
 
@@ -24,8 +25,17 @@ class _LogoutScreenState extends State<LogoutScreen> {
     setState(() => _isLoggingOut = true);
 
     await PrefsHelper.remove(AppConstants.bearerToken);
+    await PrefsHelper.remove(AppConstants.refreshToken);
     await PrefsHelper.remove(AppConstants.userId);
     await PrefsHelper.remove(AppConstants.isLogged);
+
+    // Clear the cached Google/Apple Firebase session so the account picker
+    // shows again next time.
+    try {
+      await SocialAuthService.instance.signOut();
+    } catch (e) {
+      debugPrint('❌ Social sign-out error: $e');
+    }
 
     if (!mounted) return;
     context.goNamed(AppRoutes.logInScreen);

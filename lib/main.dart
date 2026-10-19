@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +16,16 @@ import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialise Firebase before anything else that depends on it
+  // (google_sign_in and firebase_auth both require this).
+  // Guarded so a platform without Firebase config (e.g. iOS before
+  // GoogleService-Info.plist is added) still launches; social login will fail.
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    debugPrint('❌ Firebase init failed: $e');
+  }
 
   PlatformDispatcher.instance.onAccessibilityFeaturesChanged = () {};
   DependencyInjection di = DependencyInjection();
