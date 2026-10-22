@@ -124,29 +124,6 @@ class _IosScreenTimeViewState extends State<IosScreenTimeView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AppSoftCard(
-            padding: EdgeInsets.all(14.w),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.lock_outline_rounded,
-                  size: 18.sp,
-                  color: AppColors.fern,
-                ),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: Text(
-                    l10n.screenTimeExplainer,
-                    style: AppTextStyles.small(color: AppColors.fern),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(height: 20.h),
-
           if (!_authorized) ...[
             Text(l10n.screenTimeNeedsAccess, style: AppTextStyles.h4()),
             SizedBox(height: 8.h),

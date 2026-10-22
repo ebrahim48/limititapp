@@ -180,19 +180,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
             SizedBox(height: 20.h),
 
             /// ---------------- Sign up with Apple ----------------
-            AppSocialButton(
-              dark: true,
-              label: l10n.continueWithApple,
-              icon: Assets.icons.ui.apple.svg(
-                width: 20.w,
-                height: 20.w,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.white,
-                  BlendMode.srcIn,
+            Obx(
+              () => Opacity(
+                opacity: authController.appleSignInLoading.value ? 0.6 : 1.0,
+                child: IgnorePointer(
+                  ignoring: authController.appleSignInLoading.value,
+                  child: AppSocialButton(
+                    dark: true,
+                    label: authController.appleSignInLoading.value
+                        ? '${l10n.continueWithApple}…'
+                        : l10n.continueWithApple,
+                    icon: Assets.icons.ui.apple.svg(
+                      width: 20.w,
+                      height: 20.w,
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.white,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    onPressed: () =>
+                        authController.handleAppleSignIn(context: context),
+                  ),
                 ),
-              ),
-              onPressed: () => ToastMessageHelper.showToastMessage(
-                l10n.socialLoginComingSoon,
               ),
             ),
 

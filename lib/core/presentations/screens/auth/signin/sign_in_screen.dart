@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
-import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/ui/ui.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 
@@ -130,19 +129,28 @@ class LoginInScreen extends StatelessWidget {
             SizedBox(height: 20.h),
 
             /// ---------------- Sign in with Apple ----------------
-            AppSocialButton(
-              dark: true,
-              label: l10n.continueWithApple,
-              icon: Assets.icons.ui.apple.svg(
-                width: 20.w,
-                height: 20.w,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.white,
-                  BlendMode.srcIn,
+            Obx(
+              () => Opacity(
+                opacity: authController.appleSignInLoading.value ? 0.6 : 1.0,
+                child: IgnorePointer(
+                  ignoring: authController.appleSignInLoading.value,
+                  child: AppSocialButton(
+                    dark: true,
+                    label: authController.appleSignInLoading.value
+                        ? '${l10n.continueWithApple}…'
+                        : l10n.continueWithApple,
+                    icon: Assets.icons.ui.apple.svg(
+                      width: 20.w,
+                      height: 20.w,
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.white,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                    onPressed: () =>
+                        authController.handleAppleSignIn(context: context),
+                  ),
                 ),
-              ),
-              onPressed: () => ToastMessageHelper.showToastMessage(
-                l10n.socialLoginComingSoon,
               ),
             ),
 

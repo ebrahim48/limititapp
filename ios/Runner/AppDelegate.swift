@@ -18,8 +18,8 @@ import UIKit
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
     registerDeviceAppsChannel(engineBridge.pluginRegistry)
 
-    ScreenTimeChannel.register(with: engineBridge.pluginRegistry) { [weak self] in
-      self?.window?.rootViewController
+    ScreenTimeChannel.register(with: engineBridge.pluginRegistry) {
+      AppDelegate.topViewController()
     }
 
     // Apple resolves app icons and usage only inside SwiftUI, so those rows are
@@ -48,6 +48,23 @@ import UIKit
     }
 
     deviceAppsChannel = channel
+  }
+
+  /// The app runs on `FlutterSceneDelegate`, so `AppDelegate.window` is always
+  /// nil — the window lives on the active scene. Presenting must start from
+  /// the topmost controller, or UIKit drops the sheet.
+  private static func topViewController() -> UIViewController? {
+    let windows = UIApplication.shared.connectedScenes
+      .compactMap { $0 as? UIWindowScene }
+      .sorted { lhs, _ in lhs.activationState == .foregroundActive }
+      .flatMap { $0.windows }
+    let window = windows.first { $0.isKeyWindow } ?? windows.first
+
+    var top = window?.rootViewController
+    while let presented = top?.presentedViewController, !presented.isBeingDismissed {
+      top = presented
+    }
+    return top
   }
 
   /// iOS gives no API to enumerate installed apps. `canOpenURL` is the only
