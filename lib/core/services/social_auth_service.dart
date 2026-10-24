@@ -52,6 +52,12 @@ class SocialAuthService {
   // Google Sign-In
   // ---------------------------------------------------------------------------
 
+  /// iOS needs GoogleService-Info.plist (plus its REVERSED_CLIENT_ID URL
+  /// scheme in Info.plist) for the Google sheet — without them the plugin
+  /// crashes, so the button stays hidden until that config ships.
+  bool get isGoogleSignInAvailable =>
+      defaultTargetPlatform != TargetPlatform.iOS || Firebase.apps.isNotEmpty;
+
   /// Signs in the user with Google, authenticates with Firebase, then calls
   /// the LimitIT `/users/social-login` endpoint to get the app JWT tokens.
   ///

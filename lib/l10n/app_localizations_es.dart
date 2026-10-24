@@ -1213,7 +1213,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get cancelStoreNote =>
-      'La renovación la gestiona App Store / Google Play. Desactiva allí la renovación automática para evitar cargos futuros.';
+      'La renovación la gestiona la tienda de aplicaciones de tu dispositivo. Desactiva allí la renovación automática para evitar cargos futuros.';
 
   @override
   String get subscriptionCancelled => 'Suscripción cancelada';
@@ -1349,7 +1349,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get faqA4 =>
-      'Abre Premium → Gestionar suscripción → Cancelar suscripción. La renovación automática se desactiva en App Store o Google Play.';
+      'Abre Premium → Gestionar suscripción → Cancelar suscripción. La renovación automática se desactiva en la tienda de aplicaciones de tu dispositivo.';
 
   @override
   String get createBackup => 'Crear copia';
@@ -1680,15 +1680,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get appUsageAndroidOnly =>
-      'El seguimiento del uso de aplicaciones solo está disponible en dispositivos Android';
+      'El seguimiento del uso de aplicaciones no está disponible en este dispositivo';
 
   @override
   String get detoxModeAndroidOnly =>
-      'El modo detox solo está disponible en dispositivos Android';
+      'El modo detox no está disponible en este dispositivo';
 
   @override
   String get pinLockAndroidOnly =>
-      'El bloqueo con PIN solo está disponible en dispositivos Android';
+      'El bloqueo con PIN no está disponible en este dispositivo';
 
   @override
   String get permissionDeniedUsageAccess =>

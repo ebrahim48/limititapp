@@ -13,6 +13,7 @@ import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/plan_model.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
+import '../../widgets/subscription_legal_footer.dart';
 import '../../widgets/ui/ui.dart';
 
 /// Plan picker + purchase. Plans come from `/plans`, payment goes through
@@ -148,6 +149,9 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
     }
 
     _pendingPlan = plan;
+    // The store sheet takes a moment to appear — show the loader until it
+    // reports back.
+    setState(() => _isSubscribing = true);
 
     final purchaseParam = PurchaseParam(productDetails: product);
 
@@ -155,6 +159,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
       await _iap.buyNonConsumable(purchaseParam: purchaseParam);
     } catch (e) {
       _pendingPlan = null;
+      if (mounted) setState(() => _isSubscribing = false);
       debugPrint('====> IAP buy error: $e');
       _showError(appL10n.couldNotStartPurchase('$e'));
     }
@@ -167,6 +172,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
 
       switch (purchase.status) {
         case PurchaseStatus.pending:
+          if (mounted) setState(() => _isSubscribing = false);
           _showMessage(context.l10n.paymentPending);
           break;
 
@@ -177,6 +183,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
 
         case PurchaseStatus.error:
           _pendingPlan = null;
+          if (mounted) setState(() => _isSubscribing = false);
           debugPrint(
               '====> IAP error: ${purchase.error?.code} — ${purchase.error?.message}');
           _showError(appL10n.purchaseFailed('${purchase.error?.message}'));
@@ -184,6 +191,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
 
         case PurchaseStatus.canceled:
           _pendingPlan = null;
+          if (mounted) setState(() => _isSubscribing = false);
           _showMessage(context.l10n.purchaseCancelled);
           break;
       }
@@ -199,6 +207,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
     _pendingPlan = null;
 
     if (plan == null) {
+      if (mounted) setState(() => _isSubscribing = false);
       debugPrint('====> Purchase received but no pending plan found');
       return;
     }
@@ -378,6 +387,7 @@ class _ChoosePlanScreenState extends State<ChoosePlanScreen> {
                 _showMessage(l10n.checkingPurchases);
               },
             ),
+            const SubscriptionLegalFooter(),
             SizedBox(height: 12.h),
           ],
         );

@@ -41,7 +41,7 @@ class SettingsController extends GetxController {
       if (response.statusCode == 200) {
         final data = response.body;
         if (data['status'] == 'success' && data['data'] != null) {
-          aboutUsContent.value = _stripHtmlTags(data['data']['content'] ?? '');
+          aboutUsContent.value = data['data']['content'] ?? '';
           aboutUsName.value = data['data']['name'] ?? '';
           aboutUsEmail.value = data['data']['email'] ?? '';
           aboutUsPhone.value = data['data']['phone'] ?? '';
@@ -74,7 +74,7 @@ class SettingsController extends GetxController {
       if (response.statusCode == 200) {
         final data = response.body;
         if (data['status'] == 'success' && data['data'] != null) {
-          privacyPolicyContent.value = _stripHtmlTags(data['data']['content'] ?? '');
+          privacyPolicyContent.value = data['data']['content'] ?? '';
           debugPrint('Privacy Policy loaded successfully');
         } else {
           hasErrorPrivacyPolicy.value = true;
@@ -103,7 +103,7 @@ class SettingsController extends GetxController {
       if (response.statusCode == 200) {
         final data = response.body;
         if (data['status'] == 'success' && data['data'] != null) {
-          termsContent.value = _stripHtmlTags(data['data']['content'] ?? '');
+          termsContent.value = data['data']['content'] ?? '';
         } else {
           hasErrorTerms.value = true;
           debugPrint('Terms & Conditions: Invalid response format');

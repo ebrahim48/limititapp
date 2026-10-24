@@ -112,7 +112,10 @@ class AppSegmentedTabs extends StatelessWidget {
               ? trailingBadges![i]
               : null;
 
+          // A badged segment carries label + badge, so give it room for both
+          // instead of truncating the label.
           return Expanded(
+            flex: badge != null ? 2 : 1,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () => onChanged(i),

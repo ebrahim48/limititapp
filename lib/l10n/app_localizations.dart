@@ -2347,7 +2347,7 @@ abstract class AppLocalizations {
   /// cancelStoreNote
   ///
   /// In en, this message translates to:
-  /// **'Recurring billing is managed by the App Store / Google Play. Turn off auto-renew there to avoid future charges.'**
+  /// **'Recurring billing is managed by your device\'s app store. Turn off auto-renew there to avoid future charges.'**
   String get cancelStoreNote;
 
   /// subscriptionCancelled
@@ -2599,7 +2599,7 @@ abstract class AppLocalizations {
   /// faqA4
   ///
   /// In en, this message translates to:
-  /// **'Open Premium → Manage subscription → Cancel subscription. Auto-renew is switched off in the App Store or Google Play.'**
+  /// **'Open Premium → Manage subscription → Cancel subscription. Auto-renew is switched off in your device\'s app store.'**
   String get faqA4;
 
   /// createBackup
@@ -3151,22 +3151,22 @@ abstract class AppLocalizations {
   /// **'Joined in {date}'**
   String joinedIn(String date);
 
-  /// App usage tracking is only available on Android devices
+  /// App usage tracking isn't available on this device
   ///
   /// In en, this message translates to:
-  /// **'App usage tracking is only available on Android devices'**
+  /// **'App usage tracking isn\'t available on this device'**
   String get appUsageAndroidOnly;
 
-  /// Detox mode is only available on Android devices
+  /// Detox mode isn't available on this device
   ///
   /// In en, this message translates to:
-  /// **'Detox mode is only available on Android devices'**
+  /// **'Detox mode isn\'t available on this device'**
   String get detoxModeAndroidOnly;
 
-  /// PIN Lock is only available on Android devices
+  /// PIN Lock isn't available on this device
   ///
   /// In en, this message translates to:
-  /// **'PIN Lock is only available on Android devices'**
+  /// **'PIN Lock isn\'t available on this device'**
   String get pinLockAndroidOnly;
 
   /// Permission denied. Please grant usage access permission in settings

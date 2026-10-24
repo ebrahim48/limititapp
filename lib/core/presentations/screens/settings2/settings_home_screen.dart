@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -176,10 +178,13 @@ class _SettingsHomeScreenState extends State<SettingsHomeScreen> {
                 title: l10n.changePassword,
                 onTap: () => context.pushNamed(AppRoutes.changePasswordScreen),
               ),
-              AppListRow(
-                title: l10n.pinSettings,
-                onTap: () => context.pushNamed(AppRoutes.pinSettingsScreen),
-              ),
+              // PIN Lock guards apps through Android usage access; iOS has
+              // no equivalent, so the entry would only lead to a dead end.
+              if (Platform.isAndroid)
+                AppListRow(
+                  title: l10n.pinSettings,
+                  onTap: () => context.pushNamed(AppRoutes.pinSettingsScreen),
+                ),
               AppListRow(
                 title: l10n.motivationalPhrases,
                 onTap: () =>

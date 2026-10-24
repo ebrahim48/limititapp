@@ -1549,7 +1549,7 @@
   "@cancelKeepsAccess": {
     "description": "cancelKeepsAccess"
   },
-  "cancelStoreNote": "Recurring billing is managed by the App Store / Google Play. Turn off auto-renew there to avoid future charges.",
+  "cancelStoreNote": "Recurring billing is managed by your device's app store. Turn off auto-renew there to avoid future charges.",
   "@cancelStoreNote": {
     "description": "cancelStoreNote"
   },
@@ -1722,7 +1722,7 @@
   "@faqQ4": {
     "description": "faqQ4"
   },
-  "faqA4": "Open Premium → Manage subscription → Cancel subscription. Auto-renew is switched off in the App Store or Google Play.",
+  "faqA4": "Open Premium → Manage subscription → Cancel subscription. Auto-renew is switched off in your device's app store.",
   "@faqA4": {
     "description": "faqA4"
   },
@@ -2156,17 +2156,17 @@
       }
     }
   },
-  "appUsageAndroidOnly": "App usage tracking is only available on Android devices",
+  "appUsageAndroidOnly": "App usage tracking isn't available on this device",
   "@appUsageAndroidOnly": {
-    "description": "App usage tracking is only available on Android devices"
+    "description": "App usage tracking isn't available on this device"
   },
-  "detoxModeAndroidOnly": "Detox mode is only available on Android devices",
+  "detoxModeAndroidOnly": "Detox mode isn't available on this device",
   "@detoxModeAndroidOnly": {
-    "description": "Detox mode is only available on Android devices"
+    "description": "Detox mode isn't available on this device"
   },
-  "pinLockAndroidOnly": "PIN Lock is only available on Android devices",
+  "pinLockAndroidOnly": "PIN Lock isn't available on this device",
   "@pinLockAndroidOnly": {
-    "description": "PIN Lock is only available on Android devices"
+    "description": "PIN Lock isn't available on this device"
   },
   "permissionDeniedUsageAccess": "Permission denied. Please grant usage access permission in settings",
   "@permissionDeniedUsageAccess": {

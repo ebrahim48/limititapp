@@ -1194,7 +1194,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancelStoreNote =>
-      'Recurring billing is managed by the App Store / Google Play. Turn off auto-renew there to avoid future charges.';
+      'Recurring billing is managed by your device\'s app store. Turn off auto-renew there to avoid future charges.';
 
   @override
   String get subscriptionCancelled => 'Subscription cancelled';
@@ -1329,7 +1329,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get faqA4 =>
-      'Open Premium → Manage subscription → Cancel subscription. Auto-renew is switched off in the App Store or Google Play.';
+      'Open Premium → Manage subscription → Cancel subscription. Auto-renew is switched off in your device\'s app store.';
 
   @override
   String get createBackup => 'Create backup';
@@ -1649,15 +1649,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appUsageAndroidOnly =>
-      'App usage tracking is only available on Android devices';
+      'App usage tracking isn\'t available on this device';
 
   @override
   String get detoxModeAndroidOnly =>
-      'Detox mode is only available on Android devices';
+      'Detox mode isn\'t available on this device';
 
   @override
-  String get pinLockAndroidOnly =>
-      'PIN Lock is only available on Android devices';
+  String get pinLockAndroidOnly => 'PIN Lock isn\'t available on this device';
 
   @override
   String get permissionDeniedUsageAccess =>

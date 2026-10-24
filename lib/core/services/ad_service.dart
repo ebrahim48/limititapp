@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -42,7 +43,16 @@ class AdService {
   InterstitialAd? _interstitial;
   bool _initialized = false;
 
-  bool get adsEnabled => !Get.find<PremiumController>().isPremium.value;
+  /// Google's public test units start with this publisher id.
+  static const String _testPublisher = 'ca-app-pub-3940256099942544';
+
+  /// An App Store build must not serve Google test ads, so iOS release builds
+  /// stay ad-free until real unit ids replace the test ones above.
+  static bool get _blockedTestAds =>
+      kReleaseMode && Platform.isIOS && bannerUnitId.startsWith(_testPublisher);
+
+  bool get adsEnabled =>
+      !_blockedTestAds && !Get.find<PremiumController>().isPremium.value;
 
   Future<void> init() async {
     if (_initialized) return;

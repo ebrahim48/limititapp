@@ -13,6 +13,7 @@ import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/plan_model.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_button.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/core/presentations/widgets/subscription_legal_footer.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
 
@@ -735,15 +736,7 @@ class _InAppPurchaseSubscriptionScreenState
           ),
         ),
         SizedBox(height: 10.h),
-        CustomText(
-          text:
-              context.l10n.subscriptionAutoRenewNote,
-          fontsize: 11.sp,
-          fontWeight: FontWeight.w400,
-          color: AppColors.textColor888888,
-          maxline: 3,
-          textAlign: TextAlign.center,
-        ),
+        const SubscriptionLegalFooter(),
       ],
     );
   }

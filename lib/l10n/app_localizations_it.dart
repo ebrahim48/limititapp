@@ -1213,7 +1213,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get cancelStoreNote =>
-      'Il rinnovo è gestito da App Store / Google Play. Disattiva lì il rinnovo automatico per evitare addebiti futuri.';
+      'Il rinnovo è gestito dallo store del tuo dispositivo. Disattiva lì il rinnovo automatico per evitare addebiti futuri.';
 
   @override
   String get subscriptionCancelled => 'Abbonamento annullato';
@@ -1349,7 +1349,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get faqA4 =>
-      'Apri Premium → Gestisci abbonamento → Annulla abbonamento. Il rinnovo automatico si disattiva su App Store o Google Play.';
+      'Apri Premium → Gestisci abbonamento → Annulla abbonamento. Il rinnovo automatico si disattiva nello store del tuo dispositivo.';
 
   @override
   String get createBackup => 'Crea backup';
@@ -1676,15 +1676,15 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get appUsageAndroidOnly =>
-      'Il monitoraggio dell\'utilizzo delle app è disponibile solo su dispositivi Android';
+      'Il monitoraggio dell\'utilizzo delle app non è disponibile su questo dispositivo';
 
   @override
   String get detoxModeAndroidOnly =>
-      'La modalità detox è disponibile solo su dispositivi Android';
+      'La modalità detox non è disponibile su questo dispositivo';
 
   @override
   String get pinLockAndroidOnly =>
-      'Il blocco con PIN è disponibile solo su dispositivi Android';
+      'Il blocco con PIN non è disponibile su questo dispositivo';
 
   @override
   String get permissionDeniedUsageAccess =>

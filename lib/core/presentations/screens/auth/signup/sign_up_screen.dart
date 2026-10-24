@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/controllers/auth_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
+import 'package:limit_it_app/core/services/social_auth_service.dart';
 import 'package:limit_it_app/core/helpers/toast_message_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/ui/ui.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
@@ -205,26 +206,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
 
-            SizedBox(height: 12.h),
+            if (SocialAuthService.instance.isGoogleSignInAvailable) ...[
+              SizedBox(height: 12.h),
 
-            /// ---------------- Sign up with Google ----------------
-            Obx(
-              () => Opacity(
-                opacity: authController.googleSignInLoading.value ? 0.6 : 1.0,
-                child: IgnorePointer(
-                  ignoring: authController.googleSignInLoading.value,
-                  child: AppSocialButton(
-                    dark: false,
-                    label: authController.googleSignInLoading.value
-                        ? '${l10n.continueWithGoogle}…'
-                        : l10n.continueWithGoogle,
-                    icon: Assets.icons.ui.google.svg(width: 20.w, height: 20.w),
-                    onPressed: () =>
-                        authController.handleGoogleSignIn(context: context),
+              /// ---------------- Sign up with Google ----------------
+              Obx(
+                () => Opacity(
+                  opacity: authController.googleSignInLoading.value ? 0.6 : 1.0,
+                  child: IgnorePointer(
+                    ignoring: authController.googleSignInLoading.value,
+                    child: AppSocialButton(
+                      dark: false,
+                      label: authController.googleSignInLoading.value
+                          ? '${l10n.continueWithGoogle}…'
+                          : l10n.continueWithGoogle,
+                      icon: Assets.icons.ui.google.svg(width: 20.w, height: 20.w),
+                      onPressed: () =>
+                          authController.handleGoogleSignIn(context: context),
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
 
             SizedBox(height: 20.h),
 

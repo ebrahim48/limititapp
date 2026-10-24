@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
@@ -58,7 +60,8 @@ class HelpSupportScreen extends StatelessWidget {
         final faqs = <List<String>>[
           [l10n.faqQ1, l10n.faqA1],
           [l10n.faqQ2, l10n.faqA2],
-          [l10n.faqQ3, l10n.faqA3],
+          // Usage access is an Android permission; iOS uses Screen Time.
+          if (Platform.isAndroid) [l10n.faqQ3, l10n.faqA3],
           [l10n.faqQ4, l10n.faqA4],
         ];
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:limit_it_app/controllers/premium_controller.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../widgets/ui/ui.dart';
 
 /// Confirmation step before cancelling — spells out what is lost.
@@ -22,6 +25,16 @@ class _CancelSubscriptionScreenState extends State<CancelSubscriptionScreen> {
   bool _isCancelling = false;
 
   Future<void> _cancel() async {
+    // On iOS the subscription lives with Apple: only the App Store can stop
+    // the renewal, so send the user there instead of just dropping access.
+    if (Platform.isIOS) {
+      await launchUrl(
+        Uri.parse('https://apps.apple.com/account/subscriptions'),
+        mode: LaunchMode.externalApplication,
+      );
+      return;
+    }
+
     setState(() => _isCancelling = true);
     await _premium.deactivate();
     if (!mounted) return;
