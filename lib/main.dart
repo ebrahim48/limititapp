@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -17,12 +18,14 @@ import 'l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialise Firebase before anything else that depends on it
-  // (google_sign_in and firebase_auth both require this).
-  // Guarded so a platform without Firebase config (e.g. iOS before
-  // GoogleService-Info.plist is added) still launches; social login will fail.
+  // Initialise Firebase before anything else that depends on it.
+  // Guarded so the app still launches if Firebase config is missing;
+  // social login will fail gracefully in that case.
   try {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    debugPrint('✅ Firebase initialized: ${Firebase.app().options.projectId}');
   } catch (e) {
     debugPrint('❌ Firebase init failed: $e');
   }
@@ -35,8 +38,7 @@ void main() async {
 
   runApp(
     DevicePreview(
-
-      enabled:false,
+      enabled: false,
       builder: (context) => MyApp(),
     ),
   );
@@ -71,11 +73,10 @@ class MyApp extends StatelessWidget {
                 Locale('it', ''),
                 Locale('es', ''),
               ],
-              // darkTheme: ThemeData.dark(),
               themeMode: Get.find<ThemeController>().themeMode.value,
               routeInformationParser: AppRoutes.goRouter.routeInformationParser,
               routeInformationProvider:
-              AppRoutes.goRouter.routeInformationProvider,
+                  AppRoutes.goRouter.routeInformationProvider,
               routerDelegate: AppRoutes.goRouter.routerDelegate,
             ));
           }),

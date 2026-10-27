@@ -100,10 +100,19 @@ final class ScreenTimeHostedView: NSObject, FlutterPlatformView {
             let controller: UIViewController
             switch kind {
             case .selection:
+                // `ruleId` shows a saved protection's apps, `draft` the wizard's
+                // pick; neither means the Block-now selection.
+                let bridge = ScreenTimeBridge.shared
+                let selection: FamilyActivitySelection
+                if let ruleId = arguments?["ruleId"] as? String {
+                    selection = bridge.selection(forRule: ruleId) ?? FamilyActivitySelection()
+                } else if arguments?["draft"] as? Bool == true {
+                    selection = bridge.draftSelection
+                } else {
+                    selection = bridge.selection
+                }
                 controller = UIHostingController(
-                    rootView: SelectedAppsList(
-                        selection: ScreenTimeBridge.shared.selection
-                    )
+                    rootView: SelectedAppsList(selection: selection)
                 )
             case .usage:
                 let days = (arguments?["days"] as? NSNumber)?.intValue ?? 1

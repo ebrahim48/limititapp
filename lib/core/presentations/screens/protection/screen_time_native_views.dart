@@ -20,11 +20,22 @@ const double kScreenTimeRowHeight = 44;
 
 /// The picked apps, with their real icons and names.
 class ScreenTimeSelectionList extends StatelessWidget {
-  const ScreenTimeSelectionList({super.key, required this.rowCount});
+  const ScreenTimeSelectionList({
+    super.key,
+    required this.rowCount,
+    this.draft = false,
+    this.ruleId,
+  });
 
   /// Applications + categories in the selection. Drives the reserved height,
   /// because a platform view has no intrinsic size to hand back to Flutter.
   final int rowCount;
+
+  /// Show the wizard's pending pick instead of the Block-now selection.
+  final bool draft;
+
+  /// Show the apps of this saved protection instead.
+  final String? ruleId;
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +43,13 @@ class ScreenTimeSelectionList extends StatelessWidget {
 
     return SizedBox(
       height: rowCount * kScreenTimeRowHeight,
-      child: const UiKitView(
+      child: UiKitView(
         viewType: 'com.limitit.digitalbalance/screen_time_selection',
-        creationParams: <String, dynamic>{},
-        creationParamsCodec: StandardMessageCodec(),
+        creationParams: <String, dynamic>{
+          'draft': draft,
+          if (ruleId != null) 'ruleId': ruleId,
+        },
+        creationParamsCodec: const StandardMessageCodec(),
       ),
     );
   }

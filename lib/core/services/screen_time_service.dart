@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:limit_it_app/core/models/app_limit_model.dart';
 
 /// What Apple's Screen Time currently holds for us.
 ///
@@ -96,10 +97,16 @@ class ScreenTimeService {
   }
 
   /// Opens Apple's app picker. Returns `null` when the user cancels.
-  Future<ScreenTimeSelection?> pickApps() async {
+  ///
+  /// A [draft] pick starts empty and is held for the next protection
+  /// [syncRules] creates, without touching the Block-now selection.
+  Future<ScreenTimeSelection?> pickApps({bool draft = false}) async {
     if (!Platform.isIOS) return null;
     try {
-      final result = await _channel.invokeMethod<Map<Object?, Object?>>('pickApps');
+      final result = await _channel.invokeMethod<Map<Object?, Object?>>(
+        'pickApps',
+        {'draft': draft},
+      );
       return result == null ? null : ScreenTimeSelection.fromMap(result);
     } on PlatformException catch (e) {
       throw ScreenTimeException(e.message ?? 'Could not open the app picker');
@@ -116,6 +123,36 @@ class ScreenTimeService {
 
   Future<ScreenTimeSelection> summary() async => _selectionCall('summary');
 
+  /// Prefix of the ids the wizard gives iOS protections. Apple never reveals
+  /// which apps a pick holds, so the rule id stands in for a package name.
+  static const String rulePrefix = 'ios-rule-';
+
+  static String newRuleId() =>
+      '$rulePrefix${DateTime.now().millisecondsSinceEpoch}';
+
+  /// Hands every iOS protection to the native side, which schedules and
+  /// shields them. Sent whole after each change: a rule left out is deleted.
+  Future<void> syncRules(List<AppLimitModel> limits) async {
+    if (!Platform.isIOS) return;
+    final rules = [
+      for (final limit in limits)
+        if (limit.packageName.startsWith(rulePrefix))
+          {
+            'id': limit.packageName,
+            'type': limit.protectionType.name,
+            'isActive': limit.isActive?.value ?? true,
+            'activeDays': limit.activeDays,
+            'delaySeconds': limit.delaySeconds,
+            'dailyLimitMinutes': limit.maxSessionDurationMinutes,
+            'maxOpens': limit.maxDailyOpens,
+            'blockStart': limit.scheduleStartTime?.value,
+            'blockEnd': limit.scheduleEndTime?.value,
+            'message': limit.customMessage,
+          },
+    ];
+    await _invoke<List<Object?>>('syncRules', {'rules': rules});
+  }
+
   Future<ScreenTimeSelection> _selectionCall(String method) async {
     if (!Platform.isIOS) return ScreenTimeSelection.empty;
     final result = await _invoke<Map<Object?, Object?>>(method);
@@ -124,9 +161,9 @@ class ScreenTimeService {
         : ScreenTimeSelection.fromMap(result);
   }
 
-  Future<T?> _invoke<T>(String method) async {
+  Future<T?> _invoke<T>(String method, [Object? arguments]) async {
     try {
-      return await _channel.invokeMethod<T>(method);
+      return await _channel.invokeMethod<T>(method, arguments);
     } on MissingPluginException {
       return null;
     } on PlatformException catch (e) {

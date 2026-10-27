@@ -8,6 +8,7 @@ import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
 import 'package:limit_it_app/core/models/protection_draft.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
+import 'package:limit_it_app/core/services/screen_time_service.dart';
 import 'package:limit_it_app/l10n/app_localizations.dart';
 import '../../widgets/ui/ui.dart';
 import 'ios_screen_time_view.dart';
@@ -170,7 +171,9 @@ class _SearchAppScreenState extends State<SearchAppScreen>
       // Apple gives us no app list to search, so the whole list UI is
       // replaced rather than left empty.
       body: !Platform.isAndroid
-          ? const IosScreenTimeView()
+          ? IosScreenTimeView(
+              onContinue: widget.protectionType == null ? null : _pickOnIos,
+            )
           : Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -251,6 +254,25 @@ class _SearchAppScreenState extends State<SearchAppScreen>
                       ),
           ),
         ],
+      ),
+    );
+  }
+
+  /// iOS never says which apps were picked, so the protection gets a rule id
+  /// in place of a package name and the pick's size as its name. The apps
+  /// themselves wait natively until Activate creates the rule.
+  void _pickOnIos(ScreenTimeSelection picked) {
+    context.pushNamed(
+      AppRoutes.protectionStepScreen,
+      extra: ProtectionDraft(
+        app: SelectedAppInfo(
+          packageName: ScreenTimeService.newRuleId(),
+          appName: context.l10n.screenTimeCounts(
+            picked.applications,
+            picked.categories,
+          ),
+        ),
+        type: widget.protectionType!,
       ),
     );
   }

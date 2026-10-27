@@ -1,6 +1,6 @@
 class ApiConstants{
 
-  //
+
   // static const String baseUrl = "https://api.limitit.eu/api/v1";
   // static const String imageBaseUrl = "https://api.limitit.eu";
 

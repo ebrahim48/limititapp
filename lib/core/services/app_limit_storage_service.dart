@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
+import 'package:limit_it_app/core/services/screen_time_service.dart';
 import 'package:flutter/foundation.dart';
 
 /// Service to manage app limits in SharedPreferences
@@ -29,7 +30,11 @@ class AppLimitStorageService {
       final List<Map<String, dynamic>> jsonList = limits.map((limit) => limit.toJson()).toList();
       final String jsonString = jsonEncode(jsonList);
 
-      return await prefs.setString(_keyAppLimits, jsonString);
+      final saved = await prefs.setString(_keyAppLimits, jsonString);
+      // iOS enforces protections natively; every save, delete and toggle
+      // passes through here, so this keeps the extensions in step.
+      if (saved) await ScreenTimeService.instance.syncRules(limits);
+      return saved;
     } catch (e) {
       debugPrint('Error saving app limits: $e');
       return false;
@@ -84,7 +89,9 @@ class AppLimitStorageService {
   Future<bool> clearAllLimits() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      return await prefs.remove(_keyAppLimits);
+      final cleared = await prefs.remove(_keyAppLimits);
+      if (cleared) await ScreenTimeService.instance.syncRules(const []);
+      return cleared;
     } catch (e) {
       debugPrint('Error clearing app limits: $e');
       return false;

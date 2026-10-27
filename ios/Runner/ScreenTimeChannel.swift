@@ -89,10 +89,15 @@ enum ScreenTimeChannel {
                 )
                 return
             }
-            bridge.presentPicker(from: presenter) { picked in
+            let draft = (call.arguments as? [String: Any])?["draft"] as? Bool ?? false
+            bridge.presentPicker(from: presenter, draft: draft) { picked in
                 // `nil` means the user cancelled; the stored selection stands.
-                result(picked ? bridge.summary() : nil)
+                result(picked ? bridge.summary(draft: draft) : nil)
             }
+
+        case "syncRules":
+            let rules = (call.arguments as? [String: Any])?["rules"] as? [[String: Any]] ?? []
+            result(bridge.syncRules(rules))
 
         case "applyShield":
             bridge.applyShield()
@@ -140,6 +145,10 @@ final class ScreenTimeBridge {
     /// Readable so the SwiftUI platform views can draw labels for the tokens.
     private(set) var selection = FamilyActivitySelection()
 
+    /// Apps picked in the add-protection wizard, waiting for the rule that
+    /// `syncRules` creates when the user hits Activate.
+    private(set) var draftSelection = FamilyActivitySelection()
+
     private init() {
         restore()
     }
@@ -154,20 +163,29 @@ final class ScreenTimeBridge {
 
     /// Apple's picker, presented as a sheet. Returns `true` when the user
     /// confirmed a selection.
+    ///
+    /// A `draft` pick starts empty and only fills `draftSelection`, leaving the
+    /// Block-now selection and its shield alone.
     func presentPicker(
         from viewController: UIViewController,
+        draft: Bool = false,
         completion: @escaping (Bool) -> Void
     ) {
         var host: UIHostingController<ActivityPickerView>?
 
         let view = ActivityPickerView(
-            selection: selection,
+            selection: draft ? FamilyActivitySelection() : selection,
             onDone: { [weak self] picked in
-                self?.selection = picked
-                self?.persist()
-                // Keep the shield in step with the new selection.
-                if UserDefaults.standard.bool(forKey: self?.shieldedKey ?? "") {
-                    self?.applyShield()
+                guard let self else { return }
+                if draft {
+                    self.draftSelection = picked
+                } else {
+                    self.selection = picked
+                    self.persist()
+                    // Keep the shield in step with the new selection.
+                    if UserDefaults.standard.bool(forKey: self.shieldedKey) {
+                        self.applyShield()
+                    }
                 }
                 host?.dismiss(animated: true) { completion(true) }
             },
@@ -206,13 +224,86 @@ final class ScreenTimeBridge {
     }
 
     /// Counts only — the tokens never reveal which apps they stand for.
-    func summary() -> [String: Any] {
-        [
-            "applications": selection.applicationTokens.count,
-            "categories": selection.categoryTokens.count,
-            "webDomains": selection.webDomainTokens.count,
-            "shielded": UserDefaults.standard.bool(forKey: shieldedKey),
+    func summary(draft: Bool = false) -> [String: Any] {
+        let picked = draft ? draftSelection : selection
+        return [
+            "applications": picked.applicationTokens.count,
+            "categories": picked.categoryTokens.count,
+            "webDomains": picked.webDomainTokens.count,
+            "shielded": !draft && UserDefaults.standard.bool(forKey: shieldedKey),
         ]
+    }
+
+    /// The apps behind one protection, for the native list view.
+    func selection(forRule id: String) -> FamilyActivitySelection? {
+        RuleStore.rule(id: id)?.selection
+    }
+
+    /// Mirrors Dart's iOS protections into the rules the extensions enforce.
+    ///
+    /// Dart sends its whole list after every change, so a rule missing from it
+    /// was deleted. A rule seen for the first time takes the wizard's
+    /// `draftSelection`; with none waiting it is skipped, since there are no
+    /// apps to attach it to. Only rules whose schedule changed are restarted —
+    /// restarting a daily limit would reset the usage counted so far today.
+    ///
+    /// Returns the ids now enforced.
+    func syncRules(_ payload: [[String: Any]]) -> [String] {
+        let existing = Dictionary(
+            RuleStore.all().map { ($0.id, $0) },
+            uniquingKeysWith: { first, _ in first }
+        )
+        var next: [LimitRule] = []
+
+        for map in payload {
+            guard
+                let id = map["id"] as? String,
+                let kind = ProtectionKind(rawValue: map["type"] as? String ?? "")
+            else { continue }
+
+            let picked: FamilyActivitySelection
+            if let old = existing[id] {
+                picked = old.selection
+            } else if !draftSelection.applicationTokens.isEmpty
+                || !draftSelection.categoryTokens.isEmpty
+                || !draftSelection.webDomainTokens.isEmpty {
+                picked = draftSelection
+                draftSelection = FamilyActivitySelection()
+            } else {
+                continue
+            }
+
+            next.append(
+                LimitRule(
+                    id: id,
+                    kind: kind,
+                    selection: picked,
+                    isActive: map["isActive"] as? Bool ?? true,
+                    activeDays: map["activeDays"] as? [String] ?? [],
+                    delaySeconds: (map["delaySeconds"] as? NSNumber)?.intValue ?? 0,
+                    dailyLimitMinutes: (map["dailyLimitMinutes"] as? NSNumber)?.intValue ?? 0,
+                    maxOpens: (map["maxOpens"] as? NSNumber)?.intValue ?? 0,
+                    blockStart: map["blockStart"] as? String,
+                    blockEnd: map["blockEnd"] as? String,
+                    message: map["message"] as? String
+                )
+            )
+        }
+
+        let kept = Set(next.map(\.id))
+        for id in existing.keys where !kept.contains(id) {
+            RuleScheduler.stop(id)
+            RuleStore.forgetState(id)
+        }
+
+        // Saved first: the monitor may fire as soon as a schedule starts.
+        RuleStore.save(next)
+        for rule in next {
+            if let old = existing[rule.id], old.hasSameSchedule(as: rule) { continue }
+            RuleScheduler.start(rule)
+        }
+
+        return next.map(\.id)
     }
 
     private func persist() {

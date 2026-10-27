@@ -8,6 +8,11 @@
 	     https://developer.apple.com/contact/request/family-controls-distribution -->
 	<key>com.apple.developer.family-controls</key>
 	<true/>
+	<!-- Shared with the Screen Time extensions, which read the rules from it. -->
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.com.limitit.digitalbalance</string>
+	</array>
 	<key>com.apple.developer.applesignin</key>
 	<array>
 		<string>Default</string>

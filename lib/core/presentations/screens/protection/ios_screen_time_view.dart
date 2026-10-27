@@ -20,8 +20,15 @@ import 'screen_time_native_views.dart';
 /// many apps there are. The names, icons and per-app usage are drawn by iOS in
 /// native views we embed but cannot read — see [ScreenTimeSelectionList] and
 /// [ScreenTimeUsageReport].
+///
+/// Given [onContinue], it is a step of the add-protection wizard instead: the
+/// pick is held natively for the protection about to be created, and Continue
+/// replaces Block now.
 class IosScreenTimeView extends StatefulWidget {
-  const IosScreenTimeView({super.key});
+  const IosScreenTimeView({super.key, this.onContinue});
+
+  /// Called with the wizard's pick once the user continues.
+  final ValueChanged<ScreenTimeSelection>? onContinue;
 
   @override
   State<IosScreenTimeView> createState() => _IosScreenTimeViewState();
@@ -37,6 +44,8 @@ class _IosScreenTimeViewState extends State<IosScreenTimeView> {
   bool _busy = false;
   bool _hasUsageReport = false;
 
+  bool get _isWizard => widget.onContinue != null;
+
   @override
   void initState() {
     super.initState();
@@ -46,8 +55,10 @@ class _IosScreenTimeViewState extends State<IosScreenTimeView> {
   Future<void> _refresh() async {
     final supported = await _screenTime.isSupported();
     final authorized = supported && await _screenTime.isAuthorized();
-    final selection =
-        authorized ? await _screenTime.summary() : ScreenTimeSelection.empty;
+    // The wizard starts from an empty pick rather than the Block-now one.
+    final selection = authorized && !_isWizard
+        ? await _screenTime.summary()
+        : (_isWizard ? _selection : ScreenTimeSelection.empty);
     final hasUsageReport = supported && await _screenTime.hasUsageReport();
 
     if (!mounted) return;
@@ -83,7 +94,7 @@ class _IosScreenTimeViewState extends State<IosScreenTimeView> {
 
   Future<void> _pick() => _run(() async {
         if (!_authorized) await _screenTime.requestAuthorization();
-        final picked = await _screenTime.pickApps();
+        final picked = await _screenTime.pickApps(draft: _isWizard);
         if (picked != null && mounted) {
           setState(() => _selection = picked);
         }
@@ -159,7 +170,7 @@ class _IosScreenTimeViewState extends State<IosScreenTimeView> {
                   Text(
                     // With nothing picked there is no Block button on screen
                     // yet, so pointing at one would be a dead end.
-                    _selection.isEmpty
+                    _selection.isEmpty || _isWizard
                         ? l10n.screenTimePickFirst
                         : (_selection.shielded
                             ? l10n.screenTimeBlockedNow
@@ -187,6 +198,7 @@ class _IosScreenTimeViewState extends State<IosScreenTimeView> {
                     '${_selection.applications}-${_selection.categories}',
                   ),
                   rowCount: _selection.applications + _selection.categories,
+                  draft: _isWizard,
                 ),
               ),
             ],
@@ -201,7 +213,14 @@ class _IosScreenTimeViewState extends State<IosScreenTimeView> {
               onPressed: _pick,
             ),
 
-            if (!_selection.isEmpty) ...[
+            if (!_selection.isEmpty && _isWizard) ...[
+              SizedBox(height: 12.h),
+              AppButton(
+                label: l10n.continueWithApps,
+                loading: _busy,
+                onPressed: () => widget.onContinue!(_selection),
+              ),
+            ] else if (!_selection.isEmpty) ...[
               SizedBox(height: 12.h),
               AppButton(
                 label: _selection.shielded

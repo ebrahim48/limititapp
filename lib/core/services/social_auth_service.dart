@@ -1,12 +1,9 @@
 import 'dart:convert';
-import 'dart:math';
 
-import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:limit_it_app/core/services/api_client.dart';
 import 'package:limit_it_app/core/services/api_constants.dart';
 
@@ -110,87 +107,10 @@ class SocialAuthService {
   /// Signs in the user with Apple, authenticates with Firebase, then calls
   /// the LimitIT `/users/social-login` endpoint to get the app JWT tokens.
   ///
-  /// Apple only returns the user's name on the very first authorization, so
-  /// it is forwarded to the backend whenever present.
+  /// Uses Firebase's own Apple provider: native sheet on iOS/macOS, hosted
+  /// web flow on Android. Building the credential manually from
+  /// sign_in_with_apple failed with "Invalid OAuth response from apple.com".
   Future<SocialLoginResult> signInWithApple() async {
-    // Android has no native Apple sheet; Firebase runs Apple's web flow
-    // through the Services ID configured in the Firebase console.
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      return _signInWithAppleWeb();
-    }
-
-    // 1. Firebase requires a nonce: Apple gets the SHA-256 hash, Firebase the raw value.
-    final rawNonce = _generateNonce();
-    final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
-
-    // 2. Trigger the Apple sign-in sheet.
-    final AuthorizationCredentialAppleID appleCredential;
-    try {
-      appleCredential = await SignInWithApple.getAppleIDCredential(
-        scopes: [
-          AppleIDAuthorizationScopes.email,
-          AppleIDAuthorizationScopes.fullName,
-        ],
-        nonce: hashedNonce,
-      );
-    } on SignInWithAppleAuthorizationException catch (e) {
-      if (e.code == AuthorizationErrorCode.canceled) {
-        throw Exception('Apple sign-in was cancelled.');
-      }
-      rethrow;
-    }
-
-    final fullName = [appleCredential.givenName, appleCredential.familyName]
-        .where((part) => part != null && part.isNotEmpty)
-        .join(' ');
-
-    // No GoogleService-Info.plist yet: skip Firebase and hand the backend
-    // Apple's own identity token.
-    if (Firebase.apps.isEmpty) {
-      final appleIdToken = appleCredential.identityToken;
-      if (appleIdToken == null) {
-        throw Exception('Apple returned no identity token.');
-      }
-      debugPrint('⚠️ Firebase not configured — sending Apple identity token to backend');
-      return _exchangeWithBackend(
-        idToken: appleIdToken,
-        displayName: fullName,
-        email: appleCredential.email,
-      );
-    }
-
-    // 3. Build an OAuth credential for Firebase and sign in.
-    final OAuthCredential credential = OAuthProvider('apple.com').credential(
-      idToken: appleCredential.identityToken,
-      rawNonce: rawNonce,
-    );
-
-    final UserCredential userCredential =
-        await _firebaseAuth.signInWithCredential(credential);
-
-    final User? firebaseUser = userCredential.user;
-    if (firebaseUser == null) {
-      throw Exception('Firebase sign-in returned no user.');
-    }
-
-    // 4. Get a fresh Firebase ID token (the one the backend verifies).
-    final String? idToken = await firebaseUser.getIdToken();
-    if (idToken == null) {
-      throw Exception('Failed to retrieve Firebase ID token.');
-    }
-
-    debugPrint('✅ Firebase Apple sign-in succeeded for: ${firebaseUser.email}');
-
-    // 5. Exchange the Firebase ID token for a LimitIT JWT pair.
-    return _exchangeWithBackend(
-      idToken: idToken,
-      displayName: fullName.isNotEmpty ? fullName : firebaseUser.displayName,
-      email: appleCredential.email ?? firebaseUser.email,
-    );
-  }
-
-  /// Apple sign-in through Firebase's hosted web flow (used on Android).
-  Future<SocialLoginResult> _signInWithAppleWeb() async {
     final provider = AppleAuthProvider()
       ..addScope('email')
       ..addScope('name');
@@ -215,21 +135,13 @@ class SocialAuthService {
       throw Exception('Failed to retrieve Firebase ID token.');
     }
 
-    debugPrint('✅ Firebase Apple (web) sign-in succeeded for: ${firebaseUser.email}');
+    debugPrint('✅ Firebase Apple sign-in succeeded for: ${firebaseUser.email}');
 
     return _exchangeWithBackend(
       idToken: idToken,
       displayName: firebaseUser.displayName,
       email: firebaseUser.email,
     );
-  }
-
-  String _generateNonce([int length = 32]) {
-    const charset =
-        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
-    final random = Random.secure();
-    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
-        .join();
   }
 
   /// Sign out from both Firebase and Google (clears cached account).

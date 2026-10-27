@@ -1,0 +1,4 @@
+// Pulls FLUTTER_BUILD_NAME / FLUTTER_BUILD_NUMBER from pubspec.yaml so the
+// extension's version always matches the host app (iOS refuses to install an
+// app whose extension has no version).
+#include "../Flutter/Generated.xcconfig"
