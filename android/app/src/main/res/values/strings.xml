@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="accessibility_service_description">LimitIt monitors app usage to enforce screen time limits. This service tracks which apps you open and blocks them when you exceed your set limits.</string>
+    <string name="accessibility_service_description">LimitIt uses this service only to detect which app is opened, so it can show a block screen when an app you chose to limit reaches its limit. It does not read your screen content, collect personal data or share anything with third parties.</string>
 </resources>

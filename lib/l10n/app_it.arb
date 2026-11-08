@@ -90,6 +90,8 @@
   "overlayPermissionDesc": "Consente a LimitIt di visualizzare la schermata di blocco sopra altre app",
   "accessibilityService": "Servizio di accessibilità",
   "accessibilityServiceDesc": "Monitora quali app apri per applicare i limiti",
+  "usageAccessPermission": "Accesso all'utilizzo",
+  "usageAccessPermissionDesc": "Rileva quale app è aperta e quanto l'hai usata oggi",
   "notificationPermission": "Permesso Notifiche",
   "notificationPermissionDesc": "Consente a LimitIt di inviare notifiche sui limiti delle app",
   "startMonitoring": "Avvia monitoraggio",
@@ -591,7 +593,7 @@
   "planFeatureAdvancedAnalytics": "Analisi avanzate",
   "planFeaturePrioritySupport": "Assistenza prioritaria",
   "planFeatureUnlimitedAppLimits": "Limiti app illimitati",
-  "toBlockAppsGrantPermissions": "Per bloccare le app devi concedere i permessi di sovrapposizione e accessibilità. Vuoi andare alla schermata di configurazione dei permessi?",
+  "toBlockAppsGrantPermissions": "Per bloccare le app devi concedere i permessi di sovrapposizione, accessibilità e accesso all'utilizzo. Vuoi andare alla schermata di configurazione dei permessi?",
   "appIsNowBlocked": "{appName} è ora bloccata",
   "appIsNowUnblocked": "{appName} è ora sbloccata",
   "noUsageToday": "Nessun utilizzo oggi",
@@ -742,5 +744,9 @@
   "screenTimeUsageMissing": "L'utilizzo per app richiede l'estensione dei report di Tempo di utilizzo, non inclusa in questa build.",
   "@screenTimeUsageMissing": {
     "description": "screenTimeUsageMissing"
-  }
+  },
+  "accessibilityDisclosureTitle": "Permesso di accessibilità",
+  "accessibilityDisclosureBody": "LimitIt usa l'API del Servizio di accessibilità per rilevare quale app apri, così da mostrare una schermata di blocco quando un'app che hai scelto di limitare raggiunge il limite di tempo, di aperture o un blocco programmato.\n\n• Rileviamo solo il nome dell'app in primo piano.\n• NON leggiamo, raccogliamo né memorizziamo il contenuto dello schermo, i messaggi o le password.\n• Nessun dato di questo servizio viene inviato ai nostri server o condiviso con terze parti.\n\nPuoi disattivarlo in qualsiasi momento in Impostazioni → Accessibilità → LimitIt.\n\nTocca \"Accetto\" per aprire le impostazioni di Accessibilità e attivare LimitIt.",
+  "accessibilityDisclosureAgree": "Accetto",
+  "accessibilityDisclosureDecline": "No, grazie"
 }

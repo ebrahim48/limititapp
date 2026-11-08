@@ -21,8 +21,10 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.animation.LinearInterpolator
+import android.window.OnBackInvokedDispatcher
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -30,6 +32,7 @@ import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import com.google.android.gms.ads.AdListener
+import android.content.pm.ApplicationInfo
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -46,8 +49,8 @@ import java.util.Locale
  *    activity. A countdown runs and then finishes the overlay, letting the
  *    user through; the button instead takes them home.
  *  - [TYPE_OPENS], [TYPE_TIME], [TYPE_SCHEDULE], [TYPE_INSTANT] (hard block) —
- *    the caller already pushed the user home, so the button just dismisses
- *    this screen.
+ *    the caller already pushed the user home; the button goes home again
+ *    in case the app still ended up behind this screen.
  *
  * Every number comes from the intent ([AppMonitoringService] fills it from the
  * live limits/usage); text is localized from the language picked in Flutter.
@@ -57,6 +60,23 @@ class BlockingOverlayActivity : Activity() {
 
     companion object {
         private const val TAG = "BlockingOverlay"
+
+        /**
+         * Package whose screen is showing right now, `null` when none is.
+         * [AppMonitoringService] uses it to tell "already blocked" from "the
+         * block screen was pushed away and the app is back".
+         */
+        @Volatile
+        var visiblePackage: String? = null
+            private set
+
+        /**
+         * Called with the package when this screen stops being visible, so
+         * the service can re-block at once if the app itself came back in
+         * front of it (e.g. a second tap on its icon).
+         */
+        @Volatile
+        var onHidden: ((String) -> Unit)? = null
 
         const val EXTRA_PACKAGE = "packageName"
         const val EXTRA_APP_NAME = "appName"
@@ -80,9 +100,10 @@ class BlockingOverlayActivity : Activity() {
         private const val KEY_LANGUAGE = "flutter.language_code"
         private const val KEY_IS_PREMIUM = "flutter.premium_is_active"
 
-        // TODO(release): replace with the real AdMob banner unit ID. This is
-        // Google's public test unit.
-        private const val BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
+        // Real "android-adq-banner" unit for release builds; Google's public
+        // test unit for debuggable builds (same rule as lib/core/services/ad_service.dart).
+        private const val BANNER_AD_UNIT_ID_RELEASE = "ca-app-pub-3550612244479973/2302483176"
+        private const val BANNER_AD_UNIT_ID_TEST = "ca-app-pub-3940256099942544/6300978111"
 
         // LimitIt palette (lib/core/constants/app_colors.dart).
         private val INK = Color.parseColor("#1A1A1A")
@@ -116,8 +137,13 @@ class BlockingOverlayActivity : Activity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
         window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        window.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(Color.WHITE))
         window.statusBarColor = Color.WHITE
         window.navigationBarColor = Color.WHITE
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isStatusBarContrastEnforced = false
+            window.isNavigationBarContrastEnforced = false
+        }
         @Suppress("DEPRECATION")
         window.decorView.systemUiVisibility =
             View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or
@@ -127,12 +153,21 @@ class BlockingOverlayActivity : Activity() {
                     0
                 }
 
+        // Targeting API 36, Android 16 no longer calls onBackPressed(), so back
+        // has to be swallowed here or it would reveal the blocked app.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            onBackInvokedDispatcher.registerOnBackInvokedCallback(
+                OnBackInvokedDispatcher.PRIORITY_DEFAULT
+            ) { }
+        }
+
         render()
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setIntent(intent)
+        visiblePackage = intent?.getStringExtra(EXTRA_PACKAGE)
         render()
     }
 
@@ -156,6 +191,7 @@ class BlockingOverlayActivity : Activity() {
             setBackgroundColor(Color.WHITE)
             setPadding(dp(20), dp(16), dp(20), dp(20))
         }
+        applySystemBarInsets(root)
 
         // --- Scrollable content -------------------------------------------
         val content = LinearLayout(this).apply {
@@ -275,9 +311,11 @@ class BlockingOverlayActivity : Activity() {
             actionButton(getString(R.string.block_got_it), filled = true)
         }
         button.setOnClickListener {
-            // In pause mode the protected app is still behind us, so
-            // finishing alone would hand it right back.
-            if (isPause) goHome()
+            // Always leave through the home screen: in pause mode the app is
+            // behind us by design, and after a hard block it can still be
+            // there (e.g. it was cold-starting when the home intent fired), so
+            // finishing alone could hand it right back.
+            goHome()
             finish()
         }
         root.addView(button, LinearLayout.LayoutParams(
@@ -416,6 +454,11 @@ class BlockingOverlayActivity : Activity() {
      * Small AdMob banner for Free users. Stays collapsed until an ad actually
      * loads so a failed request never leaves an empty box.
      */
+    private fun bannerAdUnitId(): String {
+        val debuggable = (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+        return if (debuggable) BANNER_AD_UNIT_ID_TEST else BANNER_AD_UNIT_ID_RELEASE
+    }
+
     private fun bannerAd(): View {
         val container = FrameLayout(this).apply {
             visibility = View.GONE
@@ -427,7 +470,7 @@ class BlockingOverlayActivity : Activity() {
             MobileAds.initialize(this)
             val ad = AdView(this).apply {
                 setAdSize(AdSize.BANNER)
-                adUnitId = BANNER_AD_UNIT_ID
+                adUnitId = bannerAdUnitId()
                 adListener = object : AdListener() {
                     override fun onAdLoaded() {
                         container.visibility = View.VISIBLE
@@ -590,6 +633,33 @@ class BlockingOverlayActivity : Activity() {
     private fun dp(value: Int): Int =
         (value * resources.displayMetrics.density + 0.5f).toInt()
 
+    /**
+     * Targeting API 35+, the window is always edge-to-edge: without this the
+     * brand header sits under the status bar and the button under the
+     * gesture bar. Adds the bar sizes on top of the layout's own padding.
+     */
+    private fun applySystemBarInsets(root: View) {
+        val left = root.paddingLeft
+        val top = root.paddingTop
+        val right = root.paddingRight
+        val bottom = root.paddingBottom
+        root.setOnApplyWindowInsetsListener { view, insets ->
+            val bars = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout())
+                    .let { intArrayOf(it.left, it.top, it.right, it.bottom) }
+            } else {
+                @Suppress("DEPRECATION")
+                intArrayOf(
+                    insets.systemWindowInsetLeft, insets.systemWindowInsetTop,
+                    insets.systemWindowInsetRight, insets.systemWindowInsetBottom
+                )
+            }
+            view.setPadding(left + bars[0], top + bars[1], right + bars[2], bottom + bars[3])
+            insets
+        }
+        root.requestApplyInsets()
+    }
+
     private fun goHome() {
         val homeIntent = Intent(Intent.ACTION_MAIN).apply {
             addCategory(Intent.CATEGORY_HOME)
@@ -604,7 +674,15 @@ class BlockingOverlayActivity : Activity() {
         // Prevent user from going back to the blocked app - do nothing
     }
 
+    override fun onResume() {
+        super.onResume()
+        visiblePackage = intent.getStringExtra(EXTRA_PACKAGE)
+    }
+
     override fun onPause() {
+        val shown = visiblePackage
+        visiblePackage = null
+        shown?.let { onHidden?.invoke(it) }
         super.onPause()
         // When user leaves this activity, finish it
         finish()

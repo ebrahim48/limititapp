@@ -3,7 +3,7 @@ import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:limit_it_app/core/services/ad_service.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/app_data_helper.dart';
 import 'package:limit_it_app/core/presentations/widgets/background_layers.dart';
@@ -16,7 +16,6 @@ import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/controllers/ads_controller.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -54,49 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   isLoading: _isLoading,
                 ),
                 SizedBox(height: 24.h),
-                // Banner Ad Section
-                if (_isBannerAdReady && _bannerAd != null)
-                  Center(
-                    child: Container(
-                      width: _bannerAd!.size.width.toDouble(),
-                      height: _bannerAd!.size.height.toDouble(),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.r),
-                        child: AdWidget(ad: _bannerAd!),
-                      ),
-                    ),
-                  )
-                else if (!_isBannerAdReady)
-                  // Show placeholder while ad is loading
-                  Center(
-                    child: Container(
-                      width: 320.w,
-                      height: 50.h,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Center(
-                        child: CustomText(
-                          text: context.l10n.loadingAd,
-                          fontsize: 12.sp,
-                          color: Colors.grey[600]!,
-                        ),
-                      ),
-                    ),
-                  ),
-
+                const AppBannerAd(),
                 SizedBox(height: 24.h),
                 // Announcement Section
                 Obx(() => _buildAnnouncementSection()),
@@ -317,16 +274,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    _bannerAd?.dispose();
-    super.dispose();
-  }
 
 
 
-  BannerAd? _bannerAd;
-  bool _isBannerAdReady = false;
 
   bool _isLoading = true;
   bool _hasPermission = false;
@@ -337,28 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _loadBannerAd();
     _loadAppUsageData();
-  }
-
-  // 1. Banner Ad
-  void _loadBannerAd() {
-    _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111', // Test Banner ID
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-    );
-    _bannerAd?.load();
   }
 
   /// Load app usage data

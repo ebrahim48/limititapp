@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
+import 'package:limit_it_app/core/helpers/blocking_permission_gate.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/models/app_limit_model.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
@@ -399,6 +400,13 @@ class _ProtectionEditorScreenState extends State<ProtectionEditorScreen> {
   Future<void> _save() async {
     if (_packageName.isEmpty) return;
     setState(() => _isSaving = true);
+
+    // Without these Android would save a protection that never blocks.
+    if (!await ensureBlockingReady(context)) {
+      if (mounted) setState(() => _isSaving = false);
+      return;
+    }
+    if (!mounted) return;
 
     try {
       final service = Get.find<AppLimitStorageService>();

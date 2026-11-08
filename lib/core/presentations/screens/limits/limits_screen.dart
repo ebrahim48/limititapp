@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:limit_it_app/core/services/ad_service.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
 import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/constants/limit_data_helper.dart';
@@ -12,7 +12,6 @@ import 'package:limit_it_app/core/presentations/widgets/limit_card.dart';
 import 'package:limit_it_app/controllers/ads_controller.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 
@@ -25,94 +24,13 @@ class LimitsScreen extends StatefulWidget {
 }
 
 class _LimitsScreenState extends State<LimitsScreen> {
-  BannerAd? _bannerAd;
-  bool _isBannerAdReady = false;
-  InterstitialAd? _interstitialAd;
-  bool _isInterstitialAdReady = false;
   final AdsController _adsController = Get.put(AdsController());
 
-  @override
-  void initState() {
-    super.initState();
-    _loadBannerAd();
-    _loadInterstitialAd();
-  }
-
-  // 1. Banner Ad
-  void _loadBannerAd() {
-    _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111', // Test Banner ID
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _isBannerAdReady = true;
-          });
-        },
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-    );
-    _bannerAd?.load();
-  }
-
-  // 2. Interstitial Ad
-  void _loadInterstitialAd() {
-    InterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/1033173712', // Test Interstitial ID
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          _interstitialAd = ad;
-          _isInterstitialAdReady = true;
-
-          // Set up full screen content callback
-          _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (ad) {
-              ad.dispose();
-              _isInterstitialAdReady = false;
-              _loadInterstitialAd(); // Load a new ad for next time
-            },
-            onAdFailedToShowFullScreenContent: (ad, error) {
-              ad.dispose();
-              _isInterstitialAdReady = false;
-              _loadInterstitialAd(); // Load a new ad
-            },
-          );
-        },
-        onAdFailedToLoad: (error) {
-          _isInterstitialAdReady = false;
-        },
-      ),
-    );
-  }
-
-  void _showInterstitialAdAndNavigate() {
-    if (_isInterstitialAdReady && _interstitialAd != null) {
-      _interstitialAd!.show();
-      // Navigation will happen after ad is dismissed via callback
-      _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-        onAdDismissedFullScreenContent: (ad) {
-          ad.dispose();
-          _isInterstitialAdReady = false;
-          _loadInterstitialAd(); // Load a new ad for next time
-          // Navigate after ad is dismissed
-          context.pushNamed(AppRoutes.limitScreenTime);
-        },
-        onAdFailedToShowFullScreenContent: (ad, error) {
-          ad.dispose();
-          _isInterstitialAdReady = false;
-          _loadInterstitialAd(); // Load a new ad
-          // Navigate anyway if ad fails to show
-          context.pushNamed(AppRoutes.limitScreenTime);
-        },
-      );
-    } else {
-      // If ad is not ready, navigate directly
-      context.pushNamed(AppRoutes.limitScreenTime);
-    }
+  /// Shows a (frequency-capped) interstitial for Free users, then navigates.
+  Future<void> _showInterstitialAdAndNavigate() async {
+    await AdService.instance.maybeShowInterstitial();
+    if (!mounted) return;
+    context.pushNamed(AppRoutes.limitScreenTime);
   }
 
   @override
@@ -210,48 +128,7 @@ class _LimitsScreenState extends State<LimitsScreen> {
                   }).toList(),
             ),
             SizedBox(height: 24.h),
-            // Banner Ad Section
-            if (_isBannerAdReady && _bannerAd != null)
-              Center(
-                child: Container(
-                  width: _bannerAd!.size.width.toDouble(),
-                  height: _bannerAd!.size.height.toDouble(),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.r),
-                    child: AdWidget(ad: _bannerAd!),
-                  ),
-                ),
-              )
-            else if (!_isBannerAdReady)
-              // Show placeholder while ad is loading
-              Center(
-                child: Container(
-                  width: 320.w,
-                  height: 50.h,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Center(
-                    child: CustomText(
-                      text: context.l10n.loadingAd,
-                      fontsize: 12.sp,
-                      color: Colors.grey[600]!,
-                    ),
-                  ),
-                ),
-              ),
+            const AppBannerAd(),
             SizedBox(height: 24.h),
             // Announcement Section
             Obx(() => _buildAnnouncementSection()),
@@ -262,12 +139,6 @@ class _LimitsScreenState extends State<LimitsScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    _bannerAd?.dispose();
-    _interstitialAd?.dispose();
-    super.dispose();
-  }
 
   Widget _buildAnnouncementSection() {
     if (_adsController.isLoading.value && _adsController.ads.isEmpty) {

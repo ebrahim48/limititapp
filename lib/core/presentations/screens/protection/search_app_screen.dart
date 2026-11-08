@@ -330,6 +330,15 @@ class _SearchLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // The keyboard can open while this is up and shrink the space below six
+    // rows; let the rows run off the bottom instead of overflowing.
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      child: _rows(),
+    );
+  }
+
+  Widget _rows() {
     return AppCardList(
       children: List.generate(
         6,

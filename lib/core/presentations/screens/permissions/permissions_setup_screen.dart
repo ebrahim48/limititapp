@@ -3,16 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:limit_it_app/core/config/app_routes/app_routes.dart';
-import 'package:limit_it_app/core/constants/app_colors.dart';
 import 'package:limit_it_app/core/helpers/localization_helper.dart';
 import 'package:limit_it_app/core/presentations/screens/Home/home_screen.dart';
 import 'package:limit_it_app/core/presentations/widgets/custom_text.dart';
+import 'package:limit_it_app/core/presentations/widgets/ui/ui.dart';
 import 'package:limit_it_app/core/services/app_blocker_service.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
 import 'package:limit_it_app/core/services/notification_permission_service.dart';
 
 class PermissionsSetupScreen extends StatefulWidget {
-  const PermissionsSetupScreen({super.key});
+  const PermissionsSetupScreen({super.key, this.popOnFinish = false});
+
+  /// Opened just to unblock saving a protection: when monitoring starts,
+  /// return to the caller instead of continuing the onboarding flow.
+  final bool popOnFinish;
 
   @override
   State<PermissionsSetupScreen> createState() => _PermissionsSetupScreenState();
@@ -22,6 +26,7 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
     with WidgetsBindingObserver {
   bool _hasOverlayPermission = false;
   bool _hasAccessibilityPermission = false;
+  bool _hasUsageAccessPermission = false;
   bool _hasNotificationPermission = true;
   bool _isChecking = true;
   bool _isStartingMonitoring = false;
@@ -60,6 +65,7 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
     setState(() {
       _hasOverlayPermission = permissions['overlay'] ?? false;
       _hasAccessibilityPermission = permissions['accessibility'] ?? false;
+      _hasUsageAccessPermission = permissions['usage'] ?? false;
       _hasNotificationPermission = hasNotificationPermission;
       _isChecking = false;
     });
@@ -71,9 +77,30 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
     // Permission check will happen automatically when user returns
   }
 
+  /// Google Play requires a prominent disclosure and explicit consent before
+  /// sending the user to enable the Accessibility service.
   Future<void> _requestAccessibilityPermission() async {
+    final l10n = context.l10n;
+    var agreed = false;
+    await showAppConfirmSheet<void>(
+      context,
+      title: l10n.accessibilityDisclosureTitle,
+      message: l10n.accessibilityDisclosureBody,
+      confirmLabel: l10n.accessibilityDisclosureAgree,
+      cancelLabel: l10n.accessibilityDisclosureDecline,
+      confirmVariant: AppButtonVariant.primary,
+      onConfirm: () => agreed = true,
+    );
+    if (!agreed || !mounted) return;
+
     final appBlockerService = Get.find<AppBlockerService>();
     await appBlockerService.requestAccessibilityPermission();
+    // Permission check will happen automatically when user returns
+  }
+
+  Future<void> _requestUsageAccessPermission() async {
+    final appBlockerService = Get.find<AppBlockerService>();
+    await appBlockerService.requestUsageAccessPermission();
     // Permission check will happen automatically when user returns
   }
 
@@ -104,6 +131,11 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
         ),
       );
 
+      if (widget.popOnFinish) {
+        Navigator.of(context).pop();
+        return;
+      }
+
       // Check if we have saved app limits to determine if user completed onboarding
       final appLimitStorageService = Get.find<AppLimitStorageService>();
       final appLimits = await appLimitStorageService.getAppLimits();
@@ -132,7 +164,10 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
   @override
   Widget build(BuildContext context) {
     final bool allPermissionsGranted =
-        _hasOverlayPermission && _hasAccessibilityPermission && _hasNotificationPermission;
+        _hasOverlayPermission &&
+        _hasAccessibilityPermission &&
+        _hasUsageAccessPermission &&
+        _hasNotificationPermission;
 
     return Scaffold(
       appBar: AppBar(
@@ -185,6 +220,14 @@ class _PermissionsSetupScreenState extends State<PermissionsSetupScreen>
                   description: context.l10n.accessibilityServiceDesc,
                   isGranted: _hasAccessibilityPermission,
                   onRequest: _requestAccessibilityPermission,
+                ),
+                SizedBox(height: 16.h),
+                _buildPermissionCard(
+                  icon: Icons.query_stats,
+                  title: context.l10n.usageAccessPermission,
+                  description: context.l10n.usageAccessPermissionDesc,
+                  isGranted: _hasUsageAccessPermission,
+                  onRequest: _requestUsageAccessPermission,
                 ),
                 SizedBox(height: 16.h),
                 _buildPermissionCard(

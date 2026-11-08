@@ -289,6 +289,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Monitors which apps you open to enforce limits';
 
   @override
+  String get usageAccessPermission => 'Usage Access';
+
+  @override
+  String get usageAccessPermissionDesc =>
+      'Sees which app is open and how long you used it today';
+
+  @override
   String get notificationPermission => 'Notification Permission';
 
   @override
@@ -1818,7 +1825,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get toBlockAppsGrantPermissions =>
-      'To block apps, you need to grant Overlay and Accessibility permissions. Would you like to go to the permissions setup screen?';
+      'To block apps, you need to grant Overlay, Accessibility and Usage Access permissions. Would you like to go to the permissions setup screen?';
 
   @override
   String appIsNowBlocked(String appName) {
@@ -2103,4 +2110,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get screenTimeUsageMissing =>
       'Per-app usage needs the Screen Time report extension, which is not part of this build.';
+
+  @override
+  String get accessibilityDisclosureTitle => 'Accessibility permission';
+
+  @override
+  String get accessibilityDisclosureBody =>
+      'LimitIt uses the Accessibility Service API to detect which app you open, so it can show a block screen when an app you chose to limit reaches its time limit, open limit or scheduled block.\n\n• We only detect the name of the app in the foreground.\n• We do NOT read, collect or store your screen content, messages or passwords.\n• No data from this service is sent to our servers or shared with third parties.\n\nYou can turn it off at any time in Settings → Accessibility → LimitIt.\n\nTap \"Agree\" to open Accessibility settings and enable LimitIt.';
+
+  @override
+  String get accessibilityDisclosureAgree => 'Agree';
+
+  @override
+  String get accessibilityDisclosureDecline => 'No thanks';
 }

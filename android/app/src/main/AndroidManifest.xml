@@ -50,7 +50,7 @@
         <!-- AdMob App ID -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-3550612244479973~1156922460"/>
 
         <!-- Accessibility Service for app monitoring -->
         <service
@@ -80,7 +80,7 @@
         <activity
             android:name=".BlockingOverlayActivity"
             android:exported="false"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar"
             android:excludeFromRecents="true"
             android:taskAffinity=""
             android:noHistory="true"

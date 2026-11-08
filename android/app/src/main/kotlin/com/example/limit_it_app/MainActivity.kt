@@ -1,5 +1,7 @@
 package com.limitit.digitalbalance 
 
+import android.app.AppOpsManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -39,6 +41,13 @@ class MainActivity : FlutterActivity() {
                 }
                 "requestAccessibilityPermission" -> {
                     requestAccessibilityPermission()
+                    result.success(true)
+                }
+                "hasUsageAccessPermission" -> {
+                    result.success(hasUsageAccessPermission())
+                }
+                "requestUsageAccessPermission" -> {
+                    requestUsageAccessPermission()
                     result.success(true)
                 }
                 "isMonitoringActive" -> {
@@ -152,6 +161,38 @@ class MainActivity : FlutterActivity() {
 
         android.util.Log.d("PermissionCheck", "Final accessibility permission status: $isEnabled")
         return isEnabled
+    }
+
+    /**
+     * Usage access lets the monitoring service see which app is in front and
+     * how long it has been used today. Without it nothing gets blocked.
+     */
+    private fun hasUsageAccessPermission(): Boolean {
+        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            appOps.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName)
+        } else {
+            @Suppress("DEPRECATION")
+            appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), packageName)
+        }
+        // MODE_DEFAULT defers to the permission itself (seen on some OEMs).
+        return if (mode == AppOpsManager.MODE_DEFAULT) {
+            checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) ==
+                android.content.pm.PackageManager.PERMISSION_GRANTED
+        } else {
+            mode == AppOpsManager.MODE_ALLOWED
+        }
+    }
+
+    private fun requestUsageAccessPermission() {
+        // Opening the app's own entry directly is not supported everywhere;
+        // fall back to the full list.
+        val direct = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS, Uri.parse("package:$packageName"))
+        try {
+            startActivity(direct)
+        } catch (e: Exception) {
+            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+        }
     }
 
     private fun requestAccessibilityPermission() {

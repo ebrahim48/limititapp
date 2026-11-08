@@ -360,6 +360,14 @@
   "@accessibilityServiceDesc": {
     "description": "Accessibility service description"
   },
+  "usageAccessPermission": "Usage Access",
+  "@usageAccessPermission": {
+    "description": "Usage access permission title"
+  },
+  "usageAccessPermissionDesc": "Sees which app is open and how long you used it today",
+  "@usageAccessPermissionDesc": {
+    "description": "Usage access permission description"
+  },
   "notificationPermission": "Notification Permission",
   "@notificationPermission": {
     "description": "Notification permission title"
@@ -2397,7 +2405,7 @@
   "@planFeatureUnlimitedAppLimits": {
     "description": "Unlimited app limits"
   },
-  "toBlockAppsGrantPermissions": "To block apps, you need to grant Overlay and Accessibility permissions. Would you like to go to the permissions setup screen?",
+  "toBlockAppsGrantPermissions": "To block apps, you need to grant Overlay, Accessibility and Usage Access permissions. Would you like to go to the permissions setup screen?",
   "@toBlockAppsGrantPermissions": {
     "description": "To block apps, you need to grant Overlay and Accessibility permissions. Would you like to go to the permissions setup screen?"
   },
@@ -2773,5 +2781,21 @@
   "screenTimeUsageMissing": "Per-app usage needs the Screen Time report extension, which is not part of this build.",
   "@screenTimeUsageMissing": {
     "description": "screenTimeUsageMissing"
+  },
+  "accessibilityDisclosureTitle": "Accessibility permission",
+  "@accessibilityDisclosureTitle": {
+    "description": "Accessibility prominent disclosure"
+  },
+  "accessibilityDisclosureBody": "LimitIt uses the Accessibility Service API to detect which app you open, so it can show a block screen when an app you chose to limit reaches its time limit, open limit or scheduled block.\n\n• We only detect the name of the app in the foreground.\n• We do NOT read, collect or store your screen content, messages or passwords.\n• No data from this service is sent to our servers or shared with third parties.\n\nYou can turn it off at any time in Settings → Accessibility → LimitIt.\n\nTap \"Agree\" to open Accessibility settings and enable LimitIt.",
+  "@accessibilityDisclosureBody": {
+    "description": "Accessibility prominent disclosure"
+  },
+  "accessibilityDisclosureAgree": "Agree",
+  "@accessibilityDisclosureAgree": {
+    "description": "Accessibility prominent disclosure"
+  },
+  "accessibilityDisclosureDecline": "No thanks",
+  "@accessibilityDisclosureDecline": {
+    "description": "Accessibility prominent disclosure"
   }
 }

@@ -21,15 +21,49 @@ class AdService {
 
   static final AdService instance = AdService._();
 
-  // TODO(release): replace with the real AdMob unit IDs. These are Google's
-  // public test units — they never earn anything.
-  static String get bannerUnitId => Platform.isIOS
-      ? 'ca-app-pub-3940256099942544/2934735716'
-      : 'ca-app-pub-3940256099942544/6300978111';
+  // ── AdMob unit ids ────────────────────────────────────────────────────────
+  // Debug/profile builds always use Google's public test units, so tapping
+  // ads during development can never get the AdMob account suspended.
+  // Release builds use the real LimitIt units below. A placement without a
+  // real unit yet (null) simply shows nothing in release.
+  //
+  // The AdMob *app* ids live in AndroidManifest.xml / ios/Runner/Info.plist.
 
-  static String get interstitialUnitId => Platform.isIOS
-      ? 'ca-app-pub-3940256099942544/4411468910'
-      : 'ca-app-pub-3940256099942544/1033173712';
+  /// Real Android banner unit: "android-adq-banner".
+  static const String _androidBannerUnitId =
+      'ca-app-pub-3550612244479973/2302483176';
+
+  /// Real Android interstitial unit.
+  static const String _androidInterstitialUnitId =
+      'ca-app-pub-3550612244479973/8531840441';
+
+  /// iOS has no AdMob units yet — iOS release builds stay ad-free.
+  static const String? _iosBannerUnitId = null;
+  static const String? _iosInterstitialUnitId = null;
+
+  static const String _testBannerAndroid =
+      'ca-app-pub-3940256099942544/6300978111';
+  static const String _testBannerIos = 'ca-app-pub-3940256099942544/2934735716';
+  static const String _testInterstitialAndroid =
+      'ca-app-pub-3940256099942544/1033173712';
+  static const String _testInterstitialIos =
+      'ca-app-pub-3940256099942544/4411468910';
+
+  static bool get _useTestAds => !kReleaseMode;
+
+  static String? get bannerUnitId {
+    if (_useTestAds) {
+      return Platform.isIOS ? _testBannerIos : _testBannerAndroid;
+    }
+    return Platform.isIOS ? _iosBannerUnitId : _androidBannerUnitId;
+  }
+
+  static String? get interstitialUnitId {
+    if (_useTestAds) {
+      return Platform.isIOS ? _testInterstitialIos : _testInterstitialAndroid;
+    }
+    return Platform.isIOS ? _iosInterstitialUnitId : _androidInterstitialUnitId;
+  }
 
   /// Interstitial frequency cap: at most one every [_minInterval], and no more
   /// than [_maxPerDay] a day.
@@ -43,16 +77,7 @@ class AdService {
   InterstitialAd? _interstitial;
   bool _initialized = false;
 
-  /// Google's public test units start with this publisher id.
-  static const String _testPublisher = 'ca-app-pub-3940256099942544';
-
-  /// An App Store build must not serve Google test ads, so iOS release builds
-  /// stay ad-free until real unit ids replace the test ones above.
-  static bool get _blockedTestAds =>
-      kReleaseMode && Platform.isIOS && bannerUnitId.startsWith(_testPublisher);
-
-  bool get adsEnabled =>
-      !_blockedTestAds && !Get.find<PremiumController>().isPremium.value;
+  bool get adsEnabled => !Get.find<PremiumController>().isPremium.value;
 
   Future<void> init() async {
     if (_initialized) return;
@@ -62,9 +87,10 @@ class AdService {
   }
 
   void _preloadInterstitial() {
-    if (!adsEnabled || _interstitial != null) return;
+    final unitId = interstitialUnitId;
+    if (!adsEnabled || unitId == null || _interstitial != null) return;
     InterstitialAd.load(
-      adUnitId: interstitialUnitId,
+      adUnitId: unitId,
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) => _interstitial = ad,
@@ -144,12 +170,13 @@ class _AppBannerAdState extends State<AppBannerAd> {
   @override
   void initState() {
     super.initState();
-    if (AdService.instance.adsEnabled) _load();
+    final unitId = AdService.bannerUnitId;
+    if (AdService.instance.adsEnabled && unitId != null) _load(unitId);
   }
 
-  void _load() {
+  void _load(String unitId) {
     _banner = BannerAd(
-      adUnitId: AdService.bannerUnitId,
+      adUnitId: unitId,
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(

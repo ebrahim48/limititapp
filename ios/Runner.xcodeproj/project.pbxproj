@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		06EB3253C6445F514B508F83 /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABE8C972FDDFA2D0E614E65 /* DeviceActivityMonitorExtension.swift */; };
-		0A9477726EAFA22658703020 /* ScreenTimeReport.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9D7BD813B3A0AD18F00CAB2E /* ScreenTimeReport.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0A9477726EAFA22658703020 /* ScreenTimeReport.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = 9D7BD813B3A0AD18F00CAB2E /* ScreenTimeReport.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0C0E5E154DA162969D53F708 /* LimitRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FC1AAAEBA71F5E8C28EE5 /* LimitRules.swift */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		1BA8057CE644460ABBB622E2 /* LimitRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033FC1AAAEBA71F5E8C28EE5 /* LimitRules.swift */; };
@@ -82,13 +82,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		A1B2C3D4E5F60718293A4B5C /* Embed ExtensionKit Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
+			files = (
+				0A9477726EAFA22658703020 /* ScreenTimeReport.appex in Embed ExtensionKit Extensions */,
+			);
+			name = "Embed ExtensionKit Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		04BEE12A2B80E7BF4AC0FEFB /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				0A9477726EAFA22658703020 /* ScreenTimeReport.appex in Embed Foundation Extensions */,
 				D4D09D63EAEF4F99FE600E14 /* ShieldConfiguration.appex in Embed Foundation Extensions */,
 				FA5559F955758B2A2598455B /* DeviceActivityMonitor.appex in Embed Foundation Extensions */,
 				47418D73E077116CFAF61489 /* ShieldAction.appex in Embed Foundation Extensions */,
@@ -149,14 +159,14 @@
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		99C725B700F4812BF36B26B3 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C21647EDEBA9E541F00681C /* ShieldConfiguration.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = ShieldConfiguration.xcconfig; sourceTree = "<group>"; };
-		9D7BD813B3A0AD18F00CAB2E /* ScreenTimeReport.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ScreenTimeReport.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D7BD813B3A0AD18F00CAB2E /* ScreenTimeReport.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = ScreenTimeReport.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1B2C3D11ED2DC5600515810 /* ScreenTimeChannel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenTimeChannel.swift; sourceTree = "<group>"; };
 		A1B2C3D21ED2DC5600515810 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		A1B2C3D51ED2DC5600515810 /* ScreenTimePlatformViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenTimePlatformViews.swift; sourceTree = "<group>"; };
 		A9E0BA7C0C002BBA8E2ED330 /* AppUsageReport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppUsageReport.swift; sourceTree = "<group>"; };
 		BA521325A6F1498890662606 /* ShieldConfigurationExtension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShieldConfigurationExtension.swift; sourceTree = "<group>"; };
 		BCE2FA75D2E2D51CB0E4B2E5 /* ShieldAction.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = ShieldAction.entitlements; sourceTree = "<group>"; };
-		C2F035F9F0BDFFF7D7682E36 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		C2F035F9F0BDFFF7D7682E36 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C799C1748C94A55FC8DB8F7E /* ShieldAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShieldAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE476791230B3A113B01CEA5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		D082833BF7487683B57AFF64 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -242,7 +252,6 @@
 				BCE2FA75D2E2D51CB0E4B2E5 /* ShieldAction.entitlements */,
 				3130B5A08F6BC5E6341769DD /* ShieldAction.xcconfig */,
 			);
-			name = ShieldAction;
 			path = ShieldAction;
 			sourceTree = "<group>";
 		};
@@ -255,7 +264,6 @@
 				4EA933F8048DB5EA9CF60333 /* ShieldConfiguration.entitlements */,
 				9C21647EDEBA9E541F00681C /* ShieldConfiguration.xcconfig */,
 			);
-			name = ShieldConfiguration;
 			path = ShieldConfiguration;
 			sourceTree = "<group>";
 		};
@@ -275,7 +283,6 @@
 				95E9721647A4D9079EE782FB /* DeviceActivityMonitor.entitlements */,
 				47A07980000C69DD3ED1D5E9 /* DeviceActivityMonitor.xcconfig */,
 			);
-			name = DeviceActivityMonitor;
 			path = DeviceActivityMonitor;
 			sourceTree = "<group>";
 		};
@@ -353,7 +360,6 @@
 			children = (
 				033FC1AAAEBA71F5E8C28EE5 /* LimitRules.swift */,
 			);
-			name = Shared;
 			path = Shared;
 			sourceTree = "<group>";
 		};
@@ -431,6 +437,7 @@
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
 				04BEE12A2B80E7BF4AC0FEFB /* Embed Foundation Extensions */,
+				A1B2C3D4E5F60718293A4B5C /* Embed ExtensionKit Extensions */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				5D542993E99303342FA11F91 /* [CP] Embed Pods Frameworks */,
@@ -501,7 +508,7 @@
 			name = ScreenTimeReport;
 			productName = ScreenTimeReport;
 			productReference = 9D7BD813B3A0AD18F00CAB2E /* ScreenTimeReport.appex */;
-			productType = "com.apple.product-type.app-extension";
+			productType = "com.apple.product-type.extensionkit-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -1119,8 +1126,12 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1146,8 +1157,12 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Profile;
@@ -1202,8 +1217,12 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

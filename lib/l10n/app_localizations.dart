@@ -640,6 +640,18 @@ abstract class AppLocalizations {
   /// **'Monitors which apps you open to enforce limits'**
   String get accessibilityServiceDesc;
 
+  /// Usage access permission title
+  ///
+  /// In en, this message translates to:
+  /// **'Usage Access'**
+  String get usageAccessPermission;
+
+  /// Usage access permission description
+  ///
+  /// In en, this message translates to:
+  /// **'Sees which app is open and how long you used it today'**
+  String get usageAccessPermissionDesc;
+
   /// Notification permission title
   ///
   /// In en, this message translates to:
@@ -3437,7 +3449,7 @@ abstract class AppLocalizations {
   /// To block apps, you need to grant Overlay and Accessibility permissions. Would you like to go to the permissions setup screen?
   ///
   /// In en, this message translates to:
-  /// **'To block apps, you need to grant Overlay and Accessibility permissions. Would you like to go to the permissions setup screen?'**
+  /// **'To block apps, you need to grant Overlay, Accessibility and Usage Access permissions. Would you like to go to the permissions setup screen?'**
   String get toBlockAppsGrantPermissions;
 
   /// {appName} is now blocked
@@ -3937,6 +3949,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Per-app usage needs the Screen Time report extension, which is not part of this build.'**
   String get screenTimeUsageMissing;
+
+  /// Accessibility prominent disclosure
+  ///
+  /// In en, this message translates to:
+  /// **'Accessibility permission'**
+  String get accessibilityDisclosureTitle;
+
+  /// Accessibility prominent disclosure
+  ///
+  /// In en, this message translates to:
+  /// **'LimitIt uses the Accessibility Service API to detect which app you open, so it can show a block screen when an app you chose to limit reaches its time limit, open limit or scheduled block.\n\n• We only detect the name of the app in the foreground.\n• We do NOT read, collect or store your screen content, messages or passwords.\n• No data from this service is sent to our servers or shared with third parties.\n\nYou can turn it off at any time in Settings → Accessibility → LimitIt.\n\nTap \"Agree\" to open Accessibility settings and enable LimitIt.'**
+  String get accessibilityDisclosureBody;
+
+  /// Accessibility prominent disclosure
+  ///
+  /// In en, this message translates to:
+  /// **'Agree'**
+  String get accessibilityDisclosureAgree;
+
+  /// Accessibility prominent disclosure
+  ///
+  /// In en, this message translates to:
+  /// **'No thanks'**
+  String get accessibilityDisclosureDecline;
 }
 
 class _AppLocalizationsDelegate

@@ -77,6 +77,27 @@ class AppBlockerService {
     }
   }
 
+  /// Check if usage access is granted. The monitoring service needs it to
+  /// tell which app is in front and how long it was used today.
+  Future<bool> hasUsageAccessPermission() async {
+    try {
+      final result = await _channel.invokeMethod('hasUsageAccessPermission');
+      return result == true;
+    } catch (e) {
+      debugPrint('Error checking usage access permission: $e');
+      return false;
+    }
+  }
+
+  /// Open the usage access settings screen
+  Future<void> requestUsageAccessPermission() async {
+    try {
+      await _channel.invokeMethod('requestUsageAccessPermission');
+    } catch (e) {
+      debugPrint('Error requesting usage access permission: $e');
+    }
+  }
+
   /// Check if monitoring is currently active
   Future<bool> isMonitoringActive() async {
     try {
@@ -93,6 +114,7 @@ class AppBlockerService {
     return {
       'overlay': await hasOverlayPermission(),
       'accessibility': await hasAccessibilityPermission(),
+      'usage': await hasUsageAccessPermission(),
     };
   }
 

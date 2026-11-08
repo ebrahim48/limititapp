@@ -294,6 +294,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Monitorea qué aplicaciones abres para hacer cumplir los límites';
 
   @override
+  String get usageAccessPermission => 'Acceso de uso';
+
+  @override
+  String get usageAccessPermissionDesc =>
+      'Detecta qué aplicación está abierta y cuánto la usaste hoy';
+
+  @override
   String get notificationPermission => 'Permiso de Notificación';
 
   @override
@@ -1853,7 +1860,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get toBlockAppsGrantPermissions =>
-      'Para bloquear aplicaciones necesitas conceder los permisos de superposición y accesibilidad. ¿Quieres ir a la pantalla de configuración de permisos?';
+      'Para bloquear aplicaciones necesitas conceder los permisos de superposición, accesibilidad y acceso de uso. ¿Quieres ir a la pantalla de configuración de permisos?';
 
   @override
   String appIsNowBlocked(String appName) {
@@ -2144,4 +2151,17 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get screenTimeUsageMissing =>
       'El uso por aplicación necesita la extensión de informes de Tiempo de uso, que no forma parte de esta versión.';
+
+  @override
+  String get accessibilityDisclosureTitle => 'Permiso de accesibilidad';
+
+  @override
+  String get accessibilityDisclosureBody =>
+      'LimitIt usa la API del Servicio de Accesibilidad para detectar qué aplicación abres, y así mostrar una pantalla de bloqueo cuando una aplicación que elegiste limitar alcanza su límite de tiempo, de aperturas o un bloqueo programado.\n\n• Solo detectamos el nombre de la aplicación en primer plano.\n• NO leemos, recopilamos ni almacenamos el contenido de tu pantalla, mensajes o contraseñas.\n• Ningún dato de este servicio se envía a nuestros servidores ni se comparte con terceros.\n\nPuedes desactivarlo en cualquier momento en Ajustes → Accesibilidad → LimitIt.\n\nToca \"Aceptar\" para abrir los ajustes de Accesibilidad y activar LimitIt.';
+
+  @override
+  String get accessibilityDisclosureAgree => 'Aceptar';
+
+  @override
+  String get accessibilityDisclosureDecline => 'No, gracias';
 }

@@ -357,6 +357,8 @@
     "description": "Accessibility service title"
   },
   "accessibilityServiceDesc": "Monitorea qué aplicaciones abres para hacer cumplir los límites",
+  "usageAccessPermission": "Acceso de uso",
+  "usageAccessPermissionDesc": "Detecta qué aplicación está abierta y cuánto la usaste hoy",
   "@accessibilityServiceDesc": {
     "description": "Accessibility service description"
   },
@@ -1064,7 +1066,7 @@
   "planFeatureAdvancedAnalytics": "Analíticas avanzadas",
   "planFeaturePrioritySupport": "Soporte prioritario",
   "planFeatureUnlimitedAppLimits": "Límites de aplicaciones ilimitados",
-  "toBlockAppsGrantPermissions": "Para bloquear aplicaciones necesitas conceder los permisos de superposición y accesibilidad. ¿Quieres ir a la pantalla de configuración de permisos?",
+  "toBlockAppsGrantPermissions": "Para bloquear aplicaciones necesitas conceder los permisos de superposición, accesibilidad y acceso de uso. ¿Quieres ir a la pantalla de configuración de permisos?",
   "appIsNowBlocked": "{appName} está bloqueada ahora",
   "appIsNowUnblocked": "{appName} está desbloqueada ahora",
   "noUsageToday": "Sin uso hoy",
@@ -1215,5 +1217,9 @@
   "screenTimeUsageMissing": "El uso por aplicación necesita la extensión de informes de Tiempo de uso, que no forma parte de esta versión.",
   "@screenTimeUsageMissing": {
     "description": "screenTimeUsageMissing"
-  }
+  },
+  "accessibilityDisclosureTitle": "Permiso de accesibilidad",
+  "accessibilityDisclosureBody": "LimitIt usa la API del Servicio de Accesibilidad para detectar qué aplicación abres, y así mostrar una pantalla de bloqueo cuando una aplicación que elegiste limitar alcanza su límite de tiempo, de aperturas o un bloqueo programado.\n\n• Solo detectamos el nombre de la aplicación en primer plano.\n• NO leemos, recopilamos ni almacenamos el contenido de tu pantalla, mensajes o contraseñas.\n• Ningún dato de este servicio se envía a nuestros servidores ni se comparte con terceros.\n\nPuedes desactivarlo en cualquier momento en Ajustes → Accesibilidad → LimitIt.\n\nToca \"Aceptar\" para abrir los ajustes de Accesibilidad y activar LimitIt.",
+  "accessibilityDisclosureAgree": "Aceptar",
+  "accessibilityDisclosureDecline": "No, gracias"
 }
