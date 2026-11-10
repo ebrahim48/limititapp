@@ -2123,4 +2123,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accessibilityDisclosureDecline => 'No thanks';
+
+  @override
+  String get isNowProtectedSuffix => 'is now protected!';
 }

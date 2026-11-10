@@ -366,6 +366,7 @@ class AppRoutes {
           return _customTransitionPage(
             ProtectionSuccessScreen(
               appName: extra['appName'] as String? ?? '',
+              packageName: extra['packageName'] as String?,
             ),
             state,
           );

@@ -147,6 +147,7 @@ class AppListRow extends StatelessWidget {
   const AppListRow({
     super.key,
     required this.title,
+    this.titleWidget,
     this.subtitle,
     this.leading,
     this.trailing,
@@ -157,6 +158,9 @@ class AppListRow extends StatelessWidget {
   });
 
   final String title;
+
+  /// Drawn in place of [title] when set (e.g. a natively rendered app name).
+  final Widget? titleWidget;
   final String? subtitle;
   final Widget? leading;
   final Widget? trailing;
@@ -185,12 +189,13 @@ class AppListRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      title,
-                      style: AppTextStyles.bodyMedium(
-                        color: titleColor ?? AppColors.ink,
-                      ),
-                    ),
+                    titleWidget ??
+                        Text(
+                          title,
+                          style: AppTextStyles.bodyMedium(
+                            color: titleColor ?? AppColors.ink,
+                          ),
+                        ),
                     if (subtitle != null) ...[
                       SizedBox(height: 2.h),
                       Text(

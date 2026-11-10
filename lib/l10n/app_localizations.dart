@@ -3973,6 +3973,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No thanks'**
   String get accessibilityDisclosureDecline;
+
+  /// Second line of the success title on iOS, under the natively drawn app name
+  ///
+  /// In en, this message translates to:
+  /// **'is now protected!'**
+  String get isNowProtectedSuffix;
 }
 
 class _AppLocalizationsDelegate

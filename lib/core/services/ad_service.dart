@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,9 +38,13 @@ class AdService {
   static const String _androidInterstitialUnitId =
       'ca-app-pub-3550612244479973/8531840441';
 
-  /// iOS has no AdMob units yet — iOS release builds stay ad-free.
-  static const String? _iosBannerUnitId = null;
-  static const String? _iosInterstitialUnitId = null;
+  /// Real iOS banner unit.
+  static const String _iosBannerUnitId =
+      'ca-app-pub-3550612244479973/3500848920';
+
+  /// Real iOS interstitial unit.
+  static const String _iosInterstitialUnitId =
+      'ca-app-pub-3550612244479973/3769488410';
 
   static const String _testBannerAndroid =
       'ca-app-pub-3940256099942544/6300978111';
@@ -82,8 +87,46 @@ class AdService {
   Future<void> init() async {
     if (_initialized) return;
     _initialized = true;
+    // Ask before the SDK starts, so the very first ad request already knows
+    // whether it may use the advertising identifier.
+    if (Platform.isIOS) await _requestTrackingAuthorization();
     await MobileAds.instance.initialize();
     _preloadInterstitial();
+  }
+
+  /// iOS App Tracking Transparency prompt, shown once. Declining (or any
+  /// failure) just means non-personalised ads — never a blocked app.
+  Future<void> _requestTrackingAuthorization() async {
+    try {
+      final status = await AppTrackingTransparency.trackingAuthorizationStatus;
+      if (status != TrackingStatus.notDetermined) return;
+
+      // iOS silently drops the prompt unless the app is active, which it is
+      // not yet while main() runs. Wait for the first resumed state, then let
+      // the launch transition finish.
+      await _untilAppResumed();
+      await Future<void>.delayed(const Duration(milliseconds: 600));
+      await AppTrackingTransparency.requestTrackingAuthorization();
+    } catch (e) {
+      debugPrint('ATT request failed: $e');
+    }
+  }
+
+  Future<void> _untilAppResumed() {
+    final binding = WidgetsFlutterBinding.ensureInitialized();
+    if (binding.lifecycleState == AppLifecycleState.resumed) {
+      return Future<void>.value();
+    }
+    final resumed = Completer<void>();
+    late final AppLifecycleListener listener;
+    listener = AppLifecycleListener(
+      binding: binding,
+      onResume: () {
+        listener.dispose();
+        if (!resumed.isCompleted) resumed.complete();
+      },
+    );
+    return resumed.future;
   }
 
   void _preloadInterstitial() {

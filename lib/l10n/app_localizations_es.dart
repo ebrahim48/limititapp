@@ -2164,4 +2164,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accessibilityDisclosureDecline => 'No, gracias';
+
+  @override
+  String get isNowProtectedSuffix => '¡ya está protegida!';
 }

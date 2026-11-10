@@ -2797,5 +2797,9 @@
   "accessibilityDisclosureDecline": "No thanks",
   "@accessibilityDisclosureDecline": {
     "description": "Accessibility prominent disclosure"
+  },
+  "isNowProtectedSuffix": "is now protected!",
+  "@isNowProtectedSuffix": {
+    "description": "Second line of the success title on iOS, under the natively drawn app name"
   }
 }

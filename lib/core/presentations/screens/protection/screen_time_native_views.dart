@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:limit_it_app/core/services/screen_time_service.dart';
 
 /// Flutter windows onto the two things only iOS itself can draw.
 ///
@@ -85,6 +86,79 @@ class ScreenTimeUsageReport extends StatelessWidget {
           ),
         },
       ),
+    );
+  }
+}
+
+/// `true` for an iOS protection, whose "package name" is a Screen Time rule id
+/// and whose stored name is only a count like "1 app · 0 categories".
+bool isScreenTimeRule(String? packageName) =>
+    Platform.isIOS &&
+    packageName != null &&
+    packageName.startsWith(ScreenTimeService.rulePrefix);
+
+/// The real icon or name of an iOS protection's first app, drawn natively from
+/// its token. Before Activate saves the rule, the wizard's pending pick is
+/// shown instead.
+class ScreenTimeAppLabel extends StatelessWidget {
+  /// The app's real icon, filling a [size] square.
+  const ScreenTimeAppLabel.icon({
+    super.key,
+    required this.ruleId,
+    required double size,
+  })  : _mode = 'icon',
+        _size = size,
+        style = null,
+        centered = true;
+
+  /// The app's real name ("Instagram", or "Instagram +2" for a bigger pick),
+  /// one line in [style].
+  const ScreenTimeAppLabel.title({
+    super.key,
+    required this.ruleId,
+    required TextStyle this.style,
+    this.centered = false,
+  })  : _mode = 'title',
+        _size = null;
+
+  final String ruleId;
+  final TextStyle? style;
+  final bool centered;
+  final String _mode;
+  final double? _size;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!Platform.isIOS) return const SizedBox.shrink();
+
+    final textStyle = style;
+    final fontSize = textStyle?.fontSize ?? 15;
+    final view = UiKitView(
+      // Keyed by rule and look, so a recycled list row never shows the
+      // previous protection's app.
+      key: ValueKey('$ruleId/$_mode/$fontSize'),
+      viewType: 'com.limitit.digitalbalance/screen_time_app_label',
+      creationParams: <String, dynamic>{
+        'ruleId': ruleId,
+        'mode': _mode,
+        'centered': centered,
+        if (textStyle != null) ...{
+          'fontSize': fontSize,
+          'weight': (textStyle.fontWeight ?? FontWeight.w500).value,
+          'color': (textStyle.color ?? const Color(0xFF1A1A1A)).toARGB32(),
+        },
+      },
+      creationParamsCodec: const StandardMessageCodec(),
+    );
+
+    if (_mode == 'icon') {
+      return SizedBox.square(dimension: _size, child: view);
+    }
+    // A platform view has no intrinsic size: reserve one line of the style.
+    return SizedBox(
+      width: double.infinity,
+      height: fontSize * (textStyle?.height ?? 1.35),
+      child: view,
     );
   }
 }

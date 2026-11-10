@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/screen_time_native_views.dart';
 import 'package:limit_it_app/core/services/app_icon_service.dart';
 import '../../../../global/custom_assets/assets.gen.dart';
 import '../../../constants/app_colors.dart';
@@ -101,7 +102,10 @@ class _AppLogoTileState extends State<AppLogoTile> {
   void initState() {
     super.initState();
     final pkg = widget.packageName;
-    if (widget.preloadedIcon == null && pkg != null && pkg.isNotEmpty) {
+    if (widget.preloadedIcon == null &&
+        pkg != null &&
+        pkg.isNotEmpty &&
+        !isScreenTimeRule(pkg)) {
       _iconFuture = AppIconService.instance.resolve(pkg, appName: widget.appName);
     }
   }
@@ -111,6 +115,13 @@ class _AppLogoTileState extends State<AppLogoTile> {
 
   @override
   Widget build(BuildContext context) {
+    // iOS protections carry a Screen Time rule id: only the system can draw
+    // the app behind it.
+    final pkg = widget.packageName;
+    if (isScreenTimeRule(pkg)) {
+      return ScreenTimeAppLabel.icon(ruleId: pkg!, size: _size);
+    }
+
     if (widget.preloadedIcon != null) {
       return _frame(Image.memory(widget.preloadedIcon!, fit: BoxFit.cover));
     }

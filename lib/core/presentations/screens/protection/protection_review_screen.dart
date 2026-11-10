@@ -9,6 +9,7 @@ import 'package:limit_it_app/core/models/app_limit_model.dart';
 import 'package:limit_it_app/core/models/protection_draft.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
 import 'package:limit_it_app/l10n/app_localizations.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/screen_time_native_views.dart';
 import '../../widgets/ui/ui.dart';
 
 /// Last step of the add-protection wizard: confirm what is about to be saved,
@@ -47,11 +48,18 @@ class _ProtectionReviewScreenState extends State<ProtectionReviewScreen> {
             ),
           ),
           SizedBox(height: 12.h),
-          Text(
-            draft.app.appName,
-            textAlign: TextAlign.center,
-            style: AppTextStyles.h3(),
-          ),
+          if (isScreenTimeRule(draft.app.packageName))
+            ScreenTimeAppLabel.title(
+              ruleId: draft.app.packageName,
+              style: AppTextStyles.h3(),
+              centered: true,
+            )
+          else
+            Text(
+              draft.app.appName,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.h3(),
+            ),
           SizedBox(height: 24.h),
 
           AppSoftCard(
@@ -161,7 +169,10 @@ class _ProtectionReviewScreenState extends State<ProtectionReviewScreen> {
 
       context.pushReplacementNamed(
         AppRoutes.protectionSuccessScreen,
-        extra: {'appName': widget.draft.app.appName},
+        extra: {
+          'appName': widget.draft.app.appName,
+          'packageName': widget.draft.app.packageName,
+        },
       );
     } catch (e) {
       if (!mounted) return;

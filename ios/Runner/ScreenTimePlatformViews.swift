@@ -24,6 +24,7 @@ import DeviceActivity
 enum ScreenTimePlatformViews {
     static let selectionListView = "com.limitit.digitalbalance/screen_time_selection"
     static let usageReportView = "com.limitit.digitalbalance/screen_time_usage"
+    static let appLabelView = "com.limitit.digitalbalance/screen_time_app_label"
 
     static func register(with registry: FlutterPluginRegistry) {
         guard let registrar = registry.registrar(forPlugin: "LimitItScreenTimeViews") else { return }
@@ -35,6 +36,10 @@ enum ScreenTimePlatformViews {
         registrar.register(
             ScreenTimeViewFactory(kind: .usage),
             withId: usageReportView
+        )
+        registrar.register(
+            ScreenTimeViewFactory(kind: .appLabel),
+            withId: appLabelView
         )
     }
 
@@ -62,6 +67,7 @@ final class ScreenTimeViewFactory: NSObject, FlutterPlatformViewFactory {
     enum Kind {
         case selection
         case usage
+        case appLabel
     }
 
     private let kind: Kind
@@ -117,6 +123,19 @@ final class ScreenTimeHostedView: NSObject, FlutterPlatformView {
             case .usage:
                 let days = (arguments?["days"] as? NSNumber)?.intValue ?? 1
                 controller = UIHostingController(rootView: UsageReportView(days: days))
+            case .appLabel:
+                // A saved rule's apps; before Activate creates the rule, the
+                // wizard's pending pick stands in for it.
+                let bridge = ScreenTimeBridge.shared
+                let ruleId = arguments?["ruleId"] as? String
+                let selection = ruleId.flatMap { bridge.selection(forRule: $0) }
+                    ?? bridge.draftSelection
+                controller = UIHostingController(
+                    rootView: ProtectionAppLabel(
+                        selection: selection,
+                        style: ProtectionAppLabel.Style(arguments: arguments)
+                    )
+                )
             }
 
             controller.view.backgroundColor = .clear
@@ -164,6 +183,94 @@ struct SelectedAppsList: View {
             .frame(height: ScreenTimeMetrics.rowHeight)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
+    }
+}
+
+/// One protection's first app (or category), drawn either as its real icon or
+/// as its real name — the two things Flutter can never read from a token.
+/// A pick of several shows the first one plus "+N".
+@available(iOS 16.0, *)
+struct ProtectionAppLabel: View {
+    struct Style {
+        enum Mode { case icon, title }
+
+        let mode: Mode
+        let fontSize: CGFloat
+        let weight: Font.Weight
+        let color: Color
+        let centered: Bool
+
+        init(arguments: [String: Any]?) {
+            mode = (arguments?["mode"] as? String) == "title" ? .title : .icon
+            fontSize = CGFloat((arguments?["fontSize"] as? NSNumber)?.doubleValue ?? 15)
+            switch (arguments?["weight"] as? NSNumber)?.intValue ?? 500 {
+            case ..<450: weight = .regular
+            case ..<550: weight = .medium
+            case ..<650: weight = .semibold
+            default: weight = .bold
+            }
+            let argb = (arguments?["color"] as? NSNumber)?.uint32Value ?? 0xFF1A1A1A
+            color = Color(
+                .sRGB,
+                red: Double((argb >> 16) & 0xFF) / 255,
+                green: Double((argb >> 8) & 0xFF) / 255,
+                blue: Double(argb & 0xFF) / 255,
+                opacity: Double((argb >> 24) & 0xFF) / 255
+            )
+            centered = arguments?["centered"] as? Bool ?? false
+        }
+    }
+
+    let selection: FamilyActivitySelection
+    let style: Style
+
+    private var applications: [ApplicationToken] { Array(selection.applicationTokens) }
+    private var categories: [ActivityCategoryToken] { Array(selection.categoryTokens) }
+    private var extra: Int { max(applications.count + categories.count - 1, 0) }
+
+    var body: some View {
+        GeometryReader { proxy in
+            content(side: min(proxy.size.width, proxy.size.height))
+                .frame(
+                    width: proxy.size.width,
+                    height: proxy.size.height,
+                    alignment: style.mode == .icon || style.centered ? .center : .leading
+                )
+        }
+    }
+
+    @ViewBuilder
+    private func content(side: CGFloat) -> some View {
+        switch style.mode {
+        case .icon:
+            first(labelStyle: .iconOnly)
+                // A token's icon is sized like a text glyph; scale it up to
+                // fill the tile Flutter reserved.
+                .font(.system(size: side * 0.8))
+                .scaleEffect(1.25)
+        case .title:
+            HStack(spacing: 4) {
+                first(labelStyle: .titleOnly)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                if extra > 0 {
+                    Text("+\(extra)").fixedSize()
+                }
+            }
+            .font(.system(size: style.fontSize, weight: style.weight))
+            .foregroundColor(style.color)
+        }
+    }
+
+    @ViewBuilder
+    private func first<S: LabelStyle>(labelStyle: S) -> some View {
+        if let token = applications.first {
+            Label(token).labelStyle(labelStyle)
+        } else if let token = categories.first {
+            Label(token).labelStyle(labelStyle)
+        } else {
+            EmptyView()
+        }
     }
 }
 

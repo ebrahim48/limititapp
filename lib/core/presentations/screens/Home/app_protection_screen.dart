@@ -13,6 +13,7 @@ import 'package:limit_it_app/core/services/ad_service.dart';
 import 'package:limit_it_app/core/services/app_limit_storage_service.dart';
 import 'package:limit_it_app/core/services/app_usage_service.dart';
 import 'package:limit_it_app/global/custom_assets/assets.gen.dart';
+import 'package:limit_it_app/core/presentations/screens/protection/screen_time_native_views.dart';
 import '../../widgets/ui/ui.dart';
 
 /// Home tab — the list of apps the user is currently protecting, how many
@@ -141,6 +142,14 @@ class _AppProtectionScreenState extends State<AppProtectionScreen> {
                         size: 40.w,
                       ),
                       title: limit.appName,
+                      titleWidget: isScreenTimeRule(limit.packageName)
+                          ? ScreenTimeAppLabel.title(
+                              ruleId: limit.packageName,
+                              style: AppTextStyles.bodyMedium(
+                                color: AppColors.ink,
+                              ),
+                            )
+                          : null,
                       subtitle: _describe(limit),
                       onTap: () => _openEditProtection(limit),
                     ),

@@ -195,6 +195,7 @@ class AppMessageView extends StatelessWidget {
     this.illustration,
     this.action,
     this.extra,
+    this.titleWidget,
   });
 
   final String title;
@@ -202,6 +203,9 @@ class AppMessageView extends StatelessWidget {
   final Widget? illustration;
   final Widget? action;
   final Widget? extra;
+
+  /// Drawn in place of [title] when set.
+  final Widget? titleWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +217,8 @@ class AppMessageView extends StatelessWidget {
           Center(child: illustration!),
           SizedBox(height: 28.h),
         ],
-        Text(title, textAlign: TextAlign.center, style: AppTextStyles.h2()),
+        titleWidget ??
+            Text(title, textAlign: TextAlign.center, style: AppTextStyles.h2()),
         if (description != null) ...[
           SizedBox(height: 10.h),
           Text(

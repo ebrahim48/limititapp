@@ -748,5 +748,6 @@
   "accessibilityDisclosureTitle": "Permesso di accessibilità",
   "accessibilityDisclosureBody": "LimitIt usa l'API del Servizio di accessibilità per rilevare quale app apri, così da mostrare una schermata di blocco quando un'app che hai scelto di limitare raggiunge il limite di tempo, di aperture o un blocco programmato.\n\n• Rileviamo solo il nome dell'app in primo piano.\n• NON leggiamo, raccogliamo né memorizziamo il contenuto dello schermo, i messaggi o le password.\n• Nessun dato di questo servizio viene inviato ai nostri server o condiviso con terze parti.\n\nPuoi disattivarlo in qualsiasi momento in Impostazioni → Accessibilità → LimitIt.\n\nTocca \"Accetto\" per aprire le impostazioni di Accessibilità e attivare LimitIt.",
   "accessibilityDisclosureAgree": "Accetto",
-  "accessibilityDisclosureDecline": "No, grazie"
+  "accessibilityDisclosureDecline": "No, grazie",
+  "isNowProtectedSuffix": "è ora protetta!"
 }
