@@ -47,12 +47,6 @@ app.*.map.json
 branch_structure.json
 .gitignore
 
-# Sensitive credentials — never commit these
-android/app/google-services.json
-ios/Runner/GoogleService-Info.plist
-
-
-
 
 config.bat
 node_modules

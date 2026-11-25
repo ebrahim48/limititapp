@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -22,53 +20,15 @@ class AdService {
 
   static final AdService instance = AdService._();
 
-  // ── AdMob unit ids ────────────────────────────────────────────────────────
-  // Debug/profile builds always use Google's public test units, so tapping
-  // ads during development can never get the AdMob account suspended.
-  // Release builds use the real LimitIt units below. A placement without a
-  // real unit yet (null) simply shows nothing in release.
-  //
-  // The AdMob *app* ids live in AndroidManifest.xml / ios/Runner/Info.plist.
+  // TODO(release): replace with the real AdMob unit IDs. These are Google's
+  // public test units — they never earn anything.
+  static String get bannerUnitId => Platform.isIOS
+      ? 'ca-app-pub-3940256099942544/2934735716'
+      : 'ca-app-pub-3940256099942544/6300978111';
 
-  /// Real Android banner unit: "android-adq-banner".
-  static const String _androidBannerUnitId =
-      'ca-app-pub-3550612244479973/2302483176';
-
-  /// Real Android interstitial unit.
-  static const String _androidInterstitialUnitId =
-      'ca-app-pub-3550612244479973/8531840441';
-
-  /// Real iOS banner unit.
-  static const String _iosBannerUnitId =
-      'ca-app-pub-3550612244479973/3500848920';
-
-  /// Real iOS interstitial unit.
-  static const String _iosInterstitialUnitId =
-      'ca-app-pub-3550612244479973/3769488410';
-
-  static const String _testBannerAndroid =
-      'ca-app-pub-3940256099942544/6300978111';
-  static const String _testBannerIos = 'ca-app-pub-3940256099942544/2934735716';
-  static const String _testInterstitialAndroid =
-      'ca-app-pub-3940256099942544/1033173712';
-  static const String _testInterstitialIos =
-      'ca-app-pub-3940256099942544/4411468910';
-
-  static bool get _useTestAds => !kReleaseMode;
-
-  static String? get bannerUnitId {
-    if (_useTestAds) {
-      return Platform.isIOS ? _testBannerIos : _testBannerAndroid;
-    }
-    return Platform.isIOS ? _iosBannerUnitId : _androidBannerUnitId;
-  }
-
-  static String? get interstitialUnitId {
-    if (_useTestAds) {
-      return Platform.isIOS ? _testInterstitialIos : _testInterstitialAndroid;
-    }
-    return Platform.isIOS ? _iosInterstitialUnitId : _androidInterstitialUnitId;
-  }
+  static String get interstitialUnitId => Platform.isIOS
+      ? 'ca-app-pub-3940256099942544/4411468910'
+      : 'ca-app-pub-3940256099942544/1033173712';
 
   /// Interstitial frequency cap: at most one every [_minInterval], and no more
   /// than [_maxPerDay] a day.
@@ -87,53 +47,14 @@ class AdService {
   Future<void> init() async {
     if (_initialized) return;
     _initialized = true;
-    // Ask before the SDK starts, so the very first ad request already knows
-    // whether it may use the advertising identifier.
-    if (Platform.isIOS) await _requestTrackingAuthorization();
     await MobileAds.instance.initialize();
     _preloadInterstitial();
   }
 
-  /// iOS App Tracking Transparency prompt, shown once. Declining (or any
-  /// failure) just means non-personalised ads — never a blocked app.
-  Future<void> _requestTrackingAuthorization() async {
-    try {
-      final status = await AppTrackingTransparency.trackingAuthorizationStatus;
-      if (status != TrackingStatus.notDetermined) return;
-
-      // iOS silently drops the prompt unless the app is active, which it is
-      // not yet while main() runs. Wait for the first resumed state, then let
-      // the launch transition finish.
-      await _untilAppResumed();
-      await Future<void>.delayed(const Duration(milliseconds: 600));
-      await AppTrackingTransparency.requestTrackingAuthorization();
-    } catch (e) {
-      debugPrint('ATT request failed: $e');
-    }
-  }
-
-  Future<void> _untilAppResumed() {
-    final binding = WidgetsFlutterBinding.ensureInitialized();
-    if (binding.lifecycleState == AppLifecycleState.resumed) {
-      return Future<void>.value();
-    }
-    final resumed = Completer<void>();
-    late final AppLifecycleListener listener;
-    listener = AppLifecycleListener(
-      binding: binding,
-      onResume: () {
-        listener.dispose();
-        if (!resumed.isCompleted) resumed.complete();
-      },
-    );
-    return resumed.future;
-  }
-
   void _preloadInterstitial() {
-    final unitId = interstitialUnitId;
-    if (!adsEnabled || unitId == null || _interstitial != null) return;
+    if (!adsEnabled || _interstitial != null) return;
     InterstitialAd.load(
-      adUnitId: unitId,
+      adUnitId: interstitialUnitId,
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) => _interstitial = ad,
@@ -213,13 +134,12 @@ class _AppBannerAdState extends State<AppBannerAd> {
   @override
   void initState() {
     super.initState();
-    final unitId = AdService.bannerUnitId;
-    if (AdService.instance.adsEnabled && unitId != null) _load(unitId);
+    if (AdService.instance.adsEnabled) _load();
   }
 
-  void _load(String unitId) {
+  void _load() {
     _banner = BannerAd(
-      adUnitId: unitId,
+      adUnitId: AdService.bannerUnitId,
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(

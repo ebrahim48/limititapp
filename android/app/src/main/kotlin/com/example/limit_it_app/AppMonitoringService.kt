@@ -2,14 +2,10 @@ package com.limitit.digitalbalance
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
-import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Handler
-import android.os.Looper
-import android.os.PowerManager
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import org.json.JSONArray
@@ -29,6 +25,7 @@ import java.util.Calendar
 class AppMonitoringService : AccessibilityService() {
 
     private var lastPackageName: String? = null
+    private var appLaunchTime: Long = 0
     private val TAG = "AppMonitoringService"
 
     private lateinit var flutterPreferences: SharedPreferences
@@ -36,47 +33,20 @@ class AppMonitoringService : AccessibilityService() {
     private val openCountsToday = mutableMapOf<String, Int>()
     private var blockedApps = mutableSetOf<String>()
     private lateinit var usageStatsManager: UsageStatsManager
-    private lateinit var powerManager: PowerManager
 
-    /** Apps whose block screen is being put up right now (home → overlay). */
+    // Debouncing mechanism
+    private var lastBlockedPackage: String? = null
+    private var lastBlockTime: Long = 0
+    private val blockCooldownMs = 2000L
     private val currentlyBlockedApps = mutableSetOf<String>()
 
-    /**
-     * When each app was last shown the mindful pause. Every fresh open gets a
-     * pause; this only absorbs the duplicate window events one launch can
-     * fire. Coming back from the pause itself is not a fresh open (our
-     * overlay never changes [lastPackageName]), so it is not paused again.
-     */
+    /** When each app was last shown the mindful pause, so it fires once per visit. */
     private val lastPauseAt = mutableMapOf<String, Long>()
-    private val pauseDedupMs = 3_000L
+    private val pauseCooldownMs = 60_000L
 
-    /** Today's foreground time is costly to rebuild, so it is reused briefly. */
-    private val usageCache = mutableMapOf<String, Pair<Long, Int>>()
-    private val usageCacheMs = 10_000L
-
-    /**
-     * Periodic re-check of whatever app is in front. Window events alone are
-     * not enough: a daily limit or a time block can be reached while the user
-     * stays on one screen, and a blocked app can come back to the front (e.g.
-     * a second tap on its icon closes the block screen) without any event
-     * that looks like a new launch.
-     */
-    private val handler = Handler(Looper.getMainLooper())
-    private val watchdogIntervalMs = 3_000L
-    private val watchdog = object : Runnable {
-        override fun run() {
-            try {
-                if (powerManager.isInteractive) {
-                    foregroundPackage()?.let { pkg ->
-                        if (isMonitorable(pkg)) enforceHardLimits(pkg)
-                    }
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "Watchdog check failed", e)
-            }
-            handler.postDelayed(this, watchdogIntervalMs)
-        }
-    }
+    /** Throttle for the in-app re-check; window events fire on every dialog. */
+    private val lastTimeCheckAt = mutableMapOf<String, Long>()
+    private val timeCheckIntervalMs = 15_000L
 
     companion object {
         var isServiceRunning = false
@@ -91,15 +61,6 @@ class AppMonitoringService : AccessibilityService() {
         private const val KEY_BLOCKED_APPS = "blocked_apps"
         private const val KEY_OPEN_COUNTS = "open_counts_today"
         private const val KEY_COUNTS_DATE = "open_counts_date"
-
-        /** How far back to look for the app currently in front. */
-        private const val FOREGROUND_LOOKBACK_MS = 10 * 60_000L
-
-        /** Lets the activity switch settle before reading the foreground app. */
-        private const val OVERLAY_RECHECK_DELAY_MS = 400L
-
-        /** Grace period for usage stats to record a launch we just saw. */
-        private const val BACKGROUND_EVENT_RECHECK_MS = 700L
     }
 
     override fun onCreate() {
@@ -108,7 +69,6 @@ class AppMonitoringService : AccessibilityService() {
         flutterPreferences = getSharedPreferences(FLUTTER_PREFS, Context.MODE_PRIVATE)
         blockerPreferences = getSharedPreferences(BLOCKER_PREFS_NAME, Context.MODE_PRIVATE)
         usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         isServiceRunning = true
 
         loadBlockedApps()
@@ -146,27 +106,6 @@ class AppMonitoringService : AccessibilityService() {
         info.notificationTimeout = 100
 
         serviceInfo = info
-
-        handler.removeCallbacks(watchdog)
-        handler.postDelayed(watchdog, watchdogIntervalMs)
-
-        BlockingOverlayActivity.onHidden = { pkg ->
-            handler.postDelayed({ recheckAfterOverlay(pkg) }, OVERLAY_RECHECK_DELAY_MS)
-        }
-    }
-
-    /**
-     * The block screen for [packageName] just went away. If that is because
-     * the app is back in front (rather than the user going home), block again
-     * now instead of waiting for the next watchdog tick.
-     */
-    private fun recheckAfterOverlay(packageName: String) {
-        try {
-            currentlyBlockedApps.remove(packageName)
-            if (foregroundPackage() == packageName) enforceHardLimits(packageName)
-        } catch (e: Exception) {
-            Log.e(TAG, "Re-check after overlay failed", e)
-        }
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
@@ -176,36 +115,24 @@ class AppMonitoringService : AccessibilityService() {
             event.packageName?.toString()?.let { packageName ->
                 // Our own screens (including the pause overlay) and system chrome
                 // must never count as an app launch.
-                if (!isMonitorable(packageName)) return
-
-                // Apps also fire window events from the background (a cold
-                // start finishing its splash after we sent the user home is a
-                // common one). Act only once the app is really in front.
-                val front = foregroundPackage()
-                if (front == null || front == packageName) {
-                    handleAppSwitch(packageName)
-                } else {
-                    handler.postDelayed({
-                        if (foregroundPackage() == packageName) handleAppSwitch(packageName)
-                        else Log.d(TAG, "Ignoring background window event from $packageName")
-                    }, BACKGROUND_EVENT_RECHECK_MS)
+                if (packageName == this.packageName ||
+                    packageName == "com.android.systemui" ||
+                    packageName == "android"
+                ) {
+                    return
                 }
+
+                handleAppSwitch(packageName)
             }
         }
     }
 
-    private fun isMonitorable(packageName: String): Boolean =
-        packageName != this.packageName &&
-            packageName != "com.android.systemui" &&
-            packageName != "android"
-
     private fun handleAppSwitch(packageName: String) {
+        val currentTime = System.currentTimeMillis()
+
         if (lastPackageName != packageName) {
             lastPackageName = packageName
-
-            // Window events from an app that is being blocked right now are
-            // not the user opening it again.
-            if (isBlockInFlight(packageName)) return
+            appLaunchTime = currentTime
 
             rollOverCountsIfNewDay()
             val count = openCountsToday.getOrDefault(packageName, 0) + 1
@@ -216,40 +143,23 @@ class AppMonitoringService : AccessibilityService() {
 
             checkAndBlockApp(packageName)
         } else {
-            // Still the same app (or it came back from behind our block
-            // screen): re-apply the hard rules without counting an open.
-            enforceHardLimits(packageName)
+            // Still in the same app — re-check the time-based rules so a limit
+            // reached mid-session takes effect without a relaunch.
+            checkTimeBasedLimits(packageName)
         }
     }
 
-    /** A fresh launch: hard rules first, then the mindful pause. */
     private fun checkAndBlockApp(packageName: String) {
-        if (isBlockInFlight(packageName)) return
-        if (enforceHardLimits(packageName)) return
+        val now = System.currentTimeMillis()
 
-        val limit = findLimit(packageName) ?: return
-        if (limit.protectionType != "delayOpening" || limit.delaySeconds <= 0) return
-        if (!isActiveToday(limit)) {
-            Log.d(TAG, "${limit.packageName}: protection not active today")
+        if (lastBlockedPackage == packageName && now - lastBlockTime < blockCooldownMs) {
+            Log.d(TAG, "Ignoring rapid block attempt for: $packageName")
             return
         }
-
-        val now = System.currentTimeMillis()
-        val lastPause = lastPauseAt[packageName] ?: 0L
-        if (now - lastPause > pauseDedupMs) {
-            lastPauseAt[packageName] = now
-            showPause(packageName, limit)
+        if (currentlyBlockedApps.contains(packageName)) {
+            Log.d(TAG, "App $packageName is already being blocked")
+            return
         }
-    }
-
-    /**
-     * Blocks [packageName] if a hard rule (detox list, opening limit, time
-     * block, daily limit) says it must not be used right now. Safe to call
-     * repeatedly: it does nothing while a block screen for the app is already
-     * up. Returns `true` when the app is (being) blocked.
-     */
-    private fun enforceHardLimits(packageName: String): Boolean {
-        if (isBlockInFlight(packageName)) return true
 
         // Detox / instant block list wins over every configured limit.
         if (blockedApps.contains(packageName)) {
@@ -257,15 +167,17 @@ class AppMonitoringService : AccessibilityService() {
             blockApp(packageName) {
                 putExtra(BlockingOverlayActivity.EXTRA_BLOCK_TYPE, BlockingOverlayActivity.TYPE_INSTANT)
             }
-            return true
+            return
         }
 
-        val limit = findLimit(packageName) ?: return false
-        if (!isActiveToday(limit)) return false
+        val limit = findLimit(packageName) ?: return
+        if (!isActiveToday(limit)) {
+            Log.d(TAG, "${limit.packageName}: protection not active today")
+            return
+        }
 
         when (limit.protectionType) {
             "maxOpens" -> {
-                rollOverCountsIfNewDay()
                 val opens = openCountsToday.getOrDefault(packageName, 0)
                 if (limit.maxDailyOpens > 0 && opens > limit.maxDailyOpens) {
                     Log.d(TAG, "Blocking $packageName - opens $opens > ${limit.maxDailyOpens}")
@@ -273,7 +185,6 @@ class AppMonitoringService : AccessibilityService() {
                         putExtra(BlockingOverlayActivity.EXTRA_BLOCK_TYPE, BlockingOverlayActivity.TYPE_OPENS)
                         putExtra(BlockingOverlayActivity.EXTRA_MAX_OPENS, limit.maxDailyOpens)
                     }
-                    return true
                 }
             }
 
@@ -285,40 +196,59 @@ class AppMonitoringService : AccessibilityService() {
                         putExtra(BlockingOverlayActivity.EXTRA_SCHEDULE_START, limit.scheduleStartTime)
                         putExtra(BlockingOverlayActivity.EXTRA_SCHEDULE_END, limit.scheduleEndTime)
                     }
-                    return true
                 }
             }
 
-            "delayOpening" -> Unit
-
-            else -> {
-                if (limit.maxSessionDurationMinutes <= 0) return false
-                val usedMinutes = todayForegroundMinutes(packageName)
-                if (usedMinutes >= limit.maxSessionDurationMinutes) {
-                    Log.d(
-                        TAG,
-                        "Blocking $packageName - used $usedMinutes >= ${limit.maxSessionDurationMinutes} min"
-                    )
-                    blockApp(packageName, limit) {
-                        putExtra(BlockingOverlayActivity.EXTRA_BLOCK_TYPE, BlockingOverlayActivity.TYPE_TIME)
-                        putExtra(BlockingOverlayActivity.EXTRA_USED_MINUTES, usedMinutes)
-                        putExtra(BlockingOverlayActivity.EXTRA_LIMIT_MINUTES, limit.maxSessionDurationMinutes)
+            "delayOpening" -> {
+                if (limit.delaySeconds > 0) {
+                    val lastPause = lastPauseAt[packageName] ?: 0L
+                    if (now - lastPause > pauseCooldownMs) {
+                        lastPauseAt[packageName] = now
+                        showPause(packageName, limit)
                     }
-                    return true
                 }
             }
+
+            else -> checkTimeBasedLimits(packageName, force = true)
         }
-        return false
     }
 
     /**
-     * `true` while the block screen for [packageName] is being started or is
-     * actually on screen. Once it is gone (closed, or pushed away by the app
-     * coming back) the app is blocked again on the next check.
+     * Daily-limit enforcement. Uses the real foreground total from
+     * UsageStats rather than an in-memory session timer, so time spent before
+     * the service started still counts.
      */
-    private fun isBlockInFlight(packageName: String): Boolean =
-        currentlyBlockedApps.contains(packageName) ||
-            BlockingOverlayActivity.visiblePackage == packageName
+    private fun checkTimeBasedLimits(packageName: String, force: Boolean = false) {
+        val now = System.currentTimeMillis()
+        if (currentlyBlockedApps.contains(packageName)) return
+        if (lastBlockedPackage == packageName && now - lastBlockTime < blockCooldownMs) return
+
+        // A fresh launch always checks; the throttle only exists to keep the
+        // repeated in-app window events cheap.
+        if (!force) {
+            val lastCheck = lastTimeCheckAt[packageName] ?: 0L
+            if (now - lastCheck < timeCheckIntervalMs) return
+        }
+        lastTimeCheckAt[packageName] = now
+
+        val limit = findLimit(packageName) ?: return
+        if (!isActiveToday(limit)) return
+        if (limit.protectionType != "dailyLimit") return
+        if (limit.maxSessionDurationMinutes <= 0) return
+
+        val usedMinutes = todayForegroundMinutes(packageName)
+        if (usedMinutes >= limit.maxSessionDurationMinutes) {
+            Log.d(
+                TAG,
+                "Blocking $packageName - used $usedMinutes >= ${limit.maxSessionDurationMinutes} min"
+            )
+            blockApp(packageName, limit) {
+                putExtra(BlockingOverlayActivity.EXTRA_BLOCK_TYPE, BlockingOverlayActivity.TYPE_TIME)
+                putExtra(BlockingOverlayActivity.EXTRA_USED_MINUTES, usedMinutes)
+                putExtra(BlockingOverlayActivity.EXTRA_LIMIT_MINUTES, limit.maxSessionDurationMinutes)
+            }
+        }
+    }
 
     /**
      * Hard block: push the user home, then show the blocking screen. [extras]
@@ -330,7 +260,12 @@ class AppMonitoringService : AccessibilityService() {
         extras: Intent.() -> Unit
     ) {
         try {
+            val currentTime = System.currentTimeMillis()
+
             currentlyBlockedApps.add(packageName)
+            lastBlockedPackage = packageName
+            lastBlockTime = currentTime
+
             Log.d(TAG, "Blocking app: $packageName")
 
             val homeIntent = Intent(Intent.ACTION_MAIN).apply {
@@ -339,7 +274,7 @@ class AppMonitoringService : AccessibilityService() {
             }
             startActivity(homeIntent)
 
-            handler.postDelayed({
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                 try {
                     val intent = Intent(this@AppMonitoringService, BlockingOverlayActivity::class.java).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -354,8 +289,7 @@ class AppMonitoringService : AccessibilityService() {
                     startActivity(intent)
                     Log.d(TAG, "Successfully blocked app: $packageName")
 
-                    // By now the overlay reports itself through visiblePackage.
-                    handler.postDelayed({
+                    android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                         currentlyBlockedApps.remove(packageName)
                     }, 1000)
                 } catch (e: Exception) {
@@ -415,9 +349,6 @@ class AppMonitoringService : AccessibilityService() {
 
             for (i in 0 until jsonArray.length()) {
                 val obj = jsonArray.getJSONObject(i)
-                // A protection switched off in the app must not block. Older
-                // entries have no flag (or null) and count as on.
-                if (!obj.optBoolean("isActive", true)) continue
                 limits.add(
                     AppLimit(
                         packageName = obj.optString("packageName"),
@@ -490,25 +421,15 @@ class AppMonitoringService : AccessibilityService() {
             Log.d(TAG, "New day — resetting open counts")
             openCountsToday.clear()
             lastPauseAt.clear()
-            usageCache.clear()
+            lastTimeCheckAt.clear()
             saveOpenCounts()
         }
     }
 
     // ---------------------------------------------------------------- clocks
 
-    /**
-     * Total foreground minutes for [packageName] since midnight, including
-     * the session that is still running. Built from raw usage events: the
-     * aggregated UsageStats totals only grow once a session ends, so a user
-     * who stays in the app would never reach the limit.
-     */
+    /** Total foreground minutes for [packageName] since midnight. */
     private fun todayForegroundMinutes(packageName: String): Int {
-        val now = System.currentTimeMillis()
-        usageCache[packageName]?.let { (at, minutes) ->
-            if (now - at < usageCacheMs) return minutes
-        }
-
         return try {
             val start = Calendar.getInstance().apply {
                 set(Calendar.HOUR_OF_DAY, 0)
@@ -517,84 +438,20 @@ class AppMonitoringService : AccessibilityService() {
                 set(Calendar.MILLISECOND, 0)
             }.timeInMillis
 
-            val events = usageStatsManager.queryEvents(start, now)
-            val event = UsageEvents.Event()
-            // Activities of the app that are currently resumed; the app is in
-            // front while this is non-empty.
-            val resumed = mutableSetOf<String>()
-            var since = -1L
+            val stats = usageStatsManager.queryUsageStats(
+                UsageStatsManager.INTERVAL_DAILY,
+                start,
+                System.currentTimeMillis()
+            ) ?: return 0
+
             var total = 0L
-            var sawAny = false
-
-            while (events.hasNextEvent()) {
-                events.getNextEvent(event)
-                if (event.packageName != packageName) continue
-                val cls = event.className ?: ""
-                when (event.eventType) {
-                    UsageEvents.Event.ACTIVITY_RESUMED -> {
-                        if (resumed.isEmpty()) since = event.timeStamp
-                        resumed.add(cls)
-                        sawAny = true
-                    }
-                    UsageEvents.Event.ACTIVITY_PAUSED,
-                    UsageEvents.Event.ACTIVITY_STOPPED -> {
-                        if (!sawAny) {
-                            // Already in front at midnight.
-                            total += event.timeStamp - start
-                            sawAny = true
-                        } else if (resumed.remove(cls) && resumed.isEmpty() && since >= 0) {
-                            total += event.timeStamp - since
-                            since = -1L
-                        }
-                    }
-                }
+            for (stat in stats) {
+                if (stat.packageName == packageName) total += stat.totalTimeInForeground
             }
-            if (resumed.isNotEmpty() && since >= 0) total += now - since
-
-            val minutes = (total / 60_000L).toInt()
-            usageCache[packageName] = now to minutes
-            minutes
+            (total / 1000 / 60).toInt()
         } catch (e: Exception) {
             Log.e(TAG, "Error reading usage for $packageName", e)
             0
-        }
-    }
-
-    /**
-     * The app currently in front, from the last few minutes of usage events;
-     * `null` when nothing is in front (screen locked, app closed). Falls back
-     * to the last window event when the app has been open longer than the
-     * look-back window.
-     */
-    private fun foregroundPackage(): String? {
-        return try {
-            val now = System.currentTimeMillis()
-            val events = usageStatsManager.queryEvents(now - FOREGROUND_LOOKBACK_MS, now)
-            val event = UsageEvents.Event()
-            var top: String? = null
-            var topClass: String? = null
-            var sawAny = false
-            while (events.hasNextEvent()) {
-                events.getNextEvent(event)
-                when (event.eventType) {
-                    UsageEvents.Event.ACTIVITY_RESUMED -> {
-                        top = event.packageName
-                        topClass = event.className
-                        sawAny = true
-                    }
-                    UsageEvents.Event.ACTIVITY_PAUSED,
-                    UsageEvents.Event.ACTIVITY_STOPPED -> {
-                        // Only the activity that was on top leaving clears it;
-                        // the previous app stopping late must not.
-                        if (event.packageName == top && event.className == topClass) top = null
-                        sawAny = true
-                    }
-                }
-            }
-            if (sawAny) top else lastPackageName
-        } catch (e: Exception) {
-            Log.e(TAG, "Error reading foreground app", e)
-            lastPackageName
         }
     }
 
@@ -644,8 +501,6 @@ class AppMonitoringService : AccessibilityService() {
     }
 
     override fun onDestroy() {
-        handler.removeCallbacksAndMessages(null)
-        BlockingOverlayActivity.onHidden = null
         super.onDestroy()
         isServiceRunning = false
         currentlyBlockedApps.clear()
