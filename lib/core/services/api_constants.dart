@@ -9,6 +9,7 @@ class ApiConstants{
 
   static const String registerEndPoint = "/users/register";
   static const String loginEndPoint = "/users/sign-in";
+  static const String socialLoginEndPoint = "/users/social-login";
   static const String changePasswordEndPoint = "/users/change-password";
   static const String verifyEmailEndPoint = "/users/verify-code";
   static const String forgotPasswordEndPoint = "/users/forgot-password";
